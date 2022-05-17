@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Presetancion producto</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
+	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/bootstrap-datepicker.min.css">
+</head>
+<body>
+	<style>
+		.datepicker td, .datepicker th{
+			width: 3rem!important;
+   		height: 3rem!important;
+		}
+		.datepicker-inline{
+			width: 100%!important;
+		}
+		.datepicker table{
+			margin: auto!important;
+		}
+		.datepicker .datepicker-days{
+			border:none;
+		}
+		.datepicker table tr td.active.active{
+			/* background-color: #2482e3!important; */background-image: none!important;
+		}
+		.dow{color:rgb(145 145 145)!important;}
+		#divRecomendaciones .titulo{background-color: rgb(214, 214, 214); }
+		#divIzquierda ul, ol{padding-left: 0!important;}
+		p{margin-bottom: 0;}
+	</style>
+	<div class="container-fluid" id="app">
+		<div class="row">
+			<div class="col-8">
+				<div class="fotorama" data-nav="thumbs" data-width="100%">
+					<img v-for="foto in tourActivo.fotos" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+foto.nombreRuta">
+					
+				</div>
+
+				<!-- Empieza el bloque de descripción -->
+				<div class="my-3 p-4 border rounded" id="divIzquierda">
+					<h2 class="text-danger text-capitalize">{{tourActivo.nombre}}</h2>
+					<h4 class="mt-4 text-danger">Descripción</h4>
+					<div v-html="tourActivo.descripcion"></div>
+					<h4 class="mt-4 text-danger">Punto de Partida</h4>
+					<div class="w-100 text-break" v-html="tourActivo.partida"></div>
+					<h4 class="mt-4 text-danger">Itinerario</h4>
+					<div class="w-100 text-break" v-html="tourActivo.itinerario"></div>
+
+					<h5 class="mt-3 text-danger">Incluye</h5>
+					<div>
+						<p class="ms-2 mb-0" v-for="cadena in incluidos"><i class="icofont-check-alt"></i> {{cadena}}</p>
+					</div>
+
+					<h5 class="mt-3 text-danger">No Incluye</h5>
+					<div>
+						<p class="ms-2 mb-0" v-for="cadena in noIncluidos"><i class="icofont-close-line"></i> {{cadena}}</p>
+					</div>
+
+					<h5 class="mt-3 text-danger">Notas</h5>
+					<div class="w-100 text-break" v-html="tourActivo.notas"></div>
+
+					
+
+				</div>
+				<div id="divRecomendaciones">
+					<div class="titulo p-2 mb-3">
+						<h3>Tours y paquetes turísticos similares</h3>
+					</div>
+					<div class="row row-cols-4">
+						<img src="https://inkajungletour.com/wp-content/uploads/2018/11/DEPORTES-DE-AVENTURA-CUSCO.jpg" alt="" class="img-fluid">
+						<img src="https://cdn2.civitatis.com/peru/lima/galeria/vista-lagos-reserva-nor-yauyos-cochas.jpg" alt="" class="img-fluid">
+						<img src="https://selvacentral.com.pe/archivos/videos/selva-central-1-cover.jpg" alt="" class="img-fluid">
+						<img src="https://inkajungletour.com/wp-content/uploads/2018/11/DEPORTES-DE-AVENTURA-CUSCO.jpg" alt="" class="img-fluid">
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="row">
+					<div class="col text-center bg-secondary bg-opacity-25 ">
+						<span class="fs-1"><strong class="text-danger"><small class="fs-3">S/</small> {{precioPorPersona}}</strong> <small class="fs-5">por persona</small></span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col px-0">
+						<div id="dtpFecha" data-date-format="dd/mm/yyyy"></div>
+					</div>
+				</div>
+				<p class="fs-3 text-center text-muted">
+					<span v-if="tourActivo.cupos==1">Úlimo cupo disponible</span>
+					<span v-else>{{tourActivo.cupos}} cupos disponibles</span>
+				</p>
+				<div class="row container" id="divAdultos">
+					<div class="col-4 text-end"><span class="text-muted">Adultos</span></div>
+					<div class="col-6 ms-3">
+						<div class="input-group mx-auto">
+							<button class="btn btn-outline-secondary border-0" type="button" @click='restarAdulto()'><i class="icofont-minus"></i></button>
+							<input type="text" class="form-control w-25 border-0 text-center text-muted" placeholder=" " @focusout="contarMinimoPersonas()" v-model="cantAdultos">
+							<button class="btn btn-outline-secondary border-0" type="button" @click="sumarAdulto()"><i class="icofont-plus"></i></button>
+						</div>
+					</div>
+				</div>
+				<div class="row container mt-2" id="divKids">
+					<div class="col-4 text-end"><span class="text-muted">Niños <br><small>(hasta 10 años)</small></span></div>
+					<div class="col-6 ms-3">
+						<div class="input-group mx-auto">
+							<button class="btn btn-outline-secondary border-0" type="button" @click="restarKid()"><i class="icofont-minus"></i></button>
+							<input type="text" class="form-control w-25 border-0 text-center text-muted" placeholder=" " @focusout="contarMinimoPersonas()" v-model="cantKids">
+							<button class="btn btn-outline-secondary border-0" type="button" @click="sumarKid()"><i class="icofont-plus"></i></button>
+						</div>
+					</div>
+				</div>
+				<div class="row col mx-auto my-3 " v-if="!faltaMinimo">
+					<div class="alert alert-warning " role="alert">
+						La <strong>cantidad mínima</strong> de viajeros debe ser <strong>{{tourActivo.minimo}}</strong>
+					</div>
+				</div>
+				
+				<div class="row col-7 mx-auto my-3">
+					<select class="form-select" id="sltPais" @change="comprobarNacionalidad()" v-model="nacionalidad">
+						<option value="-1">País o Nacionalidad</option>
+						<option value="159">PERU</option><option value="1">Afganistán</option><option value="2">Albania</option><option value="3">Algeria</option><option value="4">American Samoa</option><option value="5">Andorra</option><option value="6">Angola</option><option value="7">Anguilla</option><option value="8">Antigua and Barbuda</option><option value="9">Argentina</option><option value="10">Armenia</option><option value="11">Aruba</option><option value="12">Australia</option><option value="13">Austria</option><option value="14">Azerbaijan</option><option value="15">Bahamas</option><option value="16">Bahrain</option><option value="17">Bangladesh</option><option value="18">Barbados</option><option value="19">Belarus</option><option value="20">Belgium</option><option value="21">Belize</option><option value="22">Benin</option><option value="23">Bermuda</option><option value="24">Bhutan</option><option value="25">Bolivia</option><option value="26">Bosnia and Herzegovina</option><option value="27">Botswana</option><option value="28">Brazil</option><option value="29">Brunei Darussalam</option><option value="30">Bulgaria</option><option value="31">Burkina Faso</option><option value="32">Burundi</option><option value="33">Cambodia</option><option value="34">Cameroon</option><option value="35">Canada</option><option value="36">Cape Verde</option><option value="37">Cayman Islands</option><option value="38">Central African Republic</option><option value="39">Chad</option><option value="40">Chile</option><option value="41">China</option><option value="42">Colombia</option><option value="43">Comoros</option><option value="44">Congo</option><option value="45">Congo, the Democratic Republic of the</option><option value="46">Cook Islands</option><option value="47">Costa Rica</option><option value="48">Cote D'Ivoire</option><option value="49">Croatia</option><option value="51">Cyprus</option><option value="52">Czech Republic</option><option value="53">Denmark</option><option value="54">Djibouti</option><option value="55">Dominica</option><option value="56">Dominican Republic</option><option value="57">Ecuador</option><option value="58">Egypt</option><option value="59">El Salvador</option><option value="60">Equatorial Guinea</option><option value="61">Eritrea</option><option value="62">Estonia</option><option value="63">Ethiopia</option><option value="64">Falkland Islands (Malvinas)</option><option value="65">Faroe Islands</option><option value="66">Fiji</option><option value="67">Finland</option><option value="68">France</option><option value="69">French Guiana</option><option value="70">French Polynesia</option><option value="71">Gabon</option><option value="72">Gambia</option><option value="73">Georgia</option><option value="74">Germany</option><option value="75">Ghana</option><option value="76">Gibraltar</option><option value="77">Greece</option><option value="78">Greenland</option><option value="79">Grenada</option><option value="80">Guadeloupe</option><option value="81">Guam</option><option value="82">Guatemala</option><option value="83">Guinea</option><option value="84">Guinea-Bissau</option><option value="85">Guyana</option><option value="86">Haiti</option><option value="87">Holy See (Vatican City State)</option><option value="88">Honduras</option><option value="89">Hong Kong</option><option value="90">Hungary</option><option value="91">Iceland</option><option value="92">India</option><option value="93">Indonesia</option><option value="95">Iraq</option><option value="96">Ireland</option><option value="97">Israel</option><option value="98">Italy</option><option value="99">Jamaica</option><option value="100">Japan</option><option value="101">Jordan</option><option value="102">Kazakhstan</option><option value="103">Kenya</option><option value="104">Kiribati</option><option value="106">Korea, Republic of</option><option value="107">Kuwait</option><option value="108">Kyrgyzstan</option><option value="109">Lao People's Democratic Republic</option><option value="110">Latvia</option><option value="111">Lebanon</option><option value="112">Lesotho</option><option value="113">Liberia</option><option value="114">Libyan Arab Jamahiriya</option><option value="115">Liechtenstein</option><option value="116">Lithuania</option><option value="117">Luxembourg</option><option value="118">Macao</option><option value="119">Macedonia, the Former Yugoslav Republic of</option><option value="120">Madagascar</option><option value="121">Malawi</option><option value="122">Malaysia</option><option value="123">Maldives</option><option value="124">Mali</option><option value="125">Malta</option><option value="126">Marshall Islands</option><option value="127">Martinique</option><option value="128">Mauritania</option><option value="129">Mauritius</option><option value="130">Mexico</option><option value="131">Micronesia, Federated States of</option><option value="132">Moldova, Republic of</option><option value="133">Monaco</option><option value="134">Mongolia</option><option value="135">Montserrat</option><option value="136">Morocco</option><option value="137">Mozambique</option><option value="139">Namibia</option><option value="140">Nauru</option><option value="141">Nepal</option><option value="142">Netherlands</option><option value="143">Netherlands Antilles</option><option value="144">New Caledonia</option><option value="145">New Zealand</option><option value="146">Nicaragua</option><option value="147">Niger</option><option value="148">Nigeria</option><option value="149">Niue</option><option value="150">Norfolk Island</option><option value="151">Northern Mariana Islands</option><option value="152">Norway</option><option value="153">Oman</option><option value="154">Pakistan</option><option value="155">Palau</option><option value="156">Panama</option><option value="157">Papua New Guinea</option><option value="158">Paraguay</option><option value="160">Philippines</option><option value="161">Pitcairn</option><option value="162">Poland</option><option value="163">Portugal</option><option value="164">Puerto Rico</option><option value="165">Qatar</option><option value="166">Reunion</option><option value="167">Romania</option><option value="168">Russian Federation</option><option value="169">Rwanda</option><option value="170">Saint Helena</option><option value="171">Saint Kitts and Nevis</option><option value="172">Saint Lucia</option><option value="173">Saint Pierre and Miquelon</option><option value="174">Saint Vincent and the Grenadines</option><option value="175">Samoa</option><option value="176">San Marino</option><option value="177">Sao Tome and Principe</option><option value="178">Saudi Arabia</option><option value="179">Senegal</option><option value="180">Seychelles</option><option value="181">Sierra Leone</option><option value="182">Singapore</option><option value="183">Slovakia</option><option value="184">Slovenia</option><option value="185">Solomon Islands</option><option value="186">Somalia</option><option value="187">South Africa</option><option value="188">Spain</option><option value="189">Sri Lanka</option><option value="190">Sudan</option><option value="191">Suriname</option><option value="192">Svalbard and Jan Mayen</option><option value="193">Swaziland</option><option value="194">Sweden</option><option value="195">Switzerland</option><option value="197">Taiwan, Province of China</option><option value="198">Tajikistan</option><option value="199">Tanzania, United Republic of</option><option value="200">Thailand</option><option value="201">Togo</option><option value="202">Tokelau</option><option value="203">Tonga</option><option value="204">Trinidad and Tobago</option><option value="205">Tunisia</option><option value="206">Turkey</option><option value="207">Turkmenistan</option><option value="208">Turks and Caicos Islands</option><option value="209">Tuvalu</option><option value="210">Uganda</option><option value="211">Ukraine</option><option value="212">United Arab Emirates</option><option value="213">United Kingdom</option><option value="214">United States</option><option value="215">Uruguay</option><option value="216">Uzbekistan</option><option value="217">Vanuatu</option><option value="218">Venezuela</option><option value="219">Viet Nam</option><option value="220">Virgin Islands, British</option><option value="221">Virgin Islands, U.s.</option><option value="222">Wallis and Futuna</option><option value="223">Western Sahara</option><option value="224">Yemen</option><option value="225">Zambia</option><option value="226">Zimbabwe</option>
+					</select>
+				</div>
+				<div class="row col-7 mx-auto my-3">
+					<select name="" id="" class="form-select">
+						<option value="-1">Inicia {{horaLatam(tourActivo.hora).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
+					</select>
+				</div>
+				<div class=" ms-5 ps-3" id="divDuracion">
+					<span><strong>Duración:</strong> {{queDura}}</span><br>
+					<span><strong>Comprar:</strong> {{queAnticipa(tourActivo.anticipacion)}} antes del viaje</span><br>
+					<span><strong>Mínimo de viajeros:</strong> 
+						<span v-if="tourActivo.minimo==1">1 viajero</span>
+						<span v-else>{{tourActivo.minimo}} viajeros</span>
+					</span>
+					<br><br>
+					<span><strong>Ciudad:</strong> {{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span><br>
+					<span><strong>Actividades:</strong> {{tourActivo.actividad}}</span><br>
+				</div>
+				<div class="row col mx-auto mt-3 mb-0 " v-if="faltaPais">
+					<div class="alert alert-warning " role="alert">
+						{{msjError}}
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col text-center">
+						<span class='fs-2 text-muted'>Total: <strong style="color:#60696d" class="">S/ {{formatoMoneda(precioTotal)}}</strong></span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-10 mx-auto d-grid">
+						<button class="btn btn-danger rounded-pill" @click="reservar"><strong>RESERVAR AHORA</strong></button>
+					</div>
+				</div>
+
+				<div class="row my-3 ">
+					<div class="col m-4 p-3 border rounded">
+							<h4 class="fs-5 text-center">ACEPTAMOS TODOS LOS</h4>
+							<h4 class="fs-2 text-center">MEDIOS DE PAGO</h4>
+							<h4 class="fs-5 text-center">Tarjeta de crédito ó débito | Visa, MasterCard y más <br/>Banca por Internet ó Depósitos Bancarios</h4>
+							<img src="https://grupoeuroandino.com/app/render/images/appspago.png" class="img-fluid">
+							<p class="mb-0"><strong>Titular de la Cuenta:</strong> Angela Pilar Cuba Ramos</p>
+							<p class="mb-0"><strong>Número de Celular:</strong> 947614293</p>
+
+							<div class="w-50 mx-auto mt-4">
+								<img src="https://grupoeuroandino.com/app/render/images/bcp.png" class="img-fluid ">
+							</div>
+							<p class="mb-0"><strong>Titular de la Cuenta:</strong> Angela Pilar Cuba Ramos</p>
+							<p class="mb-0"><strong>Tipo de Cuenta:</strong> Ahorros</p>
+							<p class="mb-0"><strong>Moneda:</strong> Nuevos Soles</p>
+							<p class="mb-0"><strong>Número de Cuenta:</strong> 35537794995098</p>
+							<p class="mb-0"><strong>CCI Cuenta:</strong> 00235513779499509865</p>
+
+							<div class="w-50 mx-auto mt-4"><img src="https://grupoeuroandino.com/app/render/images/interbank.png" class="img-fluid "></div>
+							<p class="mb-0"><strong>Titular de la Cuenta:</strong> Angela Pilar Cuba Ramos</p>
+							<p class="mb-0"><strong>Tipo de Cuenta:</strong> Ahorros</p>
+							<p class="mb-0"><strong>Moneda:</strong> Nuevos Soles</p>
+							<p class="mb-0"><strong>Número de Cuenta:</strong> 8983161564550</p>
+							<p class="mb-0"><strong>CCI Cuenta:</strong> 003 - 898 - 013161564550 - 47</p>
+							<p class="mb-0"><strong>CCI Cuenta:</strong> 00235513779499509865</p>
+
+							<div class="w-50 mx-auto mt-4"><img src="https://grupoeuroandino.com/app/render/images/bbva.png" class="img-fluid "></div>
+							<p class="mb-0"><strong>Titular de la Cuenta:</strong> Angela Pilar Cuba Ramos</p>
+							<p class="mb-0"><strong>Tipo de Cuenta:</strong> Ahorros</p>
+							<p class="mb-0"><strong>Moneda:</strong> Nuevos Soles</p>
+							<p class="mb-0"><strong>Número de Cuenta:</strong> 0011 0814 0201987232</p>
+							<p class="mb-0"><strong>CCI Cuenta:</strong> 011 - 814 - 000201987232 - 10</p>
+
+							<h4 class="fs-3 mt-3 mb-0 text-center">METODO DE RESERVA</h4>
+							<h4 class="fs-5 text-center">EN SOLO 3 PASOS</h4>
+							<div class="w-50 mx-auto"><img src="https://grupoeuroandino.com/app/render/images/mano.png" class="img-fluid "></div>
+							<p class="mb-0"><strong>1. PAGA EN NUESTRAS CUENTAS BANCARIAS</strong></p>
+							<p>Los depósitos en cajeros, ventanilla y agentes tiene un costo adicional de S/.9.50 por transacción.</p>
+							<div class="w-50 mx-auto"><img src="https://grupoeuroandino.com/app/render/images/ticket.png" class="img-fluid "></div>
+							<p class="mb-0"><strong>2. ENVÍANOS EL TICKET DEL DEPOSITO Ó TRANSFERENCIA</strong></p>
+							<p>Al WhatsApp 947614293 ó al Correo Electrónico grupoeuroandino@hotmail.com más él envió de los datos de cada viajero (Nombres y Apellidos, DNI, edad y N° de celular).</p>
+							
+							<div class="w-50 mx-auto"><img src="https://grupoeuroandino.com/app/render/images/confirmacion.png" class="img-fluid "></div>
+							<p class="mb-0"><strong>3. RECIBE EL MENSAJE DE CONFIRMACIÓN</strong></p>
+							<p>de la Reserva de tú Tour y/o Paquete Turístico.</p>	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	
+	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
+	<script src="https://grupoeuroandino.com/app/render/js/moment.min.js"></script>
+	<!-- extraído de https://fotorama.io/docs/4/dimensions/ -->
+	<link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.min.js"></script>
+	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
+
+	<script>
+var datepicker = $.fn.datepicker.noConflict();
+$.fn.bootstrapDP = datepicker;
+		/* $('#dtpFecha').datepicker({
+	    language: "es",
+	    keyboardNavigation: false,
+	    todayHighlight: false,
+	    datesDisabled: ['07/02/2022','06/02/2022', '05/02/2022', '04/02/2022', '03/02/2022', '02/02/2022', '01/02/2022','31/01/2022' ]
+		});
+		$(".prev").each(function(i) {$(".prev")[i].innerHTML = `<i class="icofont-rounded-left"></i>`})
+		$(".next").each(function(i) {$(".next")[i].innerHTML = `<i class="icofont-rounded-right"></i>`}) */
+	var app = new Vue({
+		el: '#app',
+		data:{
+			idProducto:-1,
+			//servidor: 'http://localhost/euroAndinoApi/',
+			servidor: 'https://grupoeuroandino.com/app/api/',
+			variosTours:[], tourActivo:[{incluye:'', noIncluye:'', peruanos:{adultos:0, kids:0}, extranjeros:{adultos:0, kids:0}, duracion:0
+		}],
+			precioPorPersona: 0, cantAdultos:0, cantKids:0,
+			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
+			duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
+			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
+			anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
+			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'Chanchamayo', 'Chupaca', 'Concepción', 'Huancayo', 'Jauja', 'Junín', 'Satipo', 'Tarma', 'Yauli', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
+			diasMuertos:[], precioTotal:0, nacionalidad:-1, faltaPais:false, msjError:'',
+			incluidos:[], noIncluidos:[], faltaMinimo:true
+
+		},
+		mounted(){
+			//sacando el ID
+			const queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString);
+			this.idProducto = urlParams.get('id')
+			//console.log( 'el id es ' + this.idProducto );
+			this.pedirDatos();
+			
+		},
+		methods: {
+			async pedirDatos(){
+				var hoy= moment();
+				const respuesta = await axios.post( this.servidor + 'verTourPorId.php', {id: this.idProducto});
+				this.variosTours=respuesta.data[0];
+				this.tourActivo = JSON.parse(this.variosTours.contenido);
+				this.precioPorPersona = this.tourActivo.peruanos.adultos;
+				//this.cantAdultos = this.tourActivo.minimo;
+				$('.fotorama').fotorama();
+				for (let dia = 2; dia <= 31; dia++) {
+					this.duracion.push({ clave: dia+1, valor: dia + ' días / 0 noches' });
+					this.duracionDias.push({ clave: dia+1, valor: dia + ' días' });
+					this.duracionNoches.push({ clave: dia+2, valor: dia + ' noches' });
+				}
+				for (let dia = 2; dia <= 15; dia++) {
+					this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
+				}
+				switch(this.tourActivo.anticipacion){
+					case "1": this.bloquearFechaDesde( hoy ); break;
+					case "2": this.bloquearFechaDesde( hoy.add(1,'days') ); break;
+					default: this.bloquearFechaDesde( hoy.add( parseInt(this.tourActivo.anticipacion)-1 ,'days') ); break;
+				}
+				this.incluidos=this.tourActivo.incluye.split('\n');
+				this.noIncluidos=this.tourActivo.noIncluye.split('\n');
+				const myTimeout = setTimeout(function(){
+					$('.fotorama').fotorama();
+				}, 500);
+				
+			},
+			formatoMoneda(valor){
+				return parseFloat(valor).toFixed(2)
+			},
+			contarMinimoPersonas(){
+				if(this.nacionalidad==159 || this.nacionalidad==-1){
+					this.precioTotal = parseFloat(this.cantAdultos * this.tourActivo.peruanos.adultos) + parseFloat(this.cantKids * this.tourActivo.peruanos.kids) ;
+				}else{
+					this.precioTotal = parseFloat(this.cantAdultos * this.tourActivo.extranjeros.adultos) + parseFloat(this.cantKids * this.tourActivo.extranjeros.kids) ;
+				}
+				
+				if((this.cantAdultos + this.cantKids) < parseInt(this.tourActivo.minimo)){
+					return this.faltaMinimo=false;
+					this.faltaPais=true; this.msjError = "Debe rellenar el campo de su nacionalidad antes de reservar";
+				}else{
+					return this.faltaMinimo=true;
+					this.faltaPais=false;
+				}
+				
+				
+			},
+			restarAdulto(){
+				if(this.cantAdultos>0){
+					this.cantAdultos--; this.contarMinimoPersonas();
+				}
+			},
+			sumarAdulto(){
+				this.cantAdultos++; this.contarMinimoPersonas();
+			},
+			restarKid(){
+				if(this.cantKids>0){
+					this.cantKids--; this.contarMinimoPersonas();
+				}
+			},
+			sumarKid(){
+				this.cantKids++; this.contarMinimoPersonas();
+			},
+			queAnticipa(valor){ 
+				if(valor!=null){
+					return this.anticipacion[parseInt(valor)-1].valor;
+				}
+			},
+			bloquearFechaDesde(fechaInicial){
+				//console.log( fechaInicial.format('DD/MM/YYYY') );
+				for (let index = 0; index <= 160; index++) {
+					this.diasMuertos.push(  moment(fechaInicial, 'DD/MM/YYYY').subtract(index,'days').format('DD/MM/YYYY') );
+				}
+				console.log( this.diasMuertos );
+				
+				//$('#dtpFecha').datepicker('destroy');
+				$('#dtpFecha').bootstrapDP({
+			    language: "es",
+			    keyboardNavigation: false,
+			    todayHighlight: false,
+			    datesDisabled: this.diasMuertos
+				});
+
+				$(".prev").each(function(i) {$(".prev")[i].innerHTML = `<i class="icofont-rounded-left"></i>`})
+				$(".next").each(function(i) {$(".next")[i].innerHTML = `<i class="icofont-rounded-right"></i>`})
+				
+				
+			},
+			horaLatam(hora){
+				return( moment(hora, 'HH:mm').format('h:mm a') )
+			},
+			queDepa(valor){
+				return this.departamentos[valor];
+			},
+			reservar(){
+				if($('#dtpFecha').bootstrapDP('getFormattedDate')==null){
+					this.faltaPais=true; this.msjError = "Debe seleccionar una fecha inicial"; return false;
+				}else if(this.comprobarNacionalidad() && this.contarMinimoPersonas()){
+					window.location.href="/carrito-compras/?id="+this.idProducto+"&adults="+this.cantAdultos+"&kids="+this.cantKids+"&nationality="+this.nacionalidad+"&start="+$('#dtpFecha').bootstrapDP('getFormattedDate');
+				}
+			},
+			comprobarNacionalidad(){
+				if(this.nacionalidad==-1){
+					this.faltaPais=true; this.msjError = "Debe rellenar el campo de su nacionalidad antes de reservar"; return false;
+				}else{
+					this.faltaPais=false;
+					return true;
+				}
+			},
+		/* 	comprobarRequisitos(){
+				if(this.nacionalidad==-1){
+					this.faltaPais=true; this.msjError = "Debe rellenar el campo de su nacionalidad antes de reservar"; return false;
+				}else if(!this.contarMinimoPersonas()){
+					this.faltaPais=true; this.msjError = "Se debe completar un mínimo de personas"; return false;
+				}else{
+					this.faltaPais=false;
+					return true;
+				}
+			} */
+		},
+		computed:{
+			queDura(){
+				try {
+					if(this.tourActivo.tipo=='2'){
+						return this.duracionDias[parseInt(this.tourActivo.duracion.dias)].valor + ", " + this.duracionNoches[parseInt(this.tourActivo.duracion.noches)].valor;
+					}else{
+						return this.duracion[parseInt(this.tourActivo.duracion)].valor;
+					}
+				} catch (error) {
+					
+				}
+			}
+		}
+	})
+
+	</script>
+</body>
+</html>
