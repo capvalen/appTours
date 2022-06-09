@@ -168,8 +168,12 @@
 							<label for="floatingSelect">Departamento</label>
 						</div>
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floDestino" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.actividad">
+							<input type="text" class="form-control" id="floDestino" placeholder=" " autocomplete="off" v-model="tour.actividad">
 							<label for="floDestino">Actividades</label>
+						</div>
+						<div class="form-floating mb-3">
+							<input type="text" class="form-control" id="floDestino" placeholder=" "autocomplete="off" v-model="tour.categoria">
+							<label for="floDestino">Categoría</label>
 						</div>
 						<!-- Create the editor container -->
 						<p class="mb-0 mt-2">Descripción</p>
@@ -326,7 +330,7 @@
 				peruanos:{ adultos: 0, kids: 0 },
 				extranjeros:{ adultos:0, kids:0 },
 				cupos: 1, duracion: 1, hora: "12:00",
-				anticipacion: 1, minimo: 1, destino: '', departamento: '', actividad:'',
+				anticipacion: 1, minimo: 1, destino: '', departamento: '', actividad:'', categoria:'',
 				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1
 			},
 			paquete:{
@@ -337,7 +341,7 @@
 				duracion: {dias:1, noches:0},
 				hora: "12:00",
 				anticipacion: 1, minimo: 1, transporte:1, alojamiento: 1,
-				destino: '', departamento: '', actividad:'',
+				destino: '', departamento: '', actividad:'', categoria:'',
 				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2
 			},
 			mensajeBien:'Guardado correctamente', mensajeMal:'Hubo un error al conectar',
@@ -399,7 +403,7 @@
 
 				console.log( this.tour );
 
-				axios.post(this.servidor+'guardarTours.php', { tour: this.tour })
+				axios.post(this.servidor+'guardarTours.php', { tour: this.tour, actividad: this.tour.actividad, categoria: this.tour.categoria })
 				.then((response)=>{ //console.log( response.data );
 					if(response.data =='ok'){
 						this.verTours();
@@ -491,7 +495,7 @@
 			actualizarTour(queTour){
 				this.extraerHtml();
 				if(queTour==null){ queTour = this.tourActivo }
-				axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour })
+				axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria  })
 					.then((response)=>{ console.log( response.data );
 						if(response.data =='ok'){
 							this.mensajeBien = "Se subió correctamente";

@@ -34,7 +34,7 @@
 	</style>
 	<div class="container-fluid" id="app">
 		<div class="row">
-			<div class="col-8">
+			<div class="col-12 col-md-8">
 				<div class="fotorama" data-nav="thumbs" data-width="100%">
 					<img v-for="foto in tourActivo.fotos" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+foto.nombreRuta">
 					
@@ -78,7 +78,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-4">
+			<div class="col-12 col-md-4">
 				<div class="row">
 					<div class="col text-center bg-secondary bg-opacity-25 ">
 						<span class="fs-1"><strong class="text-danger"><small class="fs-3">S/</small> {{precioPorPersona}}</strong> <small class="fs-5">por persona</small></span>

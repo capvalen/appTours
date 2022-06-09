@@ -205,8 +205,12 @@
 							<label for="floatingSelect">Departamento</label>
 						</div>
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floDestino" placeholder=" " max="250" min="1" autocomplete="off"  v-model="tour.actividad">
+							<input type="text" class="form-control" id="floDestino" placeholder=" " autocomplete="off"  v-model="tour.actividad">
 							<label for="floDestino">Actividades</label>
+						</div>
+						<div class="form-floating mb-3">
+							<input type="text" class="form-control" id="floDestino" placeholder=" "autocomplete="off" v-model="tour.categoria">
+							<label for="floDestino">Categoría</label>
 						</div>
 							<!-- Create the editor container -->
 							<p class="mb-0 mt-2">Descripción</p>
@@ -344,14 +348,14 @@
 				extranjeros:{ adultos:0, kids:0 },
 				cupos: 1, duracion: {dias:1, noches:1}, hora: "12:00",
 				anticipacion: 1, minimo: 1, transporte:1, alojamiento: 1,
-				destino: '', departamento: '', actividad:'',
+				destino: '', departamento: '', actividad:'', categoria:'',
 				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2
 			},
 			mensajeBien:'Guardado correctamente', mensajeMal:'Hubo un error al conectar',
 			variosTours:[], todosTours:[], idGlobal:-1, indexGlobal:-1, tourActivo:[],
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
 			anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
-			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'Chanchamayo', 'Chupaca', 'Concepción', 'Huancayo', 'Jauja', 'Junín', 'Satipo', 'Tarma', 'Yauli', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
+			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'Chanchamayo', 'Chupaca', 'Concepción', 'Huancayo', 'Jauja', 'Junín', 'Satipo', 'Tarma', 'Yauli', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			activarEditar:false
 		},
 		mounted:function(){
@@ -407,7 +411,7 @@
 				this.extraerHtml();
 				console.log( this.tour );
 
-				axios.post(this.servidor+'guardarPaquete.php', { tour: this.tour })
+				axios.post(this.servidor+'guardarPaquete.php', { tour: this.tour, actividad: this.tour.actividad, categoria: this.tour.categoria })
 				.then((response)=>{ //console.log( response.data );
 					if(response.data =='ok'){
 						this.verTours();
@@ -496,7 +500,7 @@
 			actualizarTour(queTour){
 				this.extraerHtml();
 				if(queTour==null){ queTour = this.tourActivo }
-				axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour })
+				axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria })
 				.then((response)=>{ console.log( response.data );
 					if(response.data =='ok'){
 						modalNuevo.hide();

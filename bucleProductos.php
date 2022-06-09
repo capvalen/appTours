@@ -17,10 +17,11 @@
 		.precio{font-size: 1.7rem;font-weight:bold; color: rgb(58, 91, 255);}
 		.precioAnt{font-size: 0.8rem;text-decoration:line-through; color: rgb(58, 91, 255);}
 		.divOferta{width: 60px; height:60px; background-color: rgb(58, 91, 255); border-radius: 50%; color:white; font-size: 0.8rem;  }
-		.precio2{font-size: 1.7rem;font-weight:bold; color: rgb(192, 0, 67);}
-		.precioAnt2{font-size: 0.8rem;text-decoration:line-through; color: rgb(192, 0, 67);}
-		.divOferta2{width: 70px; height: 25px; background-color: rgb(192, 0, 67);  margin-top: 2rem; margin-right: 0.6rem; color:white; font-size: 0.8rem;  }
-		.titulo>a, .estrellas{color: rgb(58, 91, 255);}
+		.precio2{font-size: 1.7rem;font-weight:bold; /* color: rgb(192, 0, 67); */}
+		.precioAnt2{font-size: 0.8rem;text-decoration:line-through; /* color: rgb(192, 0, 67); */}
+		.divOferta2{width: 70px; height: 25px; background-color: #2768b7; /* rgb(192, 0, 67);  */ margin-top: 2rem; margin-right: 0.6rem; color:white; font-size: 0.8rem;  }
+		/* .titulo>a, .estrellas{color: rgb(58, 91, 255);} */
+		.estrellas{color: #ffd400;}
 	</style>
 	<div id="app">
 		<div class="row row-cols-12 row-cols-md-2 row-cols-lg-4">
@@ -30,7 +31,9 @@
 					<a :href="'/viaje/?id=' + queId(index)" target="_parent"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt="" class="img-fluid"></a>
 				</div>
 				<div>
-					<p class="mb-0 titulo text-capitalize"><strong><a class="text-decoration-none " :href="'/viaje/?id=' + queId(index)" target="_parent">{{tour.nombre}}</a></strong></p>
+					<p class="mb-0 titulo text-capitalize"><strong>
+						<a class="text-decoration-none text-dark" :href="'/viaje/?id=' + queId(index)" target="_parent">{{tour.nombre}}</a></strong>
+					</p>
 					<div class="estrellas">
 						<i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i>
 					</div>
