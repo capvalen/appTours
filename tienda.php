@@ -6,23 +6,33 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Filtro por producto</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-	<link rel="stylesheet" href="icofont/icofont.min.css">
+	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
 </head>
 <body>
-	<style>
-		.accordion-button:not(.collapsed){
-			background-color: #ffffff;
-			font-weight: bold;
-		}
-		.activo{
-			color: #000!important;
-			font-weight: bold;
-		}
-	</style>
+<style>
+	.accordion-button:not(.collapsed){
+		background-color: #ffffff;
+		font-weight: bold;
+	}
+	.activo{
+		color: #000!important;
+		font-weight: bold;
+	}
+	.estrellas{color: #ffd400;}
+	.precio2 {
+		font-size: 1.7rem;
+		font-weight: bold;
+	}
+	.precioAnt2 {
+		font-size: 0.8rem;
+		text-decoration: line-through;
+	}
+	
+</style>
 	<div class="container-fluid" id="app">
 		<div class="row">
 			
-			<div class="col-12 col-md-4 col-lg-3">
+			<div class="col-12 col-md-3">
 				<div class="col">
 					<div class="accordion accordion-flush" id="acordeonPadre">
 						<div class="accordion-item">
@@ -117,6 +127,38 @@
 				</div>
 			
 			</div>
+
+			<div class="col-12-col-md-8 col-lg-9">
+				<div class="row row-cols-1 row-cols-md-3 row-cols-lg-3">
+					<div class="col my-2 " v-for="(producto, index) in productos" :key="producto.id">
+						<div class="card h-100" >
+							<img :src="queFoto(producto)" class="card-img-top" alt="...">
+							<div class="card-body">
+								<h5 class="card-title text-capitalize mb-0">
+									<a class="text-decoration-none text-dark" :href="'/viaje/?id=' + queId(index)" target="_parent">{{producto.nombre}}</a></strong>
+								</h5>
+								
+								<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span></p>
+								<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
+								
+								
+								<div class="row row-cols-2">
+									<div>
+									<span>{{queDuracion(producto.duracion, producto.tipo)}}</span>
+									</div>
+									<div class="text-end ">
+										<span class="precio2"><span class="monedita fs-6">S/</span> {{formatoMoneda(producto.peruanos.adultos)}}</span>
+										<p v-if="producto.oferta>0" class="precioAnt2 mb-0">S/ {{formatoMoneda(producto.oferta)}}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div v-if="productos.length==0">
+				<p>No existen productos que coincidan</p>
+			</div>
 		</div>
 	</div>
 
@@ -136,16 +178,23 @@
 		data: {
 			//servidor: 'http://localhost/euroAndinoApi/',
 			servidor: 'https://grupoeuroandino.com/app/api/', 
-			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'Chanchamayo', 'Chupaca', 'Concepción', 'Huancayo', 'Jauja', 'Junín', 'Satipo', 'Tarma', 'Yauli', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
+			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			dias:[], actividades:[], categorias:[],
 			idTour:-1, idActividad:-1, idDepartamento:-1,idCategoria:-1, idDia:-1, idPrecio:-1,
-			precios:['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00' ], actividadSelect:'', categoriaSelect:''
+			precios:['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00' ], actividadSelect:'', categoriaSelect:'', productos:[],
+			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}], pedidos:[]
 		},
 		mounted:function(){
 			this.cargar();
 			for(let i=1; i<=31 ; i++ ){
 				this.dias.push(i);
 			}
+			for (let dia = 2; dia <= 31; dia++) {
+				this.duracion.push({ clave: dia+1, valor: dia + " días" });
+				this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
+			}
+			this.buscarEnTienda();
+
 			
 			//modalNuevo = new bootstrap.Modal( document.getElementById('modalNuevo') );
 			
@@ -161,6 +210,8 @@
 				this.categorias = temporal[1]
 			},
 			async buscarEnTienda(){
+				this.pedidos=[];
+				this.productos=[];
 				let datos = new FormData();
 				datos.append('idTour', this.idTour);
 				datos.append('idActividad', this.idActividad);
@@ -173,7 +224,37 @@
 				let respServ = await fetch(this.servidor+'buscarFiltroTienda.php',{
 					method:'POST', body:datos
 				});
-				console.log( await respServ.json() );
+				//console.log( await respServ.json() );
+				this.pedidos = await respServ.json();
+				this.pedidos.forEach(data =>{
+					this.productos.push(JSON.parse(data.contenido))
+				})
+			},
+			queFoto(prod){
+				//console.log( prod );
+				if(prod.fotos.length==0){
+					return 'https://grupoEuroAndino.com/app/render/images/defecto.jpg';
+				}else{
+					return 'https://grupoEuroAndino.com/app/render/images/subidas/'+ prod.fotos[0].nombreRuta;
+				}
+			},
+			queDuracion(idDuracion, tipo){
+				if(tipo===1){
+					return this.duracion[idDuracion].valor ;
+				}
+				if(tipo===2){
+					console.log( idDuracion );
+						return this.duracion[idDuracion.dias-1].valor + " y "+ this.duracionNoches[idDuracion.noches-1].valor ;
+				}
+			},
+			queDepa(valor){
+				return this.departamentos[valor];
+			},
+			formatoMoneda(valor){
+				return parseFloat(valor).toFixed(2)
+			},
+			queId(index){
+				return this.pedidos[index].id;
 			}
 		}
 	});

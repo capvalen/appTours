@@ -68,13 +68,13 @@
 				</div>
 				<div id="divRecomendaciones">
 					<div class="titulo p-2 mb-3">
-						<h3>Tours y paquetes turísticos similares</h3>
+						<h3 class="my-1">Tours y paquetes turísticos similares</h3>
 					</div>
 					<div class="row row-cols-4">
-						<img src="https://inkajungletour.com/wp-content/uploads/2018/11/DEPORTES-DE-AVENTURA-CUSCO.jpg" alt="" class="img-fluid">
-						<img src="https://cdn2.civitatis.com/peru/lima/galeria/vista-lagos-reserva-nor-yauyos-cochas.jpg" alt="" class="img-fluid">
-						<img src="https://selvacentral.com.pe/archivos/videos/selva-central-1-cover.jpg" alt="" class="img-fluid">
-						<img src="https://inkajungletour.com/wp-content/uploads/2018/11/DEPORTES-DE-AVENTURA-CUSCO.jpg" alt="" class="img-fluid">
+						<div class="col" v-for="recomendado in recomendados" :key="recomendado.id">
+							<a :href="'https://grupoeuroandino.com/viaje/?id='+recomendado.id"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+recomendado.foto" alt="" class="img-fluid"></a>
+						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -202,7 +202,7 @@
 							
 							<div class="w-50 mx-auto"><img src="https://grupoeuroandino.com/app/render/images/confirmacion.png" class="img-fluid "></div>
 							<p class="mb-0"><strong>3. RECIBE EL MENSAJE DE CONFIRMACIÓN</strong></p>
-							<p>de la Reserva de tú Tour y/o Paquete Turístico.</p>	
+							<p>de la Reserva de tú Tour y/o Paquete Turístico.</p>
 					</div>
 				</div>
 			</div>
@@ -246,9 +246,9 @@ $.fn.bootstrapDP = datepicker;
 			duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
 			anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
-			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'Chanchamayo', 'Chupaca', 'Concepción', 'Huancayo', 'Jauja', 'Junín', 'Satipo', 'Tarma', 'Yauli', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
+			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			diasMuertos:[], precioTotal:0, nacionalidad:-1, faltaPais:false, msjError:'',
-			incluidos:[], noIncluidos:[], faltaMinimo:true
+			incluidos:[], noIncluidos:[], faltaMinimo:true, recomendados:[],
 
 		},
 		mounted(){
@@ -258,7 +258,6 @@ $.fn.bootstrapDP = datepicker;
 			this.idProducto = urlParams.get('id')
 			//console.log( 'el id es ' + this.idProducto );
 			this.pedirDatos();
-			
 		},
 		methods: {
 			async pedirDatos(){
@@ -287,6 +286,13 @@ $.fn.bootstrapDP = datepicker;
 				const myTimeout = setTimeout(function(){
 					$('.fotorama').fotorama();
 				}, 500);
+
+				let datos = new FormData();
+				datos.append('tipo', this.tourActivo.tipo);
+				let respRecomendados = await fetch(this.servidor+'pedirRecomendadosRandom.php',{
+					method:'POST', body:datos
+				});
+				this.recomendados = await respRecomendados.json();
 				
 			},
 			formatoMoneda(valor){

@@ -28,11 +28,11 @@
 			<div class="divProducto position-relative" v-for="(tour, index) in contenidos">
 				<div class="divOferta2 position-absolute top-0 end-0 d-flex justify-content-center align-items-center"><span class="">¡Oferta!</span></div>
 				<div class="divImagen mt-3">
-					<a :href="'/viaje/?id=' + queId(index)" target="_parent"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt="" class="img-fluid"></a>
+					<a :href="'/viaje/?id=' + tours[index].id" target="_parent"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt="" class="img-fluid"></a>
 				</div>
 				<div>
 					<p class="mb-0 titulo text-capitalize"><strong>
-						<a class="text-decoration-none text-dark" :href="'/viaje/?id=' + queId(index)" target="_parent">{{tour.nombre}}</a></strong>
+						<a class="text-decoration-none text-dark" :href="'/viaje/?id=' + tours[index].id" target="_parent">{{tour.nombre}}</a></strong>
 					</p>
 					<div class="estrellas">
 						<i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i>
@@ -40,12 +40,12 @@
 					
 					<div class="row row-cols-2">
 						<div><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{tour.destino}}, {{queDepa(tour.departamento)}}</strong></span> <br>
-							<span v-if="tour.tipo==1" class="text-muted subText">{{queDura(tour.duracion)}} / 0 noches</span>
-							<span v-else class="text-muted subText">{{queDura(tour.duracion.dias)}} {{queDuraNoche(tour.duracion.noches)}}</span>
+							<span v-if="tour.tipo==1" class="text-muted subText">{{queDura(tour.duracion)}}</span>
+							<span v-else class="text-muted subText">{{queDura(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches-1)}}</span>
 						</div>
 						<div class="text-end ">
 							<span class="precio2">S/ {{formatoMoneda(tour.peruanos.adultos)}}</span>
-							<p class="precioAnt2 mb-0">S/ {{formatoMoneda(tour.extranjeros.adultos)}}</p>
+							<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0">S/ {{formatoMoneda(tour.oferta)}}</p>
 						</div>
 					</div>
 				</div>
@@ -59,19 +59,18 @@
 	var app = new Vue({
 		el: '#app',
 		data:{
-			mensaje: 'hola',
 			//servidor: 'http://localhost/euroAndinoApi/',
 			servidor: 'https://grupoeuroandino.com/app/api/',
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
-			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'Chanchamayo', 'Chupaca', 'Concepción', 'Huancayo', 'Jauja', 'Junín', 'Satipo', 'Tarma', 'Yauli', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
+			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			tours:[],
-			contenidos:[{fotos:[{nombreRuta:''}], valor: 0, duracion:0, peruanos:{adultos:0, kids:0}, extranjeros:{adultos:0, kids:0},}]
+			contenidos:[] //{fotos:[{nombreRuta:''}], valor: 0, duracion:0, peruanos:{adultos:0, kids:0}, extranjeros:{adultos:0, kids:0},}
 		},
 		mounted(){
 			for (let dia = 2; dia <= 31; dia++) {
 				this.duracion.push({ clave: dia+1, valor: dia + ' días' });
-				this.duracionNoches.push({ clave: dia+2, valor: dia + ' noches' });
+				this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
 			}
 			this.cargarTours();
 
@@ -88,17 +87,18 @@
 
 			},
 			queDura(duracion){
-				return this.duracion[duracion].valor;
+				return this.duracion[duracion-1].valor;
 			},
-			queDuraNoche(duracion){ return this.duracionNoches[duracion].valor; },
+			queDuraNoche(duracion){ 
+				if(duracion>1){
+					return this.duracionNoches[duracion].valor;
+				}
+			 },
 			queDepa(valor){
 				return this.departamentos[valor];
 			},
 			formatoMoneda(valor){
 				return parseFloat(valor).toFixed(2)
-			},
-			queId(index){
-				return this.tours[index].id;
 			}
 		}
 	});

@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
 	<link rel="stylesheet" href="css/quill.bubble.css">
 	<link rel="stylesheet" href="css/quill.snow.css">
+	
 </head>
 <body>
 	<style>
@@ -67,7 +68,7 @@
 				<tr v-if="variosTours.length == 0">
 					<td colspan=5>No hay paquetes</td>
 				</tr>
-				<tr v-else v-for="(vTour, index) in variosTours" @click="cargarPanel(queId(index), index)">
+				<tr v-else v-for="(vTour, index) in variosTours" @click="cargarPanel(todosTours[index].id, index)" :data-id="todosTours[index].id">
 					<td>{{index+1}}</td>
 					<td class="text-capitalize">{{vTour.nombre}}</td>
 					<td>{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
@@ -93,6 +94,15 @@
 						<div class="form-floating mb-3">
 							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre">
 							<label for="floNombre">Nombre del tour</label>
+						</div>
+						<p class="mb-0">Precio de Oferta:</p>
+						<div class="row">
+							<div class="col">
+								<div class="form-floating mb-3">
+									<input type="number" class="form-control" id="floOferta" placeholder=" " autocomplete="off" v-model="tour.oferta">
+									<label for="floNombre">Oferta</label>
+								</div>
+							</div>
 						</div>
 						<p class="mb-0">Precio para Peruanos:</p>
 						<div class="row ">
@@ -159,7 +169,7 @@
 						</div>
 						<div class="form-floating mb-3">
 							<input type="text" class="form-control" id="floDestino" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.destino">
-							<label for="floDestino">Destino final. <em style="font-size: 0.7rem">Ejm: Laguna de Paca</em></label>
+							<label for="floDestino">Ciudad <em style="font-size: 0.7rem">Ejm: Laguna de Paca</em></label>
 						</div>
 						<div class="form-floating mb-3">
 							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.departamento">
@@ -258,6 +268,7 @@
 						<button type="button" class="btn btn-outline-secondary" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
 					</div>
 					<p class="my-1"><strong>Precio Peruanos</strong></p>
+					<p class="my-1"><strong>Oferta:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
 					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.adultos)}}</span> </p>
 					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.kids)}}</span> </p>
 					<p class="my-1 mt-3"><strong>Precio Peruanos</strong></p>
@@ -331,7 +342,7 @@
 				extranjeros:{ adultos:0, kids:0 },
 				cupos: 1, duracion: 1, hora: "12:00",
 				anticipacion: 1, minimo: 1, destino: '', departamento: '', actividad:'', categoria:'',
-				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1
+				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1, oferta:0
 			},
 			paquete:{
 				nombre: '',
@@ -342,13 +353,13 @@
 				hora: "12:00",
 				anticipacion: 1, minimo: 1, transporte:1, alojamiento: 1,
 				destino: '', departamento: '', actividad:'', categoria:'',
-				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2
+				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0
 			},
 			mensajeBien:'Guardado correctamente', mensajeMal:'Hubo un error al conectar',
 			variosTours:[], todosTours:[], idGlobal:-1, indexGlobal:-1, tourActivo:[],
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
-			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'Chanchamayo', 'Chupaca', 'Concepción', 'Huancayo', 'Jauja', 'Junín', 'Satipo', 'Tarma', 'Yauli', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
+			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			activarEditar:false
 		},
 		mounted:function(){
@@ -459,36 +470,41 @@
 			subirANube(){
 				var that = this; let nombreSubida='';
 				this.archivo = this.$refs.archivoFile.files[0];
-				if(document.getElementById("txtArchivo").files.length>0){
-					let formData = new FormData();
-					formData.append('archivo', this.archivo);
-					formData.append('ruta', rutaDocs);
-					
-					axios.post(this.servidor+'/subidaAdjunto.php', formData, {
-						headers: {
-							'Content-Type' : 'multipart/form-data'
-						}
-					}).then( function (response){
-						console.log( response.data );
-						if( response.data =='Error subida' ){
-							nombreSubida='';
-							console.log( 'err1' );
-						}else{ //subió bien
-							console.log( 'subio bien al indice ' + that.indexGlobal  );
-							
-							that.tourActivo.fotos.push({
-								'nombreRuta': response.data
-							});
-							
-							that.actualizarTour(that.tourActivo);
-							/* if(that.tourActivo==1){
-							} */
-						} 
+				console.log( this.$refs.archivoFile.files[0].size );
 
-					}).catch(function(ero){
-						console.log( 'err2' + ero );
-						//that.$emit('mostrarToastMal', 'Error subiendo el archivo adjunto'); return false;
-					})
+				if(document.getElementById("txtArchivo").files.length>0){
+					if(document.getElementById("txtArchivo").files[0].size<=1000000){
+						let formData = new FormData();
+						formData.append('archivo', this.archivo);
+						formData.append('ruta', rutaDocs);
+						
+						axios.post(this.servidor+'/subidaAdjunto.php', formData, {
+							headers: {
+								'Content-Type' : 'multipart/form-data'
+							}
+						}).then( function (response){
+							console.log( response.data );
+							if( response.data =='Error subida' ){
+								nombreSubida='';
+								console.log( 'err1' );
+							}else{ //subió bien
+								console.log( 'subio bien al indice ' + that.indexGlobal  );
+								
+								that.tourActivo.fotos.push({
+									'nombreRuta': response.data
+								});
+								
+								that.actualizarTour(that.tourActivo);
+								// if(that.tourActivo==1){}
+							} 
+	
+						}).catch(function(ero){
+							console.log( 'err2' + ero );
+							//that.$emit('mostrarToastMal', 'Error subiendo el archivo adjunto'); return false;
+						})
+					}else{
+						alert('La imágen es muy pesada, debe subir una menor a 1 MB')
+					}
 				}
 
 			},

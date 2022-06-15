@@ -67,7 +67,7 @@
 				<tr v-if="variosTours.length == 0">
 					<td colspan=5>No hay paquetes</td>
 				</tr>
-				<tr v-else v-for="(vTour, index) in variosTours" @click="cargarPanel(queId(index), index)">
+				<tr v-else v-for="(vTour, index) in variosTours" @click="cargarPanel(todosTours[index].id, index)" :data-id="todosTours[index].id">
 					<td>{{index+1}}</td>
 					<td class="text-capitalize">{{vTour.nombre}}</td>
 					<td>{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
@@ -93,6 +93,15 @@
 						<div class="form-floating mb-3">
 							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre">
 							<label for="floNombre">Nombre del paquete turístico</label>
+						</div>
+						<p class="mb-0">Precio de Oferta:</p>
+						<div class="row">
+							<div class="col">
+								<div class="form-floating mb-3">
+									<input type="number" class="form-control" id="floOferta" placeholder=" " autocomplete="off" v-model="tour.oferta">
+									<label for="floNombre">Oferta</label>
+								</div>
+							</div>
 						</div>
 						<p class="mb-0">Precio para Peruanos:</p>
 						<div class="row ">
@@ -170,8 +179,9 @@
 						</div>
 						<div class="form-floating mb-3">
 							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.transporte">
-								<option value="1">Terrestre</option>
+								<option value="3">Ninguno</option>
 								<option value="2">Aéreo</option>
+								<option value="1">Terrestre</option>
 							</select>
 							<label for="floatingSelect">Tipo de transporte</label>
 						</div>
@@ -274,6 +284,7 @@
 					<div class="row col d-grid gap-2 col-6 mx-auto">
 						<button type="button" class="btn btn-outline-secondary" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
 					</div>
+					<p class="my-1"><strong>Oferta:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
 					<p class="my-1"><strong>Precio Peruanos</strong></p>
 					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.adultos)}}</span> </p>
 					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.kids)}}</span> </p>
@@ -347,15 +358,15 @@
 				peruanos:{ adultos: 0, kids: 0 },
 				extranjeros:{ adultos:0, kids:0 },
 				cupos: 1, duracion: {dias:1, noches:1}, hora: "12:00",
-				anticipacion: 1, minimo: 1, transporte:1, alojamiento: 1,
+				anticipacion: 1, minimo: 1, transporte:3, alojamiento: 1,
 				destino: '', departamento: '', actividad:'', categoria:'',
-				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2
+				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0
 			},
 			mensajeBien:'Guardado correctamente', mensajeMal:'Hubo un error al conectar',
 			variosTours:[], todosTours:[], idGlobal:-1, indexGlobal:-1, tourActivo:[],
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
 			anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
-			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'Chanchamayo', 'Chupaca', 'Concepción', 'Huancayo', 'Jauja', 'Junín', 'Satipo', 'Tarma', 'Yauli', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
+			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			activarEditar:false
 		},
 		mounted:function(){
@@ -368,7 +379,7 @@
 			
 			for (let dia = 2; dia <= 31; dia++) {
 				this.duracion.push({ clave: dia+1, valor: dia + ' días' });
-				this.duracionNoches.push({ clave: dia+2, valor: dia + ' noches' });
+				this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
 			}
 			for (let dia = 2; dia <= 15; dia++) {
 				this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
