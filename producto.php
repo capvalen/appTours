@@ -31,6 +31,8 @@
 		#divRecomendaciones .titulo{background-color: rgb(214, 214, 214); }
 		#divIzquierda ul, ol{padding-left: 0!important;}
 		p{margin-bottom: 0;}
+		.ql-align-center{text-align: center!important;}
+		#divQuill h5, #divQuill p{margin-bottom:0;}
 	</style>
 	<div class="container-fluid" id="app">
 		<div class="row">
@@ -159,50 +161,11 @@
 				</div>
 
 				<div class="row my-3 ">
-					<div class="col m-4 p-3 border rounded">
-							<h4 class="fs-5 text-center">ACEPTAMOS TODOS LOS</h4>
-							<h4 class="fs-2 text-center">MEDIOS DE PAGO</h4>
-							<h4 class="fs-5 text-center">Tarjeta de crédito ó débito | Visa, MasterCard y más <br/>Banca por Internet ó Depósitos Bancarios</h4>
-							<img src="https://grupoeuroandino.com/app/render/images/appspago.png" class="img-fluid">
-							<p class="mb-0"><strong>Titular de la Cuenta:</strong> Angela Pilar Cuba Ramos</p>
-							<p class="mb-0"><strong>Número de Celular:</strong> 947614293</p>
-
-							<div class="w-50 mx-auto mt-4">
-								<img src="https://grupoeuroandino.com/app/render/images/bcp.png" class="img-fluid ">
-							</div>
-							<p class="mb-0"><strong>Titular de la Cuenta:</strong> Angela Pilar Cuba Ramos</p>
-							<p class="mb-0"><strong>Tipo de Cuenta:</strong> Ahorros</p>
-							<p class="mb-0"><strong>Moneda:</strong> Nuevos Soles</p>
-							<p class="mb-0"><strong>Número de Cuenta:</strong> 35537794995098</p>
-							<p class="mb-0"><strong>CCI Cuenta:</strong> 00235513779499509865</p>
-
-							<div class="w-50 mx-auto mt-4"><img src="https://grupoeuroandino.com/app/render/images/interbank.png" class="img-fluid "></div>
-							<p class="mb-0"><strong>Titular de la Cuenta:</strong> Angela Pilar Cuba Ramos</p>
-							<p class="mb-0"><strong>Tipo de Cuenta:</strong> Ahorros</p>
-							<p class="mb-0"><strong>Moneda:</strong> Nuevos Soles</p>
-							<p class="mb-0"><strong>Número de Cuenta:</strong> 8983161564550</p>
-							<p class="mb-0"><strong>CCI Cuenta:</strong> 003 - 898 - 013161564550 - 47</p>
-							<p class="mb-0"><strong>CCI Cuenta:</strong> 00235513779499509865</p>
-
-							<div class="w-50 mx-auto mt-4"><img src="https://grupoeuroandino.com/app/render/images/bbva.png" class="img-fluid "></div>
-							<p class="mb-0"><strong>Titular de la Cuenta:</strong> Angela Pilar Cuba Ramos</p>
-							<p class="mb-0"><strong>Tipo de Cuenta:</strong> Ahorros</p>
-							<p class="mb-0"><strong>Moneda:</strong> Nuevos Soles</p>
-							<p class="mb-0"><strong>Número de Cuenta:</strong> 0011 0814 0201987232</p>
-							<p class="mb-0"><strong>CCI Cuenta:</strong> 011 - 814 - 000201987232 - 10</p>
-
-							<h4 class="fs-3 mt-3 mb-0 text-center">METODO DE RESERVA</h4>
-							<h4 class="fs-5 text-center">EN SOLO 3 PASOS</h4>
-							<div class="w-50 mx-auto"><img src="https://grupoeuroandino.com/app/render/images/mano.png" class="img-fluid "></div>
-							<p class="mb-0"><strong>1. PAGA EN NUESTRAS CUENTAS BANCARIAS</strong></p>
-							<p>Los depósitos en cajeros, ventanilla y agentes tiene un costo adicional de S/.9.50 por transacción.</p>
-							<div class="w-50 mx-auto"><img src="https://grupoeuroandino.com/app/render/images/ticket.png" class="img-fluid "></div>
-							<p class="mb-0"><strong>2. ENVÍANOS EL TICKET DEL DEPOSITO Ó TRANSFERENCIA</strong></p>
-							<p>Al WhatsApp 947614293 ó al Correo Electrónico grupoeuroandino@hotmail.com más él envió de los datos de cada viajero (Nombres y Apellidos, DNI, edad y N° de celular).</p>
+					<div class="col m-4 p-3 border rounded" id="divQuill">
+						<?php
+							include realpath(__DIR__."/../api/cargarPanel.php");
+						?>
 							
-							<div class="w-50 mx-auto"><img src="https://grupoeuroandino.com/app/render/images/confirmacion.png" class="img-fluid "></div>
-							<p class="mb-0"><strong>3. RECIBE EL MENSAJE DE CONFIRMACIÓN</strong></p>
-							<p>de la Reserva de tú Tour y/o Paquete Turístico.</p>
 					</div>
 				</div>
 			</div>

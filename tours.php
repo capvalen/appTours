@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
 	<link rel="stylesheet" href="css/quill.bubble.css">
 	<link rel="stylesheet" href="css/quill.snow.css">
-	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
 </head>
 <body>
 	<style>
@@ -18,6 +18,33 @@
 		.toast-container{z-index: 1046;}
 		tr{cursor: pointer;}
 		p{margin-bottom: 0;}
+		.bootstrap-select .dropdown-toggle{
+			padding-top: 1.625rem;
+    	padding-bottom: 0.625rem;
+			
+	    line-height: 1.25;
+			display: block;
+	    width: 100%;
+	    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+	    -moz-padding-start: calc(0.75rem - 3px);
+	    font-size: 1rem;
+	    font-weight: 400;
+	    line-height: 1.5;
+	    color: #212529;
+	    background-color: #fff;
+	    background-repeat: no-repeat;
+	    background-position: right 0.75rem center;
+	    background-size: 16px 12px;
+	    border: 1px solid #ced4da;
+	    border-radius: 0.25rem;
+	    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	    -webkit-appearance: none;
+	    -moz-appearance: none;
+	    appearance: none;
+		}
+		.sltPicker .bootstrap-select{
+			width: 100%!important;
+		}
 	</style>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container">
@@ -30,6 +57,7 @@
 					<a class="nav-link active" aria-current="page" href="tours.php">Tours</a>
 					<a class="nav-link" href="paquetes.php">Paquetes turísticos</a>
 					<a class="nav-link" href="pedidos.php">Pedidos</a>
+					<a class="nav-link" href="lateral.php">Lateral</a>
 				</div>
 			</div>
 		</div>
@@ -177,14 +205,31 @@
 							</select>
 							<label for="floatingSelect">Departamento</label>
 						</div>
-						<div class="form-floating mb-3">
+						<!-- <div class="form-floating mb-3">
 							<input type="text" class="form-control" id="floDestino" placeholder=" " autocomplete="off" v-model="tour.actividad">
 							<label for="floDestino">Actividades</label>
+						</div> -->
+						<div class=" mb-3">
+							<label for="floDestino">Actividades</label>
+							<div class="sltPicker">
+								<select class="selectpicker" id="sltActividad2" data-live-search="true" multiple data-max-options="3">
+									<option v-for="nActividad in actividades2" :key="nActividad.id" :value="nActividad.id">{{nActividad.concepto}}</option>
+								</select>
+							</div>
 						</div>
-						<div class="form-floating mb-3">
+						<!-- <div class="form-floating mb-3">
 							<input type="text" class="form-control" id="floDestino" placeholder=" "autocomplete="off" v-model="tour.categoria">
 							<label for="floDestino">Categoría</label>
+						</div> -->
+						<div class=" mb-3">
+							<label for="floDestino">Categorías</label>
+							<div class="sltPicker">
+								<select class="selectpicker" id="sltCategoria2" data-live-search="true" multiple data-max-options="3">
+									<option v-for="nCategoria in categorias2" :key="nCategoria.id" :value="nCategoria.id">{{nCategoria.concepto}}</option>
+								</select>
+							</div>
 						</div>
+
 						<!-- Create the editor container -->
 						<p class="mb-0 mt-2">Descripción</p>
 						<div class="editor" id="qDescripcion" ></div>
@@ -326,6 +371,9 @@
 	<script src="js/quill.min.js"></script>
 	<script src="js/axios.min.js"></script>
 	<script src="js/moment.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+
 	<script>
 	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
 	tostadaOk, tostadaMal;
@@ -342,7 +390,7 @@
 				extranjeros:{ adultos:0, kids:0 },
 				cupos: 1, duracion: 1, hora: "12:00",
 				anticipacion: 1, minimo: 1, destino: '', departamento: '', actividad:'', categoria:'',
-				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1, oferta:0
+				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1, oferta:0, actividades:[], categorias: []
 			},
 			paquete:{
 				nombre: '',
@@ -353,17 +401,18 @@
 				hora: "12:00",
 				anticipacion: 1, minimo: 1, transporte:1, alojamiento: 1,
 				destino: '', departamento: '', actividad:'', categoria:'',
-				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0
+				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0, actividades:[], categorias: []
 			},
 			mensajeBien:'Guardado correctamente', mensajeMal:'Hubo un error al conectar',
 			variosTours:[], todosTours:[], idGlobal:-1, indexGlobal:-1, tourActivo:[],
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
-			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-			activarEditar:false
+			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
+			activarEditar:false, categorias2:[], actividades2:[]
 		},
 		mounted:function(){
 			this.verTours();
+			this.cargarComplementos();
 			modalNuevo = new bootstrap.Modal( document.getElementById('modalNuevo') );
 			tostadaOk = new bootstrap.Toast( document.getElementById('tostadaOk') );
 			tostadaMal = new bootstrap.Toast( document.getElementById('tostadaMal') );
@@ -399,8 +448,35 @@
 			
 		},
 		methods:{
+			async cargarComplementos(){
+				let servComplementos  = await fetch(this.servidor+'pedirComplementos.php',{
+					method:'POST'
+				})
+				/* .done()
+				.done(letra =>{
+					console.log( letra );
+				}); */
+				let resServidor = await servComplementos
+				 resServidor.json().then((queVino)=>{
+					this.actividades2  = queVino[0];
+					this.categorias2  = queVino[1];
+					
+					//Obtener el valor de lo seleccionado
+					//$('#sltActividad2').selectpicker('val');
+					//asignar valor
+					//$('#sltActividad2').selectpicker('val', ['51', '53']);
+					
+				}).then(()=>{
+					$('#sltActividad2').selectpicker('refresh');
+					$('#sltCategoria2').selectpicker('refresh');
+				})
+			},
 			nuevoTourSimple(){
 				this.activarEditar=false;
+				$('#sltActividad2').selectpicker('val');
+				$('#sltActividad2').selectpicker('refresh');
+				$('#sltCategoria2').selectpicker('val');
+				$('#sltCategoria2').selectpicker('refresh');
 				modalNuevo.show();
 			},
 			extraerHtml(){
@@ -408,6 +484,16 @@
 				this.tour.partida = qPartida.root.innerHTML.trim();
 				this.tour.itinerario = qItinerario.root.innerHTML.trim();
 				this.tour.notas = qNotas.root.innerHTML.trim();
+				if($('#sltActividad2').selectpicker('val') !=null){
+					this.tour.actividades = $('#sltActividad2').selectpicker('val');
+				}else{
+					this.tour.actividades = [];
+				}
+				if($('#sltCategoria2').selectpicker('val') !=null){
+					this.tour.categorias = $('#sltCategoria2').selectpicker('val');
+				}else{
+					this.tour.categorias = [];
+				}
 			},
 			guardarTour(){
 				this.extraerHtml();
@@ -426,9 +512,6 @@
 				.catch((error)=>{ console.log( error );});
 				
 				
-			},
-			guardarPaquete(){
-
 			},
 			async verTours(){
 				var that = this;
@@ -460,6 +543,8 @@
 				return this.todosTours[index].id;
 			},
 			cargarPanel(queEs, indexEs){
+				$('#sltActividad2').selectpicker('val', '');
+				$('#sltCategoria2').selectpicker('val', '');
 				this.idGlobal = queEs;
 				this.indexGlobal = indexEs;
 				this.tourActivo = this.variosTours[indexEs];
@@ -512,15 +597,15 @@
 				this.extraerHtml();
 				if(queTour==null){ queTour = this.tourActivo }
 				axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria  })
-					.then((response)=>{ console.log( response.data );
-						if(response.data =='ok'){
-							this.mensajeBien = "Se subió correctamente";
-							modalNuevo.hide();
-							tostadaOk.show();
-							this.verTours();
-						}
-					})
-					.catch((error)=>{ console.log( error );});
+				.then((response)=>{ console.log( response.data );
+					if(response.data =='ok'){
+						this.mensajeBien = "Se subió correctamente";
+						modalNuevo.hide();
+						tostadaOk.show();
+						this.verTours();
+					}
+				})
+				.catch((error)=>{ console.log( error );});
 			},
 			eliminar(){
 				if(confirm('¿Realmente desea eliminar el paquete?')){
@@ -563,6 +648,8 @@
 			abrirEdicion(){
 				this.activarEditar=true;
 				this.tour = this.tourActivo;
+				$('#sltActividad2').selectpicker('val', this.tour.actividades);
+				$('#sltCategoria2').selectpicker('val', this.tour.categorias);
 				qDescripcion.setContents([]); qDescripcion.clipboard.dangerouslyPasteHTML(0, this.tour.descripcion);
 				qPartida.setContents([]); qPartida.clipboard.dangerouslyPasteHTML(0, this.tour.partida);
 				qItinerario.setContents([]); qItinerario.clipboard.dangerouslyPasteHTML(0, this.tour.itinerario);

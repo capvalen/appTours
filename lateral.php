@@ -28,101 +28,83 @@
 				<div class="navbar-nav">
 					<a class="nav-link " aria-current="page" href="tours.php">Tours</a>
 					<a class="nav-link " href="paquetes.php">Paquetes turísticos</a>
-					<a class="nav-link active" href="pedidos.php">Pedidos</a>
-					<a class="nav-link" href="lateral.php">Lateral</a>
+					<a class="nav-link " href="pedidos.php">Pedidos</a>
+					<a class="nav-link active" href="lateral.php">Lateral</a>
 				</div>
 			</div>
 		</div>
 	</nav>
 
 	<div class="container" id="app">
+
+		<p class="my-2">Edite panel lateral</p>
+
 		<div class="row">
-			<div class="col-8">
-				<p class="fs-1">Pedidos</p>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-12 col-md-6">
-				<label for="" class="form-label"><i class="icofont-filter"></i> Filtrar</label>
-				<div class="input-group mb-3">
-					<input type="text" name="" id="txtFiltro" ref="txtFiltro" class="form-control" placeholder="Buscar" >
-					<button class="btn btn-outline-secondary" type="button" @click="buscarPedidos()"><i class="icofont-search"></i> Buscar</button>
+			<div class="col-12 col-md-6 col-lg-5 mx-auto">
+				<div class=" ">
+					<button class="btn btn-outline-primary my-3" onclick="actualizarPanel()">Actualizar</button>
+					<div id="editor"> </div>
 				</div>
 			</div>
 		</div>
-		<p>Los 50 últimos pedidos realizados.</p>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>N°</th>
-					<th>Cliente</th>
-					<th>Tour - Paquete</th>
-					<th>Adultos</th>
-					<th>Niños</th>
-					<th>Total</th>
-					<th>Moneda</th>
-					<th>Estado</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-if="pedidos.length == 0">
-					<td colspan=5>No hay paquetes</td>
-				</tr>
-				<tr v-else v-for="(pedido, index) in pedidos" @click="cargarPanel(queId(index), index)">
-					<td>{{index+1}}</td>
-					<td class="text-capitalize">{{pedido.nombre}} {{pedido.apellido}}</td>
-					<td class="text-capitalize">{{pedido.titulo.toLowerCase()}}</td>
-					<td>{{pedido.adultos}}</td>
-					<td>{{pedido.menores}}</td>
-					<td>{{parseFloat(pedido.total).toFixed(2)}}</td>
-					<td>
-						<span v-if="pedido.moneda ==1">Pedido simple</span>
-						<span v-else>Izi-Pay</span>
-					</td>
-					<td>{{pedido.estado}}</td>
-					
-					
-				</tr>
-			</tbody>
-		</table>
-
-
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 	
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+	<script src="./js/quill.min.js"></script>
 	
 	<script src="js/axios.min.js"></script>
 	<script src="js/moment.min.js"></script>
 	<script>
-	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
-	tostadaOk, tostadaMal;
-	
-	
-	var app = new Vue({
-		el: '#app',
-		data: {
-			//servidor: 'http://localhost/euroAndinoApi/',
-			servidor: 'https://grupoeuroandino.com/app/api/',
-			pedidos:[]
-			
-		},
-		mounted:function(){
-			this.llamarPedidos()
-		},
-		methods:{
-			async llamarPedidos(){
-				var datos = new FormData();
-				datos.append('id', 'todos')
-				let respServer =await fetch(this.servidor + 'verPedidos.php', {
-					method:'POST', body:datos
-				});
-				this.pedidos = await respServer.json();
+		var toolBarOptions = [
+			[{ 'header': [false, 2, 3, 4, 5] }],
+				//[{ 'size': ['small', false, 'large'] }],
+				[{ 'align': [] }],
+				['bold', 'italic','underline', 'strike'],
+				['link', 'image'],
+				[{ list: 'ordered' }, { list: 'bullet' }],
+			];
+		var quill = new Quill('#editor', {
+		  modules: { 
+				toolbar: {
+					container : toolBarOptions,
+					handlers:{
+						image: imageHandler
+					}
+				}
+			},
+		  theme: 'snow'
+		});
+		cargarPanel();
+
+		function imageHandler() {
+      var range = this.quill.getSelection();
+      var value = prompt('¿Cuál es la URL de la imágen?');
+      if(value){
+          this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+      }
+ 		}
+		async function actualizarPanel(){
+			let datos = new FormData();
+			datos.append('panel',  quill.root.innerHTML.trim() )
+			let respServ = await fetch("https://grupoeuroandino.com/app/api/actualizarPanel.php",{
+				method:'POST', body: datos
+			});
+			if( await respServ.text() =='ok' ){
+				alert('Guardado exitoso')
+			}else{
+				alert('Hubo un error')
 			}
+
 		}
-	});
+		async function cargarPanel(){
+			let respServ = await fetch("https://grupoeuroandino.com/app/api/cargarPanel.php");
+			let html = await respServ.text();
+			quill.setContents([]);
+			quill.clipboard.dangerouslyPasteHTML(0, html);
+		}
 	
 </script>
 </body>

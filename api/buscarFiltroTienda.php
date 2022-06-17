@@ -21,9 +21,9 @@ $fPrecio ="1";
 $filas = [];
 
 if($_POST['idTour']>-1){ $fTour = "tipo = {$_POST['idTour']}"; } else{ $fTour="tipo in (1,2)";}
-if($_POST['idActividad']>-1){ $fActividad ="contenido like  '%\"actividad\":\"{$_POST['actividad']}%'";}else{ $fActividad='1';}
+if($_POST['idActividad']>-1){ $fActividad ="JSON_EXTRACT(contenido, '$.actividades') like '%{$_POST['idActividad']}%'";}else{ $fActividad='1';}
 if($_POST['idDepartamento']>-1){ $fDepartamento ="contenido like  '%\"departamento\":{$_POST['idDepartamento']},%'";}else{ $fDepartamento='1';}
-if($_POST['idCategoria']>-1){ $fCategoria ="contenido like  '%\"categoria\":\"{$_POST['categoria']}%'";}else{ $fCategoria='1';}
+if($_POST['idCategoria']>-1){ $fCategoria ="JSON_EXTRACT(contenido, '$.categorias') like '%{$_POST['idCategoria']}%'";}else{ $fCategoria='1';}
 if($_POST['idDia']>-1){ $fDuracion ="contenido like  '%\"duracion\":{$_POST['idDia']}%'";}else{ $fDuracion='1';}
 if($_POST['idPrecio']>-1){
 	switch ($_POST['idPrecio']) {
