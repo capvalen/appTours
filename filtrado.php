@@ -54,7 +54,8 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 					<img :src="queFoto(producto)" class="card-img-top" alt="...">
 					<div class="card-body">
 						<h5 class="card-title text-capitalize mb-0">
-							<a class="text-decoration-none text-dark" :href="'/viaje/?id=' + pedidos[index].id" target="_parent">{{producto.nombre}}</a></strong>
+							<a v-if="producto.tipo==1" class="text-decoration-none text-dark" :href="'/tour/?id=' + pedidos[index].id" target="_parent">{{producto.nombre}}</a></strong>
+							<a v-if="producto.tipo==2" class="text-decoration-none text-dark" :href="'/paqueteturistico/?id=' + pedidos[index].id" target="_parent">{{producto.nombre}}</a></strong>
 						</h5>
 
 						<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span></p>

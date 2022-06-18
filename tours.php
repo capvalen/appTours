@@ -20,31 +20,32 @@
 		p{margin-bottom: 0;}
 		.bootstrap-select .dropdown-toggle{
 			padding-top: 1.625rem;
-    	padding-bottom: 0.625rem;
+			padding-bottom: 0.625rem;
 			
-	    line-height: 1.25;
+			line-height: 1.25;
 			display: block;
-	    width: 100%;
-	    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
-	    -moz-padding-start: calc(0.75rem - 3px);
-	    font-size: 1rem;
-	    font-weight: 400;
-	    line-height: 1.5;
-	    color: #212529;
-	    background-color: #fff;
-	    background-repeat: no-repeat;
-	    background-position: right 0.75rem center;
-	    background-size: 16px 12px;
-	    border: 1px solid #ced4da;
-	    border-radius: 0.25rem;
-	    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-	    -webkit-appearance: none;
-	    -moz-appearance: none;
-	    appearance: none;
+			width: 100%;
+			padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+			-moz-padding-start: calc(0.75rem - 3px);
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 1.5;
+			color: #212529;
+			background-color: #fff;
+			background-repeat: no-repeat;
+			background-position: right 0.75rem center;
+			background-size: 16px 12px;
+			border: 1px solid #ced4da;
+			border-radius: 0.25rem;
+			transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
 		}
 		.sltPicker .bootstrap-select{
 			width: 100%!important;
 		}
+		#divFotografias label{font-size: 0.9rem;}
 	</style>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container">
@@ -258,41 +259,23 @@
 			</div>
 		</div>
 
-		<div class="toast-container position-absolute bottom-0 end-0 p-3 me-4">
-			<div class="toast align-items-center text-white bg-success border-0" id="tostadaOk" role="alert" aria-live="assertive" aria-atomic="true">
-				<div class="d-flex">
-					<div class="toast-body">
-						{{mensajeBien}}
+		<div class="position-relative">
+			<div class="toast-container position-absolute bottom-0 end-0 p-3 me-4">
+				<div class="toast align-items-center text-white bg-success border-0" id="tostadaOk" role="alert" aria-live="assertive" aria-atomic="true">
+					<div class="d-flex">
+						<div class="toast-body"><i class="icofont-check"></i> 
+							{{mensajeBien}}
+						</div>
+						<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 					</div>
-					<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 				</div>
-			</div>
-			<div class="toast align-items-center text-white bg-danger border-0" id="tostadaMal" role="alert" aria-live="assertive" aria-atomic="true">
-				<div class="d-flex">
-					<div class="toast-body">
-						{{mensajeMal}}
+				<div class="toast align-items-center text-white bg-danger border-0" id="tostadaMal" role="alert" aria-live="assertive" aria-atomic="true">
+					<div class="d-flex">
+						<div class="toast-body"> <i class="icofont-close-circled"></i>
+							{{mensajeMal}}
+						</div>
+						<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 					</div>
-					<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-				</div>
-			</div>
-		</div>
-
-		
-		<div class="toast-container position-absolute bottom-0 end-0 p-3 me-4">
-			<div class="toast align-items-center text-white bg-success border-0" id="tostadaOk" role="alert" aria-live="assertive" aria-atomic="true">
-				<div class="d-flex">
-					<div class="toast-body">
-						{{mensajeBien}}
-					</div>
-					<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-				</div>
-			</div>
-			<div class="toast align-items-center text-white bg-danger border-0" id="tostadaMal" role="alert" aria-live="assertive" aria-atomic="true">
-				<div class="d-flex">
-					<div class="toast-body">
-						{{mensajeMal}}
-					</div>
-					<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
@@ -310,7 +293,7 @@
 						<label v-else class="form-check-label " for="chkVisible"><i class="icofont-eye-blocked"></i> No está publicado</label>
 					</div>
 					<div class="row col d-grid gap-2 col-6 mx-auto">
-						<button type="button" class="btn btn-outline-secondary" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
+						<button type="button" class="btn btn-outline-dark" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
 					</div>
 					<p class="my-1"><strong>Precio Peruanos</strong></p>
 					<p class="my-1"><strong>Oferta:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
@@ -343,19 +326,43 @@
 						<p></p>
 					</div>
 					<button type="button" @click="eliminar()" class="btn btn-danger mt-3"><i class="icofont-ui-delete"></i> Eliminar paquete</button>
-					<div class="row my-2">
-						<div class="col">
+					<div class="row my-2" >
+						<div class="col" v-if="tourActivo.fotos.length<16">
 							<p class="mb-0">Subir imágen:</p>
 							<div class="input-group mb-3">
 								<input type="file" class="form-control" ref="archivoFile" id="txtArchivo" accept="image/*">
 								<button class="btn btn-outline-secondary" type="button" id="btnSubirArchivo" @click="subirANube()"><i class="icofont-upload-alt"></i></button>
 							</div>
 						</div>
+						<div class="col" v-else>
+							<p class="text-danger"><i class="icofont-gear-alt"></i> Se alcanzó el máximo de fotos</p>
+						</div>
 					</div>
 					<p class="my-1 mt-3"><strong>Fotografías</strong></p>
-					<div class="my-1" v-for="imagen in tourActivo.fotos">
-						<img :src="'images/subidas/'+imagen.nombreRuta" class="img-fluid img-thumbnail border-0" alt="">
+					<div class="row row-cols-2" id="divFotografias">
+						<div class="col" v-for="(imagen, indice) in tourActivo.fotos">
+							<div class="card mb-3" >
+								<img :src="'images/subidas/'+imagen.nombreRuta" class="card-img-top" alt="...">
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item">
+									<div class="form-check">
+										<input class="form-check-input" type="radio" name="flexRadios" :id="'flexRadioDefault'+indice" @change="fotoPrincipal(indice);">
+										<label class="form-check-label" :for="'flexRadioDefault'+indice"  @change="fotoPrincipal(indice);">
+											<span class="text-primary" v-if="queIndice==indice">Img. Principal</span>
+											<span v-else>Img. Secundaria</span>
+										</label>
+									</div>
+									</li>
+								</ul>
+								<div class="card-body py-1 ps-3">
+									<a href="#!" class="card-link text-danger text-decoration-none" @click="borrarFoto(indice)"><i class="icofont-close"></i> Borrar</a>
+								</div>
+							</div>
+						</div>
 					</div>
+					<!-- <div class="my-1" v-for="imagen in tourActivo.fotos">
+						<img :src="'images/subidas/'+imagen.nombreRuta" class="img-fluid img-thumbnail border-0" alt="">
+					</div> -->
 
 				</div>
 			</div>
@@ -408,7 +415,7 @@
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-			activarEditar:false, categorias2:[], actividades2:[]
+			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1
 		},
 		mounted:function(){
 			this.verTours();
@@ -426,23 +433,23 @@
 			}
 
 			var toolbarOptions = [
-			  ['bold', 'italic', 'underline', 'strike'],
-			  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+				['bold', 'italic', 'underline', 'strike'],
+				[{ 'list': 'ordered'}, { 'list': 'bullet' }],
 				[{ 'header': [3, 4, false] }],
 			];
 
 			qDescripcion = new Quill('#qDescripcion', { theme: 'snow', modules: {
-		    toolbar: toolbarOptions
-		  } });
+				toolbar: toolbarOptions
+			} });
 			qPartida = new Quill('#qPartida', { theme: 'snow', modules: {
-		    toolbar: toolbarOptions
-		  } });
+				toolbar: toolbarOptions
+			} });
 			qItinerario = new Quill('#qItinerario', { theme: 'snow', modules: {
-		    toolbar: toolbarOptions
-		  } });
+				toolbar: toolbarOptions
+			} });
 			qNotas = new Quill('#qNotas', { theme: 'snow', modules: {
-		    toolbar: toolbarOptions
-		  } });
+				toolbar: toolbarOptions
+			} });
 			
 			
 			
@@ -534,7 +541,7 @@
 			setearHTML(){
 				//Seteando un HTML al editor				
 				qDescripcion.setContents([])
-		    qDescripcion.clipboard.dangerouslyPasteHTML(0, '<p>Hola <em><u> mundo!</u></em></p><p>Texto simple</p>');
+				qDescripcion.clipboard.dangerouslyPasteHTML(0, '<p>Hola <em><u> mundo!</u></em></p><p>Texto simple</p>');
 			},
 			esVisible(index){
 				return this.todosTours[index].visible;
@@ -548,6 +555,7 @@
 				this.idGlobal = queEs;
 				this.indexGlobal = indexEs;
 				this.tourActivo = this.variosTours[indexEs];
+				this.queIndice=0;
 				offPanel.show();
 				
 				
@@ -599,7 +607,7 @@
 				axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria  })
 				.then((response)=>{ console.log( response.data );
 					if(response.data =='ok'){
-						this.mensajeBien = "Se subió correctamente";
+						this.mensajeBien = "Se actualizó correctamente";
 						modalNuevo.hide();
 						tostadaOk.show();
 						this.verTours();
@@ -669,6 +677,44 @@
 					that.todosTours.push(dato)
 					that.variosTours.push(JSON.parse(dato.contenido));
 				});
+			},
+			async fotoPrincipal(queIndice){
+				let copia = [...this.tourActivo.fotos];
+				//console.log( 'copia' ); console.log( [...copia] );
+				let principal = copia[queIndice];
+				//console.log('que agrego'); console.log([principal])
+				copia.splice(queIndice, 1)
+				copia.unshift(principal);
+				//console.log( 'nuevo' ); console.log( [...copia] );
+				this.tourActivo.fotos = [...copia];
+				this.actualizarTour();
+				document.getElementById(`flexRadioDefault${queIndice}`).checked=false;
+				document.getElementById(`flexRadioDefault0`).checked=true;
+				this.queIndice=0;
+				/* let datos = new FormData();
+				datos.append('id', this.idGlobal)
+				datos.append('fotos', JSON.stringify(copia));
+				let respServ = await fetch(this.servidor+ 'actualizarFotos.php',{
+					method:'POST', body: datos
+				});
+				console.log( await respServ.text() ); */
+			},
+			async borrarFoto(queIndice){
+				if(confirm('¿Desea borrar la foto?')){
+					let datos = new FormData();
+					let copia = [...this.tourActivo.fotos];
+					let nomArchivo = this.tourActivo.fotos[queIndice].nombreRuta;
+					let borrar = copia[queIndice];
+					this.tourActivo.fotos.splice(queIndice, 1)
+	
+					datos.append('foto', nomArchivo);
+					let respServ = await fetch(this.servidor+'borrarFoto.php', {
+						method:'POST', body:datos
+					})
+					if( await respServ.text()=='ok'){
+						this.actualizarTour()
+					}
+				}
 			}
 		}
 	});

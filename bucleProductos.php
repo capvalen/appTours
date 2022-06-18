@@ -28,11 +28,13 @@
 			<div class="divProducto position-relative" v-for="(tour, index) in contenidos">
 				<div class="divOferta2 position-absolute top-0 end-0 d-flex justify-content-center align-items-center"><span class="">¡Oferta!</span></div>
 				<div class="divImagen mt-3">
-					<a :href="'/viaje/?id=' + tours[index].id" target="_parent"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt="" class="img-fluid"></a>
+					<a v-if="tour.tipo==1" :href="'/tour/?id=' + tours[index].id" target="_parent"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt="" class="img-fluid"></a>
+					<a v-if="tour.tipo==2" :href="'/paqueteturistico/?id=' + tours[index].id" target="_parent"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt="" class="img-fluid"></a>
 				</div>
 				<div>
 					<p class="mb-0 titulo text-capitalize"><strong>
-						<a class="text-decoration-none text-dark" :href="'/viaje/?id=' + tours[index].id" target="_parent">{{tour.nombre}}</a></strong>
+						<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'/tour/?id=' + tours[index].id" target="_parent">{{tour.nombre}}</a></strong>
+						<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'/paqueteturistico/?id=' + tours[index].id" target="_parent">{{tour.nombre}}</a></strong>
 					</p>
 					<div class="estrellas">
 						<i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i>

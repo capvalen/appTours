@@ -135,7 +135,8 @@
 							<img :src="queFoto(producto)" class="card-img-top" alt="...">
 							<div class="card-body">
 								<h5 class="card-title text-capitalize mb-0">
-									<a class="text-decoration-none text-dark" :href="'/viaje/?id=' + queId(index)" target="_parent">{{producto.nombre}}</a></strong>
+									<a class="text-decoration-none text-dark" v-if="producto.tipo=='1'" :href="'/tour/?id=' + queId(index)" target="_parent">{{producto.nombre}}</a></strong>
+									<a class="text-decoration-none text-dark" v-if="producto.tipo=='2'" :href="'/paqueteturistico/?id=' + queId(index)" target="_parent">{{producto.nombre}}</a></strong>
 								</h5>
 								
 								<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span></p>

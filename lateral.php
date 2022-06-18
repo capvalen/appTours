@@ -37,19 +37,85 @@
 
 	<div class="container" id="app">
 
-		<p class="my-2">Edite panel lateral</p>
+		<h2 class="mt-2">Configuraciones extras</h2>
 
-		<div class="row">
-			<div class="col-12 col-md-6 col-lg-5 mx-auto">
-				<div class=" ">
-					<button class="btn btn-outline-primary my-3" onclick="actualizarPanel()">Actualizar</button>
-					<div id="editor"> </div>
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item" role="presentation">
+				<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#lateral" type="button" role="tab" aria-controls="lateral" aria-selected="true">Panel lateral</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link" id="actividades-tab" data-bs-toggle="tab" data-bs-target="#actividades" type="button" role="tab" aria-controls="actividades" aria-selected="false">Actividades</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#categorias" type="button" role="tab" aria-controls="categorias" aria-selected="false">Categorías</button>
+			</li>
+		</ul>
+		<div class="tab-content" id="myTabContent">
+			<div class="tab-pane fade show active" id="lateral" role="tabpanel" aria-labelledby="lateral-tab">
+			<p class="my-2">Edite panel lateral</p>
+				<div class="row">
+					<div class="col-12 col-md-6 col-lg-5 mx-auto">
+						<div class=" ">
+							<button class="btn btn-outline-primary my-3" onclick="actualizarPanel()">Actualizar</button>
+							<div id="editor"> </div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-pane fade" id="actividades" role="tabpanel" aria-labelledby="actividades-tab">
+				<div class="container">
+					<button class="btn btn-outline-primary mt-2" @click="crearActividad"><i class="icofont-diamond"></i> Nueva actividad</button>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>N°</th>
+								<th>Actividad</th>
+								<th>@</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(actividad, indice) in actividades" :key="actividad.id">
+								<td>{{indice+1}}</td>
+								<td>{{actividad.concepto}}</td>
+								<td><button type="button" class="btn btn-sm btn-outline-success mx-1" @click="editarActividad(indice)"><i class="icofont-edit"></i></button>
+								<button type="button" class="btn btn-sm btn-outline-danger mx-1" @click="eliminarActividad(indice)"><i class="icofont-ui-delete"></i></button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="tab-pane fade" id="categorias" role="tabpanel" aria-labelledby="categorias-tab">
+			<div class="container">
+				<button class="btn btn-outline-primary mt-2" @click="crearCategoria"><i class="icofont-diamond"></i> Nueva categoría</button>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>N°</th>
+								<th>Categoría</th>
+								<th>@</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(categoria, indice) in categorias" :key="categoria.id">
+								<td>{{indice+1}}</td>
+								<td>{{categoria.concepto}}</td>
+								<td><button type="button" class="btn btn-sm btn-outline-success mx-1" @click="editarCategoria(indice)"><i class="icofont-edit"></i></button>
+								<button type="button" class="btn btn-sm btn-outline-danger mx-1" @click="eliminarCategoria(indice)"><i class="icofont-ui-delete"></i></button></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
+
+
+		
 	</div>
 
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<script src="https://unpkg.com/vue@3"></script>
+
 	
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
@@ -58,6 +124,7 @@
 	<script src="js/axios.min.js"></script>
 	<script src="js/moment.min.js"></script>
 	<script>
+		var quill;
 		var toolBarOptions = [
 			[{ 'header': [false, 2, 3, 4, 5] }],
 				//[{ 'size': ['small', false, 'large'] }],
@@ -66,25 +133,14 @@
 				['link', 'image'],
 				[{ list: 'ordered' }, { list: 'bullet' }],
 			];
-		var quill = new Quill('#editor', {
-		  modules: { 
-				toolbar: {
-					container : toolBarOptions,
-					handlers:{
-						image: imageHandler
-					}
-				}
-			},
-		  theme: 'snow'
-		});
-		cargarPanel();
+		
 
 		function imageHandler() {
-      var range = this.quill.getSelection();
-      var value = prompt('¿Cuál es la URL de la imágen?');
-      if(value){
-          this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
-      }
+			var range = this.quill.getSelection();
+			var value = prompt('¿Cuál es la URL de la imágen?');
+			if(value){
+					this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+			}
  		}
 		async function actualizarPanel(){
 			let datos = new FormData();
@@ -105,6 +161,132 @@
 			quill.setContents([]);
 			quill.clipboard.dangerouslyPasteHTML(0, html);
 		}
+
+		
+	const { createApp } = Vue
+
+	createApp({
+		data() {
+			return {
+				servidor: 'https://grupoeuroandino.com/app/api/', actividades:[], categorias:[],
+				nTexto:''
+			}
+		},
+		mounted(){
+			quill = new Quill('#editor', {
+				modules: { 
+					toolbar: {
+						container : toolBarOptions,
+						handlers:{
+							image: imageHandler
+						}
+					}
+				},
+				theme: 'snow'
+			});
+			cargarPanel();
+			this.pedirComplementos();
+		},
+		methods:{
+			async pedirComplementos(){
+				let respServ =await fetch(this.servidor +'pedirComplementos.php');
+				let temporal = await respServ.json();
+				this.actividades = temporal[0];
+				this.categorias = temporal[1];
+			},
+			async editarActividad(queId){
+				if(this.nTexto = prompt('¿Cuál es el nuevo nombre?', this.actividades[queId].concepto )){
+					let datos = new FormData();
+					datos.append('id', this.actividades[queId].id)
+					datos.append('nombre', this.nTexto)
+					datos.append('comando', 'update')
+					let respServ =await fetch(this.servidor +'editarActividad.php',{
+						method:'POST', body: datos
+					});
+					if( await respServ.text() == 'ok'){
+						this.actividades[queId].concepto = this.nTexto;
+					}
+				}
+			},
+			async eliminarActividad(queId){
+				if(confirm('¿Desea borrar la actividad ' + this.actividades[queId].concepto +'?' )){
+					let datos = new FormData();
+					datos.append('id', this.actividades[queId].id)
+					datos.append('comando', 'delete')
+					let respServ =await fetch(this.servidor +'editarActividad.php',{
+						method:'POST', body: datos
+					});
+					if( await respServ.text() == 'ok'){
+						this.actividades.splice(queId, 1)
+					}
+				}
+			},
+			async editarCategoria(queId){
+				if(this.nTexto = prompt('¿Cuál es el nuevo nombre?', this.categorias[queId].concepto )){
+					let datos = new FormData();
+					datos.append('id', this.categorias[queId].id)
+					datos.append('nombre', this.nTexto)
+					datos.append('comando', 'update')
+					let respServ =await fetch(this.servidor +'editarCategoria.php',{
+						method:'POST', body: datos
+					});
+					if( await respServ.text() == 'ok'){
+						this.categorias[queId].concepto = this.nTexto;
+					}
+				}
+			},
+			async eliminarCategoria(queId){
+				if(confirm('¿Desea borrar la categoría ' + this.categorias[queId].concepto +'?' )){
+					let datos = new FormData();
+					datos.append('id', this.categorias[queId].id)
+					datos.append('comando', 'delete')
+					let respServ =await fetch(this.servidor +'editarCategoria.php',{
+						method:'POST', body: datos
+					});
+					if( await respServ.text() == 'ok'){
+						this.categorias.splice(queId, 1)
+					}
+				}
+			},
+			async crearActividad(){
+				if(this.nTexto = prompt('Ingrese el nombre de la nueva actividad' )){
+					if(this.nTexto!='' && this.nTexto!=null){
+						let datos = new FormData();
+						datos.append('nombre', this.nTexto)
+						datos.append('comando', 'add')
+						let respServ =await fetch(this.servidor +'editarActividad.php',{
+							method:'POST', body: datos
+						});
+						//console.log(await respServ.text())
+						let valorN = await respServ.text()
+						if( parseInt(valorN) >0){
+							this.actividades.push({id: valorN, concepto: this.nTexto, activo: 1});
+						}
+					}
+				}
+			},
+			async crearCategoria(){
+				if(this.nTexto = prompt('Ingrese el nombre de la nueva categoria' )){
+					if(this.nTexto!='' && this.nTexto!=null){
+						let datos = new FormData();
+						datos.append('nombre', this.nTexto)
+						datos.append('comando', 'add')
+						let respServ =await fetch(this.servidor +'editarCategoria.php',{
+							method:'POST', body: datos
+						});
+						//console.log(await respServ.text())
+						let valorN = await respServ.text()
+						if( parseInt(valorN) >0){
+							this.categorias.push({id: valorN, concepto: this.nTexto, activo: 1});
+						}
+					}
+				}
+			},
+
+
+		}
+	}).mount('#app')
+	
 	
 </script>
 </body>
