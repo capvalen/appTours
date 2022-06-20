@@ -79,7 +79,9 @@
 		},
 		methods:{
 			async cargarTours(){
-				const respuesta = await fetch(this.servidor+'mostrarTours.php')
+				const respuesta = await fetch(this.servidor+'mostrarTours.php',{
+					method:'POST'
+				})
 				this.tours = await respuesta.json();
 				this.contenidos=[];
 				this.tours.forEach(dato=>{

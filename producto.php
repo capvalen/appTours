@@ -27,12 +27,28 @@
 		.datepicker table tr td.active.active{
 			/* background-color: #2482e3!important; */background-image: none!important;
 		}
+		#divRecomendaciones img{
+			width: 100%;
+    	height: 170px;
+    	object-fit: cover;
+		}
 		.dow{color:rgb(145 145 145)!important;}
 		#divRecomendaciones .titulo{background-color: rgb(214, 214, 214); }
 		#divIzquierda ul, ol{padding-left: 0!important;}
 		p{margin-bottom: 0;}
 		.ql-align-center{text-align: center!important;}
 		#divQuill h5, #divQuill p{margin-bottom:0;}
+		.estrellas {
+			color: #ffd400;
+		}
+		.precio2 {
+			font-size: 1.7rem;
+			font-weight: bold;
+		}
+		.precioAnt2 {
+			font-size: 0.8rem;
+			text-decoration: line-through;
+		}
 	</style>
 	<div class="container-fluid" id="app">
 		<div class="row">
@@ -70,11 +86,17 @@
 				</div>
 				<div id="divRecomendaciones">
 					<div class="titulo p-2 mb-3">
-						<h3 class="my-1">Tours y paquetes turísticos similares</h3>
+						<h3 class="my-1">Tours y paquetes turísticos similares:</h3>
 					</div>
-					<div class="row row-cols-4">
-						<div class="col" v-for="recomendado in recomendados" :key="recomendado.id">
+					<div class="row row-cols-1 row-cols-md-3 ">
+						<div class="col my-2" v-for="recomendado in recomendados" :key="recomendado.id">
 							<a :href="'https://grupoeuroandino.com/viaje/?id='+recomendado.id"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+recomendado.foto" alt="" class="img-fluid"></a>
+							<h5 class="mb-0">{{recomendado.titulo}}</h5>
+							<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{recomendado.destino}}, {{departamentos[recomendado.depa]}}</strong></span></p>
+							<div class="row row-cols-2">
+								<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
+								<div class="text-end "><span class="precio2"><span class="monedita fs-6">S/</span> {{formatoMoneda(recomendado.precio)}}</span> <p class="precioAnt2 mb-0">S/ {{formatoMoneda(recomendado.oferta)}}</p></div>
+							</div>
 						</div>
 						
 					</div>
@@ -252,6 +274,7 @@ $.fn.bootstrapDP = datepicker;
 
 				let datos = new FormData();
 				datos.append('tipo', this.tourActivo.tipo);
+				datos.append('departamento', this.tourActivo.departamento);
 				let respRecomendados = await fetch(this.servidor+'pedirRecomendadosRandom.php',{
 					method:'POST', body:datos
 				});
@@ -340,6 +363,9 @@ $.fn.bootstrapDP = datepicker;
 					return true;
 				}
 			},
+			formatoMoneda(valor){
+				return parseFloat(valor).toFixed(2)
+			}
 		/* 	comprobarRequisitos(){
 				if(this.nacionalidad==-1){
 					this.faltaPais=true; this.msjError = "Debe rellenar el campo de su nacionalidad antes de reservar"; return false;

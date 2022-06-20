@@ -3,7 +3,14 @@ include ("conectkarl.php");
 
 $filas = [];
 
-$sql = $db->query("SELECT id, replace(JSON_EXTRACT(contenido, '$.nombre'), '\"', '') AS titulo, replace(JSON_EXTRACT(contenido, '$.fotos[0].nombreRuta'), '\"', '') as foto FROM `tours` where activo = 1 and visible = 1 ORDER BY RAND() limit 4 "); //and tipo = 1
+$sql = $db->query("SELECT id, replace(JSON_EXTRACT(contenido, '$.nombre'), '\"', '') AS titulo, replace(JSON_EXTRACT(contenido, '$.fotos[0].nombreRuta'), '\"', '') as foto,
+	JSON_EXTRACT(contenido, '$.departamento') as depa, replace(JSON_EXTRACT(contenido, '$.destino'), '\"', '') as destino,
+	replace(JSON_EXTRACT(contenido, '$.oferta'), '\"', '') as oferta, 
+	replace(JSON_EXTRACT(contenido, '$.peruanos.adultos'), '\"', '') as precio
+FROM `tours` 
+WHERE activo = 1 and tipo = '{$_POST['tipo']}' and visible = 1
+AND JSON_EXTRACT(contenido, '$.departamento') = {$_POST['departamento']}
+ORDER BY FIELD(JSON_EXTRACT(contenido, '$.departamento'), '{$_POST['departamento']}') DESC, RAND() limit 3 "); //and tipo = 1
 if($sql ->execute()){
 	while($row = $sql->fetch(PDO::FETCH_ASSOC)){
 		$filas[] = $row;
