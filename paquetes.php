@@ -654,8 +654,14 @@
 			formatoMoneda(valor){
 				return parseFloat(valor).toFixed(2)
 			},
-			queDuraDia(duracion){ return this.duracion[duracion].valor; },
-			queDuraNoche(duracion){ return this.duracionNoches[duracion].valor; },
+			queDuraDia(duracion){
+				//return this.duracion[duracion].valor;
+				return this.duracion.find( x => x.clave === duracion ).valor;
+			},
+			queDuraNoche(duracion){ 
+				//return this.duracionNoches[duracion].valor; 
+				return this.duracionNoches.find( x => x.clave === duracion ).valor
+			},
 			horaLatam(hora){
 				return( moment(hora, 'HH:mm').format('h:mm a') )
 			},

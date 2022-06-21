@@ -41,6 +41,11 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 			font-size: 0.8rem;
 			text-decoration: line-through;
 		}
+		.card-img-top{
+			width:100%!important;
+			height: 250px!important;
+    	object-fit: cover!important;
+		}
 	</style>
 	<div class="container-fluid" id="app">
 		<h1 class="fs-2 mt-3">
@@ -112,13 +117,12 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 				actividadSelect: '',
 				categoriaSelect: '',
 				productos: [],
-				duracion: [{
-					clave: 1,
-					valor: 'Half Day (Medio día)'
-				}, {
-					clave: 2,
-					valor: 'Full Day (1 día)'
-				}],
+				duracion: [
+					{ clave: 1, valor: 'Half Day (Medio día)' },
+					{ clave: 2, valor: 'Full Day (1 día)' }],
+				duracionDias: [
+					{ clave: 1, valor: 'Half Day (Medio día)' },
+					{ clave: 2, valor: 'Full Day (1 día)' }],
 				duracionNoches: [{
 					clave: 1,
 					valor: '0 noches'
@@ -135,6 +139,10 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 				}
 				for (let dia = 2; dia <= 31; dia++) {
 					this.duracion.push({
+						clave: dia + 1,
+						valor: dia + " días / 0 noches"
+					});
+					this.duracionDias.push({
 						clave: dia + 1,
 						valor: dia + " días"
 					});
@@ -191,15 +199,17 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 						return 'https://grupoEuroAndino.com/app/render/images/subidas/' + prod.fotos[0].nombreRuta;
 					}
 				},
-				queDuracion(idDuracion, tipo) {
-					if (tipo === 1) {
-						return this.duracion[idDuracion].valor;
-					}
-					if (tipo === 2) {
-						console.log(idDuracion);
-						return this.duracion[idDuracion.dias - 1].valor + " y " + this.duracionNoches[idDuracion.noches - 1].valor;
-					}
-				},
+				queDuracion(idDuracion, tipo){
+				if(tipo===1){
+					//return this.duracion[idDuracion].valor ;
+					return this.duracion.find( x => x.clave === idDuracion ).valor;
+				}
+				if(tipo===2){
+					//console.log( idDuracion );
+					//return this.duracion[idDuracion.dias-1].valor + " y "+ this.duracionNoches[idDuracion.noches-1].valor ;
+					return this.duracionDias.find( x => x.clave === idDuracion.dias ).valor + " / " + this.duracionNoches.find( x => x.clave === idDuracion.noches ).valor;
+				}
+			},
 				queDepa(valor) {
 					return this.departamentos[valor];
 				},

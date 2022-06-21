@@ -633,7 +633,8 @@
 				return parseFloat(valor).toFixed(2)
 			},
 			queDura(duracion){
-				return this.duracion[duracion].valor;
+				//return this.duracion[duracion].valor;
+				return this.duracion.find( x => x.clave === duracion ).valor;
 			},
 			horaLatam(hora){
 				return( moment(hora, 'HH:mm').format('h:mm a') )

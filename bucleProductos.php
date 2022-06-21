@@ -22,6 +22,11 @@
 		.divOferta2{width: 70px; height: 25px; background-color: #2768b7; /* rgb(192, 0, 67);  */ margin-top: 2rem; margin-right: 0.6rem; color:white; font-size: 0.8rem;  }
 		/* .titulo>a, .estrellas{color: rgb(58, 91, 255);} */
 		.estrellas{color: #ffd400;}
+		.divImagen img{
+			width:100%!important;
+			height: 320px!important;
+    	object-fit: cover!important;
+		}
 	</style>
 	<div id="app">
 		<div class="row row-cols-12 row-cols-md-2 row-cols-lg-4">
@@ -43,7 +48,7 @@
 					<div class="row row-cols-2">
 						<div><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{tour.destino}}, {{queDepa(tour.departamento)}}</strong></span> <br>
 							<span v-if="tour.tipo==1" class="text-muted subText">{{queDura(tour.duracion)}}</span>
-							<span v-else class="text-muted subText">{{queDura(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches-1)}}</span>
+							<span v-else class="text-muted subText">{{queDuraDia(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches-1)}}</span>
 						</div>
 						<div class="text-end ">
 							<span class="precio2">S/ {{formatoMoneda(tour.peruanos.adultos)}}</span>
@@ -64,6 +69,7 @@
 			//servidor: 'http://localhost/euroAndinoApi/',
 			servidor: 'https://grupoeuroandino.com/app/api/',
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
+			duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			tours:[],
@@ -71,7 +77,8 @@
 		},
 		mounted(){
 			for (let dia = 2; dia <= 31; dia++) {
-				this.duracion.push({ clave: dia+1, valor: dia + ' días' });
+				this.duracion.push({ clave: dia+1, valor: dia + ' días / 0 noches' });
+				this.duracionDias.push({ clave: dia+1, valor: dia + ' días' });
 				this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
 			}
 			this.cargarTours();
@@ -92,6 +99,10 @@
 			},
 			queDura(duracion){
 				return this.duracion[duracion-1].valor;
+			},
+			queDuraDia(duracion){
+				//return this.duracion[duracion].valor;
+				return this.duracion.find( x => x.clave === duracion ).valor;
 			},
 			queDuraNoche(duracion){ 
 				if(duracion>1){

@@ -49,6 +49,9 @@
 			font-size: 0.8rem;
 			text-decoration: line-through;
 		}
+		#divTransportes img{
+			width: 60px;
+		}
 	</style>
 	<div class="container-fluid" id="app">
 		<div class="row">
@@ -61,6 +64,33 @@
 				<!-- Empieza el bloque de descripción -->
 				<div class="my-3 p-4 border rounded" id="divIzquierda">
 					<h2 class="text-danger text-capitalize">{{tourActivo.nombre}}</h2>
+					<div class="row row-cols-3" v-if="tourActivo.tipo===2" id="divTransportes">
+						<div class="col">
+							<div class="d-flex justify-content-between">
+								<div class="m-auto pe-2">
+									<img v-if="tourActivo.transporte===2" src="https://grupoeuroandino.com/app/render/images/vuelo.png" alt="">
+										<img v-if="tourActivo" src="https://grupoeuroandino.com/app/render/images/carro.png" alt="">
+								</div>
+								<div class="text-start">
+									<h6 class="mb-1
+									">Transporte</h6>
+									<span>{{transportes[parseInt(tourActivo.transporte)-1]}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="d-flex justify-content-between">
+								<div class="m-auto ps-2">
+									<img src="https://grupoeuroandino.com/app/render/images/hostal.png" alt="">
+								</div >
+								<div class="text-start">
+									<h6 class="mb-1
+									">Alojamiento</h6>
+									<span>{{hospedajes[parseInt(tourActivo.alojamiento)-1]}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
 					<h4 class="mt-4 text-danger">Descripción</h4>
 					<div v-html="tourActivo.descripcion"></div>
 					<h4 class="mt-4 text-danger">Punto de Partida</h4>
@@ -83,23 +113,6 @@
 
 					
 
-				</div>
-				<div id="divRecomendaciones">
-					<div class="titulo p-2 mb-3">
-						<h3 class="my-1">Tours y paquetes turísticos similares:</h3>
-					</div>
-					<div class="row row-cols-1 row-cols-md-3 ">
-						<div class="col my-2" v-for="recomendado in recomendados" :key="recomendado.id">
-							<a :href="'https://grupoeuroandino.com/viaje/?id='+recomendado.id"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+recomendado.foto" alt="" class="img-fluid"></a>
-							<h5 class="mb-0">{{recomendado.titulo}}</h5>
-							<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{recomendado.destino}}, {{departamentos[recomendado.depa]}}</strong></span></p>
-							<div class="row row-cols-2">
-								<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
-								<div class="text-end "><span class="precio2"><span class="monedita fs-6">S/</span> {{formatoMoneda(recomendado.precio)}}</span> <p class="precioAnt2 mb-0">S/ {{formatoMoneda(recomendado.oferta)}}</p></div>
-							</div>
-						</div>
-						
-					</div>
 				</div>
 			</div>
 			<div class="col-12 col-md-4">
@@ -181,6 +194,9 @@
 						<button class="btn btn-danger rounded-pill" @click="reservar"><strong>RESERVAR AHORA</strong></button>
 					</div>
 				</div>
+				<div class="row col">
+					<img src="https://grupoeuroandino.com/app/render/images/tarjetas.png" alt="" class="img-fluid">
+				</div>
 
 				<div class="row my-3 ">
 					<div class="col m-4 p-3 border rounded" id="divQuill">
@@ -192,6 +208,32 @@
 				</div>
 			</div>
 		</div>
+		<div class="row">
+				<div class="col-12 col-md-8">
+					<div class="my-3 p-4 border rounded">
+						<div id="divRecomendaciones">
+							<div class="titulo p-2 mb-3">
+								<h3 class="my-1">Tours y paquetes turísticos similares:</h3>
+							</div>
+							<div class="row row-cols-1 row-cols-md-3 ">
+								<div class="col my-2" v-for="recomendado in recomendados" :key="recomendado.id">
+									<a :href="'https://grupoeuroandino.com/viaje/?id='+recomendado.id"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+recomendado.foto" alt="" class="img-fluid"></a>
+									<h5 class="mb-0">{{recomendado.titulo}}</h5>
+									<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{recomendado.destino}}, {{departamentos[recomendado.depa]}}</strong></span></p>
+									<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
+									<div class="row row-cols-2">
+										<div>
+											<span>{{queDuraRecomendado(recomendado.tipo, recomendado.duracion)}}</span>
+										</div>
+										<div class="text-end "><span class="precio2"><span class="monedita fs-6">S/</span> {{formatoMoneda(recomendado.precio)}}</span> <p class="precioAnt2 mb-0">S/ {{formatoMoneda(recomendado.oferta)}}</p></div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 	</div>
 	
 	
@@ -234,7 +276,8 @@ $.fn.bootstrapDP = datepicker;
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			diasMuertos:[], precioTotal:0, nacionalidad:-1, faltaPais:false, msjError:'',
 			incluidos:[], noIncluidos:[], faltaMinimo:true, recomendados:[],
-
+			transportes:['Terrestre', 'Aéreo', 'Ninguno'],
+			hospedajes:['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge','Resort','Otro']
 		},
 		mounted(){
 			//sacando el ID
@@ -365,7 +408,7 @@ $.fn.bootstrapDP = datepicker;
 			},
 			formatoMoneda(valor){
 				return parseFloat(valor).toFixed(2)
-			}
+			},
 		/* 	comprobarRequisitos(){
 				if(this.nacionalidad==-1){
 					this.faltaPais=true; this.msjError = "Debe rellenar el campo de su nacionalidad antes de reservar"; return false;
@@ -376,19 +419,35 @@ $.fn.bootstrapDP = datepicker;
 					return true;
 				}
 			} */
-		},
-		computed:{
-			queDura(){
+			queDuraRecomendado(tipo, queDuracion){
 				try {
-					if(this.tourActivo.tipo=='2'){
-						return this.duracionDias[parseInt(this.tourActivo.duracion.dias)].valor + ", " + this.duracionNoches[parseInt(this.tourActivo.duracion.noches)].valor;
+					if(tipo=='2'){
+						//return 'caso 2';
+						return this.duracionDias[parseInt(queDuracion.dias)-1].valor + ", " + this.duracionNoches[parseInt(queDuracion.noches)-1].valor;
+						//return this.duracionDias[parseInt(this.tourActivo.duracion.dias)].valor + ", " + this.duracionNoches[parseInt(this.tourActivo.duracion.noches)].valor;
 					}else{
-						return this.duracion[parseInt(this.tourActivo.duracion)].valor;
+						return this.duracion[ parseInt(queDuracion)-1 ].valor
+						//return this.duracion.find( x => x.clave === duracion ).valor;
 					}
 				} catch (error) {
 					
 				}
 			}
+		},
+		computed:{
+			queDura(){
+				try {
+					if(this.tourActivo.tipo=='2'){
+						return this.duracionDias.find( x => x.clave === this.tourActivo.duracion.dias ).valor + ", " + this.duracionNoches.find( x => x.clave === this.tourActivo.duracion.noches ).valor;
+						//return this.duracionDias[parseInt(this.tourActivo.duracion.dias)].valor + ", " + this.duracionNoches[parseInt(this.tourActivo.duracion.noches)].valor;
+					}else{
+						return this.duracion.find( x => x.clave === this.tourActivo.duracion ).valor;
+					}
+				} catch (error) {
+					
+				}
+			},
+			
 		}
 	})
 

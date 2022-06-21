@@ -27,6 +27,11 @@
 		font-size: 0.8rem;
 		text-decoration: line-through;
 	}
+	.card-img-top{
+			width:100%!important;
+			height: 250px!important;
+    	object-fit: cover!important;
+		}
 	
 </style>
 	<div class="container-fluid" id="app">
@@ -51,20 +56,6 @@
 						</div>
 
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="acordeon2">
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoActividad" aria-expanded="false" aria-controls="tipoActividad" data-bs-parent="#acordeonPadre">
-									Actividades
-								</button>
-							</h2>
-							<div id="tipoActividad" class="accordion-collapse collapse " aria-labelledby="tipoActividad" >
-								<div class="accordion-body">
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idActividad ==-1 }" @click="idActividad = -1; actividadSelect='';" >Todos</a></p>
-									<p  v-for="actividad in actividades" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idActividad == actividad.id }" @click="idActividad = actividad.id; actividadSelect=actividad.nombre;" >{{actividad.nombre}}</a></p>
-								</div>
-							</div>
-						</div>
-
-						<div class="accordion-item">
 							<h2 class="accordion-header" id="acordeon3">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoDepartamento" aria-expanded="false" aria-controls="tipoDepartamento" data-bs-parent="#acordeonPadre">
 									Departamentos
@@ -79,6 +70,20 @@
 						</div>
 
 						<div class="accordion-item">
+							<h2 class="accordion-header" id="acordeon2">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoActividad" aria-expanded="false" aria-controls="tipoActividad" data-bs-parent="#acordeonPadre">
+									Actividades
+								</button>
+							</h2>
+							<div id="tipoActividad" class="accordion-collapse collapse " aria-labelledby="tipoActividad" >
+								<div class="accordion-body">
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idActividad ==-1 }" @click="idActividad = -1; actividadSelect='';" >Todos</a></p>
+									<p  v-for="actividad in actividades" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idActividad == actividad.id }" @click="idActividad = actividad.id; actividadSelect=actividad.nombre;" >{{actividad.nombre}}</a></p>
+								</div>
+							</div>
+						</div>
+
+						<div class="accordion-item">
 							<h2 class="accordion-header" id="acordeon4">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoCategoria" aria-expanded="false" aria-controls="tipoCategoria" data-bs-parent="#acordeonPadre">
 									Categorías
@@ -88,6 +93,20 @@
 								<div class="accordion-body">
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCategoria ==-1 }" @click="idCategoria = -1; categoriaSelect='';" >Todos</a></p>
 									<p  v-for="categoria in categorias" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCategoria == categoria.id }" @click="idCategoria = categoria.id; categoriaSelect=categoria.nombre" >{{categoria.nombre}}</a></p>
+								</div>
+							</div>
+						</div>
+
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="acordeon4">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoTransporte" aria-expanded="false" aria-controls="tipoTransporte" data-bs-parent="#acordeonPadre">
+									Transporte
+								</button>
+							</h2>
+							<div id="tipoTransporte" class="accordion-collapse collapse " aria-labelledby="tipoTransporte" >
+								<div class="accordion-body">
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTransporte ==-1 }" @click="idTransporte = -1; transporteSelect='';" >Todos</a></p>
+									<p  v-for="(transporte, index) in transportes" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTransporte == index+1 }" @click="idTransporte = index+1; transporteSelect=transporte" >{{transporte}}</a></p>
 								</div>
 							</div>
 						</div>
@@ -182,9 +201,12 @@
 			servidor: 'https://grupoeuroandino.com/app/api/', 
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			dias:[], actividades:[], categorias:[],
-			idTour:-1, idActividad:-1, idDepartamento:-1,idCategoria:-1, idDia:-1, idPrecio:-1,
-			precios:['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00' ], actividadSelect:'', categoriaSelect:'', productos:[],
-			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}], pedidos:[]
+			idTour:-1, idActividad:-1, idDepartamento:-1,idCategoria:-1, idDia:-1, idPrecio:-1, idTransporte:-1,
+			precios:['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00' ], 
+			actividadSelect:'', categoriaSelect:'',transporteSelect:'', productos:[],
+			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], 
+			duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], 
+			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}], pedidos:[], transportes:['Terrestres', 'Aéreos', 'Ninguno']
 		},
 		mounted:function(){
 			this.cargar();
@@ -192,7 +214,8 @@
 				this.dias.push(i);
 			}
 			for (let dia = 2; dia <= 31; dia++) {
-				this.duracion.push({ clave: dia+1, valor: dia + " días" });
+				this.duracion.push({ clave: dia+1, valor: dia + " días / 0 noches" });
+				this.duracionDias.push({ clave: dia+1, valor: dia + " días" });
 				this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
 			}
 			this.buscarEnTienda();
@@ -220,6 +243,7 @@
 				datos.append('actividad', this.actividadSelect);
 				datos.append('idDepartamento', this.idDepartamento);
 				datos.append('idCategoria', this.idCategoria);
+				datos.append('idTransporte', this.idTransporte);
 				datos.append('categoria', this.categoriaSelect);
 				datos.append('idDia', this.idDia);
 				datos.append('idPrecio', this.idPrecio);
@@ -242,11 +266,13 @@
 			},
 			queDuracion(idDuracion, tipo){
 				if(tipo===1){
-					return this.duracion[idDuracion].valor ;
+					//return this.duracion[idDuracion].valor ;
+					return this.duracion.find( x => x.clave === idDuracion ).valor;
 				}
 				if(tipo===2){
-					console.log( idDuracion );
-						return this.duracion[idDuracion.dias-1].valor + " y "+ this.duracionNoches[idDuracion.noches-1].valor ;
+					//console.log( idDuracion );
+					//return this.duracion[idDuracion.dias-1].valor + " y "+ this.duracionNoches[idDuracion.noches-1].valor ;
+					return this.duracionDias.find( x => x.clave === idDuracion.dias ).valor + " / " + this.duracionNoches.find( x => x.clave === idDuracion.noches ).valor;
 				}
 			},
 			queDepa(valor){
