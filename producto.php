@@ -68,8 +68,8 @@
 						<div class="col">
 							<div class="d-flex justify-content-between">
 								<div class="m-auto pe-2">
-									<img v-if="tourActivo.transporte===2" src="https://grupoeuroandino.com/app/render/images/vuelo.png" alt="">
-										<img v-if="tourActivo" src="https://grupoeuroandino.com/app/render/images/carro.png" alt="">
+									<img v-if="tourActivo.transporte==='2'" src="https://grupoeuroandino.com/app/render/images/vuelo.png" alt="">
+									<img v-else="tourActivo" src="https://grupoeuroandino.com/app/render/images/carro.png" alt="">
 								</div>
 								<div class="text-start">
 									<h6 class="mb-1
@@ -223,7 +223,7 @@
 									<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
 									<div class="row row-cols-2">
 										<div>
-											<span>{{queDuraRecomendado(recomendado.tipo, recomendado.duracion)}}</span>
+											<span>{{queDuraRecomendado(recomendado.tipo, recomendado.duracion, recomendado.duracion2)}}</span>
 										</div>
 										<div class="text-end "><span class="precio2"><span class="monedita fs-6">S/</span> {{formatoMoneda(recomendado.precio)}}</span> <p class="precioAnt2 mb-0">S/ {{formatoMoneda(recomendado.oferta)}}</p></div>
 									</div>
@@ -419,13 +419,15 @@ $.fn.bootstrapDP = datepicker;
 					return true;
 				}
 			} */
-			queDuraRecomendado(tipo, queDuracion){
+			queDuraRecomendado(tipo, queDuracion, queDuracion2){
 				try {
 					if(tipo=='2'){
+						queDuracion3 = JSON.parse(queDuracion2);
 						//return 'caso 2';
-						return this.duracionDias[parseInt(queDuracion.dias)-1].valor + ", " + this.duracionNoches[parseInt(queDuracion.noches)-1].valor;
+						return this.duracionDias[parseInt(queDuracion3.dias)-1].valor + " / " + this.duracionNoches[parseInt(queDuracion3.noches)-1].valor;
 						//return this.duracionDias[parseInt(this.tourActivo.duracion.dias)].valor + ", " + this.duracionNoches[parseInt(this.tourActivo.duracion.noches)].valor;
-					}else{
+					}
+					if(tipo=='1'){
 						return this.duracion[ parseInt(queDuracion)-1 ].valor
 						//return this.duracion.find( x => x.clave === duracion ).valor;
 					}

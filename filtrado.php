@@ -52,6 +52,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='1'):?> <span>Tours</span> <?php endif;?>
 			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='2'):?> <span>Paquetes turísticos</span><?php endif;?>
 			<?php if(isset($_GET['id'])):?> <span>Paquetes y tours de: <?= $departamentos[$_GET['id']-1];?> </span><?php endif;?>
+			<?php if(isset($_GET['texto'])):?> <span>Resultados por: <?= $texto=$_GET['texto'];?> </span><?php else: $texto=''; endif;?>
 		</h1>
 		<div class="row row-cols-1 row-cols-lg-3 row-cols-xl-4">
 			<div class="col my-2 " v-for="(producto, index) in productos" :key="producto.id">
@@ -112,7 +113,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 				idDepartamento: <?= $idDepartamento; ?>,
 				idCategoria: -1,
 				idDia: -1,
-				idPrecio: -1,
+				idPrecio: -1, idTransporte:-1, idHospedaje:-1, texto:'<?= $texto;?>',
 				precios: ['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00'],
 				actividadSelect: '',
 				categoriaSelect: '',
@@ -176,9 +177,12 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 					datos.append('actividad', this.actividadSelect);
 					datos.append('idDepartamento', this.idDepartamento);
 					datos.append('idCategoria', this.idCategoria);
+					datos.append('idTransporte', this.idTransporte);
+					datos.append('idHospedaje', this.idHospedaje);
 					datos.append('categoria', this.categoriaSelect);
 					datos.append('idDia', this.idDia);
 					datos.append('idPrecio', this.idPrecio);
+					datos.append('texto', this.texto);
 					let respServ = await fetch(this.servidor + 'buscarFiltroTienda.php', {
 						method: 'POST',
 						body: datos

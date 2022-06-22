@@ -56,7 +56,7 @@
 						</div>
 
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="acordeon3">
+							<h2 class="accordion-header" id="acordeon2">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoDepartamento" aria-expanded="false" aria-controls="tipoDepartamento" data-bs-parent="#acordeonPadre">
 									Departamentos
 								</button>
@@ -70,7 +70,7 @@
 						</div>
 
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="acordeon2">
+							<h2 class="accordion-header" id="acordeon3">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoActividad" aria-expanded="false" aria-controls="tipoActividad" data-bs-parent="#acordeonPadre">
 									Actividades
 								</button>
@@ -98,7 +98,7 @@
 						</div>
 
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="acordeon4">
+							<h2 class="accordion-header" id="acordeon5">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoTransporte" aria-expanded="false" aria-controls="tipoTransporte" data-bs-parent="#acordeonPadre">
 									Transporte
 								</button>
@@ -112,7 +112,21 @@
 						</div>
 
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="acordeon5">
+							<h2 class="accordion-header" id="acordeon6">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoHospedaje" aria-expanded="false" aria-controls="tipoHospedaje" data-bs-parent="#acordeonPadre">
+									Hospedaje
+								</button>
+							</h2>
+							<div id="tipoHospedaje" class="accordion-collapse collapse " aria-labelledby="tipoHospedaje" >
+								<div class="accordion-body">
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idHospedaje ==-1 }" @click="idHospedaje = -1; hospedajeSelect='';" >Todos</a></p>
+									<p  v-for="(hospedaje, index) in hospedajes" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idHospedaje == index+1 }" @click="idHospedaje = index+1; hospedajeSelect=hospedaje" >{{hospedaje}}</a></p>
+								</div>
+							</div>
+						</div>
+
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="acordeon7">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoDia" aria-expanded="false" aria-controls="tipoDia" data-bs-parent="#acordeonPadre">
 									Días
 								</button>
@@ -126,7 +140,7 @@
 						</div>
 
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="acordeon5">
+							<h2 class="accordion-header" id="acordeon8">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoPrecios" aria-expanded="false" aria-controls="tipoPrecios" data-bs-parent="#acordeonPadre">
 									Precios
 								</button>
@@ -201,12 +215,13 @@
 			servidor: 'https://grupoeuroandino.com/app/api/', 
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			dias:[], actividades:[], categorias:[],
-			idTour:-1, idActividad:-1, idDepartamento:-1,idCategoria:-1, idDia:-1, idPrecio:-1, idTransporte:-1,
+			idTour:-1, idActividad:-1, idDepartamento:-1,idCategoria:-1, idDia:-1, idPrecio:-1, idTransporte:-1, idHospedaje:-1, texto:'',
 			precios:['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00' ], 
-			actividadSelect:'', categoriaSelect:'',transporteSelect:'', productos:[],
+			actividadSelect:'', categoriaSelect:'',transporteSelect:'', hospedajeSelect:'', productos:[],
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], 
 			duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], 
-			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}], pedidos:[], transportes:['Terrestres', 'Aéreos', 'Ninguno']
+			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}], pedidos:[], transportes:['Terrestres', 'Aéreos'],
+			hospedajes:['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro', ]
 		},
 		mounted:function(){
 			this.cargar();
@@ -244,9 +259,11 @@
 				datos.append('idDepartamento', this.idDepartamento);
 				datos.append('idCategoria', this.idCategoria);
 				datos.append('idTransporte', this.idTransporte);
+				datos.append('idHospedaje', this.idHospedaje);
 				datos.append('categoria', this.categoriaSelect);
 				datos.append('idDia', this.idDia);
 				datos.append('idPrecio', this.idPrecio);
+				datos.append('texto', this.texto);
 				let respServ = await fetch(this.servidor+'buscarFiltroTienda.php',{
 					method:'POST', body:datos
 				});

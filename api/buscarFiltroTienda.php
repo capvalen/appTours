@@ -16,6 +16,7 @@ $idCategoria=-1;
 $idDia=-1;
 $idPrecio=-1;
 $idTransporte=-1;
+$idHospedaje=-1;
 
 $fPrecio ="1";
 
@@ -26,7 +27,9 @@ if($_POST['idActividad']>-1){ $fActividad ="JSON_EXTRACT(contenido, '$.actividad
 if($_POST['idDepartamento']>-1){ $fDepartamento ="contenido like  '%\"departamento\":{$_POST['idDepartamento']},%'";}else{ $fDepartamento='1';}
 if($_POST['idCategoria']>-1){ $fCategoria ="JSON_EXTRACT(contenido, '$.categorias') like '%{$_POST['idCategoria']}%'";}else{ $fCategoria='1';}
 if($_POST['idTransporte']>-1){ $fTransporte ="JSON_EXTRACT(contenido, '$.transporte') like '%{$_POST['idTransporte']}%'";}else{ $fTransporte='1';}
+if($_POST['idHospedaje']>-1){ $fHospedaje ="JSON_EXTRACT(contenido, '$.alojamiento') like '%{$_POST['idHospedaje']}%'";}else{ $fHospedaje='1';}
 if($_POST['idDia']>-1){ $fDuracion ="contenido like  '%\"duracion\":{$_POST['idDia']}%'";}else{ $fDuracion='1';}
+if($_POST['texto']<>''){ $fTexto ="contenido like  '%\"nombre\":%{$_POST['texto']}%'";}else{ $fTexto='1';}
 if($_POST['idPrecio']>-1){
 	switch ($_POST['idPrecio']) {
 		case '-1': //0-150
@@ -49,7 +52,7 @@ if($_POST['idPrecio']>-1){
 	}
 }
 
-$sql = $db->query("SELECT * FROM `tours` where activo=1 and {$fTour} and {$fActividad} and {$fDepartamento} and {$fCategoria} and {$fDuracion} and {$fPrecio} and {$fTransporte};");
+$sql = $db->query("SELECT * FROM `tours` where activo=1 and {$fTour} and {$fActividad} and {$fDepartamento} and {$fCategoria} and {$fDuracion} and {$fPrecio} and {$fTransporte} and {$fHospedaje} and {$fTexto};");
 if($sql->execute()){
 	//echo $sql->debugDumpParams();
 	while($row = $sql->fetch(PDO::FETCH_ASSOC)){
