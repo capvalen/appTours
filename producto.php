@@ -409,7 +409,8 @@ $.fn.bootstrapDP = datepicker;
 			formatoMoneda(valor){
 				return parseFloat(valor).toFixed(2)
 			},
-		/* 	comprobarRequisitos(){
+			/* 	
+			comprobarRequisitos(){
 				if(this.nacionalidad==-1){
 					this.faltaPais=true; this.msjError = "Debe rellenar el campo de su nacionalidad antes de reservar"; return false;
 				}else if(!this.contarMinimoPersonas()){
