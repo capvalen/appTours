@@ -135,31 +135,31 @@
 						</div>
 						<p class="mb-0">Precio para Peruanos:</p>
 						<div class="row ">
-							<div class="col">
+							<div class="col-12">
 								<div class="form-floating mb-3">
 									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.peruanos.adultos">
-									<label for="floNombre">Adulto</label>
+									<label for="floNombre">Hab. matrimonial, doble ó triple</label>
 								</div>
 							</div>
 							<div class="col">
 								<div class="form-floating mb-3">
 									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.peruanos.kids">
-									<label for="floNombre">Niños (max. 10 años)</label>
+									<label for="floNombre">Hab. simple (1 persona por habitación)</label>
 								</div>
 							</div>
 						</div>
 						<p class="mb-0">Precio para Extranjeros:</p>
 						<div class="row ">
-							<div class="col">
+							<div class="col-12">
 								<div class="form-floating mb-3">
 									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.extranjeros.adultos">
-									<label for="floNombre">Adulto</label>
+									<label for="floNombre">Hab. matrimonial, doble ó triple</label>
 								</div>
 							</div>
 							<div class="col">
 								<div class="form-floating mb-3">
 									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.extranjeros.kids">
-									<label for="floNombre">Niños (max. 10 años)</label>
+									<label for="floNombre">Hab. simple (1 persona por habitación)</label>
 								</div>
 							</div>
 						</div>

@@ -131,7 +131,10 @@
 					<span v-else>{{tourActivo.cupos}} cupos disponibles</span>
 				</p>
 				<div class="row container" id="divAdultos">
-					<div class="col-4 text-end"><span class="text-muted">Adultos</span></div>
+					<div class="col-5 ">
+						<p v-if="tourActivo.tipo=='1'" class="text-muted text-end mb-0">Adultos</p>
+						<p v-else class="text-muted mb-0">en hab. matrimonial, doble ó triple</p>
+					</div>
 					<div class="col-6 ms-3">
 						<div class="input-group mx-auto">
 							<button class="btn btn-outline-secondary border-0" type="button" @click='restarAdulto()'><i class="icofont-minus"></i></button>
@@ -141,7 +144,10 @@
 					</div>
 				</div>
 				<div class="row container mt-2" id="divKids">
-					<div class="col-4 text-end"><span class="text-muted">Niños <br><small>(hasta 10 años)</small></span></div>
+					<div class="col-5 ">
+						<p v-if="tourActivo.tipo==1" class="text-muted text-end mb-0">Niños <br><small>(hasta 10 años)</small></p>
+						<p v-else class="text-muted mb-0">en hab. simple <small class="text fst-italic">(1 persona por habitación)</small></p>
+					</div>
 					<div class="col-6 ms-3">
 						<div class="input-group mx-auto">
 							<button class="btn btn-outline-secondary border-0" type="button" @click="restarKid()"><i class="icofont-minus"></i></button>

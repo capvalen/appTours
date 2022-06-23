@@ -114,7 +114,7 @@
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="acordeon6">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoHospedaje" aria-expanded="false" aria-controls="tipoHospedaje" data-bs-parent="#acordeonPadre">
-									Hospedaje
+									Alojamiento
 								</button>
 							</h2>
 							<div id="tipoHospedaje" class="accordion-collapse collapse " aria-labelledby="tipoHospedaje" >
@@ -220,7 +220,7 @@
 			actividadSelect:'', categoriaSelect:'',transporteSelect:'', hospedajeSelect:'', productos:[],
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], 
 			duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], 
-			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}], pedidos:[], transportes:['Terrestres', 'Aéreos'],
+			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}], pedidos:[], transportes:['Terrestre', 'Aéreo'],
 			hospedajes:['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro', ]
 		},
 		mounted:function(){
