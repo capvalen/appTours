@@ -35,6 +35,7 @@ if( $sql->execute([$_POST['id']])){
 		$kidNormal = floatval($contenido['extranjeros']['kids']);
 	}
 	$nombre = $contenido['nombre'];
+	$fotos = $contenido['fotos'];
 	$hora = $contenido['hora'];
 	$total = $adultos + $menores;
 
@@ -46,4 +47,4 @@ if( $sql->execute([$_POST['id']])){
 	echo $sql->errorinfo();
 }
 
-echo json_encode( array('nombre'=>$nombre, 'adultos'=> $adultos, 'menores' => $menores, 'total'=>$total, 'hora'=> $hora, 'adultoNormal'=> $adultNormal, 'menorNormal'=>$kidNormal) );
+echo json_encode( array('nombre'=>$nombre, 'adultos'=> $adultos, 'menores' => $menores, 'total'=>$total, 'hora'=> $hora, 'adultoNormal'=> $adultNormal, 'menorNormal'=>$kidNormal, 'idProducto'=>$_POST['id'], 'fotos'=>$fotos, 'cantAdultos' => $_POST['adultos'], 'cantKids' => $_POST['kids'] ) );

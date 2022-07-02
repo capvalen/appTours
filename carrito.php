@@ -1,3 +1,6 @@
+<?php
+include '../api/'
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,13 +11,23 @@
 	<!-- CSS only -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
+	
+	<!-- Javascript library. Should be loaded in head section -->
+	<script type="text/javascript"
+        src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js" 
+        kr-public-key="CLAVE_PUBLICA">
+    </script>
+
+    <!-- theme and plugins. should be loaded in the HEAD section -->
+    <link rel="stylesheet" href="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic-reset.css">
+    <script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic.js"></script>
 </head>
 <body>
 	<style>
 		.gris { color: #adadad; }
 		.form-control{border: 1px solid #ced4da!important;}
 	</style>
-	<div id="app">
+	<div id="app" class="p-4">
 		<div class="container" v-if="this.idProducto!=null">
 			<div class="row ">
 				<div class="col-12 col-md-8">
@@ -24,13 +37,13 @@
 							<div class="row row-cols-xs-1 row-cols-md-2">
 								<div class="col">
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="" placeholder=" " v-model="nombres">
+										<input type="text" class="form-control text-capitalize" id="" placeholder=" " v-model="nombres">
 										<label for="floatingInput">Nombres</label>
 									</div>
 								</div>
 								<div class="col">
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="" placeholder=" " v-model="apellidos">
+										<input type="text" class="form-control text-capitalize" id="" placeholder=" " v-model="apellidos">
 										<label for="floatingInput">Apellidos</label>
 									</div>
 								</div>
@@ -66,13 +79,13 @@
 								</div>
 								<div class="col">
 								<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="" placeholder=" " v-model="ciudad">
+										<input type="text" class="form-control text-capitalize" id="" placeholder=" " v-model="ciudad">
 										<label for="floatingInput">Ciudad</label>
 									</div>
 								</div>
 								<div class="col">
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="" placeholder=" " v-model="direccion">
+										<input type="text" class="form-control text-capitalize" id="" placeholder=" " v-model="direccion">
 										<label for="floatingInput">Dirección</label>
 									</div>
 								</div>
@@ -92,11 +105,11 @@
 										</label>
 									</div>
 								</div>
-								<p class="mt-2">* Todos los campos son requeridos</p>
+								<p class="mt-2"><small>* Todos los campos son requeridos</small></p>
 							</div>
 						</div>
 					</div>
-					<p class="mt-2 text-muted"><i class="icofont-ui-close"> </i> Anular ésta compra</p>
+					<!-- <p class="mt-2 text-muted"><i class="icofont-ui-close"> </i> Anular ésta compra</p> -->
 
 				</div>
 				<div class="col-12 col-md-4">
@@ -129,8 +142,11 @@
 							</div>
 						</div>
 					</div>
-					<div class="d-grid gap-1 mt-2">
-						<button class="btn btn-primary btn-lg" @click="finalizarCompra">Finalizar compra</button>
+					<div class="d-grid gap-1 my-2">
+						<button class="btn btn-outline-danger btn-lg" @click="finalizarCompra">Finalizar compra</button>
+					</div>
+					<div>
+						<img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/83589178_2587722714818486_2444153424434954240_n.png" alt="" class="img-fluid">
 					</div>
 				</div>
 			</div>
@@ -140,7 +156,7 @@
 		</div>
 
 		<div class="position-relative">
-			<div class="toast-container position-absolute bottom-0 end-0 p-3">
+			<div class="toast-container position-absolute bottom-0 start-50 translate-middle-x p-3">
 				<div class="toast align-items-center text-white bg-danger border-0" id="toastMal" role="alert" aria-live="assertive" aria-atomic="true">
 					<div class="d-flex">
 						<div class="toast-body">
@@ -160,12 +176,52 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="modal fade" tabindex="-1" id="modalPagar" data-bs-backdrop="static" data-bs-keyboard="false" >
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					
+					<div class="modal-body">
+						<div class="d-flex justify-content-between">
+							<h5 class="modal-title">Pagar con tarjeta</h5>
+						</div>
+						<p>Complete su pago</p>
+
+						<!--Hidden payment form -->
+						<div id="paymentForm" class="kr-embedded" style="display:none">
+
+							<!-- payment form fields -->
+							<div class="kr-pan"></div>
+							<div class="kr-expiry"></div>
+							<div class="kr-security-code"></div>
+
+							<!-- payment form submit button -->
+							<button class="kr-payment-button"></button>
+
+							<!-- error zone -->
+							<div class="kr-form-error"></div>
+						</div>
+
+
+
+						<div class="d-flex justify-content-between">
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar pedido</button>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+
+
 <script>
-	var toastMal;
+	var toastMal, modalPagar;
 	const app = new Vue({
 		el:'#app',
 		data() {
@@ -177,7 +233,7 @@
 				nacionalidad:-1, comienza:null,
 				nombres: '', apellidos: '', documento: '', correo: '', celular: '', 
 				ciudad: '', direccion: '', politica: '', privacidad: '', mensajeError:'', hora:'',
-				precAdultos:'', precMenores:'', total:'', nomTour:'', adultoNormal:0,menorNormal:0
+				precAdultos:'', precMenores:'', total:'', nomTour:'', adultoNormal:0,menorNormal:0, idOrden:-1
 			}
 		},
 		mounted() {
@@ -192,12 +248,30 @@
 
 			toastMal = new bootstrap.Toast(document.getElementById('toastMal'));
 			toastBien = new bootstrap.Toast(document.getElementById('toastBien'));
+			modalPagar = new bootstrap.Modal(document.getElementById('modalPagar'));
 
-			/* this.carrito = JSON.parse(localStorage.getItem('carrito'));
-			if(this.carrito == null){ this.carrito=[] }else{} */
+			
 			if(this.idProducto!=null){
 				this.verificarItemCarrito();
 			}
+			this.carrito = JSON.parse(localStorage.getItem('carrito'));
+			if(this.carrito == null){ 
+				this.carrito=[];
+			 }else{
+				let resol = this.carrito.findIndex( item => item.idProducto == this.idProducto)
+				if(resol>=0){
+					this.carrito.splice(resol,1)
+				}
+			}
+
+			this.carrito.push({
+				idProducto: this.idProducto,
+				adultos: this.adultos,
+				kids: this.kids,
+				nacionalidad: this.nacionalidad,
+				empieza: this.empieza
+			});
+			localStorage.setItem('carrito', JSON.stringify(this.carrito))
 			
  			/*this.carrito.push({dato:1, data2:2})
 			localStorage.setItem('carrito', JSON.stringify(this.carrito)) 
@@ -239,7 +313,8 @@
 				else if(!document.getElementById('chkPrivacidad').checked){ this.mensajeError='Debe aceptar las Políticas de privacidad';  toastMal.show(); return false; }
 				else{ return true;}
 			},
-			async finalizarCompra(){
+			finalizarCompra(){
+				//this.crearToken();
 				if(this.verificarCampos()){
 					console.log( 'comenzar a guardar' );
 					let datos = new FormData();
@@ -268,16 +343,79 @@
 					.then(respo => { 
 						return respo.text().then(texto=>{
 							if( parseInt(texto)>0 ){
-								toastBien.show();
+								this.idOrden=parseInt(texto);
+								//toastBien.show();
+								this.crearToken();
 							}
 						})
 					 })
-					
 					//console.log( await respServer.text() );
 				}
+			},
+			async crearToken(){
+				let datos = new FormData()
+				datos.append('monto', this.total*100)
+				datos.append('correo', 'ejemplo1@hotmail.com')
+				datos.append('id', this.idOrden);
+
+				let respIzi = await fetch('https://grupoeuroandino.com/app/render/token.php',{
+					method:'POST', body: datos
+				})
+				.then(respuesta =>{
+					respuesta.text().then(letra  =>{
+						console.log(letra)
+						//document.getElementsByClassName('kr-embedded')[0].setAttribute('kr-form-token', letra)
+						displayPaymentForm(letra)
+					})
+				})
+				//onCheckout()
+
+
+				
+				modalPagar.show();
 			}
 		}
-	})
+	});
+	
+	function displayPaymentForm(formToken){
+		// Show the payment form
+		document.getElementById('paymentForm').style.display = 'block';
+
+		// Set form token
+		KR.setFormToken(formToken);
+
+		// Add listener for submit event
+		KR.onSubmit(onPaid);
+		
+	}
+	
+	function onPaid(event) {
+		if (event.clientAnswer.orderStatus === "PAID") {
+			
+			goToThanks();
+			// Remove the payment form
+			KR.removeForms();
+
+			// Show success message
+			document.getElementById("paymentSuccessful").style.display = "block";
+		
+		} else {
+			// Show error message to the user
+			alert("Payment failed !");
+		}
+	}
+	
+	function goToThanks(){
+		console.log('empeiza a redirigir')
+		var url = 'https://grupoeuroandino.com/gracias';
+		var form = $('<form action="' + url + '" method="post">' +
+			'<input type="text" name="id" value="' + app.idOrden + '" />' +
+			'</form>');
+		$('body').append(form);
+		form.submit();
+	}
+	
+	
 </script>
 </body>
 </html>

@@ -18,9 +18,9 @@ $resp = $sql->execute([ $_POST['id'], 1, $_POST['nacionalidad'], $_POST['adultos
 
  if($resp){
 	 //echo 'ok';
-	 $idTour = $db->lastInsertId();
+	 $idPedido = $db->lastInsertId();
 	
-	 foreach($_POST['tour']['actividades'] as $valor){
+	/*  foreach($_POST['tour']['actividades'] as $valor){
 		 $sqlActiv = $db->prepare("INSERT INTO `tourActividades`(`idTour`, `idActividad`) VALUES (?, ?);");
 		 $respActiv = $sqlActiv->execute([ $idTour, $valor ]);
 	 }
@@ -28,8 +28,8 @@ $resp = $sql->execute([ $_POST['id'], 1, $_POST['nacionalidad'], $_POST['adultos
 	 foreach($_POST['tour']['categorias'] as $campo){
 		 $sqlCateg = $db->prepare("INSERT INTO `tourCategorias`(`idTour`, `idCategoria`) VALUES (?, ?);");
 		 $respCateg = $sqlCateg->execute([ $idTour, $campo ]);
-	 }
-	 echo $idTour;
+	 } */
+	 echo $idPedido;
 
 	}else{
 	echo $sql->debugDumpParams();

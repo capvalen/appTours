@@ -1,0 +1,5 @@
+{
+    "require": {
+        "lyracom/rest-php-sdk": "4.0.*"
+    }
+}

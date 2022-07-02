@@ -398,7 +398,7 @@ $.fn.bootstrapDP = datepicker;
 				return this.departamentos[valor];
 			},
 			reservar(){
-				if($('#dtpFecha').bootstrapDP('getFormattedDate')==null){
+				if($('#dtpFecha').bootstrapDP('getFormattedDate')==null || $('#dtpFecha').bootstrapDP('getFormattedDate')==''){
 					this.faltaPais=true; this.msjError = "Debe seleccionar una fecha inicial"; return false;
 				}else if(this.comprobarNacionalidad() && this.contarMinimoPersonas()){
 					window.location.href="/carrito-compras/?id="+this.idProducto+"&adults="+this.cantAdultos+"&kids="+this.cantKids+"&nationality="+this.nacionalidad+"&start="+$('#dtpFecha').bootstrapDP('getFormattedDate');
