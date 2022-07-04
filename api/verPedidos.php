@@ -10,7 +10,7 @@ $filas = [];
 
 $sql= $db->query("SELECT p.*, e.estado FROM `pedidos` p
 inner join estados e on e.id = p.idEstado
-where " . $filtro ."
+where " . $filtro ." and idEstado = 2 and p.activo = 1
 order by fecha desc
 limit 50;");
 if( $sql->execute()){

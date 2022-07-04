@@ -13,10 +13,8 @@ include '../api/'
 	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
 	
 	<!-- Javascript library. Should be loaded in head section -->
-	<script type="text/javascript"
-        src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js" 
-        kr-public-key="CLAVE_PUBLICA">
-    </script>
+	<!-- <script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"  kr-public-key="99809654:publickey_tXwOD7MbbajQWgNUXaUU1UaIrlEqLFpESM2tz7weDTqNI"> </script> -->
+	<script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"  kr-public-key="99809654:testpublickey_o2ZxvjYuYMyFHd8DYsCWvaEGHnfRWrYS0uWqMqnC3MfpC"> </script>
 
     <!-- theme and plugins. should be loaded in the HEAD section -->
     <link rel="stylesheet" href="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic-reset.css">
@@ -217,6 +215,7 @@ include '../api/'
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://grupoeuroandino.com/app/render/js/moment.min.js"></script>
 
 
 
@@ -231,8 +230,8 @@ include '../api/'
 				carrito:null,
 				idProducto:null,adultos:0, kids:0,
 				nacionalidad:-1, comienza:null,
-				nombres: '', apellidos: '', documento: '', correo: '', celular: '', 
-				ciudad: '', direccion: '', politica: '', privacidad: '', mensajeError:'', hora:'',
+				nombres: 'carlos', apellidos: 'pariona', documento: '44475064', correo: 'infocat.servicios@gmail.com', celular: '977692108', 
+				ciudad: 'huancayo', direccion: 'av huancavelica 435', politica: '', privacidad: '', mensajeError:'', hora:'',
 				precAdultos:'', precMenores:'', total:'', nomTour:'', adultoNormal:0,menorNormal:0, idOrden:-1
 			}
 		},
@@ -336,6 +335,7 @@ include '../api/'
 					datos.append('total', this.total)
 					datos.append('moneda', 1)//falta habilitar izipay
 					datos.append('titulo', this.nomTour)
+					datos.append('empieza', moment(this.empieza, 'DD/MM/YYYY').format('YYYY-MM-DD'))
 
 					let respServer = fetch(this.servidor+'guardarPedido.php', {
 						method:'POST', body:datos
@@ -406,6 +406,12 @@ include '../api/'
 	}
 	
 	function goToThanks(){
+		let resol = app.carrito.findIndex( item => item.idProducto == app.idProducto)
+		if(resol>=0){
+			app.carrito.splice(resol,1)
+		}
+		localStorage.setItem('carrito', JSON.stringify(app.carrito))
+
 		console.log('empeiza a redirigir')
 		var url = 'https://grupoeuroandino.com/gracias';
 		var form = $('<form action="' + url + '" method="post">' +

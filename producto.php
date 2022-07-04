@@ -65,13 +65,13 @@
 				<div class="my-3 p-4 border rounded" id="divIzquierda">
 					<h2 class="text-danger text-capitalize">{{tourActivo.nombre}}</h2>
 					<div class="row row-cols-3" v-if="tourActivo.tipo===2" id="divTransportes">
-						<div class="col">
+						<div class="col" v-if="tourActivo.transporte!='3'">
 							<div class="d-flex justify-content-between">
-								<div class="m-auto pe-2">
+								<div class="m-auto pe-2" >
 									<img v-if="tourActivo.transporte==='2'" src="https://grupoeuroandino.com/app/render/images/vuelo.png" alt="">
-									<img v-else="tourActivo" src="https://grupoeuroandino.com/app/render/images/carro.png" alt="">
+									<img v-else  src="https://grupoeuroandino.com/app/render/images/carro.png" alt="">
 								</div>
-								<div class="text-start">
+								<div class="text-start" >
 									<h6 class="mb-1
 									">Transporte</h6>
 									<span>{{transportes[parseInt(tourActivo.transporte)-1]}}</span>

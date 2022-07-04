@@ -30,5 +30,17 @@ try {
 } catch (Exception $e) {
 	echo "Problema con la conexion: ".$e->getMessage();
 }
+//Con Objetos auxiliar:
+try {
+	$auxiliar = new PDO (
+		'mysql:host=localhost;
+		dbname='.$datos,
+		$username,
+		$password,
+		array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
+	);
+} catch (Exception $e) {
+	echo "Problema con la conexion: ".$e->getMessage();
+}
 
 ?>

@@ -67,7 +67,7 @@
 	<div class="container" id="app">
 		<div class="row ">
 			<div class="col-8">
-				<p class="fs-1">Tours</p>
+				<p class="fs-1">Tours.</p>
 			</div>
 			<div class="col-4 d-flex align-items-center">
 				<button class="btn btn-outline-primary" @click="nuevoTourSimple()"><i class="icofont-list"></i> Crear Tour</button>
@@ -81,6 +81,13 @@
 					<input type="text" name="" id="txtFiltro" ref="txtFiltro" class="form-control" placeholder="Buscar" >
 					<button class="btn btn-outline-secondary" type="button" @click="buscarProducto()"><i class="icofont-search"></i> Buscar</button>
 				</div>
+			</div>
+			<div class="col-12 col-md-6">
+				<label for="" class="form-label"><i class="icofont-filter"></i> Departamentos</label>
+				<select class="form-select" v-model="idDepartamento" @change="buscarProducto()">
+					<option value="-1">Todos</option>
+					<option v-for="(departamento, index) in departamentos" :value="index">{{departamento}}</option>
+				</select>
 			</div>
 		</div>
 		<table class="table table-hover">
@@ -415,7 +422,7 @@
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1
+			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idDepartamento:-1
 		},
 		mounted:function(){
 			this.verTours();
@@ -670,7 +677,11 @@
 			async buscarProducto(){
 				//console.log( this.$refs.txtFiltro.value );
 				var that = this;
-				let respuesta = await axios.post(this.servidor+'buscarTour.php', {texto: this.$refs.txtFiltro.value })
+				let respuesta = await axios.post(this.servidor+'buscarTour.php', {
+					texto: this.$refs.txtFiltro.value,
+					tipo: 1,
+					departamento: this.idDepartamento
+				})
 				this.todosTours=[];
 				this.variosTours=[];
 				
