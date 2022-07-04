@@ -214,6 +214,7 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="row">
 				<div class="col-12 col-md-8">
 					<div class="my-3 p-4 border rounded">
@@ -221,25 +222,25 @@
 							<div class="titulo p-2 mb-3">
 								<h3 class="my-1">Tours y paquetes turísticos similares:</h3>
 							</div>
-							<div class="row row-cols-1 row-cols-md-3 ">
-								<div class="col my-2" v-for="recomendado in recomendados" :key="recomendado.id">
-									<a :href="'https://grupoeuroandino.com/viaje/?id='+recomendado.id"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+recomendado.foto" alt="" class="img-fluid"></a>
-									<h5 class="mb-0">{{recomendado.titulo}}</h5>
-									<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{recomendado.destino}}, {{departamentos[recomendado.depa]}}</strong></span></p>
-									<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
-									<div class="row row-cols-2">
-										<div>
-											<span>{{queDuraRecomendado(recomendado.tipo, recomendado.duracion, recomendado.duracion2)}}</span>
+								<div class="row row-cols-1 row-cols-md-3 ">
+									<div class="col my-2" v-for="recomendado in recomendados" :key="recomendado.id">
+										<a :href="'https://grupoeuroandino.com/viaje/?id='+recomendado.id"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+recomendado.foto" alt="" class="img-fluid"></a>
+										<h5 class="mb-0">{{recomendado.titulo}}</h5>
+										<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{recomendado.destino}}, {{departamentos[recomendado.depa]}}</strong></span></p>
+										<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
+										<div class="row row-cols-2">
+											<div>
+												<span>{{queDuraRecomendado(recomendado.tipo, recomendado.duracion, recomendado.duracion2)}}</span>
+											</div>
+											<div class="text-end "><span class="precio2"><span class="monedita fs-6">S/</span> {{formatoMoneda(recomendado.precio)}}</span> <p class="precioAnt2 mb-0">S/ {{formatoMoneda(recomendado.oferta)}}</p></div>
 										</div>
-										<div class="text-end "><span class="precio2"><span class="monedita fs-6">S/</span> {{formatoMoneda(recomendado.precio)}}</span> <p class="precioAnt2 mb-0">S/ {{formatoMoneda(recomendado.oferta)}}</p></div>
 									</div>
 								</div>
-								
-							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
 	</div>
 	
 	
@@ -327,7 +328,10 @@ $.fn.bootstrapDP = datepicker;
 				let respRecomendados = await fetch(this.servidor+'pedirRecomendadosRandom.php',{
 					method:'POST', body:datos
 				});
-				this.recomendados = await respRecomendados.json();
+				this.recomendados = await respRecomendados.json()
+				.then(()=>{
+					$('.carroRecomendados').fotorama();
+				});
 				
 			},
 			formatoMoneda(valor){

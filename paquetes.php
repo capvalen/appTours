@@ -1,3 +1,6 @@
+<?php
+if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

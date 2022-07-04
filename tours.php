@@ -1,3 +1,6 @@
+<?php
+if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -67,7 +70,7 @@
 	<div class="container" id="app">
 		<div class="row ">
 			<div class="col-8">
-				<p class="fs-1">Tours.</p>
+				<p class="fs-1">Tours</p>
 			</div>
 			<div class="col-4 d-flex align-items-center">
 				<button class="btn btn-outline-primary" @click="nuevoTourSimple()"><i class="icofont-list"></i> Crear Tour</button>

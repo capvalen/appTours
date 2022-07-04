@@ -14,7 +14,7 @@ include '../api/'
 	
 	<!-- Javascript library. Should be loaded in head section -->
 	<!-- <script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"  kr-public-key="99809654:publickey_tXwOD7MbbajQWgNUXaUU1UaIrlEqLFpESM2tz7weDTqNI"> </script> -->
-	<script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"  kr-public-key="99809654:testpublickey_o2ZxvjYuYMyFHd8DYsCWvaEGHnfRWrYS0uWqMqnC3MfpC"> </script>
+	<script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"  kr-public-key="99809654:publickey_tXwOD7MbbajQWgNUXaUU1UaIrlEqLFpESM2tz7weDTqNI"> </script>
 
     <!-- theme and plugins. should be loaded in the HEAD section -->
     <link rel="stylesheet" href="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/ext/classic-reset.css">
@@ -104,6 +104,37 @@ include '../api/'
 									</div>
 								</div>
 								<p class="mt-2"><small>* Todos los campos son requeridos</small></p>
+							</div>
+						</div>
+					</div>
+					<div class="card p-2 mt-3">
+						<div class="card-body">
+							<p class="mb-0">Su Boleta de Venta Electrónica se generará con los datos ingresados previamente</p>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="chkFactura" @click="cambiarEntreFactura()">
+								<label class="form-check-label" for="chkFactura"> Yo deseo una factura </label>
+							</div>
+						</div>
+						<div v-if="actiFactura==1">
+							<div class="row">
+								<div class="col-12 col-md-6">
+									<div class="form-floating mb-3">
+										<input type="text" class="form-control text-capitalize" id="txtNRuc" placeholder=" " v-model="nRuc">
+										<label for="floatingInput">R.U.C.</label>
+									</div>
+								</div>
+								<div class="col-12 col-md-6">
+									<div class="form-floating mb-3">
+										<input type="text" class="form-control text-capitalize" id="txtNRazon" placeholder=" " v-model="nRazon">
+										<label for="floatingInput">Razón social</label>
+									</div>
+								</div>
+								<div class="col-12 col-md-12">
+									<div class="form-floating mb-3">
+										<input type="text" class="form-control text-capitalize" id="txtNDireccion" placeholder=" " v-model="nDireccion">
+										<label for="floatingInput">Dirección fiscal:</label>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -230,9 +261,13 @@ include '../api/'
 				carrito:null,
 				idProducto:null,adultos:0, kids:0,
 				nacionalidad:-1, comienza:null,
-				nombres: 'carlos', apellidos: 'pariona', documento: '44475064', correo: 'infocat.servicios@gmail.com', celular: '977692108', 
-				ciudad: 'huancayo', direccion: 'av huancavelica 435', politica: '', privacidad: '', mensajeError:'', hora:'',
-				precAdultos:'', precMenores:'', total:'', nomTour:'', adultoNormal:0,menorNormal:0, idOrden:-1
+				/* nombres: 'carlos', apellidos: 'pariona', documento: '44475064', correo: 'infocat.servicios@gmail.com', celular: '977692108', 
+				ciudad: 'huancayo', direccion: 'av huancavelica 435',  */
+				nombres: '', apellidos: '', documento: '', correo: '', celular: '', 
+				ciudad: '', direccion: '',
+				politica: '', privacidad: '', mensajeError:'', hora:'',
+				precAdultos:'', precMenores:'', total:'', nomTour:'', adultoNormal:0,menorNormal:0, idOrden:-1, actiFactura:3, //3boleta, 1 factura
+				nRuc:'', nRazon:'', nDireccion:''
 			}
 		},
 		mounted() {
@@ -310,6 +345,12 @@ include '../api/'
 				else if(this.direccion==''){ this.mensajeError='Falta completar su dirección';  toastMal.show(); return false; }
 				else if(!document.getElementById('chkPoliticas').checked){ this.mensajeError='Debe aceptar los Términos y condiciones';  toastMal.show(); return false; }
 				else if(!document.getElementById('chkPrivacidad').checked){ this.mensajeError='Debe aceptar las Políticas de privacidad';  toastMal.show(); return false; }
+				else if(document.getElementById('chkFactura').checked){ 
+					if( this.nRuc =='' || this.nRuc.length!=11 ){ this.mensajeError='Falta completar su RUC o está erróneo';  toastMal.show(); return false;  }
+					else if( this.nRazon =='' ){ this.mensajeError='Falta completar su razón social';  toastMal.show(); return false;  }
+					else if( this.nDireccion =='' ){ this.mensajeError='Falta completar su dirección fiscal';  toastMal.show(); return false;  }
+					else{ return true;}
+				 }
 				else{ return true;}
 			},
 			finalizarCompra(){
@@ -336,6 +377,12 @@ include '../api/'
 					datos.append('moneda', 1)//falta habilitar izipay
 					datos.append('titulo', this.nomTour)
 					datos.append('empieza', moment(this.empieza, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+					
+					//datos de factura o boleta
+					datos.append('tipoComprobante', this.actiFactura)
+					datos.append('nRuc', this.nRuc)
+					datos.append('nRazon', this.nRazon)
+					datos.append('nDireccion', this.nDireccion)
 
 					let respServer = fetch(this.servidor+'guardarPedido.php', {
 						method:'POST', body:datos
@@ -373,6 +420,14 @@ include '../api/'
 
 				
 				modalPagar.show();
+			},
+			cambiarEntreFactura(){
+				if(!document.getElementById('chkFactura').checked){ //boleta
+					this.actiFactura = 3;
+				}
+				if(document.getElementById('chkFactura').checked){ //factura
+					this.actiFactura = 1;
+				}
 			}
 		}
 	});
@@ -381,10 +436,10 @@ include '../api/'
 		// Show the payment form
 		document.getElementById('paymentForm').style.display = 'block';
 
-		// Set form token
+		// recupera datos desde el tocken generado con anterioridad
 		KR.setFormToken(formToken);
 
-		// Add listener for submit event
+		// Agrega un Listener (evento de escucha) cuando algún pago se haya realizado, sea bueno o mano para evaluarlo luego
 		KR.onSubmit(onPaid);
 		
 	}
