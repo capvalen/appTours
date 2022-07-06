@@ -11,7 +11,7 @@ $sql = $db->query("SELECT id, replace(JSON_EXTRACT(contenido, '$.nombre'), '\"',
 FROM `tours` 
 WHERE activo = 1 and visible = 1
 AND JSON_EXTRACT(contenido, '$.departamento') = {$_POST['departamento']}
-ORDER BY FIELD(tipo,'{$_POST['tipo']}') desc, FIELD(JSON_EXTRACT(contenido, '$.departamento'), '{$_POST['departamento']}') DESC, RAND() limit 3 "); //and tipo = 1
+ORDER BY FIELD(tipo,'{$_POST['tipo']}') desc, FIELD(JSON_EXTRACT(contenido, '$.departamento'), '{$_POST['departamento']}') DESC, RAND() limit 8 "); //and tipo = 1
 if($sql ->execute()){
 	while($row = $sql->fetch(PDO::FETCH_ASSOC)){
 		$filas[] = $row;

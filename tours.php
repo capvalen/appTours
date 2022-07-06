@@ -490,10 +490,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			nuevoTourSimple(){
 				this.activarEditar=false;
-				$('#sltActividad2').selectpicker('val');
-				$('#sltActividad2').selectpicker('refresh');
-				$('#sltCategoria2').selectpicker('val');
-				$('#sltCategoria2').selectpicker('refresh');
+				$('#sltActividad2').selectpicker('val', '');
+				//$('#sltActividad2').selectpicker('refresh');
+				$('#sltCategoria2').selectpicker('val', '');
+				//$('#sltCategoria2').selectpicker('refresh');
 				modalNuevo.show();
 			},
 			extraerHtml(){

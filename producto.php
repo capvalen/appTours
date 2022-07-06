@@ -8,6 +8,8 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
 	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 	<style>
@@ -52,6 +54,60 @@
 		#divTransportes img{
 			width: 60px;
 		}
+		.carousel-wrapper {
+  /* width: 1000px; */
+  margin: auto;
+  position: relative;
+  text-align: center;
+  font-family: sans-serif;
+}
+.owl-carousel .owl-nav {
+  overflow: hidden;
+  height: 0px;
+}
+.owl-theme .owl-dots .owl-dot.active span,
+.owl-theme .owl-dots .owl-dot:hover span {
+  background: #5110e9;
+}
+
+.owl-carousel .item {
+  text-align: center;
+}
+.owl-carousel .nav-button {
+  height: 50px;
+  width: 25px;
+  cursor: pointer;
+  position: absolute;
+  top: 110px !important;
+}
+.owl-carousel .owl-prev.disabled,
+.owl-carousel .owl-next.disabled {
+  pointer-events: none;
+  opacity: 0.25;
+}
+.owl-carousel .owl-prev {
+  left: -35px;
+}
+.owl-carousel .owl-next {
+  right: -35px;
+}
+.owl-theme .owl-nav [class*=owl-] {
+  color: #ffffff;
+  font-size: 39px;
+  background: #000000;
+  border-radius: 3px;
+}
+.owl-carousel .prev-carousel:hover {
+  background-position: 0px -53px;
+}
+.owl-carousel .next-carousel:hover {
+  background-position: -24px -53px;
+}
+.owl-theme .owl-nav [class*='owl-'] {
+	margin: 0;
+	padding: 0;
+	display: table;
+}
 	</style>
 	<div class="container-fluid" id="app">
 		<div class="row">
@@ -216,32 +272,36 @@
 		</div>
 
 		<div class="row">
-				<div class="col-12 col-md-8">
-					<div class="my-3 p-4 border rounded">
-						<div id="divRecomendaciones">
-							<div class="titulo p-2 mb-3">
-								<h3 class="my-1">Tours y paquetes turísticos similares:</h3>
-							</div>
-								<div class="row row-cols-1 row-cols-md-3 ">
-									<div class="col my-2" v-for="recomendado in recomendados" :key="recomendado.id">
+			<div class="col-12 col-md-8">
+				<div class="my-3 p-4 border rounded">
+					<div id="divRecomendaciones">
+						<div class="titulo p-2 mb-3">
+							<h3 class="my-1">Tours y paquetes turísticos similares:</h3>
+						</div>
+							<div class="carousel-wrapper">
+								<div class=" my-2 owl-carousel owl-theme">
+									<div class=" item" v-for="recomendado in recomendados" :key="recomendado.id">
 										<a :href="'https://grupoeuroandino.com/viaje/?id='+recomendado.id"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+recomendado.foto" alt="" class="img-fluid"></a>
-										<h5 class="mb-0">{{recomendado.titulo}}</h5>
-										<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{recomendado.destino}}, {{departamentos[recomendado.depa]}}</strong></span></p>
-										<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
+										<h5 class="mb-0 text-start">{{recomendado.titulo}}</h5>
+										<p class="card-text mb-0 text-start"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{recomendado.destino}}, {{departamentos[recomendado.depa]}}</strong></span></p>
+										<div class="text-start estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
 										<div class="row row-cols-2">
-											<div>
+											<div class="text-start">
 												<span>{{queDuraRecomendado(recomendado.tipo, recomendado.duracion, recomendado.duracion2)}}</span>
 											</div>
 											<div class="text-end "><span class="precio2"><span class="monedita fs-6">S/</span> {{formatoMoneda(recomendado.precio)}}</span> <p class="precioAnt2 mb-0">S/ {{formatoMoneda(recomendado.oferta)}}</p></div>
 										</div>
 									</div>
 								</div>
-						</div>
+							</div>
 					</div>
 				</div>
 			</div>
+		</div>
 
 	</div>
+	</div>
+
 	
 	
 
@@ -255,6 +315,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.min.js"></script>
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js" integrity="sha512-gY25nC63ddE0LcLPhxUJGFxa2GoIyA5FLym4UJqHDEMHjp8RET6Zn/SHo1sltt3WuVtqfyxECP38/daUc/WVEA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<script>
 var datepicker = $.fn.datepicker.noConflict();
@@ -293,6 +354,7 @@ $.fn.bootstrapDP = datepicker;
 			this.idProducto = urlParams.get('id')
 			//console.log( 'el id es ' + this.idProducto );
 			this.pedirDatos();
+			
 		},
 		methods: {
 			async pedirDatos(){
@@ -327,11 +389,29 @@ $.fn.bootstrapDP = datepicker;
 				datos.append('departamento', this.tourActivo.departamento);
 				let respRecomendados = await fetch(this.servidor+'pedirRecomendadosRandom.php',{
 					method:'POST', body:datos
+				})
+				.then( response => response.json())
+				.then(data => {
+					this.recomendados = data;
+				}).then( ()=>{
+					$(".owl-carousel").owlCarousel({
+						autoplay:true,
+						loop:true, margin:20, dots: true,
+						nav: true,
+						navText: ["<div class='nav-button owl-prev'>‹</div>", "<div class='nav-button owl-next'>›</div>"],
+						responsive:{
+							0:{
+								items:1
+							},
+							600:{
+								items: 3
+							}
+						}
+					});
 				});
-				this.recomendados = await respRecomendados.json()
+				/* this.recomendados = await respRecomendados.json()
 				.then(()=>{
-					$('.carroRecomendados').fotorama();
-				});
+				}); */
 				
 			},
 			formatoMoneda(valor){
