@@ -102,10 +102,10 @@
 			},
 			queDuraDia(duracion){
 				//return this.duracion[duracion].valor;
-				return this.duracion.find( x => x.clave === duracion ).valor;
+				return this.duracionDias.find( x => x.clave === duracion ).valor;
 			},
 			queDuraNoche(duracion){ 
-				if(duracion>1){
+				if(duracion>=1){
 					return this.duracionNoches[duracion].valor;
 				}
 			 },
