@@ -18,16 +18,14 @@
     
 	}
 	#txtBuscador{
-		width: 100%;
+		width: 85%;
 		margin: 0;
-		padding: 8px;
 		height: 44px;
 		background-color: #fff;
 		border: 2px solid #1e1e1e;
-		border-radius: 0 0 0 0;
 		box-shadow: 0 0 0 0 #b5b5b5 inset;
-		border-radius: 30px;
-		padding:2rem;
+		border-radius: 20px;
+		padding: 1.6rem;
 	}
 	#txtBuscador::placeholder{
     /* padding:2rem; */
