@@ -91,7 +91,7 @@
 		.container{width: 100%;}
 	}
 </style>
-<div class="container" id="appBuscador">
+<div class="container text-center" id="appBuscador">
 	<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);">
 	<div id="divBuscador">
 		<div id="resultado" v-if="coincidencias.length>0">
