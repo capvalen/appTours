@@ -288,11 +288,11 @@
 
 				if(id=='ultimo'){
 
-						window.location.href="https://perutravelservice.com/destinos/?texto="+this.texto;
+						window.location.href="https://grupoeuroandino.com/destinos/?texto="+this.texto;
 
 					}else{
 
-						window.location.href="https://perutravelservice.com/tour/?id="+id;
+						window.location.href="https://grupoeuroandino.com/tour/?id="+id;
 
 				}
 
