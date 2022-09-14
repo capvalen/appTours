@@ -14,6 +14,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<link rel="stylesheet" href="css/quill.bubble.css">
 	<link rel="stylesheet" href="css/quill.snow.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+	<script src="https://unpkg.com/vue-meta/dist/vue-meta.min.js"></script>
 </head>
 <body>
 	<style>
@@ -340,7 +341,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<div class="col" v-if="tourActivo.fotos.length<16">
 							<p class="mb-0">Subir imágen:</p>
 							<div class="input-group mb-3">
-								<input type="file" class="form-control" ref="archivoFile" id="txtArchivo" accept="image/*">
+								<input type="file" class="form-control" ref="archivoFile" id="txtArchivo" accept="image/*" multiple>
 								<button class="btn btn-outline-secondary" type="button" id="btnSubirArchivo" @click="subirANube()"><i class="icofont-upload-alt"></i></button>
 							</div>
 						</div>
@@ -397,7 +398,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
 	var rutaDocs = '/home/perutra1/public_html/WEBS/grupoeuroandino.com/app/render/images/subidas/'
 	var app = new Vue({
+		name: 'tours',
 		el: '#app',
+		metaInfo: {
+			title: 'Tours Grupo Euroandino'
+		},
 		data: {
 			//servidor: 'http://localhost/euroAndinoApi/',
 			servidor: 'https://grupoeuroandino.com/app/api/', 
@@ -572,42 +577,49 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			subirANube(){
 				var that = this; let nombreSubida='';
-				this.archivo = this.$refs.archivoFile.files[0];
-				console.log( this.$refs.archivoFile.files[0].size );
+				//console.log( this.$refs.archivoFile.files[0].size );
 
 				if(document.getElementById("txtArchivo").files.length>0){
-					if(document.getElementById("txtArchivo").files[0].size<=1000000){
-						let formData = new FormData();
-						formData.append('archivo', this.archivo);
-						formData.append('ruta', rutaDocs);
-						
-						axios.post(this.servidor+'/subidaAdjunto.php', formData, {
-							headers: {
-								'Content-Type' : 'multipart/form-data'
-							}
-						}).then( function (response){
-							console.log( response.data );
-							if( response.data =='Error subida' ){
-								nombreSubida='';
-								console.log( 'err1' );
-							}else{ //subió bien
-								console.log( 'subio bien al indice ' + that.indexGlobal  );
-								
-								that.tourActivo.fotos.push({
-									'nombreRuta': response.data
-								});
-								
-								that.actualizarTour(that.tourActivo);
-								// if(that.tourActivo==1){}
-							} 
-	
-						}).catch(function(ero){
-							console.log( 'err2' + ero );
-							//that.$emit('mostrarToastMal', 'Error subiendo el archivo adjunto'); return false;
-						})
-					}else{
-						alert('La imágen es muy pesada, debe subir una menor a 1 MB')
+
+					for(const archivoMulti of this.$refs.archivoFile.files ){
+						this.archivo = archivoMulti ;
+
+						//console.log( archivoMulti.size );
+						if( archivoMulti.size<=1000000){
+							let formData = new FormData();
+							formData.append('archivo', archivoMulti );
+							formData.append('ruta', rutaDocs);
+							
+							axios.post(this.servidor+'/subidaAdjunto.php', formData, {
+								headers: {
+									'Content-Type' : 'multipart/form-data'
+								}
+							}).then( function (response){
+								console.log( response.data );
+								if( response.data =='Error subida' ){
+									nombreSubida='';
+									console.log( 'err1' );
+								}else{ //subió bien
+									console.log( 'subio bien al indice ' + that.indexGlobal  );
+									
+									that.tourActivo.fotos.push({
+										'nombreRuta': response.data
+									});
+									
+									that.actualizarTour(that.tourActivo);
+									// if(that.tourActivo==1){}
+								} 
+		
+							}).catch(function(ero){
+								console.log( 'err2' + ero );
+								//that.$emit('mostrarToastMal', 'Error subiendo el archivo adjunto'); return false;
+							})
+						}else{
+							alert('La imágen es muy pesada, debe subir una menor a 1 MB')
+						}
+
 					}
+
 				}
 
 			},
