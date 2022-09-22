@@ -395,7 +395,7 @@ $.fn.bootstrapDP = datepicker;
 				for (let dia = 2; dia <= 31; dia++) {
 					this.duracion.push({ clave: dia+1, valor: dia + ' días / 0 noches' });
 					this.duracionDias.push({ clave: dia+1, valor: dia + ' días' });
-					this.duracionNoches.push({ clave: dia+2, valor: dia + ' noches' });
+					this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
 				}
 				for (let dia = 2; dia <= 15; dia++) {
 					this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });

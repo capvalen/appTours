@@ -17,6 +17,7 @@
 		$row = $sqlMeta-> fetch(PDO::FETCH_ASSOC);
 		?>
 		<meta property="og:title" content="<?= $row['titulo']?> - Grupo Euro Andino">
+		<title><?= $row['titulo']?> - Grupo Euro Andino</title>
 		<meta property="og:image" content="https://grupoeuroandino.com/app/render/images/subidas/<?= $row['foto']?>">
 		<meta property="og:description" content="<?= strip_tags($row['descripcion'])?>">
 		<?php
@@ -147,6 +148,23 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+#ulMenu{
+	padding: 0 5rem ;
+}
+#ulMenu>li{
+	display: inline-block;
+	width: 160px;
+	padding: 1rem 0;
+	text-align: center;
+	color: white;
+	font-size: 13px;
+	font-weight: bold;
+	text-decoration: none;
+}
+#ulMenu>li:hover{background: #BF9F00;cursor: pointer;}
+
+.Ico{    margin: 0 0px 0 0;
+    width: 33px;padding-right: 1rem;}
 	</style>
 	<!-- Inicio de Encabezado -->
 
@@ -159,7 +177,7 @@
 			</div>
 			<div class="col-12 col-md text-center">
 				<img class="" src="https://grupoeuroandino.com/wp-content/uploads/2022/09/cabecera-e1663789974145.png" >
-				<img class="" src="https://grupoeuroandino.com/wp-content/uploads/2022/09/cabecera-1-e1663789997237.png" >
+				<a href="tel:(064)788975"><img class="" src="https://grupoeuroandino.com/wp-content/uploads/2022/09/cabecera-1-e1663789997237.png" ></a>
 				<img class="" src="https://grupoeuroandino.com/wp-content/uploads/2022/09/cabecera-2-e1663790015137.png" >
 			</div>
 
@@ -167,7 +185,14 @@
 	</div>
 	<div class="container-fluid mb-2" id="menuVolver">
 		<div class="container">
-			<p class="p-3"><a class="text-decoration-none  text-light" onclick="history.back()" style="cursor:pointer;"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/09/back.png" width="30" alt=""> Volver</a></p>
+			<ul id="ulMenu">
+				<li onclick="location.href='https://grupoeuroandino.com/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/path245.png" class="Ico"> INICIO</li>
+				<li onclick="location.href='https://grupoeuroandino.com/peru-interno/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/peruico.png" class="Ico"> DESTINOS</li>
+				<li onclick="location.href='https://grupoeuroandino.com/store/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/bolsaico.png" class="Ico"> TIENDA</li>
+				<li onclick="location.href='https://grupoeuroandino.com/store/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/ofertaico.png" class="Ico"> + FILTROS</li>
+				<li onclick="location.href='https://grupoeuroandino-com.translate.goog/?_x_tr_sl=es&_x_tr_tl=en&_x_tr_hl=es&_x_tr_pto=wapp'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/baneeuu.png" class="Ico"> INGLÉS</li>
+				<li onclick="location.href='https://grupoeuroandino.com/shop-cart/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/cart.png" class="Ico"></li>
+			</ul>
 		</div>
 	</div>
 
@@ -216,7 +241,7 @@
 					<h4 class="mt-4 text-danger">Punto de Partida</h4>
 					<div class="w-100 text-break" v-html="tourActivo.partida"></div>
 					<h4 class="mt-4 text-danger">Itinerario</h4>
-					<div class="w-100 text-break" v-html="tourActivo.itinerario"></div>
+					<div class="w-100 text-break p-2" v-html="tourActivo.itinerario"></div>
 
 					<h5 class="mt-3 text-danger">Incluye</h5>
 					<div>
@@ -229,7 +254,7 @@
 					</div>
 
 					<h5 class="mt-3 text-danger">Notas</h5>
-					<div class="w-100 text-break" v-html="tourActivo.notas"></div>
+					<div class="w-100 text-break p-2" v-html="tourActivo.notas"></div>
 
 					
 
@@ -302,7 +327,8 @@
 					</span>
 					<br><br>
 					<span><strong>Ciudad:</strong> {{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span><br>
-					<span><strong>Actividades:</strong> {{tourActivo.actividad}}</span><br>
+					<span><strong>Actividades:</strong> {{tourActivo.actividad}} {{variasActividades()}}</span><br>
+					<span><strong>Categorías:</strong> {{variasCategorias()}}</span><br>
 				</div>
 				<div class="row col mx-auto mt-3 mb-0 " v-if="faltaPais">
 					<div class="alert alert-warning " role="alert">
@@ -423,7 +449,7 @@ $.fn.bootstrapDP = datepicker;
 				anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
 				departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 				diasMuertos:[], precioTotal:0, nacionalidad:-1, faltaPais:false, msjError:'',
-				incluidos:[], noIncluidos:[], faltaMinimo:true, recomendados:[],
+				incluidos:[], noIncluidos:[], faltaMinimo:true, recomendados:[],categorias2:[], actividades2:[],
 				transportes:['Terrestre', 'Aéreo', 'Ninguno'],
 				hospedajes:['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge','Resort','Otro']
 			}
@@ -434,9 +460,30 @@ $.fn.bootstrapDP = datepicker;
 			const urlParams = new URLSearchParams(queryString);
 			this.idProducto = urlParams.get('id')
 			//console.log( 'el id es ' + this.idProducto );
+			this.cargarComplementos();
 			this.pedirDatos();
 		},
 		methods: {
+			async cargarComplementos(){
+				let servComplementos  = await fetch(this.servidor+'pedirComplementos.php',{
+					method:'POST'
+				})
+				/* .done()
+				.done(letra =>{
+					console.log( letra );
+				}); */
+				let resServidor = await servComplementos
+				 resServidor.json().then((queVino)=>{
+					this.actividades2  = queVino[0];
+					this.categorias2  = queVino[1];
+					
+					//Obtener el valor de lo seleccionado
+					//$('#sltActividad2').selectpicker('val');
+					//asignar valor
+					//$('#sltActividad2').selectpicker('val', ['51', '53']);
+					
+				}) 
+			},
 			async pedirDatos(){
 				var hoy= moment();
 				const respuesta = await axios.post( this.servidor + 'verTourPorId.php', {id: this.idProducto});
@@ -533,6 +580,25 @@ $.fn.bootstrapDP = datepicker;
 			queAnticipa(valor){ 
 				if(valor!=null){
 					return this.anticipacion[parseInt(valor)-1].valor;
+				}
+			},
+			variasActividades(){
+				var actividades = "";
+				if(this.tourActivo.actividades.length>0){
+					this.tourActivo.actividades.forEach(actividad =>{
+						actividades += " "+this.actividades2.find(x=> x.id === actividad ).concepto+",";
+					});
+					return actividades.substring(0, actividades.length-1)
+				}
+				return actividades;
+			},
+			variasCategorias(){
+				if(this.tourActivo.categorias.length>0){
+					var categorias = "";
+					this.tourActivo.categorias.forEach(actividad =>{
+						categorias += " "+this.categorias2.find(x=> x.id === actividad ).concepto+",";
+					});
+					return categorias.substring(0, categorias.length-1)
 				}
 			},
 			bloquearFechaDesde(fechaInicial){

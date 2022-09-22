@@ -355,7 +355,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
 					<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
 					<p class="my-1 mt-3"><strong>Destino:</strong> <span class="text-capitalize">{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
-					<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}}</span></p>
+					<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}} {{variasActividades()}}</span></p>
+					<p class="my-1 mt-3"><strong>Categorías:</strong> <span>{{variasCategorias()}}</span></p>
 					<p class="my-1 mt-3"><strong>Descripción:</strong> <br> </p>
 					<div class="w-100 text-break" v-html="tourActivo.descripcion"></div>
 					<p class="my-1"><strong>Punto de partida:</strong> <br> </p>
@@ -659,6 +660,24 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							}
 						})
 						.catch((error)=>{ console.log( error );});
+				}
+			},
+			variasActividades(){
+				if(this.tourActivo.actividades.length>0){
+					var actividades = "";
+					this.tourActivo.actividades.forEach(actividad =>{
+						actividades += " "+this.actividades2.find(x=> x.id === actividad ).concepto+",";
+					});
+					return actividades.substring(0, actividades.length-1)
+				}
+			},
+			variasCategorias(){
+				if(this.tourActivo.categorias.length>0){
+					var categorias = "";
+					this.tourActivo.categorias.forEach(actividad =>{
+						categorias += " "+this.categorias2.find(x=> x.id === actividad ).concepto+",";
+					});
+					return categorias.substring(0, categorias.length-1)
 				}
 			},
 			formatoMoneda(valor){
