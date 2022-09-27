@@ -558,7 +558,7 @@ $.fn.bootstrapDP = datepicker;
 			queDura(){
 				try {
 					if(this.tourActivo.tipo=='2'){
-						return this.duracionDias.find( x => x.clave === this.tourActivo.duracion.dias ).valor + ", " + this.duracionNoches.find( x => x.clave === this.tourActivo.duracion.noches ).valor;
+						return this.duracionDias.find( x => x.clave === this.tourActivo.duracion.dias ).valor + " / " + this.duracionNoches.find( x => x.clave === this.tourActivo.duracion.noches ).valor;
 						//return this.duracionDias[parseInt(this.tourActivo.duracion.dias)].valor + ", " + this.duracionNoches[parseInt(this.tourActivo.duracion.noches)].valor;
 					}else{
 						return this.duracion.find( x => x.clave === this.tourActivo.duracion ).valor;

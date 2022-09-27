@@ -349,7 +349,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<p class="my-1 mt-3"><strong>Precio Peruanos</strong></p>
 					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.adultos)}}</span> </p>
 					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.kids)}}</span> </p>
-					<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDuraDia(tourActivo.duracion.dias)}} - {{queDuraNoche(tourActivo.duracion.noches)}}</span></p>
+					<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDuraDia(tourActivo.duracion.dias)}} / {{queDuraNoche(tourActivo.duracion.noches)}}</span></p>
 					<p class="my-1 mt-3"><strong>Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora)}}</span></p>
 					<p class="my-1 mt-3"><strong>Reglas de compra:</strong> </p>
 					<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>

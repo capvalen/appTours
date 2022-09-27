@@ -327,8 +327,8 @@
 					</span>
 					<br><br>
 					<span><strong>Ciudad:</strong> {{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span><br>
-					<span><strong>Actividades:</strong> {{tourActivo.actividad}} {{variasActividades()}}</span><br>
-					<span><strong>Categorías:</strong> {{variasCategorias()}}</span><br>
+					<span><strong>Actividades:</strong> {{tourActivo.actividad}} {{variasActividades(tourActivo.actividades)}}</span><br>
+					<span><strong>Categorías:</strong> {{variasCategorias(tourActivo.categorias)}}</span><br>
 				</div>
 				<div class="row col mx-auto mt-3 mb-0 " v-if="faltaPais">
 					<div class="alert alert-warning " role="alert">
@@ -582,23 +582,27 @@ $.fn.bootstrapDP = datepicker;
 					return this.anticipacion[parseInt(valor)-1].valor;
 				}
 			},
-			variasActividades(){
+			variasActividades(queActividad){
+				console.log('es la acti', queActividad);
 				var actividades = "";
-				if(this.tourActivo.actividades.length>0){
-					this.tourActivo.actividades.forEach(actividad =>{
-						actividades += " "+this.actividades2.find(x=> x.id === actividad ).concepto+",";
+				if(queActividad != undefined){
+					queActividad.forEach(actividad =>{
+						actividades += " " + this.actividades2.find(x=> x.id === actividad ).concepto+",";
 					});
 					return actividades.substring(0, actividades.length-1)
+				}else{
+					return '-';
 				}
-				return actividades;
 			},
-			variasCategorias(){
-				if(this.tourActivo.categorias.length>0){
+			variasCategorias( queCategoria ){
+				if( queCategoria != undefined){
 					var categorias = "";
-					this.tourActivo.categorias.forEach(actividad =>{
-						categorias += " "+this.categorias2.find(x=> x.id === actividad ).concepto+",";
+					queCategoria.forEach(actividad =>{
+						categorias += " " + this.categorias2.find(x=> x.id === actividad ).concepto+",";
 					});
 					return categorias.substring(0, categorias.length-1)
+				}else{
+					return '-';
 				}
 			},
 			bloquearFechaDesde(fechaInicial){
@@ -661,7 +665,7 @@ $.fn.bootstrapDP = datepicker;
 					if(tipo=='2'){
 						queDuracion3 = JSON.parse(queDuracion2);
 						//return 'caso 2';
-						return this.duracionDias[parseInt(queDuracion3.dias)-1].valor + " / " + this.duracionNoches[parseInt(queDuracion3.noches)-1].valor;
+						return this.duracionDias.find( x => x.clave === queDuracion ).valor + " / " + this.duracionNoches[queDuracion2].valor;;
 						//return this.duracionDias[parseInt(this.tourActivo.duracion.dias)].valor + ", " + this.duracionNoches[parseInt(this.tourActivo.duracion.noches)].valor;
 					}
 					if(tipo=='1'){
@@ -677,7 +681,7 @@ $.fn.bootstrapDP = datepicker;
 			queDura(){
 				try {
 					if(this.tourActivo.tipo=='2'){
-						return this.duracionDias.find( x => x.clave === this.tourActivo.duracion.dias ).valor + ", " + this.duracionNoches.find( x => x.clave === this.tourActivo.duracion.noches ).valor;
+						return this.duracionDias.find( x => x.clave === this.tourActivo.duracion.dias ).valor + " / " + this.duracionNoches.find( x => x.clave === this.tourActivo.duracion.noches ).valor;
 						//return this.duracionDias[parseInt(this.tourActivo.duracion.dias)].valor + ", " + this.duracionNoches[parseInt(this.tourActivo.duracion.noches)].valor;
 					}else{
 						return this.duracion.find( x => x.clave === this.tourActivo.duracion ).valor;
