@@ -50,7 +50,7 @@
 
 		box-shadow: 0 0 0 0 #b5b5b5 inset;
 
-		border-radius: 20px;
+		border-radius: 50px;
 
 		padding: 1.6rem;
 
@@ -165,12 +165,17 @@
 		align-items: center;
 
 	}
+	#divLupa{
+		right: 80px;
+    top: 10px;
+	}
 
 	@media (max-width: 600px) {
 
 		.imagen{ width: 40%; }
 
 		.container{width: 100%;}
+		#divLupa{ right: 51px}
 
 	}
 
@@ -179,6 +184,7 @@
 		.imagen{ width: 25%; }
 
 		.container{width: 100%;}
+		#divLupa{ right: 45px}
 
 	}
 
@@ -186,7 +192,10 @@
 
 <div class="container text-center" id="appBuscador">
 
-	<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);">
+	<div class="position-relative">
+		<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);">
+		<span id="divLupa" class="position-absolute"><img src="https://perutravelservice.com/app/render/images/search.svg" alt=""></span>
+	</div>
 
 	<div id="divBuscador">
 
@@ -206,7 +215,7 @@
 
 						<p class="titulo">{{coincidencia.nombre}}</p>
 
-						<p class=" text-left precioPort">S/ {{coincidencia.precio}}</p>
+						<p class="precioPort">S/ {{coincidencia.precio}}</p>
 
 					</div>
 
@@ -288,11 +297,11 @@
 
 				if(id=='ultimo'){
 
-						window.location.href="https://grupoeuroandino.com/destinos/?texto="+this.texto;
+						window.location.href="https://perutravelservice.com/destinos/?texto="+this.texto;
 
 					}else{
 
-						window.location.href="https://grupoeuroandino.com/tour/?id="+id;
+						window.location.href="https://perutravelservice.com/viaje.php?id="+id;
 
 				}
 

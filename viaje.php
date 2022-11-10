@@ -23,11 +23,15 @@
 		<?php
 	}
 	?>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
 	<link rel="stylesheet" href="https://grupoeuroandino.com/icofont/icofont.min.css">
 	<link rel="stylesheet" href="https://grupoeuroandino.com/css/bootstrap-datepicker.min.css?v=1.1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 	
@@ -164,26 +168,138 @@
 #ulMenu>li:hover{background: #BF9F00;cursor: pointer;}
 
 .Ico{    margin: 0 0px 0 0;
-    width: 33px;padding-right: 1rem;}
-	</style>
+	width: 33px;padding-right: 1rem;
+}
+#menuVolver, #menuCabecera{
+	font-family: 'Roboto', sans-serif;
+}
+#imgLogo{width: 120px;}
+#menuCabecera p{
+	font-size: 13px; color: #7a7a7a;
+	font-weight: 400;
+}
+#menuCabecera h3{
+	font-size: 17px; color: #012c6d;
+	font-weight: 600;
+}
+#menuCabecera a{text-decoration: none;}
+#mLateral{
+	position: fixed; /* Sit on top of the page content */
+  display: none; 
+  width: 300px; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 50px;
+  bottom: 0;
+  background-color: #003793; /* Black background with opacity */
+  z-index: 102; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+}
+#mLateralP{padding-top: 5em;}
+#mLateral .Ico{
+	width: 40px!important;
+}
+#mLateral p{
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px!important;
+	font-weight: 300!important;
+	padding: 10px 10px 10px 10px;
+	color: white;
+	margin: 0.5em 0;
+	padding: 1em 1em;
+}
+#mLateralP a{
+	color: white;
+	text-decoration: none;
+}
+#mLateralP p:first-child, #mLateralP p:hover{
+	background-color: #743eff;
+}
+
+</style>
 	<!-- Inicio de Encabezado -->
 
-	<div class="container mt-2">
-		<div class="row row-cols-4">
-			<div class="col-12 col-md-2 text-center">
-			<a href="https://grupoeuroandino.com">
-				<img width="100" height="auto" src="https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-55x48.png" class="attachment-full size-full" alt="" loading="lazy" srcset="https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino.png 5050w, https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-300x263.png 300w, https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-1024x897.png 1024w, https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-768x673.png 768w, https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-1536x1346.png 1536w, https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-2048x1795.png 2048w, https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-55x48.png 55w" sizes="(max-width: 5050px) 100vw, 5050px">
-			</a>
+	<div class="container fluid d-block d-sm-none">
+		<div class="row row-cols-3">
+			<div class="col mx-0 px-1" style="width:114px">
+				<a href="https://grupoeuroandino.com"><img src="https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-2048x1795.png" style="width: 94%; height: auto; margin-left:8px;" class="img-fluid p-3"></a>
 			</div>
-			<div class="col-12 col-md text-center">
-				<img class="" src="https://grupoeuroandino.com/wp-content/uploads/2022/09/cabecera-e1663789974145.png" >
-				<a href="tel:(064)788975"><img class="" src="https://grupoeuroandino.com/wp-content/uploads/2022/09/cabecera-1-e1663789997237.png" ></a>
-				<img class="" src="https://grupoeuroandino.com/wp-content/uploads/2022/09/cabecera-2-e1663790015137.png" >
+			<div class="col d-flex align-items-center" style="width:216px">
+				<div class="container-fluid px-0 mx-0">
+					<div class="row row-cols-3 ">
+						<div class="col">
+							<a href="tel:064788975"><img src="https://grupoeuroandino.com/app/render/images/phone-solid.svg" class="p-1" width="38" height="38"></a>
+						</div>
+						<div class="col">
+							<a href="https://wa.me/51947614293"><img src="https://grupoeuroandino.com/app/render/images/whatsapp.svg" class="p-1" width="42" height="42"></a>
+						</div>
+						<div class="col" data-bs-toggle="modal" data-bs-target="#modalAgenda"> <img src="https://grupoeuroandino.com/app/render/images/clock-regular.svg" class="p-1" width="42" height="42"> </div>
+					</div>
+				</div>
 			</div>
-
+			<div class="col d-flex " style="width:61px"  onclick="document.getElementById('mLateral').style.display = 'block';">
+				<img src="https://grupoeuroandino.com/app/render/images/sliders-solid.svg?v=1" style="" width="36">
+			</div>
 		</div>
 	</div>
-	<div class="container-fluid mb-2" id="menuVolver">
+
+	<div class="container my-3 d-none d-md-block" id="menuCabecera">
+		<div class="row row-cols-5">
+			<div class="col">
+				<a href="https://grupoeuroandino.com"><img src="https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-2048x1795.png" id="imgLogo"></a>
+			</div>
+			<div class="col position-relative d-flex align-items-center">
+				<a href="tel:064788975">
+					<div class="position-absolute top-50 start-0 translate-middle-y">
+						<img src="https://grupoeuroandino.com/app/render/images/phone-solid-gris.svg" style="width:50px">
+					</div>
+					<div style="padding-left:55px">
+						<h3>Call Center</h3>
+						<p class="mb-0">(064) 788975</p>
+					</div>
+				</a>
+			</div>
+			<div class="col position-relative d-flex align-items-center">
+				<a href="https://wa.me/51947614293">
+					<div class="position-absolute top-50 start-0 translate-middle-y">
+						<img src="https://grupoeuroandino.com/app/render/images/whatsapp-gris.svg" style="width:50px">
+					</div>
+					<div style="padding-left:55px">
+						<h3>Chatea con nosotros</h3>
+						<p class="mb-0">(+51) 947614293</p>
+					</div>
+				</a>
+			</div>
+			<div class="col position-relative d-flex align-items-center">
+				<div class="position-absolute top-50 start-0 translate-middle-y">
+					<img src="https://grupoeuroandino.com/app/render/images/clock-regular-gris.svg" style="width:50px">
+				</div>
+				<div style="padding-left:55px">
+					<h3>Atención al cliente</h3>
+					<p class="mb-0">24/7/365</p>
+				</div>
+			</div>
+			<div class="col"></div>
+		</div>
+
+	</div>
+
+	<div id="mLateral">
+		<div class="text-end mt-2 me-1" onclick="document.getElementById('mLateral').style.display = 'none';">
+			<img src="https://grupoeuroandino.com/app/render/images/x-1.svg" width="60" height="auto">
+		</div>
+		<div id="mLateralP">
+			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/path245.png" class="Ico"> Inicio</p>
+			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/peru-interno/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/peruico.png" class="Ico"> Destinos</p>
+			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/store/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/bolsaico.png" class="Ico"> Tienda</p>
+			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/store/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/ofertaico.png" class="Ico"> + Filtros</p>
+			<p class="mb-0" onclick="location.href='https://grupoeuroandino-com.translate.goog/?_x_tr_sl=es&_x_tr_tl=en&_x_tr_hl=es&_x_tr_pto=wapp'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/baneeuu.png" class="Ico"> Inglés</p>
+			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/shop-cart/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/cart.png" class="Ico"> Carrito</p>
+		</div>
+	</div>
+
+	<div class="container-fluid mb-2 d-none d-md-block" id="menuVolver">
 		<div class="container">
 			<ul id="ulMenu">
 				<li onclick="location.href='https://grupoeuroandino.com/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/path245.png" class="Ico"> INICIO</li>
@@ -254,7 +370,13 @@
 					</div>
 
 					<h5 class="mt-3 text-danger">Notas</h5>
-					<div class="w-100 text-break p-2" v-html="tourActivo.notas"></div>
+					<div  class="w-100 text-break p-2" id="divNotas" v-html="entregarCorto(tourActivo.notas, !verMas)"></div>
+					<p @click="verMas = !verMas" >
+						<a class="text-decoration-none" href="#!">
+							<span v-if="!verMas">Ver más</span>
+							<span v-else>Ver menos</span>
+						</a>
+					</p>
 
 					
 
@@ -392,15 +514,49 @@
 	</div>
 	</div>
 
-</div></div>
+</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalAgenda" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+				<div class="d-flex justify-content-between">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Horario de atención</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<p class=" mt-2 lead">Lunes a Domingo</p>
+				<p >De 9:00 am - 1:00 pm</p>
+				<p>De 3:00 am - 7:00 pm</p>
+				
+      </div>
+    </div>
+  </div>
+</div>
 
 	<footer class="container-fluid pt-5"  id="pie">
 
 			<div class="container">
 				<div class=" row" style="margin-top: 8rem!important;">
-					<div class="col-12 col-md-4"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/09/pie1.png" alt=""></div>
-					<div class="col-12 col-md-4"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/09/pie2.png" alt=""></div>
-					<div class="col-12 col-md-4"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/09/pie3.png" alt=""></div>
+					<div class="col-12 col-md-4">
+						<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2022/09/pie1.png" alt=""></a>
+					</div>
+					<div class="col-12 col-md-4">
+						<a href="http://consultasenlinea.mincetur.gob.pe/set-regiones/(S(10qphogewbrx3wgqzxz0myve))/Reportes/WebReportes/RptListadoCoincidencias.aspx?StrTipo=1&Var=02|20568390629|GRUPO%20EURO%20ANDINO%20S.A.C.||"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/09/pie2.png" alt=""></a>
+					</div>
+					<div class="col-12 col-md-4">
+						<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2022/09/pie3.png" alt=""></a>
+						<div class="container-fluid">
+							<div class="row row-cols-2">
+								<div class="col">
+									<img src="https://grupoeuroandino.com/app/render/images/reclamos.jpg" alt="">
+								</div>
+								<div class="col">
+									<img src="https://grupoeuroandino.com/app/render/images/protegeme.jpg" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -408,6 +564,7 @@
 
 	
 	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -440,7 +597,7 @@ $.fn.bootstrapDP = datepicker;
 				idProducto:-1,
 				//servidor: 'http://localhost/euroAndinoApi/',
 				servidor: 'https://grupoeuroandino.com/app/api/',
-				variosTours:[], tourActivo:[{incluye:'', noIncluye:'', peruanos:{adultos:0, kids:0}, extranjeros:{adultos:0, kids:0}, duracion:0
+				variosTours:[], tourActivo:[{incluye:'', noIncluye:'', peruanos:{adultos:0, kids:0}, extranjeros:{adultos:0, kids:0}, duracion:0, notas:''
 			}],
 				precioPorPersona: 0, cantAdultos:0, cantKids:0,
 				duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
@@ -448,7 +605,7 @@ $.fn.bootstrapDP = datepicker;
 				duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
 				anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
 				departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-				diasMuertos:[], precioTotal:0, nacionalidad:-1, faltaPais:false, msjError:'',
+				diasMuertos:[], precioTotal:0, nacionalidad:-1, faltaPais:false, msjError:'', verMas:false,
 				incluidos:[], noIncluidos:[], faltaMinimo:true, recomendados:[],categorias2:[], actividades2:[],
 				transportes:['Terrestre', 'Aéreo', 'Ninguno'],
 				hospedajes:['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge','Resort','Otro']
@@ -675,6 +832,20 @@ $.fn.bootstrapDP = datepicker;
 				} catch (error) {
 					
 				}
+			},
+			expandirMas(){
+				this.verMas=true;
+				let divNotas = document.getElementById('divNotas');
+				divNotas.style.height = "100%";
+				divNotas.style.overflow = auto;
+			},
+			entregarCorto(texto, corto){
+				
+					if(corto && texto != undefined ){
+						return texto.substring(0, 1600)+'...';
+					}else{
+						return texto;
+					}
 			}
 		},
 		computed:{
