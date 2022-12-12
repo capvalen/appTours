@@ -1,6 +1,3 @@
-<?php
-if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -71,7 +68,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<tr v-if="pedidos.length == 0">
 					<td colspan=5>No hay paquetes</td>
 				</tr>
-				<tr v-else v-for="(pedido, index) in pedidos" @click="cargarPanel(queId(index), index)">
+				<tr v-else v-for="(pedido, index) in pedidos" >
 					<td>{{index+1}}</td>
 					<td class="text-capitalize">{{pedido.nombre}} {{pedido.apellido}}</td>
 					<td class="text-capitalize">{{pedido.titulo.toLowerCase()}}</td>
@@ -83,12 +80,45 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<span v-else>Izi-Pay</span>
 					</td>
 					<td>{{pedido.estado}}</td>
+					<td><button class="btn btn-outline-primary" @click="abrirModal(index)" >Ver</button></td>
 					
 					
 				</tr>
 			</tbody>
 		</table>
 
+	<!-- Modal -->
+	<div class="modal fade" id="modalDetalles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="">Detalles del pedido</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="indexPedido=null"></button>
+				</div>
+				<div class="modal-body" v-if="indexPedido!=null">
+					<p class="mb-0"><strong>Cliente</strong> {{pedidos[indexPedido].nombre}}, {{pedidos[indexPedido].apellido}} </p>
+					<p class="mb-0"><strong>D.N.I.</strong> {{pedidos[indexPedido].dni}}</p>
+					<p class="mb-0"><strong>Celular</strong> {{pedidos[indexPedido].celular}}</p>
+					<p class="mb-0"><strong>Correo</strong> {{pedidos[indexPedido].correo}}</p>
+					<p class="mb-0"><strong>Dirección</strong> {{pedidos[indexPedido].direccion}}</p>
+					<p class="mb-0"><strong>Nacionalidad</strong> 
+						<span v-if="pedidos[indexPedido].nacionalidad == '159'">Peruano</span>
+						<span v-else>Extranjero</span>
+					</p>
+					
+					<hr>
+					<p class="mb-0"><strong>Fecha de pago</strong> {{fechaLatam(pedidos[indexPedido].fechaPago)}}</p>
+					<p class="mb-0"><strong>Adquirió</strong> {{pedidos[indexPedido].titulo}}</p>
+					<p class="mb-0"><strong>Total pagado</strong> S/ {{pedidos[indexPedido].total}}</p>
+					<p class="mb-0"><strong>N° Adultos</strong> {{pedidos[indexPedido].adultos}}</p>
+					<p class="mb-0"><strong>N° Niños</strong> {{pedidos[indexPedido].menores}}</p>
+				</div>
+				<div class="modal-footer border-0">
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="indexPedido=null">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	</div>
 
@@ -100,7 +130,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<script src="js/axios.min.js"></script>
 	<script src="js/moment.min.js"></script>
 	<script>
-	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
+	var modalDetalles,
 	tostadaOk, tostadaMal;
 	
 	
@@ -109,11 +139,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		data: {
 			//servidor: 'http://localhost/euroAndinoApi/',
 			servidor: 'https://grupoeuroandino.com/app/api/',
-			pedidos:[]
+			pedidos:[], indexPedido:null
 			
 		},
 		mounted:function(){
 			this.llamarPedidos()
+			modalDetalles = new bootstrap.Modal(document.getElementById('modalDetalles'))
 		},
 		methods:{
 			async llamarPedidos(){
@@ -123,7 +154,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					method:'POST', body:datos
 				});
 				this.pedidos = await respServer.json();
-			}
+			},
+			abrirModal(index){
+				this.indexPedido = index;
+				modalDetalles.show();
+			},
+			fechaLatam(hora){
+				return( moment(hora).format('DD/MM/YYYY hh:mm a') )
+			},
 		}
 	});
 	
