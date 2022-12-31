@@ -14,7 +14,7 @@
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-	<link rel="stylesheet" href="https://perutravelservice.com/app/render/icofont/icofont.min.css">
+	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
 
 </head>
 
@@ -138,11 +138,26 @@
 
 						</div>
 
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="acordeon3">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoCiudad" aria-expanded="false" aria-controls="tipoCiudad" data-bs-parent="#acordeonPadre">
+									Ciudades
+								</button>
+							</h2>
+
+							<div id="tipoCiudad" class="accordion-collapse collapse " aria-labelledby="tipoCiudad" >
+								<div class="accordion-body">
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCiudad =='' }" @click="idCiudad = ''" >Todos</a></p>
+									<p  v-for="ciudad in ciudades" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCiudad == ciudad }" @click="idCiudad = ciudad" >{{ciudad}}</a></p>
+								</div>
+							</div>
+						</div>
+
 
 
 						<div class="accordion-item">
 
-							<h2 class="accordion-header" id="acordeon3">
+							<h2 class="accordion-header" id="acordeon4">
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoActividad" aria-expanded="false" aria-controls="tipoActividad" data-bs-parent="#acordeonPadre">
 
@@ -170,7 +185,7 @@
 
 						<div class="accordion-item">
 
-							<h2 class="accordion-header" id="acordeon4">
+							<h2 class="accordion-header" id="acordeon5">
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoCategoria" aria-expanded="false" aria-controls="tipoCategoria" data-bs-parent="#acordeonPadre">
 
@@ -198,7 +213,7 @@
 
 						<div class="accordion-item">
 
-							<h2 class="accordion-header" id="acordeon5">
+							<h2 class="accordion-header" id="acordeon6">
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoTransporte" aria-expanded="false" aria-controls="tipoTransporte" data-bs-parent="#acordeonPadre">
 
@@ -226,7 +241,7 @@
 
 						<div class="accordion-item">
 
-							<h2 class="accordion-header" id="acordeon6">
+							<h2 class="accordion-header" id="acordeon7">
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoHospedaje" aria-expanded="false" aria-controls="tipoHospedaje" data-bs-parent="#acordeonPadre">
 
@@ -254,7 +269,7 @@
 
 						<div class="accordion-item">
 
-							<h2 class="accordion-header" id="acordeon7">
+							<h2 class="accordion-header" id="acordeon8">
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoDia" aria-expanded="false" aria-controls="tipoDia" data-bs-parent="#acordeonPadre">
 
@@ -282,7 +297,7 @@
 
 						<div class="accordion-item">
 
-							<h2 class="accordion-header" id="acordeon8">
+							<h2 class="accordion-header" id="acordeon9">
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoPrecios" aria-expanded="false" aria-controls="tipoPrecios" data-bs-parent="#acordeonPadre">
 
@@ -426,9 +441,10 @@
 
 			//servidor: 'http://localhost/euroAndinoApi/',
 
-			servidor: 'https://perutravelservice.com/app/api/', 
+			servidor: 'https://grupoeuroandino.com/app/api/', 
 
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
+			ciudades:[], idCiudad:'',
 
 			dias:[], actividades:[], categorias:[],
 
@@ -494,9 +510,9 @@
 
 				let temporal = await respServ.json();
 
-				this.actividades = temporal[0]
-
-				this.categorias = temporal[1]
+				this.actividades = temporal[0];
+				this.categorias = temporal[1];
+				this.ciudades = temporal[2];
 
 			},
 
@@ -515,6 +531,7 @@
 				datos.append('actividad', this.actividadSelect);
 
 				datos.append('idDepartamento', this.idDepartamento);
+				datos.append('idCiudad', this.idCiudad);
 
 				datos.append('idCategoria', this.idCategoria);
 
@@ -554,11 +571,11 @@
 
 				if(prod.fotos.length==0){
 
-					return 'https://perutravelservice.com/app/render/images/defecto.jpg';
+					return 'https://grupoeuroandino.com/app/render/images/defecto.jpg';
 
 				}else{
 
-					return 'https://perutravelservice.com/app/render/images/subidas/'+ prod.fotos[0].nombreRuta;
+					return 'https://grupoeuroandino.com/app/render/images/subidas/'+ prod.fotos[0].nombreRuta;
 
 				}
 
