@@ -1,8 +1,16 @@
 <?php 
 include ("conectkarl.php");
 
+$ciudades = [];
 $actividades = [];
 $categorias = [];
+
+$sqlCiudades = $db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.destino')) as nombre FROM `tours` where activo = 1 and visible=1 group by JSON_EXTRACT(contenido, '$.destino')");//SELECT * from actividades where activo = 1;
+if($sqlCiudades ->execute()){
+	while($rowCiudades = $sqlCiudades->fetch(PDO::FETCH_ASSOC)){
+		$ciudades[] = $rowCiudades['nombre'];
+	}
+}
 
 $sqlActividades = $db->query("SELECT idActividad as id, a.concepto as nombre FROM `tourActividades` t inner join actividades2 a on t.idActividad = a.id where a.activo = 1 group by idActividad");//SELECT * from actividades where activo = 1;
 if($sqlActividades ->execute()){
@@ -18,4 +26,4 @@ if($sqlCategorias ->execute()){
 	}
 }
 
-echo json_encode( array($actividades, $categorias) );
+echo json_encode( array($actividades, $categorias, $ciudades) );
