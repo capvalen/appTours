@@ -32,7 +32,7 @@ include '../api/'
 					<div class="card">
 						<div class="card-body">
 							<h3>Datos del comprador</h3>
-							<div class="row row-cols-xs-1 row-cols-md-2">
+							<div class="row row-cols-1 row-cols-md-2">
 								<div class="col">
 									<div class="form-floating mb-3">
 										<input type="text" class="form-control text-capitalize" id="" placeholder=" " v-model="nombres">
@@ -46,7 +46,7 @@ include '../api/'
 									</div>
 								</div>
 								<div class="col">
-									<div class="form-floating">
+									<div class="form-floating mb-3">
 										<select class="form-select" id="floDni" aria-label=" ">
 											<option value="1" selected>D.N.I.</option>
 											<option value="2">Pasaporte</option>
@@ -62,7 +62,7 @@ include '../api/'
 									</div>
 								</div>
 							</div>
-							<div class="row row-cols-xs-1 row-cols-md-2">
+							<div class="row row-cols-1 row-cols-md-2">
 								<div class="col">
 									<div class="form-floating mb-3">
 										<input type="text" class="form-control" id="" placeholder=" " v-model="correo">
@@ -141,7 +141,7 @@ include '../api/'
 					<!-- <p class="mt-2 text-muted"><i class="icofont-ui-close"> </i> Anular ésta compra</p> -->
 
 				</div>
-				<div class="col-12 col-md-4">
+				<div class="col-12 col-md-4 mt-3">
 					<div class="card">
 						<div class="card-body text-muted">
 							<h3>Resumen del pedido</h3>

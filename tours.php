@@ -8,12 +8,15 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Panel de tours - Grupo Euro-Andino</title>
+	<link rel="icon" type="image/png" href="https://grupoeuroandino.com/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
+
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<link rel="stylesheet" href="icofont/icofont.min.css">
 	<link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
 	<link rel="stylesheet" href="css/quill.bubble.css">
 	<link rel="stylesheet" href="css/quill.snow.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+	<script src="https://unpkg.com/vue-meta/dist/vue-meta.min.js"></script>
 </head>
 <body>
 	<style>
@@ -61,7 +64,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<a class="nav-link active" aria-current="page" href="tours.php">Tours</a>
 					<a class="nav-link" href="paquetes.php">Paquetes turísticos</a>
 					<a class="nav-link" href="pedidos.php">Pedidos</a>
-					<a class="nav-link" href="lateral.php">Lateral</a>
+					<a class="nav-link" href="lateral.php">Configuraciones</a>
 				</div>
 			</div>
 		</div>
@@ -131,8 +134,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre">
+							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @change="crearURL()">
 							<label for="floNombre">Nombre del tour</label>
+						</div>
+						<div class="form-floating mb-3" v-if="!activarEditar">
+							<input type="text" class="form-control" id="floURL" placeholder=" " autocomplete="off" v-model="tour.url">
+							<label for="floURL">URL del tour</label>
 						</div>
 						<p class="mb-0">Precio de Oferta:</p>
 						<div class="row">
@@ -318,7 +325,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
 					<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
 					<p class="my-1 mt-3"><strong>Destino:</strong> <span>{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
-					<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}}</span></p>
+					<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}} {{variasActividades()}}</span></p>
+					<p class="my-1 mt-3"><strong>Categorías:</strong> <span>{{variasCategorias()}}</span></p>
 					<p class="my-1 mt-3"><strong>Descripción:</strong> <br> </p>
 					<div class="w-100 text-break" v-html="tourActivo.descripcion"></div>
 					<p class="my-1"><strong>Punto de partida:</strong> <br> </p>
@@ -340,7 +348,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<div class="col" v-if="tourActivo.fotos.length<16">
 							<p class="mb-0">Subir imágen:</p>
 							<div class="input-group mb-3">
-								<input type="file" class="form-control" ref="archivoFile" id="txtArchivo" accept="image/*">
+								<input type="file" class="form-control" ref="archivoFile" id="txtArchivo" accept="image/*" multiple>
 								<button class="btn btn-outline-secondary" type="button" id="btnSubirArchivo" @click="subirANube()"><i class="icofont-upload-alt"></i></button>
 							</div>
 						</div>
@@ -395,14 +403,18 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
 	tostadaOk, tostadaMal;
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
-	var rutaDocs = '/home/perutra1/public_html/WEBS/grupoeuroandino.com/app/render/images/subidas/'
+	var rutaDocs = '/home/perutra1/grupoeuroandino.com/app/render/images/subidas/'
 	var app = new Vue({
+		name: 'tours',
 		el: '#app',
+		metaInfo: {
+			title: 'Tours Grupo Euroandino'
+		},
 		data: {
 			//servidor: 'http://localhost/euroAndinoApi/',
 			servidor: 'https://grupoeuroandino.com/app/api/', 
 			tour:{
-				nombre: '',
+				nombre: '', url:'',
 				peruanos:{ adultos: 0, kids: 0 },
 				extranjeros:{ adultos:0, kids:0 },
 				cupos: 1, duracion: 1, hora: "12:00",
@@ -489,6 +501,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				})
 			},
 			nuevoTourSimple(){
+				this.tour={
+					nombre: '', url:'',
+					peruanos:{ adultos: 0, kids: 0 },
+					extranjeros:{ adultos:0, kids:0 },
+					cupos: 1, duracion: 1, hora: "12:00",
+					anticipacion: 1, minimo: 1, destino: '', departamento: '', actividad:'', categoria:'',
+					descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1, oferta:0, actividades:[], categorias: []
+				}
 				this.activarEditar=false;
 				$('#sltActividad2').selectpicker('val', '');
 				//$('#sltActividad2').selectpicker('refresh');
@@ -560,6 +580,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				return this.todosTours[index].id;
 			},
 			cargarPanel(queEs, indexEs){
+				
 				$('#sltActividad2').selectpicker('val', '');
 				$('#sltCategoria2').selectpicker('val', '');
 				this.idGlobal = queEs;
@@ -572,42 +593,49 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			subirANube(){
 				var that = this; let nombreSubida='';
-				this.archivo = this.$refs.archivoFile.files[0];
-				console.log( this.$refs.archivoFile.files[0].size );
+				//console.log( this.$refs.archivoFile.files[0].size );
 
 				if(document.getElementById("txtArchivo").files.length>0){
-					if(document.getElementById("txtArchivo").files[0].size<=1000000){
-						let formData = new FormData();
-						formData.append('archivo', this.archivo);
-						formData.append('ruta', rutaDocs);
-						
-						axios.post(this.servidor+'/subidaAdjunto.php', formData, {
-							headers: {
-								'Content-Type' : 'multipart/form-data'
-							}
-						}).then( function (response){
-							console.log( response.data );
-							if( response.data =='Error subida' ){
-								nombreSubida='';
-								console.log( 'err1' );
-							}else{ //subió bien
-								console.log( 'subio bien al indice ' + that.indexGlobal  );
-								
-								that.tourActivo.fotos.push({
-									'nombreRuta': response.data
-								});
-								
-								that.actualizarTour(that.tourActivo);
-								// if(that.tourActivo==1){}
-							} 
-	
-						}).catch(function(ero){
-							console.log( 'err2' + ero );
-							//that.$emit('mostrarToastMal', 'Error subiendo el archivo adjunto'); return false;
-						})
-					}else{
-						alert('La imágen es muy pesada, debe subir una menor a 1 MB')
+
+					for(const archivoMulti of this.$refs.archivoFile.files ){
+						this.archivo = archivoMulti ;
+
+						//console.log( archivoMulti.size );
+						if( archivoMulti.size<=1000000){
+							let formData = new FormData();
+							formData.append('archivo', archivoMulti );
+							formData.append('ruta', rutaDocs);
+							
+							axios.post(this.servidor+'/subidaAdjunto.php', formData, {
+								headers: {
+									'Content-Type' : 'multipart/form-data'
+								}
+							}).then( function (response){
+								console.log( response.data );
+								if( response.data =='Error subida' ){
+									nombreSubida='';
+									console.log( 'err1' );
+								}else{ //subió bien
+									console.log( 'subio bien al indice ' + that.indexGlobal  );
+									
+									that.tourActivo.fotos.push({
+										'nombreRuta': response.data
+									});
+									
+									that.actualizarTour(that.tourActivo);
+									// if(that.tourActivo==1){}
+								} 
+		
+							}).catch(function(ero){
+								console.log( 'err2' + ero );
+								//that.$emit('mostrarToastMal', 'Error subiendo el archivo adjunto'); return false;
+							})
+						}else{
+							alert('La imágen es muy pesada, debe subir una menor a 1 MB')
+						}
+
 					}
+
 				}
 
 			},
@@ -639,6 +667,24 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						.catch((error)=>{ console.log( error );});
 				}
 			},
+			variasActividades(){
+				if(this.tourActivo.actividades.length>0){
+					var actividades = "";
+					this.tourActivo.actividades.forEach(actividad =>{
+						actividades += " "+this.actividades2.find(x=> x.id === actividad ).concepto+",";
+					});
+					return actividades.substring(0, actividades.length-1)
+				}
+			},
+			variasCategorias(){
+				if(this.tourActivo.categorias.length>0){
+					var categorias = "";
+					this.tourActivo.categorias.forEach(actividad =>{
+						categorias += " "+this.categorias2.find(x=> x.id === actividad ).concepto+",";
+					});
+					return categorias.substring(0, categorias.length-1)
+				}
+			},
 			formatoMoneda(valor){
 				return parseFloat(valor).toFixed(2)
 			},
@@ -650,7 +696,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				return( moment(hora, 'HH:mm').format('h:mm a') )
 			},
 			queAnticipa(valor){
-				return this.anticipacion[valor].valor;
+				if(valor!=null){
+					return this.anticipacion[parseInt(valor)-1].valor;
+				}
 			},
 			queDepa(valor){
 				return this.departamentos[valor];
@@ -730,6 +778,26 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						this.actualizarTour()
 					}
 				}
+			},
+			crearURL(){
+				let url = this.tour.nombre.toLowerCase();
+				url = url.replace(/\s+/g, ' ').trim() //Quita todos los espacios repetidos
+				url = url.replace(/-/g, '');
+				url = url.replace(/ /g, '-');
+				url = url.replace(/á/g, 'a');
+				url = url.replace(/é/g, 'e');
+				url = url.replace(/í/g, 'i');
+				url = url.replace(/ó/g, 'o');
+				url = url.replace(/ú/g, 'u');
+				url = url.replace(/ñ/g, 'n');
+				url = url.replace(/:/g, '');
+				url = url.replace(/\//g, '');
+				url = url.replace(/\\/g, '');
+				url = url.replace(/--/g, '-');
+
+				console.log('deberia salir');
+				this.tour.url = url
+				
 			}
 		}
 	});

@@ -5,7 +5,7 @@ $_POST = json_decode(file_get_contents('php://input'),true);
 ( $_SERVER['REQUEST_METHOD'] === 'OPTIONS' )? die() : '';
 
 $sql =$db->prepare("INSERT INTO `tours`(`contenido`, `visible`, tipo) VALUES (?, 0, 2);");
-$resp = $sql->execute([ json_encode($_POST['tour'], JSON_UNESCAPED_UNICODE) ]);
+$resp = $sql->execute([ json_encode($_POST['tour'], JSON_UNESCAPED_UNICODE), $_POST['tour']['url'] ]);
 
 if($resp){
 

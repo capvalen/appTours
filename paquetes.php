@@ -8,6 +8,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Panel de paguetes - Grupo Euro-Andino</title>
+	<link rel="icon" type="image/png" href="https://grupoeuroandino.com/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
+
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<link rel="stylesheet" href="icofont/icofont.min.css">
 	<link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
@@ -61,7 +63,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<a class="nav-link " aria-current="page" href="tours.php">Tours</a>
 					<a class="nav-link active" href="paquetes.php">Paquetes turísticos</a>
 					<a class="nav-link" href="pedidos.php">Pedidos</a>
-					<a class="nav-link" href="lateral.php">Lateral</a>
+					<a class="nav-link" href="lateral.php">Configuraciones</a>
 				</div>
 			</div>
 		</div>
@@ -133,6 +135,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<div class="form-floating mb-3">
 							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre">
 							<label for="floNombre">Nombre del paquete turístico</label>
+						</div>
+						<div class="form-floating mb-3" v-if="!activarEditar">
+							<input type="text" class="form-control" id="floURL" placeholder=" " autocomplete="off" v-model="tour.url">
+							<label for="floURL">URL del tour</label>
 						</div>
 						<p class="mb-0">Precio de Oferta:</p>
 						<div class="row">
@@ -349,13 +355,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<p class="my-1 mt-3"><strong>Precio Peruanos</strong></p>
 					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.adultos)}}</span> </p>
 					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.kids)}}</span> </p>
-					<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDuraDia(tourActivo.duracion.dias)}} - {{queDuraNoche(tourActivo.duracion.noches)}}</span></p>
+					<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDuraDia(tourActivo.duracion.dias)}} / {{queDuraNoche(tourActivo.duracion.noches)}}</span></p>
 					<p class="my-1 mt-3"><strong>Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora)}}</span></p>
 					<p class="my-1 mt-3"><strong>Reglas de compra:</strong> </p>
 					<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
 					<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
 					<p class="my-1 mt-3"><strong>Destino:</strong> <span class="text-capitalize">{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
-					<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}}</span></p>
+					<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}} {{variasActividades()}}</span></p>
+					<p class="my-1 mt-3"><strong>Categorías:</strong> <span>{{variasCategorias()}}</span></p>
 					<p class="my-1 mt-3"><strong>Descripción:</strong> <br> </p>
 					<div class="w-100 text-break" v-html="tourActivo.descripcion"></div>
 					<p class="my-1"><strong>Punto de partida:</strong> <br> </p>
@@ -431,14 +438,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
 	tostadaOk, tostadaMal;
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
-	var rutaDocs = '/home/perutra1/public_html/WEBS/grupoeuroandino.com/app/render/images/subidas/'
+	var rutaDocs = '/home/perutra1/grupoeuroandino.com/app/render/images/subidas/'
 	var app = new Vue({
 		el: '#app',
 		data: {
 			//servidor: 'http://localhost/euroAndinoApi/',
 			servidor: 'https://grupoeuroandino.com/app/api/', 
 			tour:{
-				nombre: '',
+				nombre: '', url:'',
 				peruanos:{ adultos: 0, kids: 0 },
 				extranjeros:{ adultos:0, kids:0 },
 				cupos: 1, duracion: {dias:1, noches:1}, hora: "12:00",
@@ -517,6 +524,15 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				})
 			},
 			nuevoTourSimple(){
+				this.tour={
+					nombre: '', url:'',
+					peruanos:{ adultos: 0, kids: 0 },
+					extranjeros:{ adultos:0, kids:0 },
+					cupos: 1, duracion: {dias:1, noches:1}, hora: "12:00",
+					anticipacion: 1, minimo: 1, transporte:3, alojamiento: 1,
+					destino: '', departamento: '', actividad:'', categoria:'',
+					descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0, actividades:[], categorias: []
+				}
 				this.activarEditar=false;
 				$('#sltActividad2').selectpicker('val', '');
 				//$('#sltActividad2').selectpicker('refresh');
@@ -661,6 +677,24 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						.catch((error)=>{ console.log( error );});
 				}
 			},
+			variasActividades(){
+				if(this.tourActivo.actividades.length>0){
+					var actividades = "";
+					this.tourActivo.actividades.forEach(actividad =>{
+						actividades += " "+this.actividades2.find(x=> x.id === actividad ).concepto+",";
+					});
+					return actividades.substring(0, actividades.length-1)
+				}
+			},
+			variasCategorias(){
+				if(this.tourActivo.categorias.length>0){
+					var categorias = "";
+					this.tourActivo.categorias.forEach(actividad =>{
+						categorias += " "+this.categorias2.find(x=> x.id === actividad ).concepto+",";
+					});
+					return categorias.substring(0, categorias.length-1)
+				}
+			},
 			formatoMoneda(valor){
 				return parseFloat(valor).toFixed(2)
 			},
@@ -756,6 +790,24 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						this.actualizarTour()
 					}
 				}
+			},
+			crearURL(){
+				let url = this.tour.nombre.toLowerCase();
+				url = url.replace(/\s+/g, ' ').trim() //Quita todos los espacios repetidos
+				url = url.replace(/-/g, '');
+				url = url.replace(/ /g, '-');
+				url = url.replace(/á/g, 'a');
+				url = url.replace(/é/g, 'e');
+				url = url.replace(/í/g, 'i');
+				url = url.replace(/ó/g, 'o');
+				url = url.replace(/ú/g, 'u');
+				url = url.replace(/ñ/g, 'n');
+				url = url.replace(/:/g, '');
+				url = url.replace(/\//g, '');
+				url = url.replace(/\\/g, '');
+				url = url.replace(/--/g, '-');
+
+				this.tour.url = url;
 			}
 		}
 	});

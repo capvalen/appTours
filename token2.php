@@ -8,23 +8,24 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/vendor/lyracom/rest-php-sdk/src/autoload.php';
 
+var_dump($_POST); die();
 
 
 /* Username, password and endpoint used for server to server web-service calls */
 //(En el Back Office) Copiar Usuario
 Lyra\Client::setDefaultUsername("99809654");
 //(En el Back Office) Copiar Contraseña de test
-Lyra\Client::setDefaultPassword("prodpassword_tizeTz2QPzQJPvT4VOFxDOZu8fPQw2SBb5qy8Z5rlf0Bc");
+Lyra\Client::setDefaultPassword("testpassword_XyrTmyXTFz2R5cjD4qOrAx2JAYzInfchrQGOQObMsmRhe");
 //(En el Back Office) Copiar Contraseña de Nombre del servidor API REST
 Lyra\Client::setDefaultEndpoint("https://api.micuentaweb.pe");
 
 /* publicKey and used by the javascript client */
 //(En el Back Office) Copiar Clave pública de test
-Lyra\Client::setDefaultPublicKey("99809654:publickey_tXwOD7MbbajQWgNUXaUU1UaIrlEqLFpESM2tz7weDTqNI");
+Lyra\Client::setDefaultPublicKey("99809654:testpublickey_o2ZxvjYuYMyFHd8DYsCWvaEGHnfRWrYS0uWqMqnC3MfpC");
 
 /* SHA256 key */
 //(En el Back Office) Clave HMAC-SHA-256 de test
-Lyra\Client::setDefaultSHA256Key("Wz5psTWkPWJwOsHuq2E1X289f1JH0kVBaEUhz92KXmnV2");
+Lyra\Client::setDefaultSHA256Key("kaYK90iI2Kn6EXmQAqi2xn8QqZevg8c0yJiywINEzoDJc");
 
 
 /** 
@@ -38,12 +39,12 @@ $client = new Lyra\Client();
  * starting to create a transaction
  */
 $store = array(
-  "amount" => $_POST['monto'], 
+  "amount" => $_POST['amount'], 
   "currency" => "PEN",
   "customer" => array(
-    "email" => $_POST['correo'],
+    "email" => $_POST['email'],
   ),
-  "orderId" => $_POST['id']
+  "orderId" => $_POST['orderId']
 );
 
 /**

@@ -1,12 +1,12 @@
 <?php 
 include ("conectkarl.php");
 $_POST = json_decode(file_get_contents('php://input'),true);
-//var_dump($_POST['tour']['actividades']); die();
+//var_dump($_POST['tour']['url']); die();
 
 ( $_SERVER['REQUEST_METHOD'] === 'OPTIONS' )? die() : '';
 
-$sql =$db->prepare("INSERT INTO `tours`(`contenido`, `visible`) VALUES (?, 0);");
-$resp = $sql->execute([ json_encode($_POST['tour'], JSON_UNESCAPED_UNICODE) ]);
+$sql =$db->prepare("INSERT INTO `tours`(`contenido`, `visible`, `url`) VALUES (?, 0, ?);");
+$resp = $sql->execute([ json_encode($_POST['tour'], JSON_UNESCAPED_UNICODE), $_POST['tour']['url'] ]);
 
 
 if($resp){

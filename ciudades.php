@@ -10,7 +10,7 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Filtro por producto</title>
+	<title>Filtro por ciudades</title>
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
@@ -118,7 +118,7 @@
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoDepartamento" aria-expanded="false" aria-controls="tipoDepartamento" data-bs-parent="#acordeonPadre">
 
-									Departamentos
+									Ciudades
 
 								</button>
 
@@ -128,36 +128,21 @@
 
 								<div class="accordion-body">
 
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDepartamento ==-1 }" @click="idDepartamento = -1" >Todos</a></p>
-
-									<p  v-for="(departamento, index) in departamentos" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDepartamento == index }" @click="idDepartamento = index" >{{departamento}}</a></p>
-
-								</div>
-
-							</div>
-
-						</div>
-
-						<div class="accordion-item">
-							<h2 class="accordion-header" id="acordeon3">
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoCiudad" aria-expanded="false" aria-controls="tipoCiudad" data-bs-parent="#acordeonPadre">
-									Ciudades
-								</button>
-							</h2>
-
-							<div id="tipoCiudad" class="accordion-collapse collapse " aria-labelledby="tipoCiudad" >
-								<div class="accordion-body">
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCiudad =='' }" @click="idCiudad = ''" >Todos</a></p>
+
 									<p  v-for="ciudad in ciudades" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCiudad == ciudad }" @click="idCiudad = ciudad" >{{ciudad}}</a></p>
+
 								</div>
+
 							</div>
+
 						</div>
 
 
 
 						<div class="accordion-item">
 
-							<h2 class="accordion-header" id="acordeon4">
+							<h2 class="accordion-header" id="acordeon3">
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoActividad" aria-expanded="false" aria-controls="tipoActividad" data-bs-parent="#acordeonPadre">
 
@@ -185,7 +170,7 @@
 
 						<div class="accordion-item">
 
-							<h2 class="accordion-header" id="acordeon5">
+							<h2 class="accordion-header" id="acordeon4">
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoCategoria" aria-expanded="false" aria-controls="tipoCategoria" data-bs-parent="#acordeonPadre">
 
@@ -213,7 +198,7 @@
 
 						<div class="accordion-item">
 
-							<h2 class="accordion-header" id="acordeon6">
+							<h2 class="accordion-header" id="acordeon5">
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoTransporte" aria-expanded="false" aria-controls="tipoTransporte" data-bs-parent="#acordeonPadre">
 
@@ -241,7 +226,7 @@
 
 						<div class="accordion-item">
 
-							<h2 class="accordion-header" id="acordeon7">
+							<h2 class="accordion-header" id="acordeon6">
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoHospedaje" aria-expanded="false" aria-controls="tipoHospedaje" data-bs-parent="#acordeonPadre">
 
@@ -269,7 +254,7 @@
 
 						<div class="accordion-item">
 
-							<h2 class="accordion-header" id="acordeon8">
+							<h2 class="accordion-header" id="acordeon7">
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoDia" aria-expanded="false" aria-controls="tipoDia" data-bs-parent="#acordeonPadre">
 
@@ -297,7 +282,7 @@
 
 						<div class="accordion-item">
 
-							<h2 class="accordion-header" id="acordeon9">
+							<h2 class="accordion-header" id="acordeon8">
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoPrecios" aria-expanded="false" aria-controls="tipoPrecios" data-bs-parent="#acordeonPadre">
 
@@ -353,9 +338,9 @@
 
 								<h5 class="card-title text-capitalize mb-0">
 
-									<a class="text-decoration-none text-dark" v-if="producto.tipo=='1'" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
+									<a class="text-decoration-none text-dark" v-if="producto.tipo=='1'" :href="'https://grupoeuroandino.com/tour/?id=' + queId(index)" target="_parent">{{producto.nombre}}</a></strong>
 
-									<a class="text-decoration-none text-dark" v-if="producto.tipo=='2'" :href="'https://grupoeuroandino.com/tours' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
+									<a class="text-decoration-none text-dark" v-if="producto.tipo=='2'" :href="'https://grupoeuroandino.com/paqueteturistico/?id=' + queId(index)" target="_parent">{{producto.nombre}}</a></strong>
 
 								</h5>
 
@@ -443,12 +428,12 @@
 
 			servidor: 'https://grupoeuroandino.com/app/api/', 
 
-			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-			ciudades:[], idCiudad:'',
+			ciudades:[],
 
 			dias:[], actividades:[], categorias:[],
 
-			idTour:-1, idActividad:-1, idDepartamento:-1,idCategoria:-1, idDia:-1, idPrecio:-1, idTransporte:-1, idHospedaje:-1, texto:'',
+			idTour:-1, idActividad:-1, idCiudad:'',idCategoria:-1, idDia:-1, idPrecio:-1, idTransporte:-1, idHospedaje:-1, texto:'',
+			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 
 			precios:['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00' ], 
 
@@ -500,7 +485,7 @@
 
 			async cargar(){
 
-				let respServ = await fetch(this.servidor+'pedirDatosTienda.php',{
+				let respServ = await fetch(this.servidor+'pedirDatosTienda_ciudad.php',{
 
 					method:'POST'
 
@@ -510,9 +495,10 @@
 
 				let temporal = await respServ.json();
 
-				this.actividades = temporal[0];
-				this.categorias = temporal[1];
-				this.ciudades = temporal[2];
+				this.ciudades = temporal[0]
+				this.actividades = temporal[1]
+
+				this.categorias = temporal[2]
 
 			},
 
@@ -530,7 +516,7 @@
 
 				datos.append('actividad', this.actividadSelect);
 
-				datos.append('idDepartamento', this.idDepartamento);
+				datos.append('idDepartamento', -1);
 				datos.append('idCiudad', this.idCiudad);
 
 				datos.append('idCategoria', this.idCategoria);

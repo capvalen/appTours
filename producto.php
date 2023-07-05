@@ -4,24 +4,47 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Presetancion producto</title>
+	<?php
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
+	include ('/home/perutra1/public_html/WEBS/grupoeuroandino.com/app/api/conectkarl.php');
+	$sqlMeta = $db->query("SELECT JSON_UNQUOTE(contenido-> '$.nombre') as titulo,
+	JSON_UNQUOTE(contenido-> '$.descripcion') as descripcion,
+	IFNULL(JSON_UNQUOTE(contenido-> '$.fotos[0].nombreRuta'), 'defecto.jpg')as foto
+	FROM `tours` where id = {$_GET['id']};");
+	if($sqlMeta->execute()){
+		$row = $sqlMeta-> fetch(PDO::FETCH_ASSOC);
+		?>
+		<meta property="og:title" content="<?= $row['titulo']?> - Grupo Euro Andino">
+		<meta property="og:image" content="https://grupoeuroandino.com/app/render/images/subidas/<?= $row['foto']?>">
+		<meta property="og:description" content="<?= strip_tags($row['descripcion'])?>">
+		<?php
+	}
+	?>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/bootstrap-datepicker.min.css?v=1.1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
+	
+
+
 	<style>
+	.datepicker{padding:0px!important;}
 		.datepicker td, .datepicker th{
 			width: 3rem!important;
-   		height: 3rem!important;
+   		    height: 2.4rem!important;
+   		    padding: 6px 2px 0px 0px !important;
 		}
 		.datepicker-inline{
 			width: 100%!important;
 		}
 		.datepicker table{
 			margin: auto!important;
+			border:none!important;
 		}
 		.datepicker .datepicker-days{
 			border:none;
@@ -29,6 +52,8 @@
 		.datepicker table tr td.active.active{
 			/* background-color: #2482e3!important; */background-image: none!important;
 		}
+		.datepicker table tr td.today, .datepicker table tr td.today.disabled, .datepicker table tr td.today.disabled:hover, .datepicker table tr td.today:hover,.datepicker table tr td.today.disabled,.datepicker table tr td.today.disabled
+		{    background-color: #dc3545!important;}
 		#divRecomendaciones img{
 			width: 100%;
     	height: 170px;
@@ -120,7 +145,7 @@
 				<!-- Empieza el bloque de descripción -->
 				<div class="my-3 p-4 border rounded" id="divIzquierda">
 					<h2 class="text-danger text-capitalize">{{tourActivo.nombre}}</h2>
-					<div class="row row-cols-3" v-if="tourActivo.tipo===2" id="divTransportes">
+					<div class="row row-cols-2 row-cols-md-3" v-if="tourActivo.tipo===2" id="divTransportes">
 						<div class="col" v-if="tourActivo.transporte!='3'">
 							<div class="d-flex justify-content-between">
 								<div class="m-auto pe-2" >
@@ -182,7 +207,7 @@
 						<div id="dtpFecha" data-date-format="dd/mm/yyyy"></div>
 					</div>
 				</div>
-				<p class="fs-3 text-center text-muted">
+				<p class="fs-3 text-center text-muted mt-2">
 					<span v-if="tourActivo.cupos==1">Úlimo cupo disponible</span>
 					<span v-else>{{tourActivo.cupos}} cupos disponibles</span>
 				</p>
@@ -317,6 +342,7 @@
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js" integrity="sha512-gY25nC63ddE0LcLPhxUJGFxa2GoIyA5FLym4UJqHDEMHjp8RET6Zn/SHo1sltt3WuVtqfyxECP38/daUc/WVEA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+
 	<script>
 var datepicker = $.fn.datepicker.noConflict();
 $.fn.bootstrapDP = datepicker;
@@ -330,22 +356,24 @@ $.fn.bootstrapDP = datepicker;
 		$(".next").each(function(i) {$(".next")[i].innerHTML = `<i class="icofont-rounded-right"></i>`}) */
 	var app = new Vue({
 		el: '#app',
-		data:{
-			idProducto:-1,
-			//servidor: 'http://localhost/euroAndinoApi/',
-			servidor: 'https://grupoeuroandino.com/app/api/',
-			variosTours:[], tourActivo:[{incluye:'', noIncluye:'', peruanos:{adultos:0, kids:0}, extranjeros:{adultos:0, kids:0}, duracion:0
-		}],
-			precioPorPersona: 0, cantAdultos:0, cantKids:0,
-			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
-			duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
-			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
-			anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
-			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-			diasMuertos:[], precioTotal:0, nacionalidad:-1, faltaPais:false, msjError:'',
-			incluidos:[], noIncluidos:[], faltaMinimo:true, recomendados:[],
-			transportes:['Terrestre', 'Aéreo', 'Ninguno'],
-			hospedajes:['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge','Resort','Otro']
+		data(){
+			return {
+				idProducto:-1,
+				//servidor: 'http://localhost/euroAndinoApi/',
+				servidor: 'https://grupoeuroandino.com/app/api/',
+				variosTours:[], tourActivo:[{incluye:'', noIncluye:'', peruanos:{adultos:0, kids:0}, extranjeros:{adultos:0, kids:0}, duracion:0
+			}],
+				precioPorPersona: 0, cantAdultos:0, cantKids:0,
+				duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
+				duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
+				duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
+				anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
+				departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
+				diasMuertos:[], precioTotal:0, nacionalidad:-1, faltaPais:false, msjError:'',
+				incluidos:[], noIncluidos:[], faltaMinimo:true, recomendados:[],
+				transportes:['Terrestre', 'Aéreo', 'Ninguno'],
+				hospedajes:['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge','Resort','Otro']
+			}
 		},
 		mounted(){
 			//sacando el ID
@@ -354,7 +382,6 @@ $.fn.bootstrapDP = datepicker;
 			this.idProducto = urlParams.get('id')
 			//console.log( 'el id es ' + this.idProducto );
 			this.pedirDatos();
-			
 		},
 		methods: {
 			async pedirDatos(){
@@ -368,7 +395,7 @@ $.fn.bootstrapDP = datepicker;
 				for (let dia = 2; dia <= 31; dia++) {
 					this.duracion.push({ clave: dia+1, valor: dia + ' días / 0 noches' });
 					this.duracionDias.push({ clave: dia+1, valor: dia + ' días' });
-					this.duracionNoches.push({ clave: dia+2, valor: dia + ' noches' });
+					this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
 				}
 				for (let dia = 2; dia <= 15; dia++) {
 					this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
@@ -466,7 +493,7 @@ $.fn.bootstrapDP = datepicker;
 				$('#dtpFecha').bootstrapDP({
 			    language: "es",
 			    keyboardNavigation: false,
-			    todayHighlight: false,
+			    todayHighlight: true,
 			    datesDisabled: this.diasMuertos
 				});
 
@@ -531,7 +558,7 @@ $.fn.bootstrapDP = datepicker;
 			queDura(){
 				try {
 					if(this.tourActivo.tipo=='2'){
-						return this.duracionDias.find( x => x.clave === this.tourActivo.duracion.dias ).valor + ", " + this.duracionNoches.find( x => x.clave === this.tourActivo.duracion.noches ).valor;
+						return this.duracionDias.find( x => x.clave === this.tourActivo.duracion.dias ).valor + " / " + this.duracionNoches.find( x => x.clave === this.tourActivo.duracion.noches ).valor;
 						//return this.duracionDias[parseInt(this.tourActivo.duracion.dias)].valor + ", " + this.duracionNoches[parseInt(this.tourActivo.duracion.noches)].valor;
 					}else{
 						return this.duracion.find( x => x.clave === this.tourActivo.duracion ).valor;
@@ -539,11 +566,9 @@ $.fn.bootstrapDP = datepicker;
 				} catch (error) {
 					
 				}
-			},
-			
-		}
+			},	
+		},
 	})
-
 	</script>
 </body>
 </html>

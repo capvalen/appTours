@@ -8,6 +8,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Panel de paguetes - Grupo Euro-Andino</title>
+	<link rel="icon" type="image/png" href="https://grupoeuroandino.com/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
+
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<link rel="stylesheet" href="icofont/icofont.min.css">
 	<link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
@@ -32,7 +34,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<a class="nav-link " aria-current="page" href="tours.php">Tours</a>
 					<a class="nav-link " href="paquetes.php">Paquetes turísticos</a>
 					<a class="nav-link " href="pedidos.php">Pedidos</a>
-					<a class="nav-link active" href="lateral.php">Lateral</a>
+					<a class="nav-link active" href="lateral.php">Configuraciones</a>
 				</div>
 			</div>
 		</div>
@@ -52,10 +54,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			<li class="nav-item" role="presentation">
 				<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#categorias" type="button" role="tab" aria-controls="categorias" aria-selected="false">Categorías</button>
 			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link" id="sitemap-tab" data-bs-toggle="tab" data-bs-target="#sitemap" type="button" role="tab" aria-controls="sitemap" aria-selected="false">Sitemap Google</button>
+			</li>
 		</ul>
 		<div class="tab-content" id="myTabContent">
 			<div class="tab-pane fade show active" id="lateral" role="tabpanel" aria-labelledby="lateral-tab">
-			<p class="my-2">Edite panel lateral</p>
+				<p class="my-2">Edite panel lateral</p>
 				<div class="row">
 					<div class="col-12 col-md-6 col-lg-5 mx-auto">
 						<div class=" ">
@@ -110,6 +115,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						</tbody>
 					</table>
 				</div>
+			</div>
+
+			<div class="tab-pane fade" id="sitemap" role="tabpanel" aria-labelledby="sitemap-tab">
+				<p>Para actualizar el sitemap de productos personalizados, haga click en el botón de abajo:</p>
+				<button class="btn btn-outline-primary" @click="enviarSitemap()">Enviar Sitemap XML</button>
 			</div>
 		</div>
 
@@ -285,6 +295,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					}
 				}
 			},
+			async enviarSitemap(){
+				fetch(this.servidor+'enviarSitemap.php')
+				.then(serv => serv.text())
+				.then(resp => alert(resp) )
+			}
 
 
 		}
