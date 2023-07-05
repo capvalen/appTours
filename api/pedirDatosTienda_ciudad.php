@@ -26,4 +26,4 @@ if($sqlCategorias ->execute()){
 	}
 }
 
-echo json_encode( array($actividades, $categorias, $ciudades) );
+echo json_encode( array($ciudades, $actividades, $categorias) );
