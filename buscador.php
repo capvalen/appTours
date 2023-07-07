@@ -56,8 +56,11 @@
 			border-radius: 50px;
 			padding: 1.5rem;
 			display: inline;
+			color: white;
+    	background-color: #002865;
+			font-size:1.1em
 		}
-		#btnBuscador:hover{color: #1e1e1e}
+		/* #btnBuscador:hover{color: #1e1e1e} */
 
 		#txtBuscador::placeholder {
 
@@ -223,12 +226,12 @@
 		}
 	</style>
 
-	<div class="container " id="appBuscador">
+	<div class="container text-center" id="appBuscador">
 
 			<div class="form-inline">
 				<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);">
 				<button class="btn btn-outline-secondary rounded-pill" id="btnBuscador">
-					<span class="w-100 h-100 d-flex "><img class="align-self-center" src="https://grupoeuroandino.com/app/render/images/search.svg" alt=""> <span class="ms-2 align-self-center">Buscar</span></span>
+					<span class="w-100 h-100 d-flex "><span class="ms-2 align-self-center">Buscar</span></span>
 				</button>
 			</div>
 

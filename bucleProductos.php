@@ -37,9 +37,9 @@
 		#spanTransporte{ background-color: #bf0ca9; }
 	</style>
 	<div id="app">
-		<div class="row row-cols-12 row-cols-md-2 row-cols-lg-4">
+		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
 			<div class="col my-3" v-for="(tour, index) in contenidos">
-				<div class="card border-0  position-relative">
+				<div class="card h-100 border-0  position-relative">
 					<div class="divOferta2 w-100 position-absolute end-0 d-flex justify-content-end">
 						<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte"><i class="icofont-car-alt-4"></i></span>
 						<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte"><i class="icofont-airplane-alt"></i></span>

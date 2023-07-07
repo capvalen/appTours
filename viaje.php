@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 
 <html lang="es">
@@ -3095,5 +3094,5 @@ $.fn.bootstrapDP = datepicker;
 	})
 	</script>
 </body>
->>>>>>> 1b5f9020bf7ace8daa2a5a0c4fc61e5d557cff86
+
 </html>
