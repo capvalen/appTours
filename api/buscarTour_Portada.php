@@ -9,7 +9,7 @@ else{
 }
 if($_POST['tipo']!=-1){ $filtroNuevo.= "and tipo = {$_POST['tipo']}"; }
 
-$consulta = "SELECT id, JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.nombre')) as nombre, replace(JSON_EXTRACT(contenido, '$.peruanos.adultos'), '\"', '') as precio, replace(JSON_EXTRACT(contenido, '$.fotos[0].nombreRuta'), '\"', '') as foto FROM `tours` where {$filtroNuevo} and visible=1 and activo = 1 limit 5;";
+$consulta = "SELECT id, JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.nombre')) as nombre, replace(JSON_EXTRACT(contenido, '$.peruanos.adultos'), '\"', '') as precio, replace(JSON_EXTRACT(contenido, '$.fotos[0].nombreRuta'), '\"', '') as foto, url FROM `tours` where {$filtroNuevo} and visible=1 and activo = 1 limit 5;";
 //echo $consulta;
 $sql= $db->query($consulta);
 if( $sql->execute()){

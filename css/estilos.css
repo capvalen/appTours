@@ -1,0 +1,507 @@
+.datepicker {
+	padding: 0px !important;
+}
+
+.datepicker td,
+.datepicker th {
+
+	width: 3rem !important;
+
+	height: 2.4rem !important;
+
+	padding: 6px 2px 0px 0px !important;
+
+}
+
+.datepicker-inline {
+
+	width: 100% !important;
+
+}
+
+.datepicker table {
+
+	margin: auto !important;
+
+	border: none !important;
+
+}
+
+.datepicker .datepicker-days {
+
+	border: none;
+
+}
+
+.datepicker table tr td.active.active {
+
+	/* background-color: #2482e3!important; */
+	background-image: none !important;
+
+}
+
+.datepicker table tr td.today,
+.datepicker table tr td.today.disabled,
+.datepicker table tr td.today.disabled:hover,
+.datepicker table tr td.today:hover,
+.datepicker table tr td.today.disabled,
+.datepicker table tr td.today.disabled {
+	background-color: #dc3545 !important;
+}
+
+#divRecomendaciones img {
+
+	width: 100%;
+
+	height: 170px;
+
+	object-fit: cover;
+
+}
+
+.dow {
+	color: rgb(145 145 145) !important;
+}
+
+#divRecomendaciones .titulo {
+	background-color: rgb(214, 214, 214);
+}
+
+#divIzquierda ul,
+ol {
+	padding-left: 0 !important;
+}
+
+p {
+	margin-bottom: 0;
+}
+
+.ql-align-center {
+	text-align: center !important;
+}
+
+#divQuill h5,
+#divQuill p {
+	margin-bottom: 0;
+}
+
+.estrellas {
+
+	color: #ffd400;
+
+}
+
+.precio2 {
+
+	font-size: 1.7rem;
+
+	font-weight: bold;
+
+}
+
+.precioAnt2 {
+
+	font-size: 0.8rem;
+
+	text-decoration: line-through;
+
+}
+
+#divTransportes img {
+
+	width: 60px;
+
+}
+
+.carousel-wrapper {
+
+	/* width: 1000px; */
+
+	margin: auto;
+
+	position: relative;
+
+	text-align: center;
+
+	font-family: sans-serif;
+
+}
+
+.owl-carousel .owl-nav {
+
+	overflow: hidden;
+
+	height: 0px;
+
+}
+
+.owl-theme .owl-dots .owl-dot.active span,
+
+.owl-theme .owl-dots .owl-dot:hover span {
+
+	background: #5110e9;
+
+}
+
+
+
+.owl-carousel .item {
+
+	text-align: center;
+
+}
+
+.owl-carousel .nav-button {
+
+	height: 50px;
+
+	width: 25px;
+
+	cursor: pointer;
+
+	position: absolute;
+
+	top: 110px !important;
+
+}
+
+.owl-carousel .owl-prev.disabled,
+
+.owl-carousel .owl-next.disabled {
+
+	pointer-events: none;
+
+	opacity: 0.25;
+
+}
+
+.owl-carousel .owl-prev {
+
+	left: -35px;
+
+}
+
+.owl-carousel .owl-next {
+
+	right: -35px;
+
+}
+
+.owl-theme .owl-nav [class*=owl-] {
+
+	color: #ffffff;
+
+	font-size: 39px;
+
+	background: #000000;
+
+	border-radius: 3px;
+
+}
+
+.owl-carousel .prev-carousel:hover {
+
+	background-position: 0px -53px;
+
+}
+
+.owl-carousel .next-carousel:hover {
+
+	background-position: -24px -53px;
+
+}
+
+.owl-theme .owl-nav [class*='owl-'] {
+
+	margin: 0;
+
+	padding: 0;
+
+	display: table;
+
+}
+
+#divQuill img {
+
+	max-width: 100%;
+
+}
+
+#menuVolver {
+
+	background-image: url('https://grupoeuroandino.com/wp-content/uploads/2021/09/png-transparent-wood-texture-mapping-material-wood-texture-orange-wood-material.png');
+
+	background-position: center left;
+
+}
+
+#pie {
+
+	background-color: #026EB6;
+
+	background-image: url('https://grupoeuroandino.com/wp-content/uploads/2021/09/Footer.png');
+
+	background-position: 0px 0vh;
+
+	background-repeat: no-repeat;
+
+	background-size: cover;
+
+}
+
+#ulMenu {
+
+	padding: 0 5rem;
+
+}
+
+#ulMenu>li {
+
+	display: inline-block;
+
+	width: 160px;
+
+	padding: 1rem 0;
+
+	text-align: center;
+
+	color: white;
+
+	font-size: 13px;
+
+	font-weight: bold;
+
+	text-decoration: none;
+
+}
+
+#ulMenu>li:hover {
+	background: #BF9F00;
+	cursor: pointer;
+}
+
+
+
+.Ico {
+	margin: 0 0px 0 0;
+
+	width: 33px;
+	padding-right: 1rem;
+
+}
+
+#menuVolver,
+#menuCabecera {
+
+	font-family: 'Roboto', sans-serif;
+
+}
+
+#imgLogo {
+	width: 100px;
+}
+
+#menuCabecera p {
+
+	font-size: 13px;
+	color: #7a7a7a;
+
+	font-weight: 400;
+
+}
+
+#menuCabecera h3 {
+
+	font-size: 17px;
+	color: #012c6d;
+
+	font-weight: 600;
+
+}
+
+#menuCabecera a {
+	text-decoration: none;
+}
+
+#mLateral {
+
+	position: fixed;
+	/* Sit on top of the page content */
+
+	display: none;
+
+	width: 300px;
+	/* Full width (cover the whole page) */
+
+	height: 100%;
+	/* Full height (cover the whole page) */
+
+	top: 0;
+
+	left: 0;
+
+	right: 50px;
+
+	bottom: 0;
+
+	background-color: #003793;
+	/* Black background with opacity */
+
+	z-index: 102;
+	/* Specify a stack order in case you're using a different order for other elements */
+
+	cursor: pointer;
+	/* Add a pointer on hover */
+
+}
+
+#mLateralP {
+	padding-top: 5em;
+}
+
+#mLateral .Ico {
+
+	width: 40px !important;
+
+}
+
+#mLateral p {
+
+	font-family: 'Roboto', sans-serif;
+
+	font-size: 16px !important;
+
+	font-weight: 300 !important;
+
+	padding: 10px 10px 10px 10px;
+
+	color: white;
+
+	margin: 0.5em 0;
+
+	padding: 1em 1em;
+
+}
+
+#mLateralP a {
+
+	color: #ffffffba;
+
+	padding-left: 0.3rem;
+
+	text-decoration: none;
+
+}
+
+#mLateralP p:first-child,
+#mLateralP p:hover {
+
+	background-color: #743eff;
+
+}
+
+
+
+#txtNombres1::placeholder {
+
+	color: #ffffffba;
+
+	padding-left: 0.3rem;
+
+}
+
+#txtNombres1 {
+	width: 336px;
+
+	background: #ffffff1c;
+
+	color: white;
+
+	border: none;
+
+	height: 35px;
+
+	margin-bottom: 0.8rem;
+
+	padding-left: 0.9rem;
+
+	outline: none;
+
+}
+
+#txtCorreo1::placeholder {
+
+	padding-left: 0.3rem;
+
+	color: #ffffffba;
+
+	;
+
+}
+
+#txtCorreo1 {
+	width: 336px;
+
+	background: #ffffff1c;
+
+	color: white;
+
+	padding-left: 0.9rem;
+
+	border: none;
+
+	height: 35px;
+
+	margin-bottom: 0.8rem;
+
+	outline: none;
+
+}
+
+#btnFormulario {
+	width: 336px;
+	height: 40px;
+
+	margin-bottom: 0.8rem;
+
+	padding-left: 0.9rem;
+
+	border: none;
+
+	background: #FCAB1C;
+
+	color: white;
+
+	font-weight: bold;
+
+}
+
+#btnFormulario img {
+
+	width: 15px;
+
+}
+.subText{
+font-size: 0.8rem;
+}
+.precio{font-size: 1.7rem;font-weight:bold; color: rgb(58, 91, 255);}
+.precioAnt{font-size: 0.8rem;text-decoration:line-through; color: rgb(58, 91, 255);}
+.divOferta{ height:60px; border-radius: 50%; color:white; font-size: 0.8rem;  }
+.precio2{font-size: 1.7rem;font-weight:bold; /* color: rgb(192, 0, 67); */}
+.precioAnt2{font-size: 0.8rem;text-decoration:line-through; /* color: rgb(192, 0, 67); */}
+.divOferta2{width: 70px; height: 25px; /* rgb(192, 0, 67);  */ margin-top: 1rem; margin-right: 0rem; color:white; font-size: 0.8rem;  }
+/* .titulo>a, .estrellas{color: rgb(58, 91, 255);} */
+.estrellas{color: #ffd400;}
+.divImagen img{
+	width:100%!important;
+	height: 320px!important;
+	object-fit: cover!important;
+}
+.card{box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;transition: transform 220ms ease 0s;}
+.card:hover{ transition: transform 220ms ease 0s; transform: translateX(0px) translateY(-11px); }
+#spanOferta{ background-color: #2768b7; }
+#spanAlimentacion{ background-color: #f19c02; }
+#spanTour{ background-color: #0cbf19; }
+#spanGuia{ background-color: #ffc107; }
+#spanTickets{ background-color: #e91616; }
+#spanTransporte{ background-color: #bf0ca9; }
