@@ -189,7 +189,7 @@
 		}
 
 		#divLupa {
-			right: 80px;
+			right: 100px;
 			top: 10px;
 		}
 
@@ -228,12 +228,16 @@
 
 	<div class="container text-center" id="appBuscador">
 
-			<div class="form-inline">
+		<div class="position-relative">
+			<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);">
+			<span id="divLupa" class="position-absolute"><img src="https://perutravelservice.com/app/render/images/search.svg" alt=""></span>
+		</div>
+			<!-- <div class="form-inline">
 				<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);">
 				<button class="btn btn-outline-secondary rounded-pill" id="btnBuscador">
 					<span class="w-100 h-100 d-flex "><span class="ms-2 align-self-center">Buscar</span></span>
 				</button>
-			</div>
+			</div> -->
 
 		<div id="divBuscador">
 

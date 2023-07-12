@@ -35,6 +35,7 @@
 		#spanGuia{ background-color: #ffc107; }
 		#spanTickets{ background-color: #e91616; }
 		#spanTransporte{ background-color: #bf0ca9; }
+		.titulo{background-color: rgb(214, 214, 214);}
 	</style>
 	<div id="app">
 		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
@@ -60,10 +61,10 @@
 							
 							
 							<div>
-								<p class="mb-0 titulo text-capitalize"><strong>
+								<p class="mb-0 titulo ps-1 text-capitalize">
 									<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
 									<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
-									</strong>
+									
 								</p>
 								<div class="estrellas">
 									<i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i>

@@ -17,7 +17,7 @@ $tildes = ['á', 'é', 'í', 'ó', 'ú', ' '];
 $simple = ['a', 'e', 'i', 'o', 'u', '-'];
 
 $aBuscar = str_replace( $tildes, $simple, $aBuscar );
-$indice =  array_search( 'junin', $departamentosUrl)
+$indice =  array_search( $aBuscar, $departamentosUrl)
 ?>
 
 <!DOCTYPE html>
@@ -114,9 +114,6 @@ $indice =  array_search( 'junin', $departamentosUrl)
 	</style>
 
 	<!-- Inicio de Encabezado -->
-
-
-
 	<nav>
 		<div class="container d-block d-sm-none">
 			<div class="row row-cols-3">
@@ -207,9 +204,6 @@ $indice =  array_search( 'junin', $departamentosUrl)
 			</div>
 		</div>
 	</nav>
-
-
-
 	<!-- Fin de Encabezado -->
 
 	<div class="container" id="app">

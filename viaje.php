@@ -748,7 +748,7 @@
 
 				<div class=" ms-5 ps-3" id="divDuracion">
 
-					<span><strong>Duración:</strong> {{queDura}}</span><br>
+					<span><strong>Duración:</strong> {{queDuraComp}}</span><br>
 
 					<span><strong>Comprar:</strong> {{queAnticipa(tourActivo.anticipacion)}} antes del viaje</span><br>
 
@@ -848,60 +848,61 @@
 
 						</div>
 
-						<div class="row row-cols-12 row-cols-lg-3">
-							<div class="col my-3" v-for="(tour, index) in contenidos">
-								<div class="card border-0  position-relative">
-									<div class="divOferta2 w-100 position-absolute end-0 d-flex justify-content-end">
-										<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte"><i class="icofont-car-alt-4"></i></span>
-										<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte"><i class="icofont-airplane-alt"></i></span>
-										<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[tour.alojamiento]}}</span>
-										<span class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
-										<span v-if="tour.tipo==1" class="mx-1 px-1 rounded" id="spanTour">Tour</span>
-										<span v-else class="mx-1 px-1 rounded" id="spanTour">Paquete</span>
-										<span class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
-										<span class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
-									</div>
-									<div v-if="tour.fotos.length>0" class="divImagen card-img-top">
-										<a class="aImgs" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
-										<a class="aImgs" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
-									</div>
-									<div class="card-body">
-										<div class="divProducto ">
+					<!-- 	<div class="row row-cols-12 row-cols-lg-3">
 							
-							
-											<div>
-												<p class="mb-0 titulo text-capitalize"><strong>
-													<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
-													<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
-													</strong>
-												</p>
-												<div class="estrellas">
-													<i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i>
-												</div>
-							
-												<div class="row row-cols-2">
-													<div><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{tour.destino}}, {{queDepa(tour.departamento)}}</strong></span> <br>
-														<span v-if="tour.tipo==1" class="text-muted subText">{{queDura(tour.duracion)}}</span>
-														<span v-else class="text-muted subText">{{queDuraDia(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches-1)}}</span>
+						</div> -->
+
+						<div class="carousel-wrapper">
+
+							<div class=" my-2 owl-carousel owl-theme">
+								<div class="col-12 my-3" v-for="(tour, index) in contenidos">
+									<div class="card border-0  position-relative">
+										<div class="divOferta2 w-100 position-absolute end-0 d-flex justify-content-end">
+											<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte"><i class="icofont-car-alt-4"></i></span>
+											<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte"><i class="icofont-airplane-alt"></i></span>
+											<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[tour.alojamiento]}}</span>
+											<span class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
+											<span v-if="tour.tipo==1" class="mx-1 px-1 rounded" id="spanTour">Tour</span>
+											<span v-else class="mx-1 px-1 rounded" id="spanTour">Paquete</span>
+											<span class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
+											<span class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
+										</div>
+										<div v-if="tour.fotos.length>0" class="divImagen card-img-top">
+											<a class="aImgs" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+											<a class="aImgs" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+										</div>
+										<div class="card-body">
+											<div class="divProducto ">
+								
+								
+												<div>
+													<p class="mb-0 titulo text-capitalize text-start"><strong>
+														<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
+														<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
+														</strong>
+													</p>
+													<div class="estrellas text-start">
+														<i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i>
 													</div>
-													<div class="text-end ">
-														<span class="precio2">S/ {{formatoMoneda(tour.peruanos.adultos)}}</span>
-														<p class="mb-0 text-end"><small>Precio normal</small></p>
-														<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0">S/ {{formatoMoneda(tour.oferta)}}</p>
+								
+													<div class="row row-cols-2 text-start">
+														<div><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{tour.destino}}, {{queDepa(tour.departamento)}}</strong></span> <br>
+															<span v-if="tour.tipo==1" class="text-muted subText">{{queDura(tour.duracion)}}</span>
+															<span v-else class="text-muted subText">{{queDuraDia(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches-1)}}</span>
+														</div>
+														<div class="text-end ">
+															<span class="precio2">S/ {{formatoMoneda(tour.peruanos.adultos)}}</span>
+															<p class="mb-0 text-end"><small>Precio normal</small></p>
+															<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0">S/ {{formatoMoneda(tour.oferta)}}</p>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						</div>
 
-						<!-- <div class="carousel-wrapper">
-
-							<div class=" my-2 owl-carousel owl-theme">
-
-								<div class=" item" v-for="recomendado in recomendados" :key="recomendado.id">
+								<!-- <div class=" item" v-for="recomendado in recomendados" :key="recomendado.id">
 
 									<a :href="'https://grupoeuroandino.com/tour/'+recomendado.url"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+recomendado.foto" alt="" class="img-fluid"></a>
 
@@ -925,11 +926,11 @@
 
 									</div>
 
-								</div>
+								</div> -->
 
 							</div>
 
-						</div> -->
+						</div>
 
 					</div>
 
@@ -1220,7 +1221,6 @@
 				this.cargarComplementos();
 
 				this.pedirDatos();
-				this.cargarTours()
 
 			},
 
@@ -1267,12 +1267,12 @@
 				},
 				async cargarTours(){
 				let datos = new FormData()
-				datos.append('texto', 'huancayo')
-				const respuesta = await fetch(this.servidor+'mostrarTours_scriptCiudades.php',{
+				datos.append('departamento', this.tourActivo.departamento+1)
+				const respuesta = await fetch(this.servidor+'mostrarTours_scriptDepartamentos.php',{
 					method:'POST', body:datos
 				})
 				let temp = await respuesta.json()
-				console.log(temp);
+				//console.log('temp',temp);
 				this.tours = temp;
 				this.contenidos=[];
 				this.tours.forEach(dato=>{
@@ -1368,6 +1368,9 @@
 						$('.fotorama').fotorama();
 
 					}, 500);
+
+					this.cargarTours()
+
 
 
 
@@ -1732,7 +1735,7 @@
 
 			computed: {
 
-				queDura() {
+				queDuraComp() {
 
 					try {
 
