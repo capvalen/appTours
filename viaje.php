@@ -61,17 +61,11 @@
 
 
 	<link rel="stylesheet" href="https://grupoeuroandino.com/icofont/icofont.min.css">
-
 	<link rel="stylesheet" href="https://grupoeuroandino.com/css/bootstrap-datepicker.min.css?v=1.1">
-
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 	<link rel="preconnect" href="https://fonts.googleapis.com">
-
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/estilos.css?v=1.1">
 </head>
@@ -295,13 +289,25 @@
 
 					<h2 class="text-danger text-capitalize">{{tourActivo.nombre}}</h2>
 
-					<div class="row row-cols-2 row-cols-md-3" v-if="tourActivo.tipo===2" id="divTransportes">
+					<div class="row">
+						<div v-if="tourActivo.transporte" class="col text-center fs-4">
+							<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><i class="icofont-airplane"></i></span> Avión</span>
+							<span v-else><span class="fs-2"><i class="icofont-school-bus"></i></span> Bus</span>
+						</div>
+						<div v-if="tourActivo.alimentacion" class="col text-center fs-4"> <span class="fs-2"><i class="icofont-fork-and-knife"></i></span> Alimentación </div>
+						<div v-if="tourActivo.tickets" class="col text-center fs-4"><span class="fs-2"><i class="icofont-ticket"></i></span> Tickets</div>
+						<div v-if="tourActivo.guia" class="col text-center fs-4"><span class="fs-2"><i class="icofont-camping-vest"></i></span> Guía</div>
+						<div v-if="tourActivo.alojamiento" class="col text-center fs-4"><span class="fs-2"><i class="icofont-bed"></i></span> Hospedaje</div>
+					</div>
+
+					<!-- <div class="row row-cols-2 row-cols-md-3" v-if="tourActivo.tipo===2" id="divTransportes">
 
 						<div class="col" v-if="tourActivo.transporte!='3'">
 
 							<div class="d-flex justify-content-between">
 
 								<div class="m-auto ps-2">
+									
 
 									<img v-if="tourActivo.transporte==='2'" src="https://grupoeuroandino.com/app/render/images/vuelo.png" alt="">
 
@@ -311,9 +317,7 @@
 
 								<div class="text-start">
 
-									<h6 class="mb-1
-
-									">Transporte</h6>
+									<h6 class="mb-1 ">Transporte</h6>
 
 									<span>{{transportes[parseInt(tourActivo.transporte)-1]}}</span>
 
@@ -347,7 +351,7 @@
 
 						</div>
 
-					</div>
+					</div> -->
 
 					<h4 class="mt-4 text-danger">Descripción</h4>
 
@@ -741,6 +745,7 @@
 					<select name="" id="" class="form-select">
 
 						<option value="-1">Inicia {{horaLatam(tourActivo.hora).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
+						<option v-if="tourActivo.hora2" value="1">2° Horario {{horaLatam(tourActivo.hora2).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
 
 					</select>
 

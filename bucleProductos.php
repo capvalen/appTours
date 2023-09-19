@@ -45,10 +45,10 @@
 						<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus</span>
 						<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
 						<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[tour.alojamiento]}}</span>
-						<span class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
+						<span v-if="tour.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
 						<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
-						<span class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
-						<span class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
+						<span v-if="tour.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
+						<span v-if="tour.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
 					</div>
 
 					<div v-if="tour.fotos.length>0" class="divImagen card-img-top">
