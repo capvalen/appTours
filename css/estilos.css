@@ -228,8 +228,8 @@ p {
 }
 
 #menuVolver {
-
-	background-image: url('https://grupoeuroandino.com/wp-content/uploads/2021/09/png-transparent-wood-texture-mapping-material-wood-texture-orange-wood-material.png');
+	background-color: #FCAB1C;
+	/* background-image: url('https://grupoeuroandino.com/wp-content/uploads/2021/09/png-transparent-wood-texture-mapping-material-wood-texture-orange-wood-material.png'); */
 
 	background-position: center left;
 
@@ -500,7 +500,7 @@ font-size: 0.8rem;
 .card{box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;transition: transform 220ms ease 0s;}
 .card:hover{ transition: transform 220ms ease 0s; transform: translateX(0px) translateY(-11px); }
 #spanOferta{ background-color: #2768b7; }
-#spanAlimentacion{ background-color: #f19c02; }
+#spanAlimentacion{ background-color: #6745ef; }
 #spanTour{ background-color: #0cbf19; }
 #spanGuia{ background-color: #ffc107; }
 #spanTickets{ background-color: #e91616; }

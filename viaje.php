@@ -73,7 +73,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/estilos.css">
+	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/estilos.css?v=1.1">
 </head>
 
 <body>
@@ -87,7 +87,7 @@
 
 		<div class="row row-cols-3">
 
-			<div class="col mx-0 px-1" style="width:114px">
+			<div class="col mx-0 px-1" style="width:25%">
 
 				<a href="https://grupoeuroandino.com"><img src="https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-2048x1795.png" style="width: 94%; height: auto; margin-left:8px;" class="img-fluid p-3"></a>
 
@@ -227,7 +227,7 @@
 
 			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/path245.png" class="Ico"> Inicio</p>
 
-			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/peru-interno/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/peruico.png" class="Ico"> Destinos</p>
+			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/destinos-mas-populares-en-peru'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/peruico.png" class="Ico"> Destinos</p>
 
 			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/store/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/bolsaico.png" class="Ico"> Tienda</p>
 
@@ -251,7 +251,7 @@
 
 				<li onclick="location.href='https://grupoeuroandino.com/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/path245.png" class="Ico"> INICIO</li>
 
-				<li onclick="location.href='https://grupoeuroandino.com/peru-interno/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/peruico.png" class="Ico"> DESTINOS</li>
+				<li onclick="location.href='https://grupoeuroandino.com/destinos-mas-populares-en-peru/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/peruico.png" class="Ico"> DESTINOS</li>
 
 				<li onclick="location.href='https://grupoeuroandino.com/store/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/bolsaico.png" class="Ico"> TIENDA</li>
 
@@ -1004,7 +1004,7 @@
 
 				<div class="col-12 col-md-4">
 
-					<a href=""><img src="https://grupoeuroandino.com/images/pie2.png?v=1" alt=""></a>
+					<a href=""><img src="https://grupoeuroandino.com/images/pie2.png?v=2" alt=""></a>
 
 				</div>
 
