@@ -71,6 +71,10 @@
 </head>
 
 <body>
+	<style>
+		#divIncluye ul{ list-style-type: "✅ "; }
+		#divNoIncluye ul{ list-style-type: "❌ "; }
+	</style>
 
 
 	<!-- Inicio de Encabezado -->
@@ -363,18 +367,22 @@
 					<div class="w-100 text-break" v-html="tourActivo.partida"></div>
 
 					<h4 class="mt-4 text-danger">Itinerario</h4>
-
+					
 					<div class="w-100 text-break p-2" v-html="tourActivo.itinerario"></div>
+					<h4 class="mt-4 text-danger">Incluye</h4>
+					<div class="w-100 text-break p-2" id="divIncluye" v-html="tourActivo.incluye"></div>
+					<h4 class="mt-4 text-danger">No incluye</h4>
+					<div class="w-100 text-break p-2" id="divNoIncluye" v-html="tourActivo.noIncluye"></div>
 
 
 
-					<h5 class="mt-3 text-danger">Incluye</h5>
+					<!-- <h5 class="mt-3 text-danger">Incluye</h5>
 
 					<div>
 
 						<p class="ms-2 mb-0" v-for="cadena in incluidos"><i class="icofont-check-alt"></i> {{cadena}}</p>
 
-					</div>
+					</div> 
 
 
 
@@ -384,7 +392,7 @@
 
 						<p class="ms-2 mb-0" v-for="cadena in noIncluidos"><i class="icofont-close-line"></i> {{cadena}}</p>
 
-					</div>
+					</div>-->
 
 
 
@@ -1081,20 +1089,12 @@
 	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
 
 	<script src="https://grupoeuroandino.com/app/render/js/moment.min.js"></script>
-
 	<!-- extraído de https://fotorama.io/docs/4/dimensions/ -->
-
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
-
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.min.js"></script>
-
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js" integrity="sha512-gY25nC63ddE0LcLPhxUJGFxa2GoIyA5FLym4UJqHDEMHjp8RET6Zn/SHo1sltt3WuVtqfyxECP38/daUc/WVEA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
 
 
 

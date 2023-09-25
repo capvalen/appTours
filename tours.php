@@ -277,15 +277,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<div class="editor" id="qPartida"></div>
 						<p class="mb-0 mt-2">Itinerario</p>
 						<div class="editor" id="qItinerario"></div>
-						
-						<div class="form-floating mt-3">
-							<textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" v-model="tour.incluye"></textarea>
-							<label for="floatingTextarea2">Incluye <em style="font-size: 0.7rem">(1 item por línea)</em></label>
-						</div>
-						<div class="form-floating mt-3">
-							<textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" v-model="tour.noIncluye"></textarea>
-							<label for="floatingTextarea2">No incluye <em style="font-size: 0.7rem">(1 item por línea)</em></label>
-						</div>
+						<p class="mb-0 mt-2">Incluye</p>
+						<div class="editor" id="qSiIncluye"></div>
+						<p class="mb-0 mt-2">No incluye</p>
+						<div class="editor" id="qNoIncluye"></div>
+
 						<p class="mb-0 mt-2">Notas</p>
 						<div class="editor" id="qNotas"></div>
 						<p class="mb-0 mt-2">Opciones</p>
@@ -460,6 +456,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 
 	<script>
 	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
+	qSiIncluye, qNoIncluye,
 	tostadaOk, tostadaMal;
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
 	var rutaDocs = '/home/perutra1/grupoeuroandino.com/app/render/images/subidas/'
@@ -531,6 +528,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			qNotas = new Quill('#qNotas', { theme: 'snow', modules: {
 				toolbar: toolbarOptions
 			} });
+			qSiIncluye = new Quill('#qSiIncluye', { theme: 'snow', modules: { toolbar: toolbarOptions} });
+			qNoIncluye = new Quill('#qNoIncluye', { theme: 'snow', modules: { toolbar: toolbarOptions} });
 			
 			
 			
@@ -589,6 +588,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.tour.descripcion = qDescripcion.root.innerHTML.trim();
 				this.tour.partida = qPartida.root.innerHTML.trim();
 				this.tour.itinerario = qItinerario.root.innerHTML.trim();
+				this.tour.incluye = qSiIncluye.root.innerHTML.trim();
+				this.tour.noIncluye = qNoIncluye.root.innerHTML.trim();
 				this.tour.notas = qNotas.root.innerHTML.trim();
 				if($('#sltActividad2').selectpicker('val') !=null){
 					this.tour.actividades = $('#sltActividad2').selectpicker('val');
@@ -789,6 +790,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				qDescripcion.setContents([]); qDescripcion.clipboard.dangerouslyPasteHTML(0, this.tour.descripcion);
 				qPartida.setContents([]); qPartida.clipboard.dangerouslyPasteHTML(0, this.tour.partida);
 				qItinerario.setContents([]); qItinerario.clipboard.dangerouslyPasteHTML(0, this.tour.itinerario);
+				qSiIncluye.setContents([]); qSiIncluye.clipboard.dangerouslyPasteHTML(0, this.tour.incluye);
+				qNoIncluye.setContents([]); qNoIncluye.clipboard.dangerouslyPasteHTML(0, this.tour.noIncluye);
 				qNotas.setContents([]); qNotas.clipboard.dangerouslyPasteHTML(0, this.tour.notas);
 				
 				offPanel.hide();
