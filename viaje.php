@@ -290,14 +290,14 @@
 					<h2 class="text-danger text-capitalize">{{tourActivo.nombre}}</h2>
 
 					<div class="row">
-						<div v-if="tourActivo.transporte" class="col text-center fs-4">
-							<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><i class="icofont-airplane"></i></span> Avión</span>
+						<div v-if="tourActivo.transporte" class="col text-center fs-6">
+							<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span style="display: inline-block;-webkit-transform:rotate(45deg)"><i class="icofont-airplane"></i></span></span> Avión</span>
 							<span v-else><span class="fs-2"><i class="icofont-school-bus"></i></span> Bus</span>
 						</div>
-						<div v-if="tourActivo.alimentacion" class="col text-center fs-4"> <span class="fs-2"><i class="icofont-fork-and-knife"></i></span> Alimentación </div>
-						<div v-if="tourActivo.tickets" class="col text-center fs-4"><span class="fs-2"><i class="icofont-ticket"></i></span> Tickets</div>
-						<div v-if="tourActivo.guia" class="col text-center fs-4"><span class="fs-2"><i class="icofont-camping-vest"></i></span> Guía</div>
-						<div v-if="tourActivo.alojamiento" class="col text-center fs-4"><span class="fs-2"><i class="icofont-bed"></i></span> Hospedaje</div>
+						<div v-if="tourActivo.alimentacion" class="col text-center fs-6"> <span class="fs-2"><i class="icofont-fork-and-knife"></i></span> Alimentación </div>
+						<div v-if="tourActivo.tickets" class="col text-center fs-6"><span class="fs-2"><i class="icofont-ticket"></i></span> Tickets</div>
+						<div v-if="tourActivo.guia" class="col text-center fs-6"><span class="fs-2"><i class="icofont-tracking"></i></span> Guía</div>
+						<div v-if="tourActivo.alojamiento" class="col text-center fs-6"><span class="fs-2"><i class="icofont-bed"></i></span> {{hospedajes[parseInt(tourActivo.alojamiento)-1]}}</div>
 					</div>
 
 					<!-- <div class="row row-cols-2 row-cols-md-3" v-if="tourActivo.tipo===2" id="divTransportes">
@@ -437,7 +437,7 @@
 
 				<p class="fs-3 text-center text-muted mt-2">
 
-					<span v-if="tourActivo.cupos==1">Úlimo cupo disponible</span>
+					<span v-if="tourActivo.cupos==1">Último cupo disponible</span>
 
 					<span v-else>{{tourActivo.cupos}} cupos disponibles</span>
 
@@ -807,8 +807,7 @@
 
 				</div>
 
-				<div class="row col">
-
+				<div class="row col mt-3">
 					<img src="https://grupoeuroandino.com/app/render/images/tarjetas.png" alt="" class="img-fluid">
 
 				</div>

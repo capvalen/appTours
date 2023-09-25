@@ -204,11 +204,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						</div>
 						<div class="form-floating mb-3">
 							<input type="time" class="form-control" id="floHora" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora">
-							<label for="floHora">Primera Hora de inicio</label>
-						</div>
-						<div class="form-floating mb-3">
-							<input type="time" class="form-control" id="floHora2" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora2">
-							<label for="floHora2">Segunda Hora de inicio</label>
+							<label for="floHora">Hora de inicio</label>
 						</div>
 						<p class="mb-0">Reglas de compra</p>
 						<div class="row">
@@ -374,7 +370,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.kids)}}</span> </p>
 					<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDuraDia(tourActivo.duracion.dias)}} / {{queDuraNoche(tourActivo.duracion.noches)}}</span></p>
 					<p class="my-1 mt-3"><strong>1° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora)}}</span></p>
-					<p v-if="tourActivo.hora2" class="my-1 mt-3"><strong>2° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora2)}}</span></p>
 					<p class="my-1 mt-3"><strong>Reglas de compra:</strong> </p>
 					<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
 					<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
