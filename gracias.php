@@ -6,6 +6,7 @@ if( $_POST['id']<>-1 ):
 	require_once( __DIR__. './../api/conectkarl.php');
 	$idPedido = $_POST['id'];
 	$tipoDoc = ['D.N.I.','Pasaporte','Carnet de extranjería'];
+	//echo 'el id de pedido ' . $idPedido;
 
 
 	$sql = $db->prepare("SELECT pe.*, JSON_EXTRACT(t.contenido, '$.duracion') as duracion, JSON_EXTRACT(t.contenido, '$.hora') as hora, tipo
@@ -13,12 +14,18 @@ if( $_POST['id']<>-1 ):
 	if( $sql->execute([ $idPedido ]) ){
 		$rowDatos = $sql->fetch(PDO::FETCH_ASSOC);
 		$duracionArray = ['Half Day (Medio día)', 'Full Day (1 día)'];
-
+		
+		if( is_numeric($rowDatos['duracion']) ){
+			$dias['dias'] = $rowDatos['duracion'];
+		}else{
+			$dias = json_decode($rowDatos['duracion'], true);
+		}
+		
 		if($rowDatos['tipo']==1){ //tour
-			if( $rowDatos['duracion']== 1 || $rowDatos['duracion']== 2 ){ $duracion = $duracionArray[ $rowDatos['duracion']-1 ]; }else{ $duracion = $rowDatos['duracion']-1 .' / 0 noches'; }
+			if( $dias['dias'] == 1 || $dias['dias']== 2 ){ $duracion = $duracionArray[ $dias['dias']-1 ]; }else{ $duracion = ($dias['dias']-1) .' / 0 noches'; }
 			$tipo = 'Tour';
 		}else{
-			if( $rowDatos['duracion']['dias']== 1 || $rowDatos['duracion']['dias']== 2 ){ $duracion = $duracionArray[ $rowDatos['duracion']['dias']-1 ] . " / ". $rowDatos['duracion']['noches']-1 . "noches"; }else{ $duracion = $rowDatos['duracion']['dias']-1 . " / ". $rowDatos['duracion']['noches']-1 . "noches"; }
+			if( $dias['dias'] == 1 || $dias['dias'] == 2 ){ $duracion = $duracionArray[ $dias['dias'] -1 ] . " / ". ($dias['noches'] -1) . "noches"; }else{ $duracion = ($dias['dias']-1) . " / ". ($dias['noches'] -1) . "noches"; }
 			$tipo = 'Paquete turístico';
 		}
 		$_POST['duracion'] = $duracion;
@@ -28,6 +35,7 @@ if( $_POST['id']<>-1 ):
 		if( $rowDatos['menores'] >0){ $pasajeros .= ' y '. $rowDatos['menores']. " menores"; }
 		$_POST['pasajeros'] = $pasajeros;
 		$_POST['tipoDocumento'] = $tipoDoc[$rowDatos['tipoDocumento']-1];
+		$_POST['tipo'] = $_POST['tipoDocumento']; 
 		
 
 		if($rowDatos['idEstado']==1){ //solo se factura 1 vez
@@ -52,8 +60,10 @@ if( $_POST['id']<>-1 ):
 				$_POST['cliente'] = array([
 					'dni' => $rowDatos['dni'],
 					'razon' => $rowDatos['apellido'] .' '. $rowDatos['nombre'],
-					'direccion' => $rowDatos['direccion'] .' '. $rowDatos['ciudad']
+					'direccion' => $rowDatos['direccion'] .' '. $rowDatos['ciudad'],
+					'tipo' => $rowDatos['tipoComprobante'],
 				]);
+				$_POST['jsonCliente'] = $_POST['cliente'];
 				$_POST['cabecera'] = array([
 					'tipo' => $rowDatos['tipoComprobante'],
 					'serie' => $serie,
@@ -73,6 +83,7 @@ if( $_POST['id']<>-1 ):
 					'subtotal' => $rowDatos['total']
 				]);
 				$_POST['total'] = $rowDatos['total'];
+				$_COOKIE['ckidUsuario']= 3;
 
 				setcookie("crearArchivo", 0);
 		
@@ -80,8 +91,9 @@ if( $_POST['id']<>-1 ):
 				require __DIR__ . './../facturador/php/insertarBoleta.php';
 				$data = json_decode(ob_get_contents(), true);
 				ob_clean();
-				//var_dump($data[0]['serie']);
+				//var_dump($data[0]); //[0]['serie']
 				$comprobanteSerie = $data[0]['serie'].'-'.$data[0]['correlativo'];
+				//echo $comprobanteSerie;
 		
 		
 				$sqlUpdate = $auxiliar->prepare("UPDATE `pedidos` SET `idEstado` = '2', fechaPago = CONVERT_TZ(NOW(), '+00:00', '-05:00'), serie='{$comprobanteSerie}' WHERE `pedidos`.`id` = ?;");

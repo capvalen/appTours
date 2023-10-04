@@ -280,6 +280,7 @@ include '../api/'
 			this.kids = urlParams.get('kids');
 			this.nacionalidad = urlParams.get('nationality');
 			this.empieza = urlParams.get('start');
+			this.horario = urlParams.get('horario');
 
 			toastMal = new bootstrap.Toast(document.getElementById('toastMal'));
 			toastBien = new bootstrap.Toast(document.getElementById('toastBien'));
@@ -304,7 +305,8 @@ include '../api/'
 				adultos: this.adultos,
 				kids: this.kids,
 				nacionalidad: this.nacionalidad,
-				empieza: this.empieza
+				empieza: this.empieza,
+				horario: this.horario
 			});
 			localStorage.setItem('carrito', JSON.stringify(this.carrito))
 			
@@ -319,6 +321,7 @@ include '../api/'
 				datos.append('adultos', this.adultos)
 				datos.append('kids', this.kids)
 				datos.append('nacionalidad', this.nacionalidad)
+				datos.append('horario', this.horario)
 				
 				//la consulta entrega precio, en base a la nacionalidad y la hora de inicio
 				const resp = await fetch(this.servidor + "verificarItemCarrito.php", {

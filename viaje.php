@@ -741,11 +741,12 @@
 				</div>
 
 				<div class="row col-7 mx-auto my-3">
+					<label for="">Horarios:</label>
 
-					<select name="" id="" class="form-select">
+					<select name="" id="" class="form-select" v-model="horarioSelect">
 
-						<option value="-1">Inicia {{horaLatam(tourActivo.hora).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
-						<option v-if="tourActivo.hora2" value="1">2° Horario {{horaLatam(tourActivo.hora2).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
+						<option value="-1">{{horaLatam(tourActivo.hora).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
+						<option v-if="tourActivo.hora2" value="1">{{horaLatam(tourActivo.hora2).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
 
 					</select>
 
@@ -1127,7 +1128,7 @@
 
 				return {
 
-					idProducto: -1,
+					idProducto: -1, horarioSelect:-1,
 
 					//servidor: 'http://localhost/euroAndinoApi/',
 
@@ -1619,7 +1620,7 @@
 
 					} else if (this.comprobarNacionalidad() && this.contarMinimoPersonas()) {
 
-						window.location.href = "/carrito-compras/?id=" + this.idProducto + "&adults=" + this.cantAdultos + "&kids=" + this.cantKids + "&nationality=" + this.nacionalidad + "&start=" + $('#dtpFecha').bootstrapDP('getFormattedDate');
+						window.location.href = "/carrito-compras/?id=" + this.idProducto + "&adults=" + this.cantAdultos + "&kids=" + this.cantKids + "&nationality=" + this.nacionalidad + "&start=" + $('#dtpFecha').bootstrapDP('getFormattedDate')+'&horario='+this.horarioSelect;
 
 					}
 
