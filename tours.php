@@ -103,6 +103,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<th>Título</th>
 					<th>Precio Perú</th>
 					<th>Precio Ext.</th>
+					<th>Fechas</th>
 					<th><i class="icofont-eye-alt"></i></th>
 				</tr>
 			</thead>
@@ -110,16 +111,18 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<tr v-if="variosTours.length == 0">
 					<td colspan=5>No hay paquetes</td>
 				</tr>
-				<tr v-else v-for="(vTour, index) in variosTours" @click="cargarPanel(todosTours[index].id, index)" :data-id="todosTours[index].id">
-					<td>{{index+1}}</td>
-					<td class="text-capitalize">{{vTour.nombre}}</td>
-					<td>{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
-					<td>{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
+				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
+					<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
+					<td @click="cargarPanel(todosTours[index].id, index)" class="text-capitalize">{{vTour.nombre}}</td>
+					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
+					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
 					<td>
+						<button data-bs-toggle="offcanvas" data-bs-target="#offFechas" class="btn btn-sm btn-outline-secondary" @click.prevent="idGlobal=todosTours[index].id;tourActivo =JSON.parse(todosTours[index].contenido)"><span v-if="vTour.fechas">{{vTour.fechas.length}}</span> <span v-else>0</span></button>
+					</td>
+					<td @click="cargarPanel(todosTours[index].id, index)" >
 						<span class="text-primary" v-if="esVisible(index)=='1'"><i class="icofont-check"></i></span>
 						<span class="text-danger" v-else><i class="icofont-close"></i></span>
 					</td>
-					
 				</tr>
 			</tbody>
 		</table>
@@ -192,13 +195,20 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							</select>
 							<label for="floatingSelect">Duración</label>
 						</div>
-						<div class="form-floating mb-3">
-							<input type="time" class="form-control" id="floHora" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora">
-							<label for="floHora">Primera Hora de inicio</label>
-						</div>
-						<div class="form-floating mb-3">
-							<input type="time" class="form-control" id="floHora2" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora2">
-							<label for="floHora2">Segunda Hora de inicio</label>
+						<div class="row">
+							<div class="col">
+								<div class="form-floating mb-3">
+									<input type="time" class="form-control" id="floHora" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora">
+									<label for="floHora">Primera Hora de inicio</label>
+								</div>
+							</div>
+							<div class="col">
+								
+								<div class="form-floating mb-3">
+									<input type="time" class="form-control" id="floHora2" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora2">
+									<label for="floHora2">Segunda Hora de inicio</label>
+								</div>
+							</div>
 						</div>
 						<p class="mb-0">Reglas de compra</p>
 						<div class="row">
@@ -217,16 +227,24 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								</div>
 							</div>
 						</div>
-						<div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floDestino" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.destino">
-							<label for="floDestino">Ciudad <em style="font-size: 0.7rem">Ejm: Laguna de Paca</em></label>
+						<div class="row">
+							<div class="col">
+								<div class="form-floating mb-3">
+									<input type="text" class="form-control" id="floDestino" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.destino">
+									<label for="floDestino">Ciudad <em style="font-size: 0.7rem">Ejm: Laguna de Paca</em></label>
+								</div>
+
+							</div>
+							<div class="col">
+								<div class="form-floating mb-3">
+								<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.departamento">
+									<option v-for="(depa, index) in departamentos" :value="index">{{depa}}</option>
+								</select>
+								<label for="floatingSelect">Departamento</label>
+							</div>
+							</div>
 						</div>
-						<div class="form-floating mb-3">
-							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.departamento">
-								<option v-for="(depa, index) in departamentos" :value="index">{{depa}}</option>
-							</select>
-							<label for="floatingSelect">Departamento</label>
-						</div>
+						
 						<!-- <div class="form-floating mb-3">
 							<input type="text" class="form-control" id="floDestino" placeholder=" " autocomplete="off" v-model="tour.actividad">
 							<label for="floDestino">Actividades</label>
@@ -259,15 +277,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<div class="editor" id="qPartida"></div>
 						<p class="mb-0 mt-2">Itinerario</p>
 						<div class="editor" id="qItinerario"></div>
-						
-						<div class="form-floating mt-3">
-							<textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" v-model="tour.incluye"></textarea>
-							<label for="floatingTextarea2">Incluye <em style="font-size: 0.7rem">(1 item por línea)</em></label>
-						</div>
-						<div class="form-floating mt-3">
-							<textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" v-model="tour.noIncluye"></textarea>
-							<label for="floatingTextarea2">No incluye <em style="font-size: 0.7rem">(1 item por línea)</em></label>
-						</div>
+						<p class="mb-0 mt-2">Incluye</p>
+						<div class="editor" id="qSiIncluye"></div>
+						<p class="mb-0 mt-2">No incluye</p>
+						<div class="editor" id="qNoIncluye"></div>
+
 						<p class="mb-0 mt-2">Notas</p>
 						<div class="editor" id="qNotas"></div>
 						<p class="mb-0 mt-2">Opciones</p>
@@ -403,6 +417,30 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			</div>
 		</div>
 
+		<div class="offcanvas offcanvas-start" tabindex="-1" id="offFechas" aria-labelledby="offFechasLabel">
+			<div class="offcanvas-header">
+				<h5 class="offcanvas-title" id="offFechasLabel">Offcanvas</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+			</div>
+			<div class="offcanvas-body">
+				<div>
+					Ingrese las fechas para anular
+
+					<div class="input-group mb-3">
+						<input type="date" class="form-control" v-model="fechaSeleccionada" @keyup.enter="vetarFecha()">
+						<button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="vetarFecha()"><i class="icofont-simple-right"></i> Agregar</button>
+					</div>
+				</div>
+				<p>Fechas anuladas:</p>
+				<ol class="list-group list-group-numbered">
+					<li class="list-group-item d-flex justify-content-between align-items-start" v-for="(fecha, indice) in tourActivo.fechas">
+						<div class="ms-2 me-auto"> <span>Fecha: {{fecha.fecha}}</span> </div>
+						<span class="badge bg-danger rounded-pill" @click="eliminarFecha(indice)"><i class="icofont-close"></i></span>
+					</li>
+				</ol>
+			</div>
+		</div>		
+
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -418,6 +456,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 
 	<script>
 	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
+	qSiIncluye, qNoIncluye,
 	tostadaOk, tostadaMal;
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
 	var rutaDocs = '/home/perutra1/grupoeuroandino.com/app/render/images/subidas/'
@@ -429,7 +468,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		},
 		data: {
 			//servidor: 'http://localhost/euroAndinoApi/',
-			servidor: 'https://grupoeuroandino.com/app/api/', 
+			servidor: 'https://grupoeuroandino.com/app/api/', fechasAnuladas:[], fechaSeleccionada:moment().format('YYYY-MM-DD'),
 			tour:{
 				nombre: '', url:'',
 				peruanos:{ adultos: 0, kids: 0 },
@@ -489,11 +528,23 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			qNotas = new Quill('#qNotas', { theme: 'snow', modules: {
 				toolbar: toolbarOptions
 			} });
+			qSiIncluye = new Quill('#qSiIncluye', { theme: 'snow', modules: { toolbar: toolbarOptions} });
+			qNoIncluye = new Quill('#qNoIncluye', { theme: 'snow', modules: { toolbar: toolbarOptions} });
 			
 			
 			
 		},
 		methods:{
+			async vetarFecha(){
+				if(!this.tourActivo.fechas)
+					this.tourActivo['fechas']=[]
+				this.tourActivo.fechas.push({fecha: this.fechaSeleccionada})
+				this.actualizarTour(this.tourActivo);
+			},
+			eliminarFecha(indice){
+				this.tourActivo.fechas.splice(indice, 1)
+				this.actualizarTour(this.tourActivo)
+			},
 			async cargarComplementos(){
 				let servComplementos  = await fetch(this.servidor+'pedirComplementos.php',{
 					method:'POST'
@@ -537,6 +588,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.tour.descripcion = qDescripcion.root.innerHTML.trim();
 				this.tour.partida = qPartida.root.innerHTML.trim();
 				this.tour.itinerario = qItinerario.root.innerHTML.trim();
+				this.tour.incluye = qSiIncluye.root.innerHTML.trim();
+				this.tour.noIncluye = qNoIncluye.root.innerHTML.trim();
 				this.tour.notas = qNotas.root.innerHTML.trim();
 				if($('#sltActividad2').selectpicker('val') !=null){
 					this.tour.actividades = $('#sltActividad2').selectpicker('val');
@@ -737,6 +790,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				qDescripcion.setContents([]); qDescripcion.clipboard.dangerouslyPasteHTML(0, this.tour.descripcion);
 				qPartida.setContents([]); qPartida.clipboard.dangerouslyPasteHTML(0, this.tour.partida);
 				qItinerario.setContents([]); qItinerario.clipboard.dangerouslyPasteHTML(0, this.tour.itinerario);
+				qSiIncluye.setContents([]); qSiIncluye.clipboard.dangerouslyPasteHTML(0, this.tour.incluye);
+				qNoIncluye.setContents([]); qNoIncluye.clipboard.dangerouslyPasteHTML(0, this.tour.noIncluye);
 				qNotas.setContents([]); qNotas.clipboard.dangerouslyPasteHTML(0, this.tour.notas);
 				
 				offPanel.hide();

@@ -71,6 +71,10 @@
 </head>
 
 <body>
+	<style>
+		#divIncluye ul{ list-style-type: "✅ "; }
+		#divNoIncluye ul{ list-style-type: "❌ "; }
+	</style>
 
 
 	<!-- Inicio de Encabezado -->
@@ -290,14 +294,15 @@
 					<h2 class="text-danger text-capitalize">{{tourActivo.nombre}}</h2>
 
 					<div class="row">
-						<div v-if="tourActivo.transporte" class="col text-center fs-6">
+						<div v-if="tourActivo.transporte" class="col-4 col-md text-center fs-6">
 							<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span style="display: inline-block;-webkit-transform:rotate(45deg)"><i class="icofont-airplane"></i></span></span> Avión</span>
-							<span v-else><span class="fs-2"><i class="icofont-school-bus"></i></span> Bus</span>
+							<span v-else><span class="fs-2"><i class="icofont-bus"></i></span> Bus</span>
 						</div>
-						<div v-if="tourActivo.alimentacion" class="col text-center fs-6"> <span class="fs-2"><i class="icofont-fork-and-knife"></i></span> Alimentación </div>
-						<div v-if="tourActivo.tickets" class="col text-center fs-6"><span class="fs-2"><i class="icofont-ticket"></i></span> Tickets</div>
-						<div v-if="tourActivo.guia" class="col text-center fs-6"><span class="fs-2"><i class="icofont-tracking"></i></span> Guía</div>
-						<div v-if="tourActivo.alojamiento" class="col text-center fs-6"><span class="fs-2"><i class="icofont-bed"></i></span> {{hospedajes[parseInt(tourActivo.alojamiento)-1]}}</div>
+						<div v-if="tourActivo.alojamiento" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-bed"></i></span> {{hospedajes[parseInt(tourActivo.alojamiento)-1]}}</div>
+						<div v-if="tourActivo.alimentacion" class="col-4 col-md text-center fs-6"> <span class="fs-2"><i class="icofont-fork-and-knife"></i></span> Alimentación </div>
+						<div class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-google-map"></i></span> <span>Tour</span></div>
+						<div v-if="tourActivo.guia" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-tracking"></i></span> Guía</div>
+						<div v-if="tourActivo.tickets" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-ticket"></i></span> Tickets</div>
 					</div>
 
 					<!-- <div class="row row-cols-2 row-cols-md-3" v-if="tourActivo.tipo===2" id="divTransportes">
@@ -362,18 +367,22 @@
 					<div class="w-100 text-break" v-html="tourActivo.partida"></div>
 
 					<h4 class="mt-4 text-danger">Itinerario</h4>
-
+					
 					<div class="w-100 text-break p-2" v-html="tourActivo.itinerario"></div>
+					<h4 class="mt-4 text-danger">Incluye</h4>
+					<div class="w-100 text-break p-2" id="divIncluye" v-html="tourActivo.incluye"></div>
+					<h4 class="mt-4 text-danger">No incluye</h4>
+					<div class="w-100 text-break p-2" id="divNoIncluye" v-html="tourActivo.noIncluye"></div>
 
 
 
-					<h5 class="mt-3 text-danger">Incluye</h5>
+					<!-- <h5 class="mt-3 text-danger">Incluye</h5>
 
 					<div>
 
 						<p class="ms-2 mb-0" v-for="cadena in incluidos"><i class="icofont-check-alt"></i> {{cadena}}</p>
 
-					</div>
+					</div> 
 
 
 
@@ -383,7 +392,7 @@
 
 						<p class="ms-2 mb-0" v-for="cadena in noIncluidos"><i class="icofont-close-line"></i> {{cadena}}</p>
 
-					</div>
+					</div>-->
 
 
 
@@ -867,8 +876,7 @@
 											<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte"><i class="icofont-airplane-alt"></i></span>
 											<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[tour.alojamiento]}}</span>
 											<span class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
-											<span v-if="tour.tipo==1" class="mx-1 px-1 rounded" id="spanTour">Tour</span>
-											<span v-else class="mx-1 px-1 rounded" id="spanTour">Paquete</span>
+											<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
 											<span class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
 											<span class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
 										</div>
@@ -1082,20 +1090,12 @@
 	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
 
 	<script src="https://grupoeuroandino.com/app/render/js/moment.min.js"></script>
-
 	<!-- extraído de https://fotorama.io/docs/4/dimensions/ -->
-
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
-
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.min.js"></script>
-
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js" integrity="sha512-gY25nC63ddE0LcLPhxUJGFxa2GoIyA5FLym4UJqHDEMHjp8RET6Zn/SHo1sltt3WuVtqfyxECP38/daUc/WVEA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
 
 
 
@@ -1564,11 +1564,18 @@
 
 					//console.log( fechaInicial.format('DD/MM/YYYY') );
 
-					for (let index = 0; index <= 160; index++) {
+					if(this.tourActivo.fechas){
+						for(let index = 0; index< this.tourActivo.fechas.length; index++){
+							this.diasMuertos.push(moment(this.tourActivo.fechas[index].fecha).format('DD/MM/YYYY'))
+						}
+					}
+					
+					for (let index = 0; index <= 90; index++) {
 
 						this.diasMuertos.push(moment(fechaInicial, 'DD/MM/YYYY').subtract(index, 'days').format('DD/MM/YYYY'));
 
 					}
+					
 
 					console.log(this.diasMuertos);
 
