@@ -34,19 +34,7 @@ include '../api/'
 						<div class="card-body">
 							<h3>Datos del comprador</h3>
 							<div class="row row-cols-1 row-cols-md-2">
-								<div class="col">
-									<div class="form-floating mb-3">
-										<input type="text" class="form-control text-capitalize" id="" placeholder=" " v-model="nombres">
-										<label for="floatingInput">Nombres</label>
-									</div>
-								</div>
-								<div class="col">
-									<div class="form-floating mb-3">
-										<input type="text" class="form-control text-capitalize" id="" placeholder=" " v-model="apellidos">
-										<label for="floatingInput">Apellidos</label>
-									</div>
-								</div>
-								<div class="col">
+							<div class="col">
 									<div class="form-floating mb-3">
 										<select class="form-select" id="floDni" aria-label=" ">
 											<option value="1" selected>D.N.I.</option>
@@ -58,8 +46,20 @@ include '../api/'
 								</div>
 								<div class="col">
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="" placeholder=" " v-model="documento">
+										<input type="text" class="form-control" id="" placeholder=" " v-model="documento" @keyup="buscarReniec()">
 										<label for="floatingInput">N° Documento</label>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="text" class="form-control text-capitalize" id="" placeholder=" " v-model="nombres">
+										<label for="floatingInput">Nombres</label>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="text" class="form-control text-capitalize" id="" placeholder=" " v-model="apellidos">
+										<label for="floatingInput">Apellidos</label>
 									</div>
 								</div>
 							</div>
@@ -358,7 +358,7 @@ include '../api/'
 				else{ return true;}
 			},
 			finalizarCompra(){
-				//this.crearToken();
+				//this.crearToken();}
 				if(this.verificarCampos()){
 					console.log( 'comenzar a guardar' );
 					let datos = new FormData();
@@ -396,7 +396,8 @@ include '../api/'
 							if( parseInt(texto)>0 ){
 								this.idOrden=parseInt(texto);
 								//toastBien.show();
-								this.crearToken();
+								//this.crearToken();
+								goToThanks();
 							}
 						})
 					 })
@@ -432,6 +433,19 @@ include '../api/'
 				if(document.getElementById('chkFactura').checked){ //factura
 					this.actiFactura = 1;
 				}
+			},
+			async buscarReniec(){
+				if( document.getElementById('floDni').value == '1' && this.documento.length==8)
+					if(event.keyCode==13){
+						let datos = new FormData()
+						datos.append('ruc', this.documento)
+						const serv = await fetch('https://grupoeuroandino.com/app/facturador/php/dataSunat.php',{
+							method:'POST', body:datos
+						})
+						const resp = await serv.json()
+						this.nombres = resp.nombres
+						this.apellidos = resp.paterno +' '+resp.materno
+					}
 			}
 		}
 	});

@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 if( $_POST['id']<>-1 ):
 	require_once( __DIR__. './../api/conectkarl.php');
 	$idPedido = $_POST['id'];
-	$tipoDoc = ['D.N.I.','Pasaporte','Carnet de extranjería'];
+	$tipoDocumento = ['D.N.I.','Pasaporte','Carnet de extranjería'];
 	//echo 'el id de pedido ' . $idPedido;
 
 
@@ -34,8 +34,8 @@ if( $_POST['id']<>-1 ):
 		if( $rowDatos['adultos'] >0){ $pasajeros = $rowDatos['adultos']. " adultos"; }
 		if( $rowDatos['menores'] >0){ $pasajeros .= ' y '. $rowDatos['menores']. " menores"; }
 		$_POST['pasajeros'] = $pasajeros;
-		$_POST['tipoDocumento'] = $tipoDoc[$rowDatos['tipoDocumento']-1];
-		$_POST['tipo'] = $_POST['tipoDocumento']; 
+		$_POST['tipoDocumento'] = $tipoDocumento[$rowDatos['tipoDocumento']-1];
+		$_POST['tipo'] = $_POST['tipoDocumento'];
 		
 
 		if($rowDatos['idEstado']==1){ //solo se factura 1 vez
@@ -62,6 +62,8 @@ if( $_POST['id']<>-1 ):
 					'razon' => $rowDatos['apellido'] .' '. $rowDatos['nombre'],
 					'direccion' => $rowDatos['direccion'] .' '. $rowDatos['ciudad'],
 					'tipo' => $rowDatos['tipoComprobante'],
+					'contado' => 1,
+					'adelanto' => 0
 				]);
 				$_POST['jsonCliente'] = $_POST['cliente'];
 				$_POST['cabecera'] = array([
@@ -89,19 +91,23 @@ if( $_POST['id']<>-1 ):
 		
 				ob_start();
 				require __DIR__ . './../facturador/php/insertarBoleta.php';
-				$data = json_decode(ob_get_contents(), true);
-				ob_clean();
-				//var_dump($data[0]); //[0]['serie']
-				$comprobanteSerie = $data[0]['serie'].'-'.$data[0]['correlativo'];
+				$datos = json_decode(ob_get_contents(), true);
+				//ob_clean();
+				ob_end_clean();
+				/* echo ('===== DATA: ====');
+				var_dump($datos); //[0]['serie']
+				echo ('===== FIN DATA ===='); */
+				$comprobanteSerie = $datos[0]['serie'].'-'.$datos[0]['correlativo'];
 				//echo $comprobanteSerie;
-		
 		
 				$sqlUpdate = $auxiliar->prepare("UPDATE `pedidos` SET `idEstado` = '2', fechaPago = CONVERT_TZ(NOW(), '+00:00', '-05:00'), serie='{$comprobanteSerie}' WHERE `pedidos`.`id` = ?;");
 				if($sqlUpdate -> execute([ $idPedido ])){
 		
 				//enviar correo felicitación
 				$_POST['comprobante'] = $comprobanteSerie;
-				$_POST['ruc'] = $data[0]['rucEmisor'];
+				$_POST['serie']= $datos[0]['serie'];
+				$_POST['correlativo'] = $datos[0]['correlativo'];
+				$_POST['ruc'] = $datos[0]['rucEmisor'];
 				$_POST['correo'] = $rowDatos['correo'];
 				ob_start();
 				require_once(__DIR__. './../api/correo.php');

@@ -20,7 +20,7 @@ try {
 		$mail->isSMTP();                                            //Send using SMTP
 		$mail->Host       = 'mail.grupoeuroandino.com';                     //Set the SMTP server to send through
 		$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-		$mail->Username   = 'facturacion@grupoeuroandino.com';                     //SMTP username
+		$mail->Username   = '';                     //SMTP username
 		$mail->Password   = '';                               //SMTP password
 		$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
 		$mail->Port       = 465;                                   //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
@@ -61,10 +61,16 @@ try {
 									<p><strong>Nacionalidad:</strong> '.$_POST['nacionalidad'].'</p>
 									<p>A continuación te damos el link de tu comprobante de pago: <a style="font-weight:bold; color: #383838;text-decoration: none;" href="#!"><strong>'. $_POST['comprobante'] .'</strong></a>, el comprobante será visble en SUNAT a partir de las 24 horas desde la emisión por Resolución de Superintendencia N° 0150-2021/SUNAT.</p>
 									<p>La clave del comprobante es su RUC/DNI: '. $_POST['ruc'] .'</p>
-									<div style="padding-top:32px;text-align:center">
-										<a href="#!" target="_blank" style="line-height: 16px;color: #ffffff;font-weight: 400;text-decoration: none;font-size: 14px;display: inline-block;padding: 10px 24px;background-color: #0e5de1;border-radius: 5px;	min-width: 90px;">Ver documento</a>
+									<div style="padding-top:25px;text-align:center">
+										<a href="https://grupoeuroandino.com/app/facturador/printComprobantePDF.php?serie='.$_POST['serie'].'&correlativo='.$_POST['correlativo'].'" target="_blank" style="line-height: 16px;color: #ffffff;font-weight: 400;text-decoration: none;font-size: 14px;display: inline-block;padding: 10px 24px;background-color: #0e5de1;border-radius: 5px;	min-width: 90px;">Ver documento</a>
 									</div>
 
+									<div>
+										<p>Luego de realizar su viaje, puede volver a este correo para calificar el servicio que le brindamos, en el siguiente enlace:</p>
+									</div>
+									<div style="padding-top:25px;text-align:center">
+										<a href="https://grupoeuroandino.com/app/render/calificar.php?id='.$_POST['id'].'" target="_blank" style="line-height: 16px;color: #ffffff;font-weight: 400;text-decoration: none;font-size: 12px;display: inline-block;padding: 8px 15px;background-color: #ffc135; color: #702400; border-radius: 5px;	min-width: 80px;">Calificar Servicio</a>
+									</div>
 									<div>
 										<p><small>Este es un sistema automático de aviso, por favor no responda este mensaje.</small></p>
 									</div>

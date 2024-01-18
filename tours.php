@@ -63,7 +63,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<div class="navbar-nav">
 					<a class="nav-link active" aria-current="page" href="tours.php">Tours</a>
 					<a class="nav-link" href="paquetes.php">Paquetes turísticos</a>
-					<a class="nav-link" href="pedidos.php">Pedidos</a>
+					<a class="nav-link" href="internacionales.php">Tours internacionales</a>
+					<a class="nav-link" href="reservas.php">Reservas</a>
 					<a class="nav-link" href="lateral.php">Configuraciones</a>
 				</div>
 			</div>
@@ -144,12 +145,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<input type="text" class="form-control" id="floURL" placeholder=" " autocomplete="off" v-model="tour.url">
 							<label for="floURL">URL del tour</label>
 						</div>
-						<p class="mb-0">Precio de Oferta:</p>
+						<p class="mb-0">Precio normal:</p>
 						<div class="row">
 							<div class="col">
 								<div class="form-floating mb-3">
 									<input type="number" class="form-control" id="floOferta" placeholder=" " autocomplete="off" v-model="tour.oferta">
-									<label for="floNombre">Oferta</label>
+									<label for="floNombre">Normal</label>
 								</div>
 							</div>
 						</div>
@@ -231,7 +232,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<div class="col">
 								<div class="form-floating mb-3">
 									<input type="text" class="form-control" id="floDestino" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.destino">
-									<label for="floDestino">Ciudad <em style="font-size: 0.7rem">Ejm: Laguna de Paca</em></label>
+									<label for="floDestino">Ciudad <em style="font-size: 0.7rem">Ejm: Lima</em></label>
 								</div>
 
 							</div>
@@ -507,6 +508,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.duracion.push({ clave: dia+1, valor: dia + ' días / 0 noches' });
 			}
 			for (let dia = 2; dia <= 15; dia++) {
+				this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
+			}
+			for (let dia = 30; dia <= 180; dia+=15) {
 				this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
 			}
 

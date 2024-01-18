@@ -7,7 +7,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Panel de paguetes - Grupo Euro-Andino</title>
+	<title>Panel de tours - Grupo Euro-Andino</title>
 	<link rel="icon" type="image/png" href="https://grupoeuroandino.com/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -16,6 +16,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<link rel="stylesheet" href="css/quill.bubble.css">
 	<link rel="stylesheet" href="css/quill.snow.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+	<script src="https://unpkg.com/vue-meta/dist/vue-meta.min.js"></script>
 </head>
 <body>
 	<style>
@@ -25,27 +26,27 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		p{margin-bottom: 0;}
 		.bootstrap-select .dropdown-toggle{
 			padding-top: 1.625rem;
-    	padding-bottom: 0.625rem;
+			padding-bottom: 0.625rem;
 			
-	    line-height: 1.25;
+			line-height: 1.25;
 			display: block;
-	    width: 100%;
-	    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
-	    -moz-padding-start: calc(0.75rem - 3px);
-	    font-size: 1rem;
-	    font-weight: 400;
-	    line-height: 1.5;
-	    color: #212529;
-	    background-color: #fff;
-	    background-repeat: no-repeat;
-	    background-position: right 0.75rem center;
-	    background-size: 16px 12px;
-	    border: 1px solid #ced4da;
-	    border-radius: 0.25rem;
-	    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-	    -webkit-appearance: none;
-	    -moz-appearance: none;
-	    appearance: none;
+			width: 100%;
+			padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+			-moz-padding-start: calc(0.75rem - 3px);
+			font-size: 1rem;
+			font-weight: 400;
+			line-height: 1.5;
+			color: #212529;
+			background-color: #fff;
+			background-repeat: no-repeat;
+			background-position: right 0.75rem center;
+			background-size: 16px 12px;
+			border: 1px solid #ced4da;
+			border-radius: 0.25rem;
+			transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
 		}
 		.sltPicker .bootstrap-select{
 			width: 100%!important;
@@ -60,9 +61,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 				<div class="navbar-nav">
-					<a class="nav-link " aria-current="page" href="tours.php">Tours</a>
-					<a class="nav-link active" href="paquetes.php">Paquetes turísticos</a>
-					<a class="nav-link" href="internacionales.php">Tours internacionales</a>
+					<a class="nav-link" aria-current="page" href="tours.php">Tours</a>
+					<a class="nav-link" href="paquetes.php">Paquetes turísticos</a>
+					<a class="nav-link active" href="internacionales.php">Tours internacionales</a>
 					<a class="nav-link" href="reservas.php">Reservas</a>
 					<a class="nav-link" href="lateral.php">Configuraciones</a>
 				</div>
@@ -73,10 +74,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<div class="container" id="app">
 		<div class="row ">
 			<div class="col-8">
-				<p class="fs-1">Paquetes turísticos</p>
+				<p class="fs-1">Tours Internacionales</p>
 			</div>
 			<div class="col-4 d-flex align-items-center">
-				<button class="btn btn-outline-success ms-2" @click="nuevoTourSimple()"><i class="icofont-list"></i> Crear Paquete turístico</button>
+				<button class="btn btn-outline-primary" @click="nuevoTourSimple()"><i class="icofont-list"></i> Crear Tour Internacional</button>
 				<!-- <button class="btn btn-outline-success ms-2" @click="verTours()"><i class="icofont-list"></i> pedir datos</button> -->
 			</div>
 		</div>
@@ -89,10 +90,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</div>
 			</div>
 			<div class="col-12 col-md-6">
-				<label for="" class="form-label"><i class="icofont-filter"></i> Departamentos</label>
-				<select class="form-select" v-model="idDepartamento" @change="buscarProducto()">
+				<label for="" class="form-label"><i class="icofont-filter"></i> Países</label>
+				<select class="form-select" v-model="idPais" @change="buscarProducto()">
 					<option value="-1">Todos</option>
-					<option v-for="(departamento, index) in departamentos" :value="index">{{departamento}}</option>
+					<option v-for="(pais, index) in paises" :value="pais.id">{{pais.nombre}}</option>
 				</select>
 			</div>
 		</div>
@@ -113,7 +114,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</tr>
 				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
 					<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
-					<td @click="cargarPanel(todosTours[index].id, index)" class="text-capitalize">{{vTour.nombre}}</td>
+					<td @click="cargarPanel(todosTours[index].id, index)" class="text-capitalize">{{vTour.nombre}} <span class="text-primary" @click.prevent="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
 					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
 					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
 					<td>
@@ -123,7 +124,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<span class="text-primary" v-if="esVisible(index)=='1'"><i class="icofont-check"></i></span>
 						<span class="text-danger" v-else><i class="icofont-close"></i></span>
 					</td>
-					
 				</tr>
 			</tbody>
 		</table>
@@ -134,12 +134,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<div class="modal-content">
 					<div class="modal-body">
 						<div class="d-flex justify-content-between mb-3">
-							<h5 class="modal-title">Nuevo anuncio: Paquete turístico</h5>
+							<h5 class="modal-title">Nuevo anuncio: Tour</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="form-floating mb-3">
 							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @change="crearURL()">
-							<label for="floNombre">Nombre del paquete turístico</label>
+							<label for="floNombre">Nombre del tour</label>
 						</div>
 						<div class="form-floating mb-3" v-if="!activarEditar">
 							<input type="text" class="form-control" id="floURL" placeholder=" " autocomplete="off" v-model="tour.url">
@@ -156,31 +156,31 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						</div>
 						<p class="mb-0">Precio para Peruanos:</p>
 						<div class="row ">
-							<div class="col-12">
+							<div class="col">
 								<div class="form-floating mb-3">
 									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.peruanos.adultos">
-									<label for="floNombre">Hab. matrimonial, doble ó triple</label>
+									<label for="floNombre">Adulto</label>
 								</div>
 							</div>
 							<div class="col">
 								<div class="form-floating mb-3">
 									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.peruanos.kids">
-									<label for="floNombre">Hab. simple (1 persona por habitación)</label>
+									<label for="floNombre">Niños (max. 10 años)</label>
 								</div>
 							</div>
 						</div>
 						<p class="mb-0">Precio para Extranjeros:</p>
 						<div class="row ">
-							<div class="col-12">
+							<div class="col">
 								<div class="form-floating mb-3">
-									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.extranjeros.adultos">
-									<label for="floNombre">Hab. matrimonial, doble ó triple</label>
+									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off"  v-model="tour.extranjeros.adultos">
+									<label for="floNombre">Adulto</label>
 								</div>
 							</div>
 							<div class="col">
 								<div class="form-floating mb-3">
 									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.extranjeros.kids">
-									<label for="floNombre">Hab. simple (1 persona por habitación)</label>
+									<label for="floNombre">Niños (max. 10 años)</label>
 								</div>
 							</div>
 						</div>
@@ -189,27 +189,27 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<label for="floCupos">Cupos disponibles</label>
 						</div>
 						
+						<div class="form-floating mb-3">
+							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.duracion">
+								<option v-for="dia in duracion" :value="dia.clave">{{dia.valor}}</option>
+								
+							</select>
+							<label for="floatingSelect">Duración</label>
+						</div>
 						<div class="row">
 							<div class="col">
 								<div class="form-floating mb-3">
-									<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.duracion.dias">
-										<option v-for="dia in duracion" :value="dia.clave">{{dia.valor}}</option>
-									</select>
-									<label for="floatingSelect">Días</label>
+									<input type="time" class="form-control" id="floHora" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora">
+									<label for="floHora">Primera Hora de inicio</label>
 								</div>
 							</div>
 							<div class="col">
+								
 								<div class="form-floating mb-3">
-								<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.duracion.noches">
-										<option v-for="noche in duracionNoches" :value="noche.clave">{{noche.valor}}</option>
-									</select>
-									<label for="floatingSelect">Noches</label>
+									<input type="time" class="form-control" id="floHora2" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora2">
+									<label for="floHora2">Segunda Hora de inicio</label>
 								</div>
 							</div>
-						</div>
-						<div class="form-floating mb-3">
-							<input type="time" class="form-control" id="floHora" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora">
-							<label for="floHora">Hora de inicio</label>
 						</div>
 						<p class="mb-0">Reglas de compra</p>
 						<div class="row">
@@ -226,34 +226,18 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<input type="number" class="form-control" id="floCupos" placeholder=" " max="250" min="1" autocomplete="off" value="1" v-model="tour.minimo">
 									<label for="floCupos">Mínimo viajeros</label>
 								</div>
+
 							</div>
 						</div>
-						<div class="form-floating mb-3">
-							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.transporte">
-								<option value="3">Ninguno</option>
-								<option value="2">Aéreo</option>
-								<option value="1">Terrestre</option>
-							</select>
-							<label for="floatingSelect">Tipo de transporte</label>
-						</div>
-						<div class="form-floating mb-3">
-							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.alojamiento">
-								<option value="1">Albergue</option>
-								<option value="2">Apartment</option>
-								<option value="3">Bungalow</option>
-								<option value="4">Hostal *</option>
-								<option value="5">Hostal **</option>
-								<option value="6">Hostal ***</option>
-								<option value="7">Hotel *</option>
-								<option value="8">Hotel **</option>
-								<option value="9">Hotel ***</option>
-								<option value="10">Hotel ****</option>
-								<option value="11">Hotel *****</option>
-								<option value="12">Lodge</option>
-								<option value="13">Resort</option>
-								<option value="14">Otro</option>
-							</select>
-							<label for="floatingSelect">Tipo de alojamiento</label>
+						<div class="row">
+							<div class="col">
+								<div class="form-floating mb-3">
+									<select name="" id="sltPais" class="form-select" v-model="tour.idPais">
+										<option v-for="pais in paises" :value="pais.id">{{pais.nombre}}</option>
+									</select>
+									<label for="floatingSelect">País</label>
+							</div>
+							</div>
 						</div>
 						<div class="row">
 							<div class="col">
@@ -263,15 +247,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								</div>
 
 							</div>
-							<div class="col">
+							<div class="col d-none">
 								<div class="form-floating mb-3">
-								<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.departamento">
-									<option v-for="(depa, index) in departamentos" :value="index">{{depa}}</option>
-								</select>
+								<input type="text" class="form-control" id="floDepartamento" placeholder=" " autocomplete="off" v-model="tour.departamento">
 								<label for="floatingSelect">Departamento</label>
 							</div>
 							</div>
 						</div>
+						
 						<!-- <div class="form-floating mb-3">
 							<input type="text" class="form-control" id="floDestino" placeholder=" " autocomplete="off" v-model="tour.actividad">
 							<label for="floDestino">Actividades</label>
@@ -296,21 +279,20 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								</select>
 							</div>
 						</div>
-							<!-- Create the editor container -->
-							<p class="mb-0 mt-2">Descripción</p>
+
+						<!-- Create the editor container -->
+						<p class="mb-0 mt-2">Descripción</p>
 						<div class="editor" id="qDescripcion" ></div>
 						<p class="mb-0 mt-2">Punto de partida</p>
 						<div class="editor" id="qPartida"></div>
 						<p class="mb-0 mt-2">Itinerario</p>
 						<div class="editor" id="qItinerario"></div>
-
 						<p class="mb-0 mt-2">Incluye</p>
 						<div class="editor" id="qSiIncluye"></div>
 						<p class="mb-0 mt-2">No incluye</p>
 						<div class="editor" id="qNoIncluye"></div>
-						
+
 						<p class="mb-0 mt-2">Notas</p>
-						<div class="editor" id="qNotas"></div>
 						<div class="editor" id="qNotas"></div>
 						<p class="mb-0 mt-2">Opciones</p>
 						<div class="form-check">
@@ -338,7 +320,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			<div class="toast-container position-absolute bottom-0 end-0 p-3 me-4">
 				<div class="toast align-items-center text-white bg-success border-0" id="tostadaOk" role="alert" aria-live="assertive" aria-atomic="true">
 					<div class="d-flex">
-						<div class="toast-body"> <i class="icofont-check"></i>
+						<div class="toast-body"><i class="icofont-check"></i> 
 							{{mensajeBien}}
 						</div>
 						<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -370,19 +352,20 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<div class="row col d-grid gap-2 col-6 mx-auto">
 						<button type="button" class="btn btn-outline-dark" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
 					</div>
-					<p class="my-1"><strong>Oferta:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
 					<p class="my-1"><strong>Precio Peruanos</strong></p>
+					<p class="my-1"><strong>Oferta:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
 					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.adultos)}}</span> </p>
 					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.kids)}}</span> </p>
 					<p class="my-1 mt-3"><strong>Precio Peruanos</strong></p>
 					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.adultos)}}</span> </p>
 					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.kids)}}</span> </p>
-					<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDuraDia(tourActivo.duracion.dias)}} / {{queDuraNoche(tourActivo.duracion.noches)}}</span></p>
+					<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDura(tourActivo.duracion)}}</span></p>
 					<p class="my-1 mt-3"><strong>1° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora)}}</span></p>
+					<p v-if="tourActivo.hora2" class="my-1 mt-3"><strong>2° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora2)}}</span></p>
 					<p class="my-1 mt-3"><strong>Reglas de compra:</strong> </p>
 					<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
 					<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
-					<p class="my-1 mt-3"><strong>Destino:</strong> <span class="text-capitalize">{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
+					<p class="my-1 mt-3 d-none"><strong>Destino:</strong> <span>{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
 					<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}} {{variasActividades()}}</span></p>
 					<p class="my-1 mt-3"><strong>Categorías:</strong> <span>{{variasCategorias()}}</span></p>
 					<p class="my-1 mt-3"><strong>Descripción:</strong> <br> </p>
@@ -402,11 +385,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<p></p>
 					</div>
 					<button type="button" @click="eliminar()" class="btn btn-danger mt-3"><i class="icofont-ui-delete"></i> Eliminar paquete</button>
-					<div class="row my-2">
+					<div class="row my-2" >
 						<div class="col" v-if="tourActivo.fotos.length<16">
 							<p class="mb-0">Subir imágen:</p>
 							<div class="input-group mb-3">
-								<input type="file" class="form-control" ref="archivoFile" id="txtArchivo" accept="image/*">
+								<input type="file" class="form-control" ref="archivoFile" id="txtArchivo" accept="image/*" multiple>
 								<button class="btn btn-outline-secondary" type="button" id="btnSubirArchivo" @click="subirANube()"><i class="icofont-upload-alt"></i></button>
 							</div>
 						</div>
@@ -466,7 +449,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					</li>
 				</ol>
 			</div>
-		</div>
+		</div>		
 
 	</div>
 
@@ -480,6 +463,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<script src="js/moment.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+
 	<script>
 	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
 	qSiIncluye, qNoIncluye,
@@ -487,7 +471,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
 	var rutaDocs = '/home/perutra1/grupoeuroandino.com/app/render/images/subidas/'
 	var app = new Vue({
+		name: 'tours',
 		el: '#app',
+		metaInfo: {
+			title: 'Tours Grupo Euroandino'
+		},
 		data: {
 			//servidor: 'http://localhost/euroAndinoApi/',
 			servidor: 'https://grupoeuroandino.com/app/api/', fechasAnuladas:[], fechaSeleccionada:moment().format('YYYY-MM-DD'),
@@ -495,30 +483,38 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				nombre: '', url:'',
 				peruanos:{ adultos: 0, kids: 0 },
 				extranjeros:{ adultos:0, kids:0 },
-				cupos: 1, duracion: {dias:1, noches:1}, hora: "12:00",
-				anticipacion: 1, minimo: 1, transporte:3, alojamiento: 1,
+				cupos: 1, duracion: 1, hora: "12:00", idPais:140,
+				anticipacion: 1, minimo: 1, destino: '', departamento: '', actividad:'', categoria:'',
+				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1, oferta:0, actividades:[], categorias: []
+			},
+			paquete:{
+				nombre: '',
+				peruanos:{ adultos: 0, kids: 0 },
+				extranjeros:{ adultos:0, kids:0 },
+				cupos: 1, 
+				duracion: {dias:1, noches:0},
+				hora: "12:00", idPais:140,
+				anticipacion: 1, minimo: 1, transporte:1, alojamiento: 1,
 				destino: '', departamento: '', actividad:'', categoria:'',
 				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0, actividades:[], categorias: []
 			},
 			mensajeBien:'Guardado correctamente', mensajeMal:'Hubo un error al conectar',
 			variosTours:[], todosTours:[], idGlobal:-1, indexGlobal:-1, tourActivo:[],
-			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
+			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
-			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idDepartamento:-1
+			departamentos:[], paises:[],
+			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idPais:-1
 		},
 		mounted:function(){
 			this.verTours();
 			this.cargarComplementos();
 			modalNuevo = new bootstrap.Modal( document.getElementById('modalNuevo') );
-			
 			tostadaOk = new bootstrap.Toast( document.getElementById('tostadaOk') );
 			tostadaMal = new bootstrap.Toast( document.getElementById('tostadaMal') );
 			offPanel = new bootstrap.Offcanvas( document.getElementById('offPanel') );
 			
 			for (let dia = 2; dia <= 31; dia++) {
-				this.duracion.push({ clave: dia+1, valor: dia + ' días' });
-				this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
+				this.duracion.push({ clave: dia+1, valor: dia + ' días / 0 noches' });
 			}
 			for (let dia = 2; dia <= 15; dia++) {
 				this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
@@ -528,26 +524,26 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			}
 
 			var toolbarOptions = [
-			  ['bold', 'italic', 'underline', 'strike'],
-			  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+				['bold', 'italic', 'underline', 'strike'],
+				[{ 'list': 'ordered'}, { 'list': 'bullet' }],
 				[{ 'header': [3, 4, false] }],
 			];
 
 			qDescripcion = new Quill('#qDescripcion', { theme: 'snow', modules: {
-		    toolbar: toolbarOptions
-		  } });
+				toolbar: toolbarOptions
+			} });
 			qPartida = new Quill('#qPartida', { theme: 'snow', modules: {
-		    toolbar: toolbarOptions
-		  } });
+				toolbar: toolbarOptions
+			} });
 			qItinerario = new Quill('#qItinerario', { theme: 'snow', modules: {
-		    toolbar: toolbarOptions
-		  } });
+				toolbar: toolbarOptions
+			} });
 			qNotas = new Quill('#qNotas', { theme: 'snow', modules: {
-		    toolbar: toolbarOptions
-		  } });
+				toolbar: toolbarOptions
+			} });
 			qSiIncluye = new Quill('#qSiIncluye', { theme: 'snow', modules: { toolbar: toolbarOptions} });
 			qNoIncluye = new Quill('#qNoIncluye', { theme: 'snow', modules: { toolbar: toolbarOptions} });
-	
+			
 			
 			
 		},
@@ -579,21 +575,24 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					//$('#sltActividad2').selectpicker('val');
 					//asignar valor
 					//$('#sltActividad2').selectpicker('val', ['51', '53']);
+					//$('#sltActividad2').selectpicker('val', ['51', '53']);
 					
 				}).then(()=>{
 					$('#sltActividad2').selectpicker('refresh');
 					$('#sltCategoria2').selectpicker('refresh');
 				})
+				let servPaises = await fetch(this.servidor+'pedirPaises.php',{ method: 'POST'})
+				let resPaises = await servPaises
+				this.paises = await resPaises.json();
 			},
 			nuevoTourSimple(){
 				this.tour={
 					nombre: '', url:'',
 					peruanos:{ adultos: 0, kids: 0 },
 					extranjeros:{ adultos:0, kids:0 },
-					cupos: 1, duracion: {dias:1, noches:1}, hora: "12:00",
-					anticipacion: 1, minimo: 1, transporte:3, alojamiento: 1,
-					destino: '', departamento: '', actividad:'', categoria:'',
-					descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0, actividades:[], categorias: []
+					cupos: 1, duracion: 1, hora: "12:00",
+					anticipacion: 1, minimo: 1, destino: '', departamento: '', actividad:'', categoria:'',
+					descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1, oferta:0, actividades:[], categorias: [], idPais:140
 				}
 				this.activarEditar=false;
 				$('#sltActividad2').selectpicker('val', '');
@@ -622,15 +621,15 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			guardarTour(){
 				this.extraerHtml();
+
 				console.log( this.tour );
 
-				axios.post(this.servidor+'guardarPaquete.php', { tour: this.tour, actividad: this.tour.actividad, categoria: this.tour.categoria })
+				axios.post(this.servidor+'guardarTours.php', { tour: this.tour, actividad: this.tour.actividad, categoria: this.tour.categoria, idPais: this.tour.idPais })
 				.then((response)=>{ //console.log( response.data );
 					if(response.data =='ok'){
 						this.verTours();
 						modalNuevo.hide();
 						tostadaOk.show();
-
 					}
 				})
 				.catch((error)=>{ console.log( error );});
@@ -642,10 +641,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.todosTours=[];
 				this.variosTours=[];
 			
-				let respuesta = await axios.get(this.servidor+'verPaquetes.php');
+				let respuesta = await axios.get(this.servidor+'verTours.php');
 				respuesta.data.forEach(dato=>{
-					that.todosTours.push(dato)
-					that.variosTours.push(JSON.parse(dato.contenido));
+					if(dato.pais!=140){
+						that.todosTours.push(dato)
+						that.variosTours.push(JSON.parse(dato.contenido));
+					}
 				})
 				
 				//console.log( that.variosTours );
@@ -658,7 +659,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			setearHTML(){
 				//Seteando un HTML al editor				
 				qDescripcion.setContents([])
-		    qDescripcion.clipboard.dangerouslyPasteHTML(0, '<p>Hola <em><u> mundo!</u></em></p><p>Texto simple</p>');
+				qDescripcion.clipboard.dangerouslyPasteHTML(0, '<p>Hola <em><u> mundo!</u></em></p><p>Texto simple</p>');
 			},
 			esVisible(index){
 				return this.todosTours[index].visible;
@@ -667,6 +668,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				return this.todosTours[index].id;
 			},
 			cargarPanel(queEs, indexEs){
+				
 				$('#sltActividad2').selectpicker('val', '');
 				$('#sltCategoria2').selectpicker('val', '');
 				this.idGlobal = queEs;
@@ -679,48 +681,60 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			subirANube(){
 				var that = this; let nombreSubida='';
-				this.archivo = this.$refs.archivoFile.files[0];
-				if(document.getElementById("txtArchivo").files.length>0){
-					let formData = new FormData();
-					formData.append('archivo', this.archivo);
-					formData.append('ruta', rutaDocs);
-					
-					axios.post(this.servidor+'/subidaAdjunto.php', formData, {
-						headers: {
-							'Content-Type' : 'multipart/form-data'
-						}
-					}).then( function (response){
-						console.log( response.data );
-						if( response.data =='Error subida' ){
-							nombreSubida='';
-							console.log( 'err1' );
-						}else{ //subió bien
-							console.log( 'subio bien al indice ' + that.indexGlobal  );
-							
-							that.tourActivo.fotos.push({
-								'nombreRuta': response.data
-							});
-							
-							that.actualizarTour(that.tourActivo);
-							/* if(that.tourActivo==1){
-							} */
-						} 
+				//console.log( this.$refs.archivoFile.files[0].size );
 
-					}).catch(function(ero){
-						console.log( 'err2' + ero );
-						//that.$emit('mostrarToastMal', 'Error subiendo el archivo adjunto'); return false;
-					})
+				if(document.getElementById("txtArchivo").files.length>0){
+
+					for(const archivoMulti of this.$refs.archivoFile.files ){
+						this.archivo = archivoMulti ;
+
+						//console.log( archivoMulti.size );
+						if( archivoMulti.size<=1000000){
+							let formData = new FormData();
+							formData.append('archivo', archivoMulti );
+							formData.append('ruta', rutaDocs);
+							
+							axios.post(this.servidor+'/subidaAdjunto.php', formData, {
+								headers: {
+									'Content-Type' : 'multipart/form-data'
+								}
+							}).then( function (response){
+								console.log( response.data );
+								if( response.data =='Error subida' ){
+									nombreSubida='';
+									console.log( 'err1' );
+								}else{ //subió bien
+									console.log( 'subio bien al indice ' + that.indexGlobal  );
+									
+									that.tourActivo.fotos.push({
+										'nombreRuta': response.data
+									});
+									
+									that.actualizarTour(that.tourActivo);
+									// if(that.tourActivo==1){}
+								} 
+		
+							}).catch(function(ero){
+								console.log( 'err2' + ero );
+								//that.$emit('mostrarToastMal', 'Error subiendo el archivo adjunto'); return false;
+							})
+						}else{
+							alert('La imágen es muy pesada, debe subir una menor a 1 MB')
+						}
+
+					}
+
 				}
 
 			},
 			actualizarTour(queTour){
 				this.extraerHtml();
 				if(queTour==null){ queTour = this.tourActivo }
-				axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria })
+				axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria, idPais : this.tour.idPais  })
 				.then((response)=>{ console.log( response.data );
 					if(response.data =='ok'){
-						modalNuevo.hide();
 						this.mensajeBien = "Se actualizó correctamente";
+						modalNuevo.hide();
 						tostadaOk.show();
 						this.verTours();
 					}
@@ -762,19 +776,17 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			formatoMoneda(valor){
 				return parseFloat(valor).toFixed(2)
 			},
-			queDuraDia(duracion){
+			queDura(duracion){
 				//return this.duracion[duracion].valor;
 				return this.duracion.find( x => x.clave === duracion ).valor;
-			},
-			queDuraNoche(duracion){ 
-				//return this.duracionNoches[duracion].valor; 
-				return this.duracionNoches.find( x => x.clave === duracion ).valor
 			},
 			horaLatam(hora){
 				return( moment(hora, 'HH:mm').format('h:mm a') )
 			},
 			queAnticipa(valor){
-				return this.anticipacion[valor].valor;
+				if(valor!=null){
+					return this.anticipacion[parseInt(valor)-1].valor;
+				}
 			},
 			queDepa(valor){
 				return this.departamentos[valor];
@@ -799,17 +811,17 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				qSiIncluye.setContents([]); qSiIncluye.clipboard.dangerouslyPasteHTML(0, this.tour.incluye);
 				qNoIncluye.setContents([]); qNoIncluye.clipboard.dangerouslyPasteHTML(0, this.tour.noIncluye);
 				qNotas.setContents([]); qNotas.clipboard.dangerouslyPasteHTML(0, this.tour.notas);
-
+				
 				offPanel.hide();
 				modalNuevo.show();
 			},
 			async buscarProducto(){
 				//console.log( this.$refs.txtFiltro.value );
 				var that = this;
-				let respuesta = await axios.post(this.servidor+'buscarTour.php', {
+				let respuesta = await axios.post(this.servidor+'buscarTour_Internacional.php', {
 					texto: this.$refs.txtFiltro.value,
-					tipo: 2,
-					departamento: this.idDepartamento
+					tipo: 1,
+					idPais: this.idPais
 				})
 				this.todosTours=[];
 				this.variosTours=[];
@@ -857,6 +869,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					}
 				}
 			},
+			abrirLink(index){
+				console.log(this.variosTours[index])
+			},
 			crearURL(){
 				let url = this.tour.nombre.toLowerCase();
 				url = url.replace(/\s+/g, ' ').trim() //Quita todos los espacios repetidos
@@ -873,6 +888,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				url = url.replace(/\\/g, '');
 				url = url.replace(/--/g, '-');
 
+				console.log('deberia salir');
 				this.tour.url = url;
 			}
 		}

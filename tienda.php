@@ -39,7 +39,7 @@
 	}
 
 	.estrellas{color: #ffd400;}
-
+.bandera {width: 20px;}
 	.precio2 {
 
 		font-size: 1.7rem;
@@ -108,6 +108,21 @@
 
 							</div>
 
+						</div>
+
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="acordeon3">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoCiudad" aria-expanded="false" aria-controls="tipoCiudad" data-bs-parent="#acordeonPadre">
+									Países
+								</button>
+							</h2>
+
+							<div id="tipoCiudad" class="accordion-collapse collapse " aria-labelledby="tipoCiudad" >
+								<div class="accordion-body">
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idPais ==-1 }" @click="idPais = -1" >Todos</a></p>
+									<p  v-for="pais in paises" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idPais == pais.idPais }" @click="idPais = pais.idPais" >{{pais.name}}</a></p>
+								</div>
+							</div>
 						</div>
 
 
@@ -346,8 +361,9 @@
 					<div class="col my-2 " v-for="(producto, index) in productos" :key="producto.id">
 
 						<div class="card h-100" >
-
+						    <a :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">
 							<img :src="queFoto(producto)" class="card-img-top" alt="...">
+							</a>
 
 							<div class="card-body">
 
@@ -363,11 +379,10 @@
 
 								<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span></p>
 
-								<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
-
-								
-
-								
+<div class="d-flex justify-content-between">
+    <span><img class="bandera" :src="'https://grupoeuroandino.com/images/banderas/'+bandera"></span>
+    <div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
+</div>
 
 								<div class="row row-cols-2">
 
@@ -444,7 +459,7 @@
 			servidor: 'https://grupoeuroandino.com/app/api/', 
 
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-			ciudades:[], idCiudad:'',
+			ciudades:[], idCiudad:'', bandera:'',
 
 			dias:[], actividades:[], categorias:[],
 
@@ -460,7 +475,7 @@
 
 			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}], pedidos:[], transportes:['Terrestre', 'Aéreo'],
 
-			hospedajes:['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro', ]
+			hospedajes:['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro', ], paises:[], idPais:140
 
 		},
 
@@ -513,6 +528,7 @@
 				this.actividades = temporal[0];
 				this.categorias = temporal[1];
 				this.ciudades = temporal[2];
+				this.paises = temporal[3];
 
 			},
 
@@ -530,6 +546,7 @@
 
 				datos.append('actividad', this.actividadSelect);
 
+				datos.append('idPais', this.idPais);
 				datos.append('idDepartamento', this.idDepartamento);
 				datos.append('idCiudad', this.idCiudad);
 
@@ -556,6 +573,7 @@
 				//console.log( await respServ.json() );
 
 				this.pedidos = await respServ.json();
+				this.bandera = this.pedidos[0].namePais.toLowerCase().replace('/ \w+/g', '_') + '.jpeg'
 
 				this.pedidos.forEach(data =>{
 

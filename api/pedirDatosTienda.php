@@ -4,6 +4,7 @@ include ("conectkarl.php");
 $ciudades = [];
 $actividades = [];
 $categorias = [];
+$paises = [];
 
 $sqlCiudades = $db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.destino')) as nombre FROM `tours` where activo = 1 and visible=1 group by JSON_EXTRACT(contenido, '$.destino')");//SELECT * from actividades where activo = 1;
 if($sqlCiudades ->execute()){
@@ -26,4 +27,12 @@ if($sqlCategorias ->execute()){
 	}
 }
 
-echo json_encode( array($actividades, $categorias, $ciudades) );
+$sqlPaises = $db->query("SELECT pais as idPais, p.name FROM `tours` t
+inner join paises as p on p.id = t.pais where t.activo = 1 group by pais;");//SELECT * from categorias where activo = 1;
+if($sqlPaises ->execute()){
+	while($rowPaises = $sqlPaises->fetch(PDO::FETCH_ASSOC)){
+		$paises[] = $rowPaises;
+	}
+}
+
+echo json_encode( array($actividades, $categorias, $ciudades, $paises) );

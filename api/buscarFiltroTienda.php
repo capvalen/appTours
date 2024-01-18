@@ -17,6 +17,7 @@ $idDepartamento=-1;
 $idCategoria=-1;
 $idDia=-1;
 $idPrecio=-1;
+$idPais=-1;
 
 $fPrecio ="1";
 
@@ -24,8 +25,14 @@ $filas = [];
 
 if($_POST['idTour']>-1){ $fTour = "tipo = {$_POST['idTour']}"; } else{ $fTour="tipo in (1,2)";}
 if($_POST['idActividad']>-1){ $fActividad ="JSON_EXTRACT(contenido, '$.actividades') like '%{$_POST['idActividad']}%'";}else{ $fActividad='1';}
+if($_POST['idPais']<>140){
+	$fPais = " pais = {$_POST['idPais']}";
+	$fDepartamento = '1';
+}
+else{
+	if($_POST['idDepartamento']>-1){ $fDepartamento ="contenido like  '%\"departamento\":{$_POST['idDepartamento']},%'";}else{ $fDepartamento='1';}
+}
 if($_POST['idCiudad']!=''){ $fCiudades = "JSON_EXTRACT(contenido, '$.destino') = '{$_POST['idCiudad']}' "; }else{ $fCiudades = '1';}
-if($_POST['idDepartamento']>-1){ $fDepartamento ="contenido like  '%\"departamento\":{$_POST['idDepartamento']},%'";}else{ $fDepartamento='1';}
 if($_POST['idCategoria']>-1){ $fCategoria ="JSON_EXTRACT(contenido, '$.categorias') like '%{$_POST['idCategoria']}%'";}else{ $fCategoria='1';}
 if($_POST['idDia']>-1){ $fDuracion ="contenido like  '%\"duracion\":{$_POST['idDia']}%'";}else{ $fDuracion='1';}
 if($_POST['idPrecio']>-1){
@@ -50,7 +57,7 @@ if($_POST['idPrecio']>-1){
 	}
 }
 
-$sentencia = "SELECT * FROM `tours` where activo=1 and {$fTour} and {$fActividad} and {$fDepartamento} and {$fCategoria} and {$fDuracion} and {$fPrecio} and {$fCiudades};";
+$sentencia = "SELECT t.*, p.nombre as nombrePais, p.bandera FROM `tours` t inner join paises p on p.id = t.pais where activo=1 and {$fPais} and {$fTour} and {$fActividad} and {$fDepartamento} and {$fCategoria} and {$fDuracion} and {$fPrecio} and {$fCiudades};";
 //echo $sentencia; die();
 
 $sql = $db->query($sentencia);
