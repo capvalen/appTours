@@ -36,7 +36,6 @@
 		#spanTickets{ background-color: #e91616; }
 		#spanTransporte{ background-color: #bf0ca9; }
 		.titulo{background-color: rgb(214, 214, 214);}
-		.bandera {width: 20px;}
 	</style>
 	<div id="app">
 		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
@@ -53,8 +52,8 @@
 					</div>
 
 					<div v-if="tour.fotos.length>0" class="divImagen card-img-top">
-						<a class="aImgs" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
-						<a class="aImgs" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+						<a class="aImgs" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="framename"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+						<a class="aImgs" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="framename"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
 					</div>
 					<div class="card-body">
 						<div class="divProducto ">
@@ -62,15 +61,12 @@
 							
 							<div>
 								<p class="mb-0 titulo ps-1 text-capitalize">
-									<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
-									<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
+									<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="framename">{{tour.nombre}}</a>
+									<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="framename">{{tour.nombre}}</a>
 									
 								</p>
-								<div class="d-flex justify-content-between">
-										<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"></span>
-										<div class="estrellas">
-											<i v-for="star in cuantasEstrellas(index)" class="icofont-star"></i>
-										</div>
+								<div class="estrellas">
+									<i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i>
 								</div>
 								
 								<div class="row row-cols-2">
@@ -92,10 +88,7 @@
 			
 		</div>
 	</div>
-<!-- Vue desarrollo -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
-<!-- Vue producción -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script>
 	
 	var app = new Vue({
@@ -150,9 +143,6 @@
 			},
 			formatoMoneda(valor){
 				return parseFloat(valor).toFixed(2)
-			},
-			cuantasEstrellas(index){
-				return parseInt(this.tours[index].calificacion)
 			}
 		}
 	});

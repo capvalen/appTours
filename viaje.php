@@ -56,18 +56,7 @@
 
 	?>
 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-
-
-
-	<link rel="stylesheet" href="https://grupoeuroandino.com/icofont/icofont.min.css">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/css/bootstrap-datepicker.min.css?v=1.1">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/estilos.css?v=1.1">
+<?php include("../app/render/headers.php");?>
 </head>
 
 <body>
@@ -78,196 +67,9 @@
 
 
 	<!-- Inicio de Encabezado -->
+	<?php include ("../app/render/menu.php");?>
 
-
-
-	<div class="container fluid d-block d-sm-none">
-
-		<div class="row row-cols-3">
-
-			<div class="col mx-0 px-1" style="width:25%">
-
-				<a href="https://grupoeuroandino.com"><img src="https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-2048x1795.png" style="width: 94%; height: auto; margin-left:8px;" class="img-fluid p-3"></a>
-
-			</div>
-
-			<div class="col d-flex align-items-center" style="width:216px">
-
-				<div class="container-fluid px-0 mx-0">
-
-					<div class="row row-cols-3 ">
-
-						<div class="col">
-
-							<a href="tel:064788975"><img src="https://grupoeuroandino.com/app/render/images/phone-solid.svg" class="p-1" width="38" height="38"></a>
-
-						</div>
-
-						<div class="col">
-
-							<a href="https://wa.me/51947614293"><img src="https://grupoeuroandino.com/app/render/images/whatsapp.svg" class="p-1" width="42" height="42"></a>
-
-						</div>
-
-						<div class="col" data-bs-toggle="modal" data-bs-target="#modalAgenda"> <img src="https://grupoeuroandino.com/app/render/images/clock-regular.svg" class="p-1" width="42" height="42"> </div>
-
-					</div>
-
-				</div>
-
-			</div>
-
-			<div class="col d-flex " style="width:61px" onclick="document.getElementById('mLateral').style.display = 'block';">
-
-				<img src="https://grupoeuroandino.com/app/render/images/sliders-solid.svg?v=1" style="" width="36">
-
-			</div>
-
-		</div>
-
-	</div>
-
-
-
-	<div class="container my-4 px-5 d-none d-md-block" id="menuCabecera">
-
-		<div class="container">
-
-			<div class="row row-cols-4">
-
-				<div class="col text-center">
-
-					<a href="https://grupoeuroandino.com"><img src="https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-2048x1795.png" id="imgLogo"></a>
-
-				</div>
-
-				<div class="col position-relative d-flex align-items-center">
-
-					<a href="tel:064788975">
-
-						<div class="position-absolute top-50 start-0 translate-middle-y">
-
-							<img src="https://grupoeuroandino.com/app/render/images/phone-solid-gris.svg" style="width:50px">
-
-						</div>
-
-						<div style="padding-left:55px">
-
-							<h3>Call Center</h3>
-
-							<p class="mb-0">(064) 788975</p>
-
-						</div>
-
-					</a>
-
-				</div>
-
-				<div class="col position-relative d-flex align-items-center">
-
-					<a href="https://wa.me/51947614293">
-
-						<div class="position-absolute top-50 start-0 translate-middle-y">
-
-							<img src="https://grupoeuroandino.com/app/render/images/whatsapp-gris.svg" style="width:50px">
-
-						</div>
-
-						<div style="padding-left:55px">
-
-							<h3>Chatea con nosotros</h3>
-
-							<p class="mb-0">(+51) 947614293</p>
-
-						</div>
-
-					</a>
-
-				</div>
-
-				<div class="col position-relative d-flex align-items-center">
-
-					<div class="position-absolute top-50 start-0 translate-middle-y">
-
-						<img src="https://grupoeuroandino.com/app/render/images/clock-regular-gris.svg" style="width:50px">
-
-					</div>
-
-					<div style="padding-left:55px">
-
-						<h3>Atención al cliente</h3>
-
-						<p class="mb-0">24/7/365</p>
-
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-
-
-	</div>
-
-
-
-	<div id="mLateral">
-
-		<div class="text-end mt-2 me-1" onclick="document.getElementById('mLateral').style.display = 'none';">
-
-			<img src="https://grupoeuroandino.com/app/render/images/x-1.svg" width="60" height="auto">
-
-		</div>
-
-		<div id="mLateralP">
-
-			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/path245.png" class="Ico"> Inicio</p>
-
-			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/destinos-mas-populares-en-peru'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/peruico.png" class="Ico"> Destinos</p>
-
-			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/store/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/bolsaico.png" class="Ico"> Tienda</p>
-
-			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/store/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/ofertaico.png" class="Ico"> + Filtros</p>
-
-			<p class="mb-0" onclick="location.href='https://grupoeuroandino-com.translate.goog/?_x_tr_sl=es&_x_tr_tl=en&_x_tr_hl=es&_x_tr_pto=wapp'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/baneeuu.png" class="Ico"> Inglés</p>
-
-			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/shop-cart/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/cart.png" class="Ico"> Carrito</p>
-
-		</div>
-
-	</div>
-
-
-
-	<div class="container-fluid mb-2 d-none d-md-block" id="menuVolver">
-
-		<div class="container">
-
-			<ul id="ulMenu">
-
-				<li onclick="location.href='https://grupoeuroandino.com/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/path245.png" class="Ico"> INICIO</li>
-
-				<li onclick="location.href='https://grupoeuroandino.com/destinos-mas-populares-en-peru/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/peruico.png" class="Ico"> DESTINOS</li>
-
-				<li onclick="location.href='https://grupoeuroandino.com/store/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/bolsaico.png" class="Ico"> TIENDA</li>
-
-				<li onclick="location.href='https://grupoeuroandino.com/store/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/ofertaico.png" class="Ico"> + FILTROS</li>
-
-				<li onclick="location.href='https://grupoeuroandino-com.translate.goog/?_x_tr_sl=es&_x_tr_tl=en&_x_tr_hl=es&_x_tr_pto=wapp'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/baneeuu.png" class="Ico"> INGLÉS</li>
-
-				<li onclick="location.href='https://grupoeuroandino.com/shop-cart/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/cart.png" class="Ico"></li>
-
-			</ul>
-
-		</div>
-
-	</div>
-
-
-
-	<!-- Fin de Encabezado -->
+    <!-- Fin de Encabezado -->
 
 
 
@@ -802,7 +604,8 @@
 					<div class="col text-center">
 
 						<span class='fs-2 text-muted'>Total: <strong style="color:#60696d" class="">S/ {{formatoMoneda(precioTotal)}}</strong></span>
-
+						<p class="mb-2"><span>Total en dólares: <strong> USD {{precioDolares.toFixed(2)}}</strong></span></p>
+						
 					</div>
 
 				</div>
@@ -826,19 +629,7 @@
 
 				<div class="row my-3 ">
 
-					<div class="col m-4 p-3 border rounded" id="divQuill">
-
-						<?php
-
-						require("../app/api/cargarPanel.php")
-
-
-
-						?>
-
-
-
-					</div>
+					<div class="col m-4 p-3 border rounded" id="divQuill" v-html="lateral"></div>
 
 				</div>
 
@@ -951,6 +742,28 @@
 
 			</div>
 
+		</div>
+		<div class="row">
+			<div class="col-12 col-md-8">
+				<div class="my-3 p-4 border rounded">
+					<div class="titulo p-2 mb-3">
+						<h3 class="my-1">Que opinan los viajeros que compraron este tour</h3>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item" v-for="(comentario, index) in comentarios">
+								<div class="d-flex w-100 justify-content-between">
+									<h5 class="mb-1 text-capitalize">{{index+1}}. {{comentario.nombre}}</h5>
+									<small>Viajó el {{fechaFrom(comentario.fecha)}}</small>
+								</div>
+								<div>
+									<span>Nos calificó con</span> <span v-for="estrella in parseInt(comentario.calificacion)"><img src="http://grupoeuroandino.com/images/star.png" alt="estrella"></span>
+									<p class="text-capitalize">Comentario: {{comentario.comentario || 'Me gustó'}}</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<p>Comentaron {{parseInt(variosTours.votantes) - comentarios.length }} viajeros más...</p>
+			</div>
 		</div>
 
 
@@ -1133,7 +946,7 @@
 					//servidor: 'http://localhost/euroAndinoApi/',
 
 					servidor: 'https://grupoeuroandino.com/app/api/',
-
+					lateral:'', dolar:0, precioDolares:0,
 					variosTours: [],
 					tourActivo: [{
 						incluye: '',
@@ -1201,10 +1014,8 @@
 					faltaMinimo: true, faltaAdulto:true,
 					recomendados: [],
 					categorias2: [],
-					actividades2: [], contenidos:[],
-
+					actividades2: [], contenidos:[], comentarios:[],
 					transportes: ['Terrestre', 'Aéreo', 'Ninguno'],
-
 					hospedajes: ['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro']
 
 				}
@@ -1238,7 +1049,6 @@
 						method: 'POST'
 
 					})
-
 					/* .done()
 
 					.done(letra =>{
@@ -1268,23 +1078,26 @@
 
 
 					})
+					let servConfig = await fetch(this.servidor+ 'cargarPanel.php',{ method:'POST' })
+					let resConfig = await servConfig.json();
+					this.lateral = resConfig.lateral;
+					this.dolar = resConfig.dolar
 
 				},
 				async cargarTours(){
-				let datos = new FormData()
-				datos.append('departamento', this.tourActivo.departamento+1)
-				const respuesta = await fetch(this.servidor+'mostrarTours_scriptDepartamentos.php',{
-					method:'POST', body:datos
-				})
-				let temp = await respuesta.json()
-				//console.log('temp',temp);
-				this.tours = temp;
-				this.contenidos=[];
-				this.tours.forEach(dato=>{
-					this.contenidos.push( JSON.parse(dato.contenido));
-				});
-				console.log( this.contenidos);
-
+					let datos = new FormData()
+					datos.append('departamento', this.tourActivo.departamento+1)
+					const respuesta = await fetch(this.servidor+'mostrarTours_scriptDepartamentos.php',{
+						method:'POST', body:datos
+					})
+					let temp = await respuesta.json()
+					//console.log('temp',temp);
+					this.tours = temp;
+					this.contenidos=[];
+					this.tours.forEach(dato=>{
+						this.contenidos.push( JSON.parse(dato.contenido));
+					});
+					console.log( this.contenidos);
 			},
 			queDura(duracion){
 				return this.duracion[duracion-1].valor;
@@ -1306,11 +1119,12 @@
 
 					var hoy = moment();
 
-					const respuesta = await axios.post(this.servidor + 'verTourPorId.php', {
+					const respuesta = await axios.post(this.servidor + 'verTourPorId_v2.php', {
 						id: this.idProducto
 					});
 
-					this.variosTours = respuesta.data[0];
+					this.variosTours = respuesta.data['tour'];
+					this.comentarios = respuesta.data['comentarios'];
 
 					this.tourActivo = JSON.parse(this.variosTours.contenido);
 
@@ -1347,6 +1161,9 @@
 						});
 
 					}
+					for (let dia = 30; dia <= 180; dia+=15) {
+        				this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
+        			}
 
 					switch (this.tourActivo.anticipacion) {
 
@@ -1450,6 +1267,7 @@
 						this.precioTotal = parseFloat(this.cantAdultos * this.tourActivo.extranjeros.adultos) + parseFloat(this.cantKids * this.tourActivo.extranjeros.kids);
 
 					}
+					this.precioDolares = this.precioTotal / this.dolar
 
 
 					if(this.cantKids>0 && this.cantAdultos==0 ){
@@ -1710,7 +1528,9 @@
 					}
 
 				},
-
+				fechaFrom(fecha){
+					return moment(fecha).format('DD/MM/YYYY');
+				},
 				expandirMas() {
 
 					this.verMas = true;
