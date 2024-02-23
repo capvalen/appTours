@@ -377,12 +377,14 @@
 
 								
 
-								<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span></p>
+								
 
 <div class="d-flex justify-content-between">
     <span><img class="bandera" :src="'https://grupoeuroandino.com/images/banderas/'+bandera"></span>
     <div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
 </div>
+
+								<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span></p>
 
 								<div class="row row-cols-2">
 

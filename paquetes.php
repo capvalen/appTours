@@ -62,7 +62,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<div class="navbar-nav">
 					<a class="nav-link " aria-current="page" href="tours.php">Tours</a>
 					<a class="nav-link active" href="paquetes.php">Paquetes turísticos</a>
-					<a class="nav-link" href="internacionales.php">Tours internacionales</a>
+					<a class="nav-link" href="internacionales.php">Internacionales</a>
 					<a class="nav-link" href="reservas.php">Reservas</a>
 					<a class="nav-link" href="lateral.php">Configuraciones</a>
 				</div>

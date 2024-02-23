@@ -142,12 +142,34 @@ include '../api/'
 					<!-- <p class="mt-2 text-muted"><i class="icofont-ui-close"> </i> Anular ésta compra</p> -->
 
 				</div>
-				<div class="col-12 col-md-4 mt-3">
+				<div class="col-12 col-md-4 ">
+					<div class="card mb-3">
+						<div class="card-body">
+							<p class="fs-4 text-capitalize">Cambio de moneda</p>
+							<p>Seleccione su moneda de preferencia</p>
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="rMoneda" id="rMoneda1" checked  @click="cambioMoneda('soles')">
+								<label class="form-check-label" for="rMoneda1" @click="cambioMoneda('soles')">
+									Soles (S/)
+								</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="rMoneda" id="rMoneda2" @click="cambioMoneda('dolares')">
+								<label class="form-check-label" for="rMoneda2" @click="cambioMoneda('dolares')">
+									USD Dolar ($)
+								</label>
+							</div>
+						</div>
+					</div>
 					<div class="card">
 						<div class="card-body text-muted">
 							<h3>Resumen del pedido</h3>
 							<p class="fs-4 text-capitalize">{{nomTour.toLowerCase()}}</p>
 							<p class="mb-0"><strong>Fecha de partida:</strong> <span>{{empieza}}</span></p>
+							<p class="mb-0"><strong>Nacionalidad:</strong> 
+								<span v-if="nacionalidad == 159">Peruana</span>
+								<span v-else>Extranjera</span>
+							</p>
 							<p class="mb-0"><strong>Hora:</strong> <span>A las {{hora}}.</span></p>
 							<p class="mb-0"><strong>Personas</strong> </p>
 							<div class="row row-cols-2">
@@ -159,15 +181,19 @@ include '../api/'
 									<p class="mb-0">
 										<span v-if="kids==1">1 niño</span>
 										<span v-else>{{kids}} niños</span>
-										<span class="gris fs-6" >(max. 10 años)</span>
+										<p class="gris fs-6" >(max. 10 años)</p>
 									</p>
 									<p class="mb-0 fs-4"><strong>Total</strong></p>
 								</div>
-								<div class="col">
-									<p class="mb-0"><span>S/</span> <span>{{parseFloat(precAdultos).toFixed(2)}}</span></p>
-									<p class="mb-0"><span>S/</span> <span>{{parseFloat(precMenores).toFixed(2)}}</span></p>
+								<div class="col" >
+									<p class="mb-0" v-if="moneda == 'soles'"><span>S/</span> <span>{{parseFloat(precAdultos).toFixed(2)}}</span></p>
+									<p class="mb-0" v-if="moneda == 'dolares'"><span>$</span> <span>{{parseFloat(adulDolar).toFixed(2)}}</span></p>
+									<p class="mb-0" v-if="moneda == 'soles'"><span>S/</span> <span>{{parseFloat(precMenores).toFixed(2)}}</span></p>
+									<p class="mb-0" v-if="moneda == 'dolares'"><span>$</span> <span>{{parseFloat(ninDolar).toFixed(2)}}</span></p>
+									<br>
 
-									<p class="mb-0"><span class="gris">S/</span> <strong class="fs-4">{{parseFloat(total).toFixed(2)}}</strong></p>
+									<p class="mb-0" v-if="moneda == 'soles'"><span class="gris">S/</span> <strong class="fs-4">{{parseFloat(total).toFixed(2)}}</strong></p>
+									<p class="mb-0" v-if="moneda == 'dolares'"><span class="gris">$</span> <strong class="fs-4">{{parseFloat(totalDolar).toFixed(2)}}</strong></p>
 								</div>
 							</div>
 						</div>
@@ -268,10 +294,10 @@ include '../api/'
 				ciudad: '', direccion: '',
 				politica: '', privacidad: '', mensajeError:'', hora:'',
 				precAdultos:'', precMenores:'', total:'', nomTour:'', adultoNormal:0,menorNormal:0, idOrden:-1, actiFactura:3, //3boleta, 1 factura
-				nRuc:'', nRazon:'', nDireccion:''
+				nRuc:'', nRazon:'', nDireccion:'', dolar:0, comision:0, totalDolar: 0, moneda:'soles', adulDolar:0, ninDolar:0
 			}
 		},
-		mounted() {
+		async mounted() {
 
 			const queryString = window.location.search;
 			const urlParams = new URLSearchParams(queryString);
@@ -286,7 +312,11 @@ include '../api/'
 			toastBien = new bootstrap.Toast(document.getElementById('toastBien'));
 			modalPagar = new bootstrap.Modal(document.getElementById('modalPagar'));
 
-			
+			const serv = await fetch(this.servidor + "verDolar.php")
+			let espera = await serv.json()
+			this.dolar = parseFloat(espera[0].contenido)
+			this.comision = parseFloat(espera[1].contenido)
+
 			if(this.idProducto!=null){
 				this.verificarItemCarrito();
 			}
@@ -446,6 +476,13 @@ include '../api/'
 						this.nombres = resp.nombres
 						this.apellidos = resp.paterno +' '+resp.materno
 					}
+			},
+			async cambioMoneda(moneda){
+				this.moneda = moneda
+				this.adulDolar = (this.precAdultos/this.dolar)*(1+this.comision/100)
+				this.ninDolar = (this.precMenores/this.dolar)*(1+this.comision/100)
+				this.totalDolar = (this.total/this.dolar)*(1+this.comision/100)
+
 			}
 		}
 	});
