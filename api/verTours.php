@@ -3,7 +3,7 @@ include ("conectkarl.php");
 
 $filas = [];
 
-$sql= $db->query("SELECT * FROM `tours` where tipo=1 and activo=1 order by id DESC;");
+$sql= $db->query("SELECT * FROM `tours` where tipo=1 and activo=1 and pais = 140 order by id DESC;");
 if( $sql->execute()){
 	while( $row = $sql->fetch(PDO::FETCH_ASSOC) ){
 		$filas[] = $row;

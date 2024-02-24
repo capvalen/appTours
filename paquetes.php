@@ -81,14 +81,20 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-12 col-md-6">
-				<label for="" class="form-label"><i class="icofont-filter"></i> Filtrar</label>
+			<div class="col-12 col-md-4">
+				<label for="" class="form-label"><i class="icofont-filter"></i> Ciudad</label>
+				<div class="mb-3">
+					<input type="text" name="" id="txtFiltroCiudad" ref="txtFiltroCiudad" class="form-control" placeholder="Buscar por ciudad" @keyup.enter="buscarProducto()">
+				</div>
+			</div>
+			<div class="col-12 col-md-4">
+				<label for="" class="form-label"><i class="icofont-filter"></i> Filtrar por título</label>
 				<div class="input-group mb-3">
-					<input type="text" name="" id="txtFiltro" ref="txtFiltro" class="form-control" placeholder="Buscar" >
+					<input type="text" name="" id="txtFiltro" ref="txtFiltro" class="form-control" placeholder="Buscar" @keyup.enter="buscarProducto()">
 					<button class="btn btn-outline-secondary" type="button" @click="buscarProducto()"><i class="icofont-search"></i> Buscar</button>
 				</div>
 			</div>
-			<div class="col-12 col-md-6">
+			<div class="col-12 col-md-4">
 				<label for="" class="form-label"><i class="icofont-filter"></i> Departamentos</label>
 				<select class="form-select" v-model="idDepartamento" @change="buscarProducto()">
 					<option value="-1">Todos</option>
@@ -808,6 +814,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				var that = this;
 				let respuesta = await axios.post(this.servidor+'buscarTour.php', {
 					texto: this.$refs.txtFiltro.value,
+					ciudad: this.$refs.txtFiltroCiudad.value,
 					tipo: 2,
 					departamento: this.idDepartamento
 				})
