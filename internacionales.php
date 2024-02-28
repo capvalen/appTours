@@ -102,7 +102,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<tr>
 					<th>N°</th>
 					<th>Título</th>
-					<th>Precio Perú</th>
+					<th>País</th>
+					<th>Precio Peruanos</th>
 					<th>Precio Ext.</th>
 					<th>Fechas</th>
 					<th><i class="icofont-eye-alt"></i></th>
@@ -112,15 +113,16 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<tr v-if="variosTours.length == 0">
 					<td colspan=5>No hay paquetes</td>
 				</tr>
-				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
-					<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
-					<td @click="cargarPanel(todosTours[index].id, index)" class="text-capitalize">{{vTour.nombre}} <span class="text-primary" @click.prevent="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
-					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
-					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
+				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id" @click="cargarPanel(todosTours[index].id, index)">
+					<td >{{index+1}}</td>
+					<td class="text-capitalize">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
+					<td>{{nombrePais(index)}}</td>
+					<td >{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
+					<td >{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
 					<td>
 						<button data-bs-toggle="offcanvas" data-bs-target="#offFechas" class="btn btn-sm btn-outline-secondary" @click.prevent="idGlobal=todosTours[index].id;tourActivo =JSON.parse(todosTours[index].contenido)"><span v-if="vTour.fechas">{{vTour.fechas.length}}</span> <span v-else>0</span></button>
 					</td>
-					<td @click="cargarPanel(todosTours[index].id, index)" >
+					<td >
 						<span class="text-primary" v-if="esVisible(index)=='1'"><i class="icofont-check"></i></span>
 						<span class="text-danger" v-else><i class="icofont-close"></i></span>
 					</td>
@@ -134,14 +136,15 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<div class="modal-content">
 					<div class="modal-body">
 						<div class="d-flex justify-content-between mb-3">
-							<h5 class="modal-title">Nuevo anuncio: Tour</h5>
+							<h5 v-if="!activarEditar" class="modal-title">Nuevo anuncio: Tour</h5>
+							<h5 v-else class="modal-title">Editar anuncio: Tour</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @change="crearURL()">
+							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @blur="crearURL()">
 							<label for="floNombre">Nombre del tour</label>
 						</div>
-						<div class="form-floating mb-3" v-if="!activarEditar">
+						<div class="form-floating mb-3" >
 							<input type="text" class="form-control" id="floURL" placeholder=" " autocomplete="off" v-model="tour.url">
 							<label for="floURL">URL del tour</label>
 						</div>
@@ -641,7 +644,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.todosTours=[];
 				this.variosTours=[];
 			
-				let respuesta = await axios.get(this.servidor+'verTours.php');
+				let respuesta = await axios.get(this.servidor+'verToursInternacionales.php');
 				respuesta.data.forEach(dato=>{
 					if(dato.pais!=140){
 						that.todosTours.push(dato)
@@ -730,7 +733,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			actualizarTour(queTour){
 				this.extraerHtml();
 				if(queTour==null){ queTour = this.tourActivo }
-				axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria, idPais : this.tour.idPais  })
+				axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria, idPais : this.tour.idPais, url: this.tourActivo.url  })
 				.then((response)=>{ console.log( response.data );
 					if(response.data =='ok'){
 						this.mensajeBien = "Se actualizó correctamente";
@@ -802,7 +805,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			abrirEdicion(){
 				this.activarEditar=true;
-				this.tour = this.tourActivo;
+				this.tour = {...this.tourActivo};
 				$('#sltActividad2').selectpicker('val', this.tour.actividades);
 				$('#sltCategoria2').selectpicker('val', this.tour.categorias);
 				qDescripcion.setContents([]); qDescripcion.clipboard.dangerouslyPasteHTML(0, this.tour.descripcion);
@@ -869,8 +872,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					}
 				}
 			},
+			nombrePais(index){
+				return this.todosTours[index].nomPais
+			},
 			abrirLink(index){
-				console.log(this.variosTours[index])
+				window.open(`https://grupoeuroandino.com/tours/${this.variosTours[index].url}`, '_blank');
 			},
 			crearURL(){
 				let url = this.tour.nombre.toLowerCase();
@@ -888,8 +894,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				url = url.replace(/\\/g, '');
 				url = url.replace(/--/g, '-');
 
-				console.log('deberia salir');
-				this.tour.url = url;
+				this.tourActivo.url= url;
+				this.tour.url = this.tourActivo.url;
+				this.tour.queUrl = this.tourActivo.url;
+				console.log('salir este', url);
 			}
 		}
 	});

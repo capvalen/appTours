@@ -425,9 +425,9 @@ include '../api/'
 						return respo.text().then(texto=>{
 							if( parseInt(texto)>0 ){
 								this.idOrden=parseInt(texto);
-								//toastBien.show();
-								//this.crearToken();
-								goToThanks();
+								toastBien.show();
+								this.crearToken();
+								//goToThanks();
 							}
 						})
 					 })
@@ -436,7 +436,11 @@ include '../api/'
 			},
 			async crearToken(){
 				let datos = new FormData()
-				datos.append('monto', this.total*100)
+				if( this.moneda == 'soles')
+					datos.append('monto', this.total*100)
+				else
+					datos.append('monto', this.totalDolar*this.dolar*100)
+				
 				datos.append('correo', 'ejemplo1@hotmail.com')
 				datos.append('id', this.idOrden);
 

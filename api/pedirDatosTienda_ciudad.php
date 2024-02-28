@@ -5,7 +5,7 @@ $ciudades = [];
 $actividades = [];
 $categorias = [];
 
-$sqlCiudades = $db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.destino')) as nombre FROM `tours` where activo = 1 and visible=1 group by JSON_EXTRACT(contenido, '$.destino')");//SELECT * from actividades where activo = 1;
+$sqlCiudades = $db->query("SELECT url, JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.destino')) as nombre FROM `tours` where activo = 1 and visible=1 group by JSON_EXTRACT(contenido, '$.destino')");//SELECT * from actividades where activo = 1;
 if($sqlCiudades ->execute()){
 	while($rowCiudades = $sqlCiudades->fetch(PDO::FETCH_ASSOC)){
 		$ciudades[] = $rowCiudades['nombre'];

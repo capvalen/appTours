@@ -3,7 +3,7 @@ include ("conectkarl.php");
 
 $filas = [];
 
-$sql= $db->query("SELECT * FROM `tours` where tipo=2 and activo=1 and pais = 140 order by id DESC;");
+$sql= $db->query("SELECT t.*, p.nombre as nomPais FROM `tours` t inner join paises p on t.pais = p.id where t.tipo=1 and t.activo=1 and t.pais <> 140 order by t.id DESC;");
 if( $sql->execute()){
 	while( $row = $sql->fetch(PDO::FETCH_ASSOC) ){
 		$filas[] = $row;
@@ -13,4 +13,4 @@ if( $sql->execute()){
 	echo $sql->errorinfo();
 }
 
-echo json_encode($filas); 
+echo json_encode($filas);

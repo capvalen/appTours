@@ -6,7 +6,7 @@ include ("conectkarl.php");
 
 $filas = [];
 //SELECT * FROM `tours` where id between 134 and 146 order by RAND() DESC limit 12
-$sql= $db->query("SELECT * FROM `tours` where visible=1 and activo=1 order by RAND() DESC limit 12;");
+$sql= $db->query("SELECT * FROM `tours` where visible=1 and activo=1 order by RAND() DESC ;");
 if( $sql->execute()){
 	while( $row = $sql->fetch(PDO::FETCH_ASSOC) ){
 		$filas[] = $row;

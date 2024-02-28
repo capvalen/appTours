@@ -8,8 +8,8 @@ $_POST = json_decode(file_get_contents('php://input'),true);
 $lineaActividad ='';
 $lineaCategoria ='';
 
-$sql =$db->prepare("UPDATE `tours` SET `contenido` = ? WHERE `id` = ?; ");
-$resp = $sql->execute([ json_encode($_POST['tour']), $_POST['id'] ]);
+$sql =$db->prepare("UPDATE `tours` SET `contenido` = ?, `url`=? WHERE `id` = ?; ");
+$resp = $sql->execute([ json_encode($_POST['tour']),  $_POST['url'], $_POST['id'] ]);
 
 
 if($resp){

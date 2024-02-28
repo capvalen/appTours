@@ -81,17 +81,17 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-12 col-md-4">
-				<label for="" class="form-label"><i class="icofont-filter"></i> Ciudad</label>
-				<div class="mb-3">
-					<input type="text" name="" id="txtFiltroCiudad" ref="txtFiltroCiudad" class="form-control" placeholder="Buscar por ciudad" @keyup.enter="buscarProducto()">
-				</div>
-			</div>
-			<div class="col-12 col-md-4">
+		<div class="col-12 col-md-4">
 				<label for="" class="form-label"><i class="icofont-filter"></i> Filtrar por título</label>
 				<div class="input-group mb-3">
 					<input type="text" name="" id="txtFiltro" ref="txtFiltro" class="form-control" placeholder="Buscar" @keyup.enter="buscarProducto()">
 					<button class="btn btn-outline-secondary" type="button" @click="buscarProducto()"><i class="icofont-search"></i> Buscar</button>
+				</div>
+			</div>
+			<div class="col-12 col-md-4">
+				<label for="" class="form-label"><i class="icofont-filter"></i> Ciudad</label>
+				<div class="mb-3">
+					<input type="text" name="" id="txtFiltroCiudad" ref="txtFiltroCiudad" class="form-control" placeholder="Buscar por ciudad" @keyup.enter="buscarProducto()">
 				</div>
 			</div>
 			<div class="col-12 col-md-4">
@@ -119,7 +119,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</tr>
 				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
 					<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
-					<td @click="cargarPanel(todosTours[index].id, index)" class="text-capitalize">{{vTour.nombre}}</td>
+					<td @click="cargarPanel(todosTours[index].id, index)" class="text-capitalize">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
 					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
 					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
 					<td>
@@ -140,14 +140,15 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<div class="modal-content">
 					<div class="modal-body">
 						<div class="d-flex justify-content-between mb-3">
-							<h5 class="modal-title">Nuevo anuncio: Paquete turístico</h5>
+							<h5 v-if="!activarEditar" class="modal-title">Nuevo anuncio: Paquete turístico</h5>
+							<h5 v-else class="modal-title">Editar anuncio: Paquete turístico</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @change="crearURL()">
+							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @blur="crearURL()">
 							<label for="floNombre">Nombre del paquete turístico</label>
 						</div>
-						<div class="form-floating mb-3" v-if="!activarEditar">
+						<div class="form-floating mb-3" >
 							<input type="text" class="form-control" id="floURL" placeholder=" " autocomplete="off" v-model="tour.url">
 							<label for="floURL">URL del tour</label>
 						</div>
@@ -653,7 +654,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					that.todosTours.push(dato)
 					that.variosTours.push(JSON.parse(dato.contenido));
 				})
-				
 				//console.log( that.variosTours );
 			},
 			obtenerHTML(){
@@ -721,17 +721,20 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			actualizarTour(queTour){
 				this.extraerHtml();
-				if(queTour==null){ queTour = this.tourActivo }
-				axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria })
-				.then((response)=>{ console.log( response.data );
-					if(response.data =='ok'){
-						modalNuevo.hide();
-						this.mensajeBien = "Se actualizó correctamente";
-						tostadaOk.show();
-						this.verTours();
-					}
-				})
-				.catch((error)=>{ console.log( error );});
+				if(this.tourActivo.url=='') alert('No se puede guardar con la url vacía')
+				else {
+					if(queTour==null){ queTour = this.tourActivo }
+					axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria, url: this.tourActivo.url })
+					.then((response)=>{ console.log( response.data );
+						if(response.data =='ok'){
+							this.mensajeBien = "Se actualizó correctamente";
+							modalNuevo.hide();
+							tostadaOk.show();
+							this.verTours();
+						}
+					})
+					.catch((error)=>{ console.log( error );});
+				}
 			},
 			eliminar(){
 				if(confirm('¿Realmente desea eliminar el paquete?')){
@@ -791,12 +794,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let indexJuego = this.todosTours.map( tour => tour.id ).indexOf(this.idGlobal);
 				//console.log( indexJuego );
 				this.todosTours[indexJuego].visible=e.target.checked;
-				this.todosTours[indexJuego].visible=e.target.checked;
 
 			},
 			abrirEdicion(){
 				this.activarEditar=true;
-				this.tour = this.tourActivo;
+
+				this.tour = {...this.tourActivo};
 				$('#sltActividad2').selectpicker('val', this.tour.actividades);
 				$('#sltCategoria2').selectpicker('val', this.tour.categorias);
 				qDescripcion.setContents([]); qDescripcion.clipboard.dangerouslyPasteHTML(0, this.tour.descripcion);
@@ -864,6 +867,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					}
 				}
 			},
+			abrirLink(index){
+				window.open(`https://grupoeuroandino.com/tours/${this.variosTours[index].url}`, '_blank');
+			},
 			crearURL(){
 				let url = this.tour.nombre.toLowerCase();
 				url = url.replace(/\s+/g, ' ').trim() //Quita todos los espacios repetidos
@@ -880,7 +886,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				url = url.replace(/\\/g, '');
 				url = url.replace(/--/g, '-');
 
-				this.tour.url = url;
+				this.tourActivo.url= url;
+				this.tour.url = this.tourActivo.url;
+				this.tour.queUrl = this.tourActivo.url;
+				console.log('salir este', url);
 			}
 		}
 	});
