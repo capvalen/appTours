@@ -554,20 +554,18 @@
 				<div class="row col-7 mx-auto my-3">
 					<label for="">Horarios:</label>
 
-					<select name="" id="" class="form-select" v-model="horarioSelect">
-
+					<select name="" id="sltHorario" class="form-select" v-model="horarioSelect">
 						<option value="-1">{{horaLatam(tourActivo.hora).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
 						<option v-if="tourActivo.hora2" value="1">{{horaLatam(tourActivo.hora2).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
-
 					</select>
 
 				</div>
 
 				<div class=" ms-5 ps-3" id="divDuracion">
 
+					<span><strong>Anticipación:</strong> {{queAnticipa(tourActivo.anticipacion)}}</span><br>
 					<span><strong>Duración:</strong> {{queDuraComp}}</span><br>
 
-					<span><strong>Comprar:</strong> {{queAnticipa(tourActivo.anticipacion)}} antes del viaje</span><br>
 
 					<span><strong>Mínimo de viajeros:</strong>
 
@@ -1040,64 +1038,46 @@
 
 			},
 
-			methods: {
+		methods: {
 
-				async cargarComplementos() {
+			async cargarComplementos() {
 
-					let servComplementos = await fetch(this.servidor + 'pedirComplementos.php', {
+				let servComplementos = await fetch(this.servidor + 'pedirComplementos.php', {
 
-						method: 'POST'
+					method: 'POST'
 
-					})
-					/* .done()
+				})
 
-					.done(letra =>{
+				let resServidor = await servComplementos
 
-						console.log( letra );
+				resServidor.json().then((queVino) => {
+					this.actividades2 = queVino[0];
+					this.categorias2 = queVino[1];
+					//Obtener el valor de lo seleccionado
+					//$('#sltActividad2').selectpicker('val');
+					//asignar valor
+					//$('#sltActividad2').selectpicker('val', ['51', '53']);
+				})
+				let servConfig = await fetch(this.servidor+ 'cargarPanel.php',{ method:'POST' })
+				let resConfig = await servConfig.json();
+				this.lateral = resConfig.lateral;
+				this.dolar = resConfig.dolar
 
-					}); */
-
-					let resServidor = await servComplementos
-
-					resServidor.json().then((queVino) => {
-
-						this.actividades2 = queVino[0];
-
-						this.categorias2 = queVino[1];
-
-
-
-						//Obtener el valor de lo seleccionado
-
-						//$('#sltActividad2').selectpicker('val');
-
-						//asignar valor
-
-						//$('#sltActividad2').selectpicker('val', ['51', '53']);
-
-
-
-					})
-					let servConfig = await fetch(this.servidor+ 'cargarPanel.php',{ method:'POST' })
-					let resConfig = await servConfig.json();
-					this.lateral = resConfig.lateral;
-					this.dolar = resConfig.dolar
-
-				},
-				async cargarTours(){
-					let datos = new FormData()
-					datos.append('departamento', this.tourActivo.departamento+1)
-					const respuesta = await fetch(this.servidor+'mostrarTours_scriptDepartamentos.php',{
-						method:'POST', body:datos
-					})
-					let temp = await respuesta.json()
-					//console.log('temp',temp);
-					this.tours = temp;
-					this.contenidos=[];
-					this.tours.forEach(dato=>{
-						this.contenidos.push( JSON.parse(dato.contenido));
-					});
-					console.log( this.contenidos);
+			},
+			async cargarTours(){
+				let datos = new FormData()
+				datos.append('departamento', this.tourActivo.departamento+1)
+				const respuesta = await fetch(this.servidor+'mostrarTours_scriptDepartamentos.php',{
+					method:'POST', body:datos
+				})
+				let temp = await respuesta.json()
+				//console.log('temp',temp);
+				this.tours = temp;
+				this.contenidos=[];
+				this.tours.forEach(dato=>{
+					this.contenidos.push( JSON.parse(dato.contenido));
+				});
+				console.log( this.contenidos);
 			},
 			queDura(duracion){
 				return this.duracion[duracion-1].valor;
@@ -1115,340 +1095,361 @@
 				return this.departamentos[valor];
 			},
 
-				async pedirDatos() {
+			async pedirDatos() {
 
-					var hoy = moment();
+				var hoy = moment();
 
-					const respuesta = await axios.post(this.servidor + 'verTourPorId_v2.php', {
-						id: this.idProducto
+				const respuesta = await axios.post(this.servidor + 'verTourPorId_v2.php', {
+					id: this.idProducto
+				});
+
+				this.variosTours = respuesta.data['tour'];
+				this.comentarios = respuesta.data['comentarios'];
+
+				this.tourActivo = JSON.parse(this.variosTours.contenido);
+
+				this.precioPorPersona = this.tourActivo.peruanos.adultos;
+
+				//this.cantAdultos = this.tourActivo.minimo;
+
+				$('.fotorama').fotorama();
+
+				for (let dia = 2; dia <= 31; dia++) {
+
+					this.duracion.push({
+						clave: dia + 1,
+						valor: dia + ' días / 0 noches'
 					});
 
-					this.variosTours = respuesta.data['tour'];
-					this.comentarios = respuesta.data['comentarios'];
+					this.duracionDias.push({
+						clave: dia + 1,
+						valor: dia + ' días'
+					});
 
-					this.tourActivo = JSON.parse(this.variosTours.contenido);
+					this.duracionNoches.push({
+						clave: dia + 1,
+						valor: dia + ' noches'
+					});
 
-					this.precioPorPersona = this.tourActivo.peruanos.adultos;
+				}
 
-					//this.cantAdultos = this.tourActivo.minimo;
+				for (let dia = 2; dia <= 15; dia++) {
+
+					this.anticipacion.push({
+						clave: dia + 1,
+						valor: dia + ' días'
+					});
+
+				}
+				for (let dia = 30; dia <= 180; dia+=15) {
+							this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
+						}
+
+				$('#dtpFecha').bootstrapDP('setDate', moment().format('DD/MM/YYYY'))
+
+				switch (this.tourActivo.anticipacion) {
+
+					case "1":
+						this.bloquearFechaDesde(hoy.diff(1, 'days'));
+						break;
+
+					case "2":
+						this.bloquearFechaDesde(hoy.add(1, 'days'));
+						break;
+
+					default:
+						this.bloquearFechaDesde(hoy.add(parseInt(this.tourActivo.anticipacion) - 1, 'days'));
+						break;
+
+				}
+
+				this.incluidos = this.tourActivo.incluye.split('\n');
+
+				this.noIncluidos = this.tourActivo.noIncluye.split('\n');
+
+				const myTimeout = setTimeout(function() {
 
 					$('.fotorama').fotorama();
 
-					for (let dia = 2; dia <= 31; dia++) {
+				}, 500);
 
-						this.duracion.push({
-							clave: dia + 1,
-							valor: dia + ' días / 0 noches'
-						});
-
-						this.duracionDias.push({
-							clave: dia + 1,
-							valor: dia + ' días'
-						});
-
-						this.duracionNoches.push({
-							clave: dia + 1,
-							valor: dia + ' noches'
-						});
-
-					}
-
-					for (let dia = 2; dia <= 15; dia++) {
-
-						this.anticipacion.push({
-							clave: dia + 1,
-							valor: dia + ' días'
-						});
-
-					}
-					for (let dia = 30; dia <= 180; dia+=15) {
-        				this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
-        			}
-
-					switch (this.tourActivo.anticipacion) {
-
-						case "1":
-							this.bloquearFechaDesde(hoy);
-							break;
-
-						case "2":
-							this.bloquearFechaDesde(hoy.add(1, 'days'));
-							break;
-
-						default:
-							this.bloquearFechaDesde(hoy.add(parseInt(this.tourActivo.anticipacion) - 1, 'days'));
-							break;
-
-					}
-
-					this.incluidos = this.tourActivo.incluye.split('\n');
-
-					this.noIncluidos = this.tourActivo.noIncluye.split('\n');
-
-					const myTimeout = setTimeout(function() {
-
-						$('.fotorama').fotorama();
-
-					}, 500);
-
-					this.cargarTours()
+				this.cargarTours()
 
 
 
 
-					let datos = new FormData();
+				let datos = new FormData();
 
-					datos.append('tipo', this.tourActivo.tipo);
+				datos.append('tipo', this.tourActivo.tipo);
 
-					datos.append('departamento', this.tourActivo.departamento);
+				datos.append('departamento', this.tourActivo.departamento);
 
-					let respRecomendados = await fetch(this.servidor + 'pedirRecomendadosRandom.php', {
+				let respRecomendados = await fetch(this.servidor + 'pedirRecomendadosRandom.php', {
 
-							method: 'POST',
-							body: datos
+						method: 'POST',
+						body: datos
 
-						})
+					})
 
-						.then(response => response.json())
+					.then(response => response.json())
 
-						.then(data => {
+					.then(data => {
 
-							this.recomendados = data;
+						this.recomendados = data;
 
-						}).then(() => {
+					}).then(() => {
 
-							$(".owl-carousel").owlCarousel({
+						$(".owl-carousel").owlCarousel({
 
-								autoplay: true,
+							autoplay: true,
 
-								loop: true,
-								margin: 20,
-								dots: true,
+							loop: true,
+							margin: 20,
+							dots: true,
 
-								nav: true,
+							nav: true,
 
-								navText: ["<div class='nav-button owl-prev'>‹</div>", "<div class='nav-button owl-next'>›</div>"],
+							navText: ["<div class='nav-button owl-prev'>‹</div>", "<div class='nav-button owl-next'>›</div>"],
 
-								responsive: {
+							responsive: {
 
-									0: {
+								0: {
 
-										items: 1
+									items: 1
 
-									},
+								},
 
-									600: {
+								600: {
 
-										items: 3
-
-									}
+									items: 3
 
 								}
 
-							});
+							}
 
 						});
-
-					/* this.recomendados = await respRecomendados.json()
-
-					.then(()=>{
-
-					}); */
-
-
-
-				},
-
-				contarMinimoPersonas() {
-
-					if (this.nacionalidad == 159 || this.nacionalidad == -1) {
-						this.precioTotal = parseFloat(this.cantAdultos * this.tourActivo.peruanos.adultos) + parseFloat(this.cantKids * this.tourActivo.peruanos.kids);
-					} else {
-						this.precioTotal = parseFloat(this.cantAdultos * this.tourActivo.extranjeros.adultos) + parseFloat(this.cantKids * this.tourActivo.extranjeros.kids);
-
-					}
-					this.precioDolares = this.precioTotal / this.dolar
-
-
-					if(this.cantKids>0 && this.cantAdultos==0 ){
-						this.msjError = "Se debe reservar como mínimo un adulto";
-						return this.faltaAdulto = false;
-					}
-					else
-						this.faltaAdulto=true;
-						if ((this.cantAdultos + this.cantKids) < parseInt(this.tourActivo.minimo)) {
-							this.faltaPais = true;
-							this.msjError = "Debe rellenar el campo de su nacionalidad antes de reservar";
-							return this.faltaMinimo = false;
-						} else {
-							this.faltaPais = false;
-							return this.faltaMinimo = true;
-						}
-				},
-
-				restarAdulto() {
-
-					if (this.cantAdultos > 0) {
-
-						this.cantAdultos--;
-						this.contarMinimoPersonas();
-
-					}
-
-				},
-
-				sumarAdulto() {
-
-					this.cantAdultos++;
-					this.contarMinimoPersonas();
-
-				},
-
-				restarKid() {
-
-					if (this.cantKids > 0) {
-
-						this.cantKids--;
-						this.contarMinimoPersonas();
-
-					}
-
-				},
-
-				sumarKid() {
-
-					this.cantKids++;
-					this.contarMinimoPersonas();
-
-				},
-
-				queAnticipa(valor) {
-
-					if (valor != null) {
-
-						return this.anticipacion[parseInt(valor) - 1].valor;
-
-					}
-
-				},
-
-				variasActividades(queActividad) {
-
-					console.log('es la acti', queActividad);
-
-					var actividades = "";
-
-					if (queActividad != undefined) {
-
-						queActividad.forEach(actividad => {
-
-							actividades += " " + this.actividades2.find(x => x.id === actividad).concepto + ",";
-
-						});
-
-						return actividades.substring(0, actividades.length - 1)
-
-					} else {
-
-						return '-';
-
-					}
-
-				},
-
-				variasCategorias(queCategoria) {
-
-					if (queCategoria != undefined) {
-
-						var categorias = "";
-
-						queCategoria.forEach(actividad => {
-
-							categorias += " " + this.categorias2.find(x => x.id === actividad).concepto + ",";
-
-						});
-
-						return categorias.substring(0, categorias.length - 1)
-
-					} else {
-
-						return '-';
-
-					}
-
-				},
-
-				bloquearFechaDesde(fechaInicial) {
-
-					//console.log( fechaInicial.format('DD/MM/YYYY') );
-
-					if(this.tourActivo.fechas){
-						for(let index = 0; index< this.tourActivo.fechas.length; index++){
-							this.diasMuertos.push(moment(this.tourActivo.fechas[index].fecha).format('DD/MM/YYYY'))
-						}
-					}
-					
-					for (let index = 0; index <= 90; index++) {
-
-						this.diasMuertos.push(moment(fechaInicial, 'DD/MM/YYYY').subtract(index, 'days').format('DD/MM/YYYY'));
-
-					}
-					
-
-					console.log(this.diasMuertos);
-
-
-
-					//$('#dtpFecha').datepicker('destroy');
-
-					$('#dtpFecha').bootstrapDP({
-
-						language: "es",
-
-						keyboardNavigation: false,
-
-						todayHighlight: true,
-
-						datesDisabled: this.diasMuertos
 
 					});
 
+				/* this.recomendados = await respRecomendados.json()
 
+				.then(()=>{
 
-					$(".prev").each(function(i) {
-						$(".prev")[i].innerHTML = `<i class="icofont-rounded-left"></i>`
-					})
-
-					$(".next").each(function(i) {
-						$(".next")[i].innerHTML = `<i class="icofont-rounded-right"></i>`
-					})
+				}); */
 
 
 
+			},
+
+			contarMinimoPersonas() {
+
+				if (this.nacionalidad == 159 || this.nacionalidad == -1) {
+					this.precioTotal = parseFloat(this.cantAdultos * this.tourActivo.peruanos.adultos) + parseFloat(this.cantKids * this.tourActivo.peruanos.kids);
+				} else {
+					this.precioTotal = parseFloat(this.cantAdultos * this.tourActivo.extranjeros.adultos) + parseFloat(this.cantKids * this.tourActivo.extranjeros.kids);
+
+				}
+				this.precioDolares = this.precioTotal / this.dolar
 
 
-				},
+				if(this.cantKids>0 && this.cantAdultos==0 ){
+					this.msjError = "Se debe reservar como mínimo un adulto";
+					return this.faltaAdulto = false;
+				}
+				else
+					this.faltaAdulto=true;
+					if ((this.cantAdultos + this.cantKids) < parseInt(this.tourActivo.minimo)) {
+						this.faltaPais = true;
+						this.msjError = "Debe rellenar el campo de su nacionalidad antes de reservar";
+						return this.faltaMinimo = false;
+					} else {
+						this.faltaPais = false;
+						return this.faltaMinimo = true;
+					}
+			},
 
-				horaLatam(hora) {
+			restarAdulto() {
 
-					return (moment(hora, 'HH:mm').format('h:mm a'))
+				if (this.cantAdultos > 0) {
 
-				},
+					this.cantAdultos--;
+					this.contarMinimoPersonas();
+
+				}
+
+			},
+
+			sumarAdulto() {
+
+				this.cantAdultos++;
+				this.contarMinimoPersonas();
+
+			},
+
+			restarKid() {
+
+				if (this.cantKids > 0) {
+
+					this.cantKids--;
+					this.contarMinimoPersonas();
+
+				}
+
+			},
+
+			sumarKid() {
+
+				this.cantKids++;
+				this.contarMinimoPersonas();
+
+			},
+
+			queAnticipa(valor) {
+
+				if (valor != null) {
+					if(valor==1){
+						if( this.tourActivo.antes)
+							return `${this.tourActivo.antes} hora${this.tourActivo.antes == 1 ? '':'s'} antes`
+						else{
+							return 'Sin restricciones';
+						}
+					}else if(valor>1){
+						return this.anticipacion[parseInt(valor) - 1].valor + " antes del viaje";
+					}
+				}
+			},
+
+			variasActividades(queActividad) {
+
+				console.log('es la acti', queActividad);
+
+				var actividades = "";
+
+				if (queActividad != undefined) {
+
+					queActividad.forEach(actividad => {
+
+						actividades += " " + this.actividades2.find(x => x.id === actividad).concepto + ",";
+
+					});
+
+					return actividades.substring(0, actividades.length - 1)
+
+				} else {
+
+					return '-';
+
+				}
+
+			},
+
+			variasCategorias(queCategoria) {
+
+				if (queCategoria != undefined) {
+
+					var categorias = "";
+
+					queCategoria.forEach(actividad => {
+
+						categorias += " " + this.categorias2.find(x => x.id === actividad).concepto + ",";
+
+					});
+
+					return categorias.substring(0, categorias.length - 1)
+
+				} else {
+
+					return '-';
+
+				}
+
+			},
+
+			bloquearFechaDesde(fechaInicial) {
+
+				//console.log( fechaInicial.format('DD/MM/YYYY') );
+
+				if(this.tourActivo.fechas){
+					for(let index = 0; index< this.tourActivo.fechas.length; index++){
+						this.diasMuertos.push(moment(this.tourActivo.fechas[index].fecha).format('DD/MM/YYYY'))
+					}
+				}
+				
+				for (let index = 1; index <= 90; index++) {
+
+					this.diasMuertos.push(moment(fechaInicial, 'DD/MM/YYYY').subtract(index, 'days').format('DD/MM/YYYY'));
+
+				}
+				//console.log(this.diasMuertos);
+
+				//$('#dtpFecha').datepicker('destroy');
+
+				$('#dtpFecha').bootstrapDP({
+
+					language: "es",
+
+					keyboardNavigation: false,
+
+					todayHighlight: true,
+
+					datesDisabled: this.diasMuertos
+
+				});
+
+
+
+				$(".prev").each(function(i) {
+					$(".prev")[i].innerHTML = `<i class="icofont-rounded-left"></i>`
+				})
+
+				$(".next").each(function(i) {
+					$(".next")[i].innerHTML = `<i class="icofont-rounded-right"></i>`
+				})
+
+			},
+
+			horaLatam(hora) {
+
+				return (moment(hora, 'HH:mm').format('h:mm a'))
+
+			},
 
 				reservar() {
-
 					if ($('#dtpFecha').bootstrapDP('getFormattedDate') == null || $('#dtpFecha').bootstrapDP('getFormattedDate') == '') {
 
 						this.faltaPais = true;
 						this.msjError = "Debe seleccionar una fecha inicial";
 						return false;
+					}else if( $('#dtpFecha').bootstrapDP('getFormattedDate') == moment().format('DD/MM/YYYY')){ //Es hoy
+						if(this.tourActivo.anticipacion == 1 ){
+							const horaActual = moment()
+							var horaElegida = null
+							const horasAntes = parseInt(this.tourActivo.antes) ?? 0
+							if( this.horarioSelect=='-1') horaElegida = moment(this.tourActivo.hora, 'HH:mm')
+							else horaElegida = moment(this.tourActivo.hora2, 'HH:mm')
+							const diferenciaHoras = horaElegida.diff(horaActual, 'hours') - horasAntes;
+							if (diferenciaHoras >= 0) { //Se puede comprar esta en el rango
+								this.faltaPais = false;
+								this.msjError=''
+								console.log("La horaComparar en el rango.", diferenciaHoras );
+								this.prepararCompra();
 
-					} else if (this.comprobarNacionalidad() && this.contarMinimoPersonas()) {
-
-						window.location.href = "/carrito-compras/?id=" + this.idProducto + "&adults=" + this.cantAdultos + "&kids=" + this.cantKids + "&nationality=" + this.nacionalidad + "&start=" + $('#dtpFecha').bootstrapDP('getFormattedDate')+'&horario='+this.horarioSelect;
-
+							} else { //Esta muy atrás
+								console.log("La horaComparar no está en el rango.", diferenciaHoras );
+								this.faltaPais = true;
+								this.msjError = `Se debe reservar ${Math.abs(horasAntes)} hora${Math.abs(horasAntes) == 1 ? '':'s'} antes a la hora elegida`;
+								return false;
+							}
+						}
 					}
-
+					else{
+						this.prepararCompra();
+					}
+				},
+				prepararCompra(){
+					if (this.comprobarNacionalidad() && this.contarMinimoPersonas()) {
+						window.location.href = "/carrito-compras/?id=" + this.idProducto + "&adults=" + this.cantAdultos + "&kids=" + this.cantKids + "&nationality=" + this.nacionalidad + "&start=" + $('#dtpFecha').bootstrapDP('getFormattedDate')+'&horario='+this.horarioSelect;
+					}
 				},
 
 				comprobarNacionalidad() {

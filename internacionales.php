@@ -313,7 +313,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					</div>
 					<div class="modal-footer">
 						<button v-if="!activarEditar" type="button" @click="guardarTour()" class="btn btn-outline-primary"><i class="icofont-save"></i> Guardar anuncio</button>
-						<button v-else type="button" @click="actualizarTour()" class="btn btn-outline-primary"><i class="icofont-save"></i> Actualizar anuncio</button>
+						<button v-else type="button" @click="actualizarTour(tour)" class="btn btn-outline-primary"><i class="icofont-save"></i> Actualizar anuncio</button>
 					</div>
 				</div>
 			</div>
@@ -504,7 +504,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			mensajeBien:'Guardado correctamente', mensajeMal:'Hubo un error al conectar',
 			variosTours:[], todosTours:[], idGlobal:-1, indexGlobal:-1, tourActivo:[],
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
-			anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
+			anticipacion: [{clave:0, valor:'Sin restricción'}, {clave: 1, valor: 'Horas'}, {clave: 2, valor: '1 día'} ], antes:0,
 			departamentos:[], paises:[],
 			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idPais:-1
 		},
@@ -805,6 +805,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			abrirEdicion(){
 				this.activarEditar=true;
+				if (!this.tourActivo.antes) this.tourActivo.antes =0
 				this.tour = {...this.tourActivo};
 				$('#sltActividad2').selectpicker('val', this.tour.actividades);
 				$('#sltCategoria2').selectpicker('val', this.tour.categorias);

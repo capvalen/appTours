@@ -220,7 +220,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						</div>
 						<p class="mb-0">Reglas de compra</p>
 						<div class="row">
-							<div class="col">
+							<div class="col-6">
 								<div class="form-floating mb-3">
 									<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.anticipacion">
 										<option v-for="dia in anticipacion" :value="dia.clave">{{dia.valor}}</option>
@@ -228,7 +228,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<label for="floatingSelect">Anticipación</label>
 								</div>
 							</div>
-							<div class="col">
+							<div class="col-6" v-if="tour.anticipacion == '1'">
+								<div class="form-floating mb-3">
+									<input type="number" class="form-control" id="floCupos" placeholder=" " max="23" min="1" autocomplete="off" value="0" v-model="tour.antes">
+									<label for="floCupos">Horas antes</label>
+								</div>
+							</div>
+							<div class="col-6">
 								<div class="form-floating mb-3">
 									<input type="number" class="form-control" id="floCupos" placeholder=" " max="250" min="1" autocomplete="off" value="1" v-model="tour.minimo">
 									<label for="floCupos">Mínimo viajeros</label>
@@ -308,7 +314,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					</div>
 					<div class="modal-footer">
 						<button v-if="!activarEditar" type="button" @click="guardarTour()" class="btn btn-outline-primary"><i class="icofont-save"></i> Guardar anuncio</button>
-						<button v-else type="button" @click="actualizarTour()" class="btn btn-outline-primary"><i class="icofont-save"></i> Actualizar anuncio</button>
+						<button v-else type="button" @click="actualizarTour(tour)" class="btn btn-outline-primary"><i class="icofont-save"></i> Actualizar anuncio</button>
 					</div>
 				</div>
 			</div>
@@ -499,7 +505,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			mensajeBien:'Guardado correctamente', mensajeMal:'Hubo un error al conectar',
 			variosTours:[], todosTours:[], idGlobal:-1, indexGlobal:-1, tourActivo:[],
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
-			anticipacion: [{clave: 1, valor: '12 horas'}, {clave: 2, valor: '24 horas'} ],
+			anticipacion: [{clave:0, valor:'Sin restricción'}, {clave: 1, valor: 'Horas'}, {clave: 2, valor: '1 día'} ], antes:0,
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idDepartamento:-1
 		},
@@ -796,7 +802,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			abrirEdicion(){
 				this.activarEditar=true;
-				
+				if (!this.tourActivo.antes) this.tourActivo.antes =0
 				this.tour = {...this.tourActivo};
 				$('#sltActividad2').selectpicker('val', this.tour.actividades);
 				$('#sltCategoria2').selectpicker('val', this.tour.categorias);
