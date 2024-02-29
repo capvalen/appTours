@@ -126,6 +126,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<span class="text-primary" v-if="esVisible(index)=='1'"><i class="icofont-check"></i></span>
 						<span class="text-danger" v-else><i class="icofont-close"></i></span>
 					</td>
+					<td @click.stop="eliminarTour(index)"><span class="text-danger"><i class="icofont-ui-delete"></i></span></td>
 				</tr>
 			</tbody>
 		</table>
@@ -504,7 +505,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			mensajeBien:'Guardado correctamente', mensajeMal:'Hubo un error al conectar',
 			variosTours:[], todosTours:[], idGlobal:-1, indexGlobal:-1, tourActivo:[],
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
-			anticipacion: [{clave:0, valor:'Sin restricción'}, {clave: 1, valor: 'Horas'}, {clave: 2, valor: '1 día'} ], antes:0,
+			anticipacion: [{clave: 1, valor: 'Horas'}, {clave: 2, valor: '1 día'} ], antes:0,
 			departamentos:[], paises:[],
 			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idPais:-1
 		},
@@ -871,6 +872,17 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					if( await respServ.text()=='ok'){
 						this.actualizarTour()
 					}
+				}
+			},
+			async eliminarTour(index){
+				if(confirm(`¿Desea eliminar el tour ${this.variosTours[index].nombre}?`)){
+					const servidor =await axios.post(this.servidor + 'eliminarTour.php', {
+						id: this.todosTours[index].id
+					})
+					.then( respuesta =>{
+						if(respuesta.data =='ok')
+							this.buscarProducto()
+					})
 				}
 			},
 			nombrePais(index){

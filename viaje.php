@@ -93,7 +93,7 @@
 
 				<div class="my-3 p-4 border rounded" id="divIzquierda">
 
-					<h2 class="text-danger text-capitalize">{{tourActivo.nombre}}</h2>
+					<h2 class="text-danger">{{tourActivo.nombre}}</h2>
 
 					<div class="row">
 						<div v-if="tourActivo.transporte" class="col-4 col-md text-center fs-6">
@@ -325,7 +325,7 @@
 
 						<option value="-1">País o Nacionalidad</option>
 
-						<option value="159">PERU</option>
+						<option value="140">PERU</option>
 						<option value="1">Afganistán</option>
 						<option value="2">Albania</option>
 						<option value="3">Algeria</option>
@@ -461,7 +461,7 @@
 						<option value="136">Morocco</option>
 						<option value="137">Mozambique</option>
 						<option value="139">Namibia</option>
-						<option value="140">Nauru</option>
+						<option value="159">Nauru</option>
 						<option value="141">Nepal</option>
 						<option value="142">Netherlands</option>
 						<option value="143">Netherlands Antilles</option>
@@ -995,7 +995,7 @@
 						valor: '12 horas'
 					}, {
 						clave: 2,
-						valor: '24 horas'
+						valor: '1 día'
 					}],
 
 					departamentos: ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica', 'Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno', 'San Martín', 'Tacna', 'Tumbes', 'Ucayali'],
@@ -1309,7 +1309,8 @@
 				if (valor != null) {
 					if(valor==1){
 						if( this.tourActivo.antes)
-							return `${this.tourActivo.antes} hora${this.tourActivo.antes == 1 ? '':'s'} antes`
+						    if(this.tourActivo.antes == "0") return "Sin restricciones"
+							else return `${this.tourActivo.antes} hora${this.tourActivo.antes == 1 ? '':'s'} antes`
 						else{
 							return 'Sin restricciones';
 						}

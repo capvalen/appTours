@@ -30,14 +30,14 @@
 				<div class="navbar-nav">
 					<a class="nav-link " aria-current="page" href="tours.php">Tours</a>
 					<a class="nav-link " href="paquetes.php">Paquetes turísticos</a>
-					<a class="nav-link active" href="pedidos.php">Pedidos</a>
+					<a class="nav-link active" href="reservas.php">Reservas</a>
 					<a class="nav-link" href="lateral.php">Lateral</a>
 				</div>
 			</div>
 		</div>
 	</nav>
 
-	<div class="container-fluid" id="app">
+	<div class="container-fluix mx-2" id="app">
 		<div class="row">
 			<div class="col-8">
 				<p class="fs-1">Pedidos</p>
@@ -64,7 +64,6 @@
 					<th>Total</th>
 					<th>Moneda</th>
 					<th>Estado</th>
-					<th>@</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -90,8 +89,8 @@
 		</table>
 
 	<!-- Modal -->
-	<div class="modal fade" id="modalDetalles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="true">
-		<div class="modal-dialog">
+	<div class="modal fade" id="modalDetalles" tabindex="-1" aria-labelledby="" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h1 class="modal-title fs-5" id="">Detalles del pedido</h1>
@@ -111,7 +110,7 @@
 					<hr>
 					<p class="mb-0"><strong>Fecha de pago</strong> {{fechaLatam(pedidos[indexPedido].fechaPago)}}</p>
 					<p class="mb-0"><strong>Adquirió</strong> {{pedidos[indexPedido].titulo}}</p>
-					<p class="mb-0"><strong>Fecha de separación</strong> {{fechaSimple(pedidos[indexPedido].separado)}}</p>
+					<p class="mb-0"><strong>Fecha de inicio</strong> {{fechaSimple(pedidos[indexPedido].separado)}}</p>
 					<p class="mb-0"><strong>Total pagado</strong> S/ {{pedidos[indexPedido].total}}</p>
 					<p class="mb-0"><strong>N° Adultos</strong> {{pedidos[indexPedido].adultos}}</p>
 					<p class="mb-0"><strong>N° Niños</strong> {{pedidos[indexPedido].menores}}</p>
@@ -175,7 +174,7 @@
 					})
 					.then( respuesta =>{
 						if(respuesta.data =='ok')
-							this.buscarProducto()
+							this.llamarPedidos()
 					})
 				}
 			}
