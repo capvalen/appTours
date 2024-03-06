@@ -63,7 +63,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<div class="navbar-nav">
 					<a class="nav-link" aria-current="page" href="tours.php">Tours</a>
 					<a class="nav-link" href="paquetes.php">Paquetes turísticos</a>
-					<a class="nav-link active" href="internacionales.php">Tours internacionales</a>
+					<a class="nav-link active" href="internacionales.php">Internacionales</a>
 					<a class="nav-link" href="reservas.php">Reservas</a>
 					<a class="nav-link" href="lateral.php">Configuraciones</a>
 				</div>
@@ -74,7 +74,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<div class="container" id="app">
 		<div class="row ">
 			<div class="col-8">
-				<p class="fs-1">Tours Internacionales</p>
+				<p class="fs-1">Internacionales</p>
 			</div>
 			<div class="col-4 d-flex align-items-center">
 				<button class="btn btn-outline-primary" @click="nuevoTourSimple()"><i class="icofont-list"></i> Crear Tour Internacional</button>
@@ -115,7 +115,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</tr>
 				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id" @click="cargarPanel(todosTours[index].id, index)">
 					<td >{{index+1}}</td>
-					<td class="text-capitalize">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
+					<td class="">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
 					<td>{{nombrePais(index)}}</td>
 					<td >{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
 					<td >{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
@@ -896,6 +896,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				url = url.replace(/\s+/g, ' ').trim() //Quita todos los espacios repetidos
 				url = url.replace(/-/g, '');
 				url = url.replace(/ /g, '-');
+				url = url.replace(/\+/g, '');
+				url = url.replace(/,/g, '');
 				url = url.replace(/á/g, 'a');
 				url = url.replace(/é/g, 'e');
 				url = url.replace(/í/g, 'i');

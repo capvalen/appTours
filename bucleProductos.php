@@ -61,7 +61,7 @@
 							
 							
 							<div>
-								<p class="mb-0 titulo ps-1 text-capitalize">
+								<p class="mb-0 titulo ps-1 ">
 									<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
 									<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
 									
@@ -93,9 +93,9 @@
 		</div>
 	</div>
 <!-- Vue desarrollo -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <!-- Vue producción -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
 <script>
 	
 	var app = new Vue({
@@ -122,7 +122,7 @@
 		},
 		methods:{
 			async cargarTours(){
-				const respuesta = await fetch(this.servidor+'mostrarTours.php',{
+				const respuesta = await fetch(this.servidor+'mostrarToursPortada.php',{
 					method:'POST'
 				})
 				this.tours = await respuesta.json();

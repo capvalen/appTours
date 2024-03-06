@@ -119,7 +119,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</tr>
 				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
 					<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
-					<td @click="cargarPanel(todosTours[index].id, index)" class="text-capitalize">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
+					<td @click="cargarPanel(todosTours[index].id, index)" class="">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
 					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
 					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
 					<td>
@@ -220,7 +220,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						</div>
 						<p class="mb-0">Reglas de compra</p>
 						<div class="row">
-							<div class="col">
+							<div class="col-6">
 								<div class="form-floating mb-3">
 									<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.anticipacion">
 										<option v-for="dia in anticipacion" :value="dia.clave">{{dia.valor}}</option>
@@ -228,7 +228,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<label for="floatingSelect">Anticipación</label>
 								</div>
 							</div>
-							<div class="col">
+							<div class="col-6" v-if="tour.anticipacion == '1'">
+								<div class="form-floating mb-3">
+									<input type="number" class="form-control" id="floCupos" placeholder=" " max="23" min="1" autocomplete="off" value="0" v-model="tour.antes">
+									<label for="floCupos">Horas antes</label>
+								</div>
+							</div>
+							<div class="col-6">
 								<div class="form-floating mb-3">
 									<input type="number" class="form-control" id="floCupos" placeholder=" " max="250" min="1" autocomplete="off" value="1" v-model="tour.minimo">
 									<label for="floCupos">Mínimo viajeros</label>
@@ -885,6 +891,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let url = this.tour.nombre.toLowerCase();
 				url = url.replace(/\s+/g, ' ').trim() //Quita todos los espacios repetidos
 				url = url.replace(/-/g, '');
+				url = url.replace(/\+/g, '');
+				url = url.replace(/,/g, '');
 				url = url.replace(/ /g, '-');
 				url = url.replace(/á/g, 'a');
 				url = url.replace(/é/g, 'e');

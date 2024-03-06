@@ -121,7 +121,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</tr>
 				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
 					<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
-					<td @click="cargarPanel(todosTours[index].id, index)" class="text-capitalize">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
+					<td @click="cargarPanel(todosTours[index].id, index)" class="">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
 					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
 					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
 					<td>
@@ -891,6 +891,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let url = this.tour.nombre.toLowerCase();
 				url = url.replace(/\s+/g, ' ').trim() //Quita todos los espacios repetidos
 				url = url.replace(/-/g, '');
+				url = url.replace(/\+/g, '');
+				url = url.replace(/,/g, '');
 				url = url.replace(/ /g, '-');
 				url = url.replace(/á/g, 'a');
 				url = url.replace(/é/g, 'e');
