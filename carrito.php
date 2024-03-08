@@ -142,8 +142,8 @@ include '../api/'
 					<!-- <p class="mt-2 text-muted"><i class="icofont-ui-close"> </i> Anular ésta compra</p> -->
 
 				</div>
-				<div class="col-12 col-md-4 ">
-					<div class="card mb-3">
+				<div class="col-12 col-md-4">
+					<div class="card mb-3 d-none">
 						<div class="card-body">
 							<p class="fs-4 text-capitalize">Cambio de moneda</p>
 							<p>Seleccione su moneda de preferencia</p>
@@ -269,7 +269,11 @@ include '../api/'
 			</div>
 		</div>
 	</div>
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<!-- Desarrollo -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
+<!-- Produccion -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -365,6 +369,11 @@ include '../api/'
 				this.total = espera.total;
 				this.adultoNormal = espera.adultoNormal;
 				this.menorNormal = espera.menorNormal;
+
+				const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
+				if(urlParams.get('nationality') == 140) this.cambioMoneda('soles')
+				else this.cambioMoneda('dolares')
 				
 				//console.log( espera );
 
@@ -438,8 +447,11 @@ include '../api/'
 				let datos = new FormData()
 				if( this.moneda == 'soles')
 					datos.append('monto', this.total*100)
-				else
-					datos.append('monto', this.totalDolar*this.dolar*100)
+				else{
+					let mDolar = Math.round(this.total*(1+this.comision/100),1)*100 //La entrega es en decimales grandes
+					datos.append('monto', mDolar)
+					console.log('quemMonto',mDolar)
+				}
 				
 				datos.append('correo', 'ejemplo1@hotmail.com')
 				datos.append('id', this.idOrden);

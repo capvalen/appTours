@@ -6,6 +6,12 @@ CacheLookup on
 RewriteRule .* - [E=Cache-Control:no-autoflush]
 RewriteRule \.litespeed_conf\.dat - [F,L]
 
+### marker ASYNC start ###
+RewriteCond %{REQUEST_URI} /wp-admin/admin-ajax\.php
+RewriteCond %{QUERY_STRING} action=async_litespeed
+RewriteRule .* - [E=noabort:1]
+### marker ASYNC end ###
+
 ### marker CACHE RESOURCE start ###
 RewriteRule wp-content/.*/[^/]*(responsive|css|js|dynamic|loader|fonts)\.php - [E=cache-control:max-age=3600]
 ### marker CACHE RESOURCE end ###
@@ -41,6 +47,7 @@ RewriteBase /
 RewriteRule ^tours/([^/]+)/?$ tours/viaje.php?variable=$1 [QSA,L]
 RewriteRule ^tours-y-paquetes/([^/]+)/?$ tours-ciudades/filtrado.php?texto=$1 [QSA,L]
 RewriteRule ^paquetes-y-tours/([^/]+)/?$ paquetes-y-tours/filtrado.php?texto=$1 [QSA,L]
+RewriteRule ^paquetes-turisticos-y-tours/([^/]+)/?$ tours-internacionales/filtrado.php?texto=$1 [QSA,L]
 
 RewriteRule ^tours-en-peru/ tours-en-peru/filtrado.php?idTipo=1 [QSA,L]
 RewriteRule ^paquetes-turisticos-en-peru/ paquetes-turisticos-en-peru/filtrado.php?idTipo=2 [QSA,L]

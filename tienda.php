@@ -60,14 +60,38 @@
 
 			width:100%!important;
 
-			height: 250px!important;
+			height: 320px!important;
 
     	object-fit: cover!important;
 
 		}
 
-	
+	.subText {
+    font-size: 0.8rem;
+}
+.card:hover {
+    transition: transform 220ms ease 0s;
+    transform: translateX(0px) translateY(-11px);
+}
+.card {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    transition: transform 220ms ease 0s;
+}
+.divOferta2 {
+    width: 70px;
+    height: 25px;
+    margin-top: 1rem;
+    margin-right: 0rem;
+    color: white;
+    font-size: 0.8rem;
+}
 
+#spanOferta{ background-color: #2768b7; }
+		#spanAlimentacion{ background-color: #6745ef; }
+		#spanTour{ background-color: #0cbf19; }
+		#spanGuia{ background-color: #ffc107; }
+		#spanTickets{ background-color: #e91616; }
+		#spanTransporte{ background-color: #bf0ca9; }
 </style>
 
 	<div class="container-fluid" id="app">
@@ -360,10 +384,21 @@
 
 					<div class="col my-2 " v-for="(producto, index) in productos" :key="producto.id">
 
-						<div class="card h-100" >
-						    <a :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">
-							<img :src="queFoto(producto)" class="card-img-top" alt="...">
-							</a>
+						<div class="card h-100 border-0  " >
+						    <div class="position-relative">
+									<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
+											<span v-if="producto.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus</span>
+											<span v-if="producto.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
+											<span v-if="producto.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[producto.alojamiento]}}</span>
+											<span v-if="producto.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
+											<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
+											<span v-if="producto.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
+											<span v-if="producto.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
+										</div>
+									<a :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">
+										<img :src="queFoto(producto)" class="card-img-top rounded-top" alt="...">
+									</a>
+								</div>
 
 							<div class="card-body">
 
@@ -384,25 +419,25 @@
     <div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
 </div>
 
-								<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span></p>
 
-								<div class="row row-cols-2">
+						<div class="row row-cols-2">
+							<div>
+							    <p class="card-text mb-0" style="color:#000"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span></p>
 
-									<div>
+								<span class="text-muted subText">{{queDuracion(producto.duracion, producto.tipo)}}</span>
 
-									<span>{{queDuracion(producto.duracion, producto.tipo)}}</span>
+							</div>
 
-									</div>
+							<div class="text-end " style="color:#000">
 
-									<div class="text-end ">
+								<span class="precio2"><span class="monedita fs-6">S/</span> {{formatoMoneda(producto.peruanos.adultos)}}</span>
+								<p class="mb-0 text-end"><small>Precio normal</small></p>
 
-										<span class="precio2"><span class="monedita fs-6">S/</span> {{formatoMoneda(producto.peruanos.adultos)}}</span>
+								<p v-if="producto.oferta>0" class="precioAnt2 mb-0">S/ {{formatoMoneda(producto.oferta)}}</p>
 
-										<p v-if="producto.oferta>0" class="precioAnt2 mb-0">S/ {{formatoMoneda(producto.oferta)}}</p>
+							</div>
 
-									</div>
-
-								</div>
+						</div>
 
 							</div>
 

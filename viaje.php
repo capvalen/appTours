@@ -894,14 +894,16 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-
+<!-- Desarrollo -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
+<!-- Produccion -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 
 
 	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
 
 	<script src="https://grupoeuroandino.com/app/render/js/moment.min.js"></script>
-	<!-- extraído de https://fotorama.io/docs/4/dimensions/ -->
+	
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.min.js"></script>
