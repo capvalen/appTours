@@ -383,8 +383,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<div class="row col d-grid gap-2 col-6 mx-auto">
 						<button type="button" class="btn btn-outline-dark" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
 					</div>
-					<p class="my-1"><strong>Oferta:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
 					<p class="my-1"><strong>Precio Peruanos</strong></p>
+					<p class="my-1"><strong>Precio normal:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
 					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.adultos)}}</span> </p>
 					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.kids)}}</span> </p>
 					<p class="my-1 mt-3"><strong>Precio Peruanos</strong></p>

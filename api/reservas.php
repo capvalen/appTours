@@ -30,9 +30,8 @@
 				<div class="navbar-nav">
 					<a class="nav-link " aria-current="page" href="tours.php">Tours</a>
 					<a class="nav-link " href="paquetes.php">Paquetes turísticos</a>
-					<a class="nav-link" href="internacionales.php">Internacionales</a>
 					<a class="nav-link active" href="reservas.php">Reservas</a>
-					<a class="nav-link" href="lateral.php">Configuraciones</a>
+					<a class="nav-link" href="lateral.php">Lateral</a>
 				</div>
 			</div>
 		</div>
@@ -41,7 +40,7 @@
 	<div class="container-fluix mx-2" id="app">
 		<div class="row">
 			<div class="col-8">
-				<p class="fs-1">Reservas</p>
+				<p class="fs-1">Pedidos</p>
 			</div>
 		</div>
 		<div class="row">

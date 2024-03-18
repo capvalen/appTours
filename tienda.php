@@ -402,7 +402,7 @@
 
 							<div class="card-body">
 
-								<h5 class="card-title text-capitalize mb-0">
+								<h5 class="card-title mb-0">
 
 									<a class="text-decoration-none text-dark" v-if="producto.tipo=='1'" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
 

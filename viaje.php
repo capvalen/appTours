@@ -944,7 +944,6 @@
 					idProducto: -1, horarioSelect:-1,
 
 					//servidor: 'http://localhost/euroAndinoApi/',
-
 					servidor: 'https://grupoeuroandino.com/app/api/',
 					lateral:'', dolar:0, precioDolares:0,
 					variosTours: [],
@@ -1147,22 +1146,19 @@
 							this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
 						}
 
-				$('#dtpFecha').bootstrapDP('setDate', moment().format('DD/MM/YYYY'))
+				//$('#dtpFecha').bootstrapDP('setDate', moment().format('DD/MM/YYYY'))
+				$('#dtpFecha').bootstrapDP({
+					language: 'es',
+					setDate: moment().format('DD/MM/YYYY')
+				})
 
 				switch (this.tourActivo.anticipacion) {
-
 					case "1":
-						this.bloquearFechaDesde(hoy.diff(1, 'days'));
-						break;
-
+						this.bloquearFechaDesde(hoy.diff(1, 'days'));break;
 					case "2":
-						this.bloquearFechaDesde(hoy.add(1, 'days'));
-						break;
-
+						this.bloquearFechaDesde(hoy.add(1, 'days'));break;
 					default:
-						this.bloquearFechaDesde(hoy.add(parseInt(this.tourActivo.anticipacion) - 1, 'days'));
-						break;
-
+						this.bloquearFechaDesde(hoy.add(parseInt(this.tourActivo.anticipacion) - 1, 'days'));break;
 				}
 
 				this.incluidos = this.tourActivo.incluye.split('\n');
@@ -1388,15 +1384,10 @@
 				//$('#dtpFecha').datepicker('destroy');
 
 				$('#dtpFecha').bootstrapDP({
-
 					language: "es",
-
 					keyboardNavigation: false,
-
 					todayHighlight: true,
-
 					datesDisabled: this.diasMuertos
-
 				});
 
 
