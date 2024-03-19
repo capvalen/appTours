@@ -1147,10 +1147,10 @@
 						}
 
 				//$('#dtpFecha').bootstrapDP('setDate', moment().format('DD/MM/YYYY'))
-				$('#dtpFecha').bootstrapDP({
+				/* $('#dtpFecha').bootstrapDP({
 					language: 'es',
 					setDate: moment().format('DD/MM/YYYY')
-				})
+				}) */
 
 				switch (this.tourActivo.anticipacion) {
 					case "1":
@@ -1384,6 +1384,8 @@
 				//$('#dtpFecha').datepicker('destroy');
 
 				$('#dtpFecha').bootstrapDP({
+					language: 'es',
+					setDate: moment().format('DD/MM/YYYY'),
 					language: "es",
 					keyboardNavigation: false,
 					todayHighlight: true,

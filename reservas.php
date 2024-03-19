@@ -20,23 +20,7 @@
 		tr{cursor: pointer;}
 		p{margin-bottom: 0;}
 	</style>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="container">
-			<a class="navbar-brand" href="#">Grupo Euro Andino</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-				<div class="navbar-nav">
-					<a class="nav-link " aria-current="page" href="tours.php">Tours</a>
-					<a class="nav-link " href="paquetes.php">Paquetes turísticos</a>
-					<a class="nav-link" href="internacionales.php">Internacionales</a>
-					<a class="nav-link active" href="reservas.php">Reservas</a>
-					<a class="nav-link" href="lateral.php">Configuraciones</a>
-				</div>
-			</div>
-		</div>
-	</nav>
+	<?php include "nav.php";?>
 
 	<div class="container-fluix mx-2" id="app">
 		<div class="row">

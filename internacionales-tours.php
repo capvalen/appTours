@@ -7,7 +7,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Panel de tours - Grupo Euro-Andino</title>
+	<title>Panel de tours - Grupo Euro Andino</title>
 	<link rel="icon" type="image/png" href="https://grupoeuroandino.com/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -53,28 +53,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		}
 		#divFotografias label{font-size: 0.9rem;}
 	</style>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="container">
-			<a class="navbar-brand" href="#">Grupo Euro Andino</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-				<div class="navbar-nav">
-					<a class="nav-link" aria-current="page" href="tours.php">Tours</a>
-					<a class="nav-link" href="paquetes.php">Paquetes turísticos</a>
-					<a class="nav-link active" href="internacionales.php">Internacionales</a>
-					<a class="nav-link" href="reservas.php">Reservas</a>
-					<a class="nav-link" href="lateral.php">Configuraciones</a>
-				</div>
-			</div>
-		</div>
-	</nav>
+	<?php include "nav.php";?>
 
 	<div class="container" id="app">
 		<div class="row ">
 			<div class="col-8">
-				<p class="fs-1">Internacionales</p>
+				<p class="fs-1"><i class="icofont-flag"></i> Tours Internacionales</p>
 			</div>
 			<div class="col-4 d-flex align-items-center">
 				<button class="btn btn-outline-primary" @click="nuevoTourSimple()"><i class="icofont-list"></i> Crear Tour Internacional</button>
@@ -82,10 +66,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-12 col-md-6">
-				<label for="" class="form-label"><i class="icofont-filter"></i> Filtrar</label>
+		<div class="col-12 col-md-6">
+				<label for="" class="form-label"><i class="icofont-filter"></i> Filtrar por título</label>
 				<div class="input-group mb-3">
-					<input type="text" name="" id="txtFiltro" ref="txtFiltro" class="form-control" placeholder="Buscar" >
+					<input type="text" name="" id="txtFiltro" ref="txtFiltro" class="form-control" placeholder="Buscar por título" @keyup.enter="buscarProducto()">
 					<button class="btn btn-outline-secondary" type="button" @click="buscarProducto()"><i class="icofont-search"></i> Buscar</button>
 				</div>
 			</div>
@@ -113,16 +97,16 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<tr v-if="variosTours.length == 0">
 					<td colspan=5>No hay paquetes</td>
 				</tr>
-				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id" @click="cargarPanel(todosTours[index].id, index)">
-					<td >{{index+1}}</td>
-					<td class="">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
+				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
+					<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
+					<td @click="cargarPanel(todosTours[index].id, index)" class="">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
 					<td>{{nombrePais(index)}}</td>
-					<td >{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
-					<td >{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
+					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
+					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
 					<td>
 						<button data-bs-toggle="offcanvas" data-bs-target="#offFechas" class="btn btn-sm btn-outline-secondary" @click.prevent="idGlobal=todosTours[index].id;tourActivo =JSON.parse(todosTours[index].contenido)"><span v-if="vTour.fechas">{{vTour.fechas.length}}</span> <span v-else>0</span></button>
 					</td>
-					<td >
+					<td @click="cargarPanel(todosTours[index].id, index)" >
 						<span class="text-primary" v-if="esVisible(index)=='1'"><i class="icofont-check"></i></span>
 						<span class="text-danger" v-else><i class="icofont-close"></i></span>
 					</td>
@@ -145,8 +129,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @blur="crearURL()">
 							<label for="floNombre">Nombre del tour</label>
 						</div>
-						<div class="form-floating mb-3" >
-							<input type="text" class="form-control" id="floURL" placeholder=" " autocomplete="off" v-model="tour.url">
+						<div class="form-floating mb-3">
+							<input type="text" class="form-control" id="floURL" placeholder="" autocomplete="off" v-model="tour.url">
 							<label for="floURL">URL del tour</label>
 						</div>
 						<p class="mb-0">Precio normal:</p>
@@ -217,7 +201,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						</div>
 						<p class="mb-0">Reglas de compra</p>
 						<div class="row">
-							<div class="col">
+							<div class="col-6">
 								<div class="form-floating mb-3">
 									<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.anticipacion">
 										<option v-for="dia in anticipacion" :value="dia.clave">{{dia.valor}}</option>
@@ -225,12 +209,17 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<label for="floatingSelect">Anticipación</label>
 								</div>
 							</div>
-							<div class="col">
+							<div class="col-6" v-if="tour.anticipacion == '1'">
+								<div class="form-floating mb-3">
+									<input type="number" class="form-control" id="floCupos" placeholder=" " max="23" min="1" autocomplete="off" value="0" v-model="tour.antes">
+									<label for="floCupos">Horas antes</label>
+								</div>
+							</div>
+							<div class="col-6">
 								<div class="form-floating mb-3">
 									<input type="number" class="form-control" id="floCupos" placeholder=" " max="250" min="1" autocomplete="off" value="1" v-model="tour.minimo">
 									<label for="floCupos">Mínimo viajeros</label>
 								</div>
-
 							</div>
 						</div>
 						<div class="row">
@@ -240,7 +229,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 										<option v-for="pais in paises" :value="pais.id">{{pais.nombre}}</option>
 									</select>
 									<label for="floatingSelect">País</label>
-							</div>
+								</div>
 							</div>
 						</div>
 						<div class="row">
@@ -249,13 +238,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<input type="text" class="form-control" id="floDestino" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.destino">
 									<label for="floDestino">Ciudad <em style="font-size: 0.7rem">Ejm: Lima</em></label>
 								</div>
-
-							</div>
-							<div class="col d-none">
-								<div class="form-floating mb-3">
-								<input type="text" class="form-control" id="floDepartamento" placeholder=" " autocomplete="off" v-model="tour.departamento">
-								<label for="floatingSelect">Departamento</label>
-							</div>
 							</div>
 						</div>
 						
@@ -357,10 +339,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<button type="button" class="btn btn-outline-dark" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
 					</div>
 					<p class="my-1"><strong>Precio Peruanos</strong></p>
-					<p class="my-1"><strong>Oferta:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
+					<p class="my-1"><strong>Precio normal:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
 					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.adultos)}}</span> </p>
 					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.kids)}}</span> </p>
-					<p class="my-1 mt-3"><strong>Precio Peruanos</strong></p>
+					<p class="my-1 mt-3"><strong>Precio Extranejeros</strong></p>
 					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.adultos)}}</span> </p>
 					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.kids)}}</span> </p>
 					<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDura(tourActivo.duracion)}}</span></p>
@@ -369,7 +351,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<p class="my-1 mt-3"><strong>Reglas de compra:</strong> </p>
 					<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
 					<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
-					<p class="my-1 mt-3 d-none"><strong>Destino:</strong> <span>{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
+					<p class="my-1 mt-3"><strong>Destino:</strong> <span>{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
 					<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}} {{variasActividades()}}</span></p>
 					<p class="my-1 mt-3"><strong>Categorías:</strong> <span>{{variasCategorias()}}</span></p>
 					<p class="my-1 mt-3"><strong>Descripción:</strong> <br> </p>
@@ -433,7 +415,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 
 		<div class="offcanvas offcanvas-start" tabindex="-1" id="offFechas" aria-labelledby="offFechasLabel">
 			<div class="offcanvas-header">
-				<h5 class="offcanvas-title" id="offFechasLabel">Offcanvas</h5>
+				<h5 class="offcanvas-title" id="offFechasLabel">Fechas</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 			</div>
 			<div class="offcanvas-body">
@@ -579,7 +561,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					//$('#sltActividad2').selectpicker('val');
 					//asignar valor
 					//$('#sltActividad2').selectpicker('val', ['51', '53']);
-					//$('#sltActividad2').selectpicker('val', ['51', '53']);
 					
 				}).then(()=>{
 					$('#sltActividad2').selectpicker('refresh');
@@ -634,11 +615,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						this.verTours();
 						modalNuevo.hide();
 						tostadaOk.show();
+
 					}
 				})
 				.catch((error)=>{ console.log( error );});
-				
-				
 			},
 			async verTours(){
 				var that = this;
@@ -652,7 +632,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						that.variosTours.push(JSON.parse(dato.contenido));
 					}
 				})
-				
 				//console.log( that.variosTours );
 			},
 			obtenerHTML(){
@@ -680,8 +659,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.tourActivo = this.variosTours[indexEs];
 				this.queIndice=0;
 				offPanel.show();
-				
-				
 			},
 			subirANube(){
 				var that = this; let nombreSubida='';
@@ -733,17 +710,20 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			actualizarTour(queTour){
 				this.extraerHtml();
-				if(queTour==null){ queTour = this.tourActivo }
-				axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria, idPais : this.tour.idPais, url: this.tourActivo.url  })
-				.then((response)=>{ console.log( response.data );
-					if(response.data =='ok'){
-						this.mensajeBien = "Se actualizó correctamente";
-						modalNuevo.hide();
-						tostadaOk.show();
-						this.verTours();
-					}
-				})
-				.catch((error)=>{ console.log( error );});
+				if(this.tourActivo.url=='') alert('No se puede guardar con la url vacía')
+				else {
+					if(queTour==null){ queTour = this.tourActivo }
+					axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria, url: this.tourActivo.url })
+					.then((response)=>{ console.log( response.data );
+						if(response.data =='ok'){
+							this.mensajeBien = "Se actualizó correctamente";
+							modalNuevo.hide();
+							tostadaOk.show();
+							this.verTours();
+						}
+					})
+					.catch((error)=>{ console.log( error );});
+				}
 			},
 			eliminar(){
 				if(confirm('¿Realmente desea eliminar el paquete?')){
@@ -801,7 +781,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let indexJuego = this.todosTours.map( tour => tour.id ).indexOf(this.idGlobal);
 				//console.log( indexJuego );
 				this.todosTours[indexJuego].visible=e.target.checked;
-				this.todosTours[indexJuego].visible=e.target.checked;
 
 			},
 			abrirEdicion(){
@@ -823,11 +802,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			async buscarProducto(){
 				//console.log( this.$refs.txtFiltro.value );
 				var that = this;
-				let respuesta = await axios.post(this.servidor+'buscarTour_Internacional.php', {
+				let respuesta = await axios.post(this.servidor+'buscarTour.php', {
 					texto: this.$refs.txtFiltro.value,
+					ciudad: '',
 					tipo: 1,
+					departamento: -1,
 					idPais: this.idPais
-				})
+				})				
 				this.todosTours=[];
 				this.variosTours=[];
 				
@@ -895,9 +876,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let url = this.tour.nombre.toLowerCase();
 				url = url.replace(/\s+/g, ' ').trim() //Quita todos los espacios repetidos
 				url = url.replace(/-/g, '');
-				url = url.replace(/ /g, '-');
 				url = url.replace(/\+/g, '');
 				url = url.replace(/,/g, '');
+				url = url.replace(/ /g, '-');
 				url = url.replace(/á/g, 'a');
 				url = url.replace(/é/g, 'e');
 				url = url.replace(/í/g, 'i');
@@ -908,7 +889,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				url = url.replace(/\//g, '');
 				url = url.replace(/\\/g, '');
 				url = url.replace(/--/g, '-');
-
+				
 				this.tourActivo.url= url;
 				this.tour.url = this.tourActivo.url;
 				this.tour.queUrl = this.tourActivo.url;

@@ -164,8 +164,8 @@ include '../api/'
 					<div class="card">
 						<div class="card-body text-muted">
 							<h3>Resumen del pedido</h3>
-							<p class="fs-4 text-capitalize">{{nomTour.toLowerCase()}}</p>
-							<p class="mb-0"><strong>Fecha de partida:</strong> <span>{{empieza}}</span></p>
+							<p class="fs-4 text-capitalize"><a :href="'https://grupoeuroandino.com/tours/'+url" class="text-decoration-none">{{nomTour.toLowerCase()}}</a></p>
+							<p class="mb-0"><strong>Fecha de inicio:</strong> <span>{{empieza}}</span></p>
 							<p class="mb-0"><strong>Nacionalidad:</strong> 
 								<span v-if="nacionalidad == 159">Peruana</span>
 								<span v-else>Extranjera</span>
@@ -298,7 +298,7 @@ include '../api/'
 				ciudad: '', direccion: '',
 				politica: '', privacidad: '', mensajeError:'', hora:'',
 				precAdultos:'', precMenores:'', total:'', nomTour:'', adultoNormal:0,menorNormal:0, idOrden:-1, actiFactura:3, //3boleta, 1 factura
-				nRuc:'', nRazon:'', nDireccion:'', dolar:0, comision:0, totalDolar: 0, moneda:'soles', adulDolar:0, ninDolar:0
+				nRuc:'', nRazon:'', nDireccion:'', dolar:0, comision:0, totalDolar: 0, moneda:'soles', adulDolar:0, ninDolar:0, url:''
 			}
 		},
 		async mounted() {
@@ -363,6 +363,7 @@ include '../api/'
 				});
 				let espera = await resp.json();
 				this.nomTour = espera.nombre;
+				this.url = espera.url
 				this.hora = espera.hora;
 				this.precAdultos = espera.adultos;
 				this.precMenores = espera.menores;

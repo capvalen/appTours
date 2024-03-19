@@ -23,27 +23,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		tr{cursor: pointer;}
 		p{margin-bottom: 0;}
 	</style>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="container">
-			<a class="navbar-brand" href="#">Grupo Euro Andino</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-				<div class="navbar-nav">
-					<a class="nav-link " aria-current="page" href="tours.php">Tours</a>
-					<a class="nav-link " href="paquetes.php">Paquetes turísticos</a>
-					<a class="nav-link" href="internacionales.php">Internacionales</a>
-					<a class="nav-link " href="reservas.php">Reservas</a>
-					<a class="nav-link active" href="lateral.php">Configuraciones</a>
-				</div>
-			</div>
-		</div>
-	</nav>
+	<?php include "nav.php";?>
 
 	<div class="container" id="app">
 
-		<h2 class="mt-2">Configuraciones extras</h2>
+		<h2 class="mt-2">Configuraciones</h2>
 
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 			<li class="nav-item" role="presentation">
@@ -60,13 +44,27 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			</li>
 		</ul>
 		<div class="tab-content" id="myTabContent">
-			<div class="tab-pane fade show active" id="lateral" role="tabpanel" aria-labelledby="lateral-tab">
-				<p class="my-2">Edite panel lateral</p>
-				<div class="row">
-					<div class="col-12 col-md-6 col-lg-5 mx-auto">
-						<div class=" ">
-							<button class="btn btn-outline-primary my-3" onclick="actualizarPanel()">Actualizar</button>
-							<div id="editor"> </div>
+			<div class="tab-pane fade show active p-3" id="lateral" role="tabpanel" aria-labelledby="lateral-tab">
+				<div class="row ">
+					<div class="col-6">
+						<div class="card">
+							<div class="card-body">
+								<h5>Valores de comisiones</h5>
+									<label for="">Precio actual del dolar (S/)</label>
+									<input type="number" value="4.5" class="form-control" id="txtDolar">
+									<label for="">Porcentaje de comisión (%)</label>
+									<input type="number" value="4.5" class="form-control" id="txtComision">
+									<button class="btn btn-outline-primary mt-2" onclick="actualizarComisiones()"><i class="icofont-refresh"></i> Actualizar campos</button>
+							</div>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="card">
+							<div class="card-body">
+								<h5>Panel lateral de la web</h5>
+								<button class="btn btn-outline-primary my-3" onclick="actualizarPanel()"><i class="icofont-refresh"></i> Actualizar lateral</button>
+								<div id="editor"> </div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -138,7 +136,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<script src="js/axios.min.js"></script>
 	<script src="js/moment.min.js"></script>
 	<script>
-		var quill;
+		var quill, comision, dolar;
 		var toolBarOptions = [
 			[{ 'header': [false, 2, 3, 4, 5] }],
 				//[{ 'size': ['small', false, 'large'] }],
@@ -171,9 +169,25 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		}
 		async function cargarPanel(){
 			let respServ = await fetch("https://grupoeuroandino.com/app/api/cargarPanel.php");
-			let html = await respServ.text();
+			let serv = await respServ.json();
+			document.getElementById('txtDolar').value = serv.dolar
+			document.getElementById('txtComision').value = serv.comision
 			quill.setContents([]);
-			quill.clipboard.dangerouslyPasteHTML(0, html);
+			quill.clipboard.dangerouslyPasteHTML(0, serv.lateral);
+		}
+		async function actualizarComisiones(){
+			console.log('camp')
+			let datos = new FormData();
+			datos.append('dolar', document.getElementById('txtDolar').value )
+			datos.append('comision', document.getElementById('txtComision').value )
+			let serv = await fetch('https://grupoeuroandino.com/app/api/actualizarComisiones.php',{
+				method:'POST', body: datos
+			})
+			if( await serv.text() == 'ok'){
+				alert('Guardado exitoso')
+			}else{
+				alert('Hubo un error')
+			}
 		}
 
 		
@@ -300,9 +314,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				fetch(this.servidor+'enviarSitemap.php')
 				.then(serv => serv.text())
 				.then(resp => alert(resp) )
-			}
-
-
+			},
 		}
 	}).mount('#app')
 	

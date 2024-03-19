@@ -57,10 +57,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<div class="container" id="app">
 		<div class="row ">
 			<div class="col-8">
-				<p class="fs-1">Paquetes turísticos</p>
+				<p class="fs-1"><i class="icofont-flag"></i> Paquetes turísticos Internacionales</p>
 			</div>
 			<div class="col-4 d-flex align-items-center">
-				<button class="btn btn-outline-success ms-2" @click="nuevoTourSimple()"><i class="icofont-list"></i> Crear Paquete turístico</button>
+				<button class="btn btn-outline-success ms-2" @click="nuevoTourSimple()"><i class="icofont-list"></i> Crear Paquete turístico Internacional</button>
 				<!-- <button class="btn btn-outline-success ms-2" @click="verTours()"><i class="icofont-list"></i> pedir datos</button> -->
 			</div>
 		</div>
@@ -72,17 +72,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<button class="btn btn-outline-secondary" type="button" @click="buscarProducto()"><i class="icofont-search"></i> Buscar</button>
 				</div>
 			</div>
-			<div class="col-12 col-md-4">
-				<label for="" class="form-label"><i class="icofont-filter"></i> Ciudad</label>
-				<div class="mb-3">
-					<input type="text" name="" id="txtFiltroCiudad" ref="txtFiltroCiudad" class="form-control" placeholder="Buscar por ciudad" @keyup.enter="buscarProducto()">
-				</div>
-			</div>
-			<div class="col-12 col-md-4">
-				<label for="" class="form-label"><i class="icofont-filter"></i> Departamentos</label>
-				<select class="form-select" v-model="idDepartamento" @change="buscarProducto()">
+			<div class="col-12 col-md-6">
+				<label for="" class="form-label"><i class="icofont-filter"></i> Países</label>
+				<select class="form-select" v-model="idPais" @change="buscarProducto()">
 					<option value="-1">Todos</option>
-					<option v-for="(departamento, index) in departamentos" :value="index">{{departamento}}</option>
+					<option v-for="(pais, index) in paises" :value="pais.id">{{pais.nombre}}</option>
 				</select>
 			</div>
 		</div>
@@ -91,7 +85,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<tr>
 					<th>N°</th>
 					<th>Título</th>
-					<th>Precio Perú</th>
+					<th>País</th>
+					<th>Precio Peruanos</th>
 					<th>Precio Ext.</th>
 					<th>Fechas</th>
 					<th><i class="icofont-eye-alt"></i></th>
@@ -104,6 +99,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
 					<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
 					<td @click="cargarPanel(todosTours[index].id, index)" class="">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
+					<td>{{nombrePais(index)}}</td>
 					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
 					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
 					<td>
@@ -225,6 +221,16 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col">
+								<div class="form-floating mb-3">
+									<select name="" id="sltPais" class="form-select" v-model="tour.idPais">
+										<option v-for="pais in paises" :value="pais.id">{{pais.nombre}}</option>
+									</select>
+									<label for="floatingSelect">País</label>
+								</div>
+							</div>
+						</div>
 						<div class="form-floating mb-3">
 							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.transporte">
 								<option value="3">Ninguno</option>
@@ -258,15 +264,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<input type="text" class="form-control" id="floDestino" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.destino">
 									<label for="floDestino">Ciudad <em style="font-size: 0.7rem">Ejm: Lima</em></label>
 								</div>
-
-							</div>
-							<div class="col">
-								<div class="form-floating mb-3">
-								<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.departamento">
-									<option v-for="(depa, index) in departamentos" :value="index">{{depa}}</option>
-								</select>
-								<label for="floatingSelect">Departamento</label>
-							</div>
 							</div>
 						</div>
 						<!-- <div class="form-floating mb-3">
@@ -443,7 +440,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 
 		<div class="offcanvas offcanvas-start" tabindex="-1" id="offFechas" aria-labelledby="offFechasLabel">
 			<div class="offcanvas-header">
-				<h5 class="offcanvas-title" id="offFechasLabel">Offcanvas</h5>
+				<h5 class="offcanvas-title" id="offFechasLabel">Fechas</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 			</div>
 			<div class="offcanvas-body">
@@ -492,17 +489,17 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				nombre: '', url:'',
 				peruanos:{ adultos: 0, kids: 0 },
 				extranjeros:{ adultos:0, kids:0 },
-				cupos: 1, duracion: {dias:1, noches:1}, hora: "12:00",
+				cupos: 1, duracion: {dias:1, noches:1}, hora: "12:00", idPais:140,
 				anticipacion: 1, minimo: 1, transporte:3, alojamiento: 1,
 				destino: '', departamento: '', actividad:'', categoria:'',
 				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0, actividades:[], categorias: []
 			},
 			mensajeBien:'Guardado correctamente', mensajeMal:'Hubo un error al conectar',
-			variosTours:[], todosTours:[], idGlobal:-1, indexGlobal:-1, tourActivo:[],
+			variosTours:[], todosTours:[], idGlobal:-1, indexGlobal:-1, tourActivo:[], idPais:140,
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
 			anticipacion: [{clave: 1, valor: 'Horas'}, {clave: 2, valor: '1 día'} ], antes:0,
-			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idDepartamento:-1
+			departamentos:[], paises:[],
+			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idPais:-1
 		},
 		mounted:function(){
 			this.verTours();
@@ -581,6 +578,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					$('#sltActividad2').selectpicker('refresh');
 					$('#sltCategoria2').selectpicker('refresh');
 				})
+				let servPaises = await fetch(this.servidor+'pedirPaises.php',{ method: 'POST'})
+				let resPaises = await servPaises
+				this.paises = await resPaises.json();
 			},
 			nuevoTourSimple(){
 				this.tour={
@@ -590,7 +590,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					cupos: 1, duracion: {dias:1, noches:1}, hora: "12:00",
 					anticipacion: 1, minimo: 1, transporte:3, alojamiento: 1,
 					destino: '', departamento: '', actividad:'', categoria:'',
-					descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0, actividades:[], categorias: []
+					descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0, actividades:[], categorias: [], idPais:140
 				}
 				this.activarEditar=false;
 				$('#sltActividad2').selectpicker('val', '');
@@ -621,7 +621,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.extraerHtml();
 				console.log( this.tour );
 
-				axios.post(this.servidor+'guardarPaquete.php', { tour: this.tour, actividad: this.tour.actividad, categoria: this.tour.categoria })
+				axios.post(this.servidor+'guardarPaquete.php', { tour: this.tour, actividad: this.tour.actividad, categoria: this.tour.categoria, idPais: this.tour.idPais  })
 				.then((response)=>{ //console.log( response.data );
 					if(response.data =='ok'){
 						this.verTours();
@@ -631,18 +631,18 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					}
 				})
 				.catch((error)=>{ console.log( error );});
-				
-				
 			},
 			async verTours(){
 				var that = this;
 				this.todosTours=[];
 				this.variosTours=[];
 			
-				let respuesta = await axios.get(this.servidor+'verPaquetes.php');
+				let respuesta = await axios.get(this.servidor+'verPaquetesInternacionales.php');
 				respuesta.data.forEach(dato=>{
-					that.todosTours.push(dato)
-					that.variosTours.push(JSON.parse(dato.contenido));
+					if(dato.pais!=140){
+						that.todosTours.push(dato)
+						that.variosTours.push(JSON.parse(dato.contenido));
+					}
 				})
 				//console.log( that.variosTours );
 			},
@@ -670,8 +670,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.tourActivo = this.variosTours[indexEs];
 				this.queIndice=0;
 				offPanel.show();
-				
-				
 			},
 			subirANube(){
 				var that = this; let nombreSubida='';
@@ -807,9 +805,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				var that = this;
 				let respuesta = await axios.post(this.servidor+'buscarTour.php', {
 					texto: this.$refs.txtFiltro.value,
-					ciudad: this.$refs.txtFiltroCiudad.value,
+					ciudad: '',
 					tipo: 2,
-					departamento: this.idDepartamento
+					departamento: -1,
+					idPais: this.idPais
 				})
 				this.todosTours=[];
 				this.variosTours=[];
@@ -867,6 +866,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							this.buscarProducto()
 					})
 				}
+			},
+			nombrePais(index){
+				return this.todosTours[index].nomPais
 			},
 			abrirLink(index){
 				window.open(`https://grupoeuroandino.com/tours/${this.variosTours[index].url}`, '_blank');

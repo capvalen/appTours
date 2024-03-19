@@ -7,13 +7,16 @@ $_POST = json_decode(file_get_contents('php://input'),true);
 $filas = [];
 //var_dump($_POST);die();
 if($_POST['ciudad']!=''){ $filtroNuevo=" upper( JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.destino'))) = upper('{$_POST['ciudad']}') ";}
-else if($_POST['departamento']==-1){ $filtroNuevo="contenido like '%nombre%{$_POST['texto']}%'";}
+else if($_POST['departamento']==-1){ $filtroNuevo=" contenido like '%nombre%{$_POST['texto']}%' ";}
 else{
-	$filtroNuevo = " JSON_EXTRACT(contenido, '$.departamento') = {$_POST['departamento']}"; //and
+	$filtroNuevo = " JSON_EXTRACT(contenido, '$.departamento') = '{$_POST['departamento']} '"; //and
 }
-if($_POST['tipo']!=-1){ $filtroNuevo.= "and tipo = {$_POST['tipo']}"; }
+if($_POST['tipo']!=-1){ $filtroNuevo.= " and tipo = {$_POST['tipo']} "; }
+$idPais = $_POST['idPais'] ?? '140';
+$filtroNuevo.= " and pais = {$idPais}";
 
-//echo "SELECT * FROM `tours` where {$filtroNuevo} and activo = 1 ; "; //and pais = 140
+//echo $filtroNuevo;
+
 $sql= $db->query("SELECT * FROM `tours` where {$filtroNuevo} and activo = 1; ");
 if( $sql->execute()){
 	while( $row = $sql->fetch(PDO::FETCH_ASSOC) ){

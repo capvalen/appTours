@@ -38,6 +38,7 @@ if( $sql->execute([$_POST['id']])){
 	$fotos = $contenido['fotos'];
 	$hora = $_POST['horario'] ==-1 ? $contenido['hora'] : $contenido['hora2'];
 	$total = $adultos + $menores;
+	$url = $contenido['url'];
 
 	/* while(  ){
 		
@@ -47,4 +48,4 @@ if( $sql->execute([$_POST['id']])){
 	echo $sql->errorinfo();
 }
 
-echo json_encode( array('nombre'=>$nombre, 'adultos'=> $adultos, 'menores' => $menores, 'total'=>$total, 'hora'=> $hora, 'adultoNormal'=> $adultNormal, 'menorNormal'=>$kidNormal, 'idProducto'=>$_POST['id'], 'fotos'=>$fotos, 'cantAdultos' => $_POST['adultos'], 'cantKids' => $_POST['kids'] ));
+echo json_encode( array('nombre'=>$nombre, 'adultos'=> $adultos, 'menores' => $menores, 'total'=>$total, 'hora'=> $hora, 'adultoNormal'=> $adultNormal, 'menorNormal'=>$kidNormal, 'idProducto'=>$_POST['id'], 'fotos'=>$fotos, 'cantAdultos' => $_POST['adultos'], 'cantKids' => $_POST['kids'], 'url'=>$url ));
