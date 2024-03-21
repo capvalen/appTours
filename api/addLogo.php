@@ -1,15 +1,17 @@
 <?php
-$rutaImgs = "/home/perutra1/grupoeuroandino.com/app/render/images/subidas/";
+$rutaImgs = "/home/perutra1/grupoeuroandino.com/app/render/images/sinmarca/";
 $rutaLogos = "/home/perutra1/grupoeuroandino.com/app/render/images/";
-$rutaMarca = "/home/perutra1/grupoeuroandino.com/app/render/images/marcas/";
-$nombreArchivo = '62c17be5bb8e4.jpg';
+$rutaMarca = "/home/perutra1/grupoeuroandino.com/app/render/images/subidas/";
+$nombreArchivo = $_POST['nombreArchivo'];
 
 $fondo = $rutaImgs.$nombreArchivo;
 $logo = $rutaLogos.'gea.png';
 $whatsapp = $rutaLogos.'whatsapp.png';
 
 $rutaGuardado = $rutaMarca.$nombreArchivo;
-$tipoImagen = obtenerTipoImagen($fondo);
+$info = getimagesize($fondo);
+//$tipoImagen = obtenerTipoImagen($fondo);
+$tipoImagen = $info[2];
 
 
 // Crear imágenes desde los archivos
@@ -38,8 +40,8 @@ $posicionY = $anchoFondo*0.063; // ajusta la posición Y como desees
 $pX = $anchoFondo - $anchoWhats -$posicionX;
 $pY = $posicionY;
 
-echo 'total '.$anchoFondo."<br>";
-echo 'posx '.$posicionX."<br>";
+//echo 'total '.$anchoFondo."<br>";
+//echo 'posx '.$posicionX."<br>";
 // Fusionar las imágenes
 imagecopy($imagenDeFondo, $logo, $posicionX, $posicionY, 0, 0, $anchoSuperpuesta, $altoSuperpuesta);
 imagecopy($imagenDeFondo, $whatsapp, $pX, $pY, 0, 0, $anchoWhats, $altoWhats);
@@ -48,16 +50,16 @@ imagecopy($imagenDeFondo, $whatsapp, $pX, $pY, 0, 0, $anchoWhats, $altoWhats);
 if ($tipoImagen === IMAGETYPE_JPEG) imagejpeg($imagenDeFondo, $rutaMarca. $nombreArchivo);
 if ($tipoImagen === IMAGETYPE_PNG) imagepng($imagenDeFondo, $rutaMarca. $nombreArchivo);
 
-echo 'Imágen creada en '.$rutaMarca. $nombreArchivo;
 
 // Liberar memoria
 imagedestroy($imagenDeFondo);
 imagedestroy($logo);
+echo 'Imágen creada en '.$rutaMarca. $nombreArchivo;
 
 function obtenerTipoImagen($imagen) {
   $info = getimagesize($imagen);
   if ($info === false) {
-    return false;
+    return '';
   }
   return $info[2];
 }

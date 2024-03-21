@@ -479,7 +479,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	qSiIncluye, qNoIncluye,
 	tostadaOk, tostadaMal;
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
-	var rutaDocs = '/home/perutra1/grupoeuroandino.com/app/render/images/subidas/'
+	var rutaDocs = '/home/perutra1/grupoeuroandino.com/app/render/images/sinmarca/'
 	var app = new Vue({
 		el: '#app',
 		data: {

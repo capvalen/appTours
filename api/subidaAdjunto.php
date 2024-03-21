@@ -1,16 +1,17 @@
 <?php 
 $directorio = $_POST['ruta'];
+$final ="/home/perutra1/grupoeuroandino.com/app/render/images/subidas/";
 
 $tipoArchivo = strtolower(pathinfo( $directorio . basename($_FILES["archivo"]["name"]) ,PATHINFO_EXTENSION));
 $queArchivo = uniqid() . "." . $tipoArchivo;
 $archivoFinal = $directorio . $queArchivo; //basename($_FILES["archivo"]["name"]);
-$previewFinal = $directorio ."small-". $queArchivo; //basename($_FILES["archivo"]["name"]);
+$previewFinal = $final ."small-". $queArchivo; //basename($_FILES["archivo"]["name"]);
 
 if (move_uploaded_file($_FILES["archivo"]["tmp_name"], $archivoFinal)) {
 	//echo "The file ". htmlspecialchars( basename( $_FILES["archivo"]["name"])). " has been uploaded.";
 
 
-	$archivoTemporal = "/home/perutra1/grupoeuroandino.com/app/render/images/subidas/". $queArchivo;
+	$archivoTemporal = "/home/perutra1/grupoeuroandino.com/app/render/images/sinmarca/". $queArchivo;
 
 	// Cargar la imagen usando GD
 	$imagen = imagecreatefromstring(file_get_contents($archivoTemporal));
@@ -41,6 +42,10 @@ if (move_uploaded_file($_FILES["archivo"]["tmp_name"], $archivoFinal)) {
 	imagedestroy($nuevaImagen);
 
 	//echo $archivoTemporal;
+	$_POST['nombreArchivo'] = $queArchivo;
+	ob_start();
+	require "addLogo.php";
+	ob_end_clean();
 	echo $queArchivo;
 } else {
 	echo "Error subida".$_FILES["file"]["error"];
