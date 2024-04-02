@@ -228,7 +228,7 @@ p {
 }
 
 #menuVolver {
-	background-color: #FCAB1C;
+	background-color: #0866ff;
 	/* background-image: url('https://grupoeuroandino.com/wp-content/uploads/2021/09/png-transparent-wood-texture-mapping-material-wood-texture-orange-wood-material.png'); */
 
 	background-position: center left;
@@ -276,7 +276,7 @@ p {
 }
 
 #ulMenu>li:hover {
-	background: #BF9F00;
+	background: #0053DB;
 	cursor: pointer;
 }
 
