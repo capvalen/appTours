@@ -22,11 +22,11 @@
 
 	include('/home/perutra1/grupoeuroandino.com/app/api/conectkarl.php');
 
-	$sqlBase = "SELECT id, JSON_UNQUOTE(contenido-> '$.nombre') as titulo,
+	$sqlBase = "SELECT id, JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.nombre')) as titulo,
 
-	JSON_UNQUOTE(contenido-> '$.descripcion') as descripcion,
+	JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.descripcion')) as descripcion,
 
-	IFNULL(JSON_UNQUOTE(contenido-> '$.fotos[0].nombreRuta'), 'defecto.jpg')as foto
+	IFNULL(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.fotos[0].nombreRuta')), 'defecto.jpg')as foto
 
 	FROM `tours` where url = '{$_GET['variable']}' limit 1;";
 
