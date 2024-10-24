@@ -7,7 +7,7 @@ include ("conectkarl.php");
 $filas = [];
 
 $sql= $db->query("SELECT * FROM `tours` where visible=1 and activo=1 
-and lower( JSON_EXTRACT(contenido, '$.destino' COLLATE utf8_general_ci)) LIKE '%{$_POST['texto']}%' COLLATE utf8_general_ci
+and upper( JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.destino'))) LIKE upper('%{$_POST['texto']}%') 
 order by registro desc;");
 if( $sql->execute()){
 	while( $row = $sql->fetch(PDO::FETCH_ASSOC) ){
