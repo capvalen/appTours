@@ -92,6 +92,7 @@
 		#spanGuia{ background-color: #ffc107; }
 		#spanTickets{ background-color: #e91616; }
 		#spanTransporte{ background-color: #bf0ca9; }
+		.bandera { width: 20px; }
 </style>
 
 	<div class="container-fluid" id="app">
@@ -415,15 +416,17 @@
 								
 
 <div class="d-flex justify-content-between">
-    <span><img class="bandera" :src="'https://grupoeuroandino.com/images/banderas/'+bandera"></span>
-    <div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
+    
 </div>
 
 
 						<div class="row row-cols-2">
 							<div>
-							    <p class="card-text mb-0" style="color:#000"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span></p>
-
+							    <p class="card-text mb-0" style="color:#000">
+										<span><img class="bandera" :src="'https://grupoeuroandino.com/images/banderas/'+bandera"></span>
+										<i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span>
+									</p>
+									<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
 								<span class="text-muted subText">{{queDuracion(producto.duracion, producto.tipo)}}</span>
 
 							</div>

@@ -60,7 +60,7 @@
     	object-fit: cover;
 		}
 		.dow{color:rgb(145 145 145)!important;}
-		#divRecomendaciones .titulo{background-color: rgb(214, 214, 214); }
+		
 		#divIzquierda ul, ol{padding-left: 0!important;}
 		p{margin-bottom: 0;}
 		.ql-align-center{text-align: center!important;}

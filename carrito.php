@@ -167,7 +167,7 @@ include '../api/'
 							<p class="fs-4 text-capitalize"><a :href="'https://grupoeuroandino.com/tours/'+url" class="text-decoration-none">{{nomTour.toLowerCase()}}</a></p>
 							<p class="mb-0"><strong>Fecha de inicio:</strong> <span>{{empieza}}</span></p>
 							<p class="mb-0"><strong>Nacionalidad:</strong> 
-								<span v-if="nacionalidad == 159">Peruana</span>
+								<span v-if="nacionalidad == 140">Peruana</span>
 								<span v-else>Extranjera</span>
 							</p>
 							<p class="mb-0"><strong>Hora:</strong> <span>A las {{hora}}.</span></p>

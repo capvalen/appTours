@@ -20,7 +20,7 @@
 		.precio2{font-size: 1.7rem;font-weight:bold; /* color: rgb(192, 0, 67); */}
 		.precioAnt2{font-size: 0.8rem;text-decoration:line-through; /* color: rgb(192, 0, 67); */}
 		.divOferta2{width: 70px; height: 25px; /* rgb(192, 0, 67);  */ margin-top: 1rem; margin-right: 0rem; color:white; font-size: 0.8rem;  }
-		/* .titulo>a, .estrellas{color: rgb(58, 91, 255);} */
+		/* .estrellas{color: rgb(58, 91, 255);} */
 		.estrellas{color: #ffd400;}
 		.divImagen img{
 			width:100%!important;
@@ -34,8 +34,7 @@
 		#spanTour{ background-color: #0cbf19; }
 		#spanGuia{ background-color: #ffc107; }
 		#spanTickets{ background-color: #e91616; }
-		#spanTransporte{ background-color: #bf0ca9; }
-		.titulo{background-color: rgb(214, 214, 214);}
+		#spanTransporte{ background-color: #bf0ca9; }	
 		.bandera {width: 20px;}
 	</style>
 	<div id="app">
@@ -63,19 +62,20 @@
 							
 							<div>
 								<p class="mb-0 titulo ps-1 ">
-									<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
-									<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
+									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
+									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
 									
 								</p>
-								<div class="d-flex justify-content-between">
-										<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"></span>
+								<!-- <div class="d-flex justify-content-between">
+									aquí iba la bandera
+								</div> -->								
+								<div class="row row-cols-2">
+									<div>
+									<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"></span>
+										<i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{tour.destino}}, {{queDepa(tour.departamento)}}</strong></span>
 										<div class="estrellas">
 											<i v-for="star in cuantasEstrellas(index)" class="icofont-star"></i>
 										</div>
-								</div>
-								
-								<div class="row row-cols-2">
-									<div><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{tour.destino}}, {{queDepa(tour.departamento)}}</strong></span> <br>
 										<span v-if="tour.tipo==1" class="text-muted subText">{{queDura(tour.duracion)}}</span>
 										<span v-else class="text-muted subText">{{queDuraDia(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches-1)}}</span>
 									</div>

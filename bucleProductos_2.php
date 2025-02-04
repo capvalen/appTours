@@ -20,7 +20,7 @@
 		.precio2{font-size: 1.7rem;font-weight:bold; /* color: rgb(192, 0, 67); */}
 		.precioAnt2{font-size: 0.8rem;text-decoration:line-through; /* color: rgb(192, 0, 67); */}
 		.divOferta2{width: 70px; height: 25px; /* rgb(192, 0, 67);  */ margin-top: 1rem; margin-right: 0rem; color:white; font-size: 0.8rem;  }
-		/* .titulo>a, .estrellas{color: rgb(58, 91, 255);} */
+		/*.estrellas{color: rgb(58, 91, 255);} */
 		.estrellas{color: #ffd400;}
 		.divImagen img{
 			width:100%!important;
@@ -35,7 +35,6 @@
 		#spanGuia{ background-color: #ffc107; }
 		#spanTickets{ background-color: #e91616; }
 		#spanTransporte{ background-color: #bf0ca9; }
-		.titulo{background-color: rgb(214, 214, 214);}
 	</style>
 	<div id="app">
 		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">

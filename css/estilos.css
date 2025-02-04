@@ -63,10 +63,6 @@
 	color: rgb(145 145 145) !important;
 }
 
-#divRecomendaciones .titulo {
-	background-color: rgb(214, 214, 214);
-}
-
 #divIzquierda ul,
 ol {
 	padding-left: 0 !important;
@@ -490,7 +486,6 @@ font-size: 0.8rem;
 .precio2{font-size: 1.7rem;font-weight:bold; /* color: rgb(192, 0, 67); */}
 .precioAnt2{font-size: 0.8rem;text-decoration:line-through; /* color: rgb(192, 0, 67); */}
 .divOferta2{width: 70px; height: 25px; /* rgb(192, 0, 67);  */ margin-top: 1rem; margin-right: 0rem; color:white; font-size: 0.8rem;  }
-/* .titulo>a, .estrellas{color: rgb(58, 91, 255);} */
 .estrellas{color: #ffd400;}
 .divImagen img{
 	width:100%!important;

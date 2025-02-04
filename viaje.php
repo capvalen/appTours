@@ -64,7 +64,7 @@
 		#divIncluye ul{ list-style-type: "✅ "; }
 		#divNoIncluye ul{ list-style-type: "❌ "; }
 		.divOferta2{width: 70px; height: 25px; /* rgb(192, 0, 67);  */ margin-top: 1rem; margin-right: 0rem; color:white; font-size: 0.8rem;  }
-		/* .titulo>a, .estrellas{color: rgb(58, 91, 255);} */
+		/* .estrellas{color: rgb(58, 91, 255);} */
 		.estrellas{color: #ffd400;}
 		.divImagen img{
 			width:100%!important;
