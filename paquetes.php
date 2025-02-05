@@ -235,20 +235,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						</div>
 						<div class="form-floating mb-3">
 							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.alojamiento">
-								<option value="1">Albergue</option>
-								<option value="2">Apartment</option>
-								<option value="3">Bungalow</option>
-								<option value="4">Hostal *</option>
-								<option value="5">Hostal **</option>
-								<option value="6">Hostal ***</option>
-								<option value="7">Hotel *</option>
-								<option value="8">Hotel **</option>
-								<option value="9">Hotel ***</option>
-								<option value="10">Hotel ****</option>
-								<option value="11">Hotel *****</option>
-								<option value="12">Lodge</option>
-								<option value="13">Resort</option>
-								<option value="14">Otro</option>
+								<option v-for="alojamiento in alojamientos" :value="alojamiento.id">{{alojamiento.alojamiento}}</option>
 							</select>
 							<label for="floatingSelect">Tipo de alojamiento</label>
 						</div>
@@ -502,7 +489,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
 			anticipacion: [{clave: 1, valor: 'Horas'}, {clave: 2, valor: '1 día'} ], antes:0,
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idDepartamento:-1
+			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idDepartamento:-1, alojamientos:[]
 		},
 		mounted:function(){
 			this.verTours();
@@ -563,6 +550,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let servComplementos  = await fetch(this.servidor+'pedirComplementos.php',{
 					method:'POST'
 				})
+				axios.post(this.servidor + 'Alojamientos.php',{
+					pedir: 'listar'
+				})
+				.then(serv=> this.alojamientos = serv.data )
 				/* .done()
 				.done(letra =>{
 					console.log( letra );

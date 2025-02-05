@@ -40,8 +40,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#categorias" type="button" role="tab" aria-controls="categorias" aria-selected="false">Categorías</button>
 			</li>
 			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="sitemap-tab" data-bs-toggle="tab" data-bs-target="#sitemap" type="button" role="tab" aria-controls="sitemap" aria-selected="false">Sitemap Google</button>
+				<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#hospedajes" type="button" role="tab" aria-controls="hospedajes" aria-selected="false">Hospedajes</button>
 			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link" id="sitemap-tab" data-bs-toggle="tab" data-bs-target="#sitemap" type="button" role="tab" aria-controls="sitemap" aria-selected="false">Sitemap Google</button>
+			</li>			
 		</ul>
 		<div class="tab-content" id="myTabContent">
 			<div class="tab-pane fade show active p-3" id="lateral" role="tabpanel" aria-labelledby="lateral-tab">
@@ -55,6 +58,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<label for="">Porcentaje de comisión (%)</label>
 									<input type="number" value="4.5" class="form-control" id="txtComision">
 									<button class="btn btn-outline-primary mt-2" onclick="actualizarComisiones()"><i class="icofont-refresh"></i> Actualizar campos</button>
+							</div>
+						</div>
+
+						<div class="card my-3">
+							<div class="card-body">
+								<h5>Sección inferior de cada tour/paquete</h5>
+								<button class="btn btn-outline-primary my-3" onclick="actualizarBajo()"><i class="icofont-refresh"></i> Actualizar sección inferior</button>
+								<div id="editorBajo"></div>
 							</div>
 						</div>
 					</div>
@@ -116,6 +127,27 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</div>
 			</div>
 
+			<div class="tab-pane" id="hospedajes" role="tabpanel" aria-labelledby="hospedajes-tab">
+				<button class="btn btn-outline-primary mt-2" @click="crearHospedaje"><i class="icofont-diamond"></i> Nuevo hospedaje</button>
+				<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>N°</th>
+								<th>Hospedaje</th>
+								<th>@</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(hospedaje, indice) in hospedajes" :key="hospedaje.id">
+								<td>{{indice+1}}</td>
+								<td>{{hospedaje.alojamiento}}</td>
+								<td>
+								<button type="button" class="btn btn-sm btn-outline-danger mx-1" @click="eliminarHospedaje(indice)"><i class="icofont-ui-delete"></i></button></td>
+							</tr>
+						</tbody>
+					</table>
+			</div>
+
 			<div class="tab-pane fade" id="sitemap" role="tabpanel" aria-labelledby="sitemap-tab">
 				<p>Para actualizar el sitemap de productos personalizados, haga click en el botón de abajo:</p>
 				<button class="btn btn-outline-primary" @click="enviarSitemap()">Enviar Sitemap XML</button>
@@ -136,7 +168,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<script src="js/axios.min.js"></script>
 	<script src="js/moment.min.js"></script>
 	<script>
-		var quill, comision, dolar;
+		var quill, quillBajo, comision, dolar;
 		var toolBarOptions = [
 			[{ 'header': [false, 2, 3, 4, 5] }],
 				//[{ 'size': ['small', false, 'large'] }],
@@ -165,7 +197,18 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			}else{
 				alert('Hubo un error')
 			}
-
+		}
+		async function actualizarBajo(){
+			let datos = new FormData();
+			datos.append('contenido',  quillBajo.root.innerHTML.trim() )
+			let respServ = await fetch("https://grupoeuroandino.com/app/api/actualizarInferior.php",{
+				method:'POST', body: datos
+			});
+			if( await respServ.text() =='ok' ){
+				alert('Guardado exitoso')
+			}else{
+				alert('Hubo un error')
+			}
 		}
 		async function cargarPanel(){
 			let respServ = await fetch("https://grupoeuroandino.com/app/api/cargarPanel.php");
@@ -174,6 +217,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			document.getElementById('txtComision').value = serv.comision
 			quill.setContents([]);
 			quill.clipboard.dangerouslyPasteHTML(0, serv.lateral);
+			quillBajo.clipboard.dangerouslyPasteHTML(0, serv.inferior);
 		}
 		async function actualizarComisiones(){
 			console.log('camp')
@@ -197,11 +241,22 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		data() {
 			return {
 				servidor: 'https://grupoeuroandino.com/app/api/', actividades:[], categorias:[],
-				nTexto:''
+				nTexto:'', hospedajes:[]
 			}
 		},
 		mounted(){
 			quill = new Quill('#editor', {
+				modules: { 
+					toolbar: {
+						container : toolBarOptions,
+						handlers:{
+							image: imageHandler
+						}
+					}
+				},
+				theme: 'snow'
+			});
+			quillBajo = new Quill('#editorBajo', {
 				modules: { 
 					toolbar: {
 						container : toolBarOptions,
@@ -221,6 +276,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let temporal = await respServ.json();
 				this.actividades = temporal[0];
 				this.categorias = temporal[1];
+				axios.post(this.servidor + 'Alojamientos.php',{
+					pedir: 'listar'
+				})
+				.then(serv=> this.hospedajes = serv.data )
 			},
 			async editarActividad(queId){
 				if(this.nTexto = prompt('¿Cuál es el nuevo nombre?', this.actividades[queId].concepto )){
@@ -247,6 +306,18 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					if( await respServ.text() == 'ok'){
 						this.actividades.splice(queId, 1)
 					}
+				}
+			},
+			async eliminarHospedaje(queId){
+				if(confirm('¿Desea borrar el hospedaje ' + this.hospedajes[queId].alojamiento +'?' )){
+					axios.post(this.servidor +'Alojamientos.php', {
+						pedir: 'borrar',
+						id: this.hospedajes[queId].id
+					})
+					.then(respServ=>{
+						if(respServ.data=='ok')
+							this.hospedajes.splice(queId, 1)
+					})
 				}
 			},
 			async editarCategoria(queId){

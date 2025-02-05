@@ -533,9 +533,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			} });
 			qSiIncluye = new Quill('#qSiIncluye', { theme: 'snow', modules: { toolbar: toolbarOptions} });
 			qNoIncluye = new Quill('#qNoIncluye', { theme: 'snow', modules: { toolbar: toolbarOptions} });
-			
-			
-			
 		},
 		methods:{
 			async vetarFecha(){

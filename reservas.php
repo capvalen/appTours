@@ -49,6 +49,8 @@
 					<th>Total</th>
 					<th>Moneda</th>
 					<th>Estado</th>
+					<th>@</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -67,8 +69,8 @@
 						<span v-else>Izi-Pay</span>
 					</td>
 					<td>{{pedido.estado}}</td>
-					<td><button class="btn btn-outline-primary" @click="abrirModal(index)" >Ver</button></td>
-					<td><button class="btn btn-outline-danger border-0" @click="eliminarPedido(index)" ><i class="icofont-ui-delete"></i></button></td>
+					<td><button class="btn btn-outline-primary btn-sm" @click="abrirModal(index)" ><i class="icofont-eye-alt"></i> Detalles</button></td>
+					<td><button class="btn btn-outline-danger border-0 btn-sm" @click="eliminarPedido(index)" ><i class="icofont-ui-delete"></i></button></td>
 				</tr>
 			</tbody>
 		</table>
@@ -82,6 +84,14 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="indexPedido=null"></button>
 				</div>
 				<div class="modal-body" v-if="indexPedido!=null">
+					<p class="mb-0"><strong>Nombre paquete</strong> {{pedidos[indexPedido].titulo}}</p>
+					<p class="mb-0"><strong>Fecha de pago</strong> {{fechaLatam(pedidos[indexPedido].fechaPago)}}</p>
+					<p class="mb-0"><strong>Fecha de inicio</strong> {{fechaSimple(pedidos[indexPedido].separado)}}</p>
+					<p class="mb-0"><strong>Monto de pago</strong> S/ {{pedidos[indexPedido].total}}</p>
+					<p class="mb-0"><strong>N° Adultos</strong> {{pedidos[indexPedido].adultos}}</p>
+					<p class="mb-0"><strong>N° Niños</strong> {{pedidos[indexPedido].menores}}</p>
+					<hr>
+
 					<p class="mb-0"><strong>Cliente</strong> {{pedidos[indexPedido].nombre}}, {{pedidos[indexPedido].apellido}} </p>
 					<p class="mb-0"><strong>D.N.I.</strong> {{pedidos[indexPedido].dni}}</p>
 					<p class="mb-0"><strong>Celular</strong> {{pedidos[indexPedido].celular}}</p>
@@ -91,14 +101,6 @@
 						<span v-if="pedidos[indexPedido].nacionalidad == '159'">Peruano</span>
 						<span v-else>Extranjero</span>
 					</p>
-					
-					<hr>
-					<p class="mb-0"><strong>Fecha de pago</strong> {{fechaLatam(pedidos[indexPedido].fechaPago)}}</p>
-					<p class="mb-0"><strong>Adquirió</strong> {{pedidos[indexPedido].titulo}}</p>
-					<p class="mb-0"><strong>Fecha de inicio</strong> {{fechaSimple(pedidos[indexPedido].separado)}}</p>
-					<p class="mb-0"><strong>Total pagado</strong> S/ {{pedidos[indexPedido].total}}</p>
-					<p class="mb-0"><strong>N° Adultos</strong> {{pedidos[indexPedido].adultos}}</p>
-					<p class="mb-0"><strong>N° Niños</strong> {{pedidos[indexPedido].menores}}</p>
 				</div>
 				<div class="modal-footer border-0">
 					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="indexPedido=null">Cerrar</button>

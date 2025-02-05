@@ -109,7 +109,7 @@
 							<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span style="display: inline-block;-webkit-transform:rotate(45deg)"><i class="icofont-airplane"></i></span></span> Avión</span>
 							<span v-else><span class="fs-2"><i class="icofont-bus"></i></span> Bus</span>
 						</div>
-						<div v-if="tourActivo.alojamiento" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-bed"></i></span> {{hospedajes[parseInt(tourActivo.alojamiento)-1]}}</div>
+						<div v-if="tourActivo.alojamiento" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-bed"></i></span> {{retornarHospedaje(tourActivo.alojamiento)}}</div>
 						<div v-if="tourActivo.alimentacion" class="col-4 col-md text-center fs-6"> <span class="fs-2"><i class="icofont-fork-and-knife"></i></span> Alimentación </div>
 						<div class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-google-map"></i></span> <span>Tour</span></div>
 						<div v-if="tourActivo.guia" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-tracking"></i></span> Guía</div>
@@ -208,8 +208,9 @@
 
 
 					<h5 class="mt-3 text-danger">Notas</h5>
+					<div v-html="tourActivo.notas"></div>
 
-					<div class="w-100 text-break p-2" id="divNotas" v-html="entregarCorto(tourActivo.notas, !verMas)"></div>
+					<div class="w-100 text-break p-2" id="divNotas" v-html="entregarCorto(inferior, !verMas)"></div>
 
 					<p @click="verMas = !verMas">
 
@@ -912,9 +913,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <!-- Desarrollo -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <!-- Produccion -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
 
 
 	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
@@ -962,7 +963,7 @@
 
 					//servidor: 'http://localhost/euroAndinoApi/',
 					servidor: 'https://grupoeuroandino.com/app/api/',
-					lateral:'', dolar:0, precioDolares:0,
+					lateral:'', dolar:0, precioDolares:0, inferior:'',
 					variosTours: [],
 					tourActivo: [{
 						incluye: '',
@@ -1032,7 +1033,7 @@
 					categorias2: [],
 					actividades2: [], contenidos:[], comentarios:[],
 					transportes: ['Terrestre', 'Aéreo', 'Ninguno'],
-					hospedajes: ['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro']
+					hospedajes: []
 
 				}
 
@@ -1065,6 +1066,10 @@
 					method: 'POST'
 
 				})
+				axios.post(this.servidor + 'Alojamientos.php',{
+					pedir: 'listar'
+				})
+				.then(serv=> this.hospedajes = serv.data )
 
 				let resServidor = await servComplementos
 
@@ -1079,6 +1084,7 @@
 				let servConfig = await fetch(this.servidor+ 'cargarPanel.php',{ method:'POST' })
 				let resConfig = await servConfig.json();
 				this.lateral = resConfig.lateral;
+				this.inferior = resConfig.inferior;
 				this.dolar = resConfig.dolar
 
 			},
@@ -1578,6 +1584,10 @@
 				handler: function(e) {
 					//do stuff
 					e.preventDefault();
+				},
+				retornarHospedaje(id){
+					let al = this.hospedajes.find(x=> x.id == id)
+					if (al) return al.alojamiento
 				}
 
 			},
