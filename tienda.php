@@ -150,8 +150,6 @@
 							</div>
 						</div>
 
-
-
 						<div class="accordion-item">
 
 							<h2 class="accordion-header" id="acordeon2">
@@ -297,7 +295,7 @@
 
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idHospedaje ==-1 }" @click="idHospedaje = -1; hospedajeSelect='';" >Todos</a></p>
 
-									<p  v-for="(hospedaje, index) in hospedajes" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idHospedaje == index+1 }" @click="idHospedaje = index+1; hospedajeSelect=hospedaje" >{{hospedaje}}</a></p>
+									<p  v-for="(hospedaje, index) in hospedajes" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idHospedaje == hospedaje.id }" @click="idHospedaje = hospedaje.id; hospedajeSelect=index" >{{hospedaje.alojamiento}}</a></p>
 
 								</div>
 
@@ -325,7 +323,7 @@
 
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia ==-1 }" @click="idDia = -1" >Todos</a></p>
 
-									<p  v-for="dia in dias" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia == dia }" @click="idDia = dia" >{{dia}}</a></p>
+									<p  v-for="(dia, index) in dias" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia == index }" @click="idDia = index" >{{dia}}</a></p>
 
 								</div>
 
@@ -411,15 +409,6 @@
 
 								</h5>
 
-								
-
-								
-
-<div class="d-flex justify-content-between">
-    
-</div>
-
-
 						<div class="row row-cols-2">
 							<div>
 							    <p class="card-text mb-0" style="color:#000">
@@ -475,6 +464,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
 
 
 
@@ -503,7 +493,7 @@
 
 			dias:[], actividades:[], categorias:[],
 
-			idTour:-1, idActividad:-1, idDepartamento:-1,idCategoria:-1, idDia:-1, idPrecio:-1, idTransporte:-1, idHospedaje:-1, texto:'',
+			idTour:-1, idActividad:-1, idDepartamento:-1,idCategoria:-1, idDia:-1, idPrecio:-1, idTransporte:-1, idHospedaje:-1, texto:'', idDuracion:-1,
 
 			precios:['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00' ], 
 
@@ -515,18 +505,18 @@
 
 			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}], pedidos:[], transportes:['Terrestre', 'Aéreo'],
 
-			hospedajes:['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro', ], paises:[], idPais:140
+			hospedajes:[], paises:[], idPais:140
 
 		},
 
 		mounted:function(){
 
 			this.cargar();
+			this.dias.push('Half day (Medio día)')
+			this.dias.push('Full day (1 día)')
 
-			for(let i=1; i<=31 ; i++ ){
-
-				this.dias.push(i);
-
+			for(let i=2; i<=31 ; i++ ){
+				this.dias.push(i +' días');
 			}
 
 			for (let dia = 2; dia <= 31; dia++) {
@@ -556,11 +546,12 @@
 			async cargar(){
 
 				let respServ = await fetch(this.servidor+'pedirDatosTienda.php',{
-
 					method:'POST'
-
 				});
-
+				axios.post(this.servidor + 'Alojamientos.php',{
+					pedir: 'listar'
+				})
+				.then(serv=> this.hospedajes = serv.data )
 				//console.log( await respServ.text() );
 
 				let temporal = await respServ.json();
@@ -573,7 +564,7 @@
 			},
 
 			async buscarEnTienda(){
-
+				
 				this.pedidos=[];
 
 				this.productos=[];
@@ -598,7 +589,7 @@
 
 				datos.append('categoria', this.categoriaSelect);
 
-				datos.append('idDia', this.idDia);
+				datos.append('idDia', this.idDia+1);
 
 				datos.append('idPrecio', this.idPrecio);
 
@@ -677,6 +668,10 @@
 
 				return this.pedidos[index].id;
 
+			},
+			retornarHospedaje(id){
+				let al = this.hospedajes.find(x=> x.id == id)
+				if (al) return al.alojamiento
 			}
 
 		}
