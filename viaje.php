@@ -71,7 +71,6 @@
 			height: 320px!important;
     	object-fit: cover!important;
 		}
-		
 	</style>
 
 
@@ -105,7 +104,7 @@
 					<h2 class="text-danger">{{tourActivo.nombre}}</h2>
 
 					<div class="row">
-						<div v-if="tourActivo.transporte" class="col-4 col-md text-center fs-6">
+						<div v-if="tourActivo.transporte !=3" class="col-4 col-md text-center fs-6">
 							<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span style="display: inline-block;-webkit-transform:rotate(45deg)"><i class="icofont-airplane"></i></span></span> Avión</span>
 							<span v-else><span class="fs-2"><i class="icofont-bus"></i></span> Bus</span>
 						</div>
@@ -698,24 +697,25 @@
 														<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
 														</strong>
 													</p>
-													<div class="d-flex justify-content-between">
-														<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg" style="width:20px; height:13.59px;margin-top:5px"></span>
-														<div class="estrellas">
-															<i v-for="star in cuantasEstrellas(index)" class="icofont-star"></i>
-														</div>
+													
 												</div>
 								
 												<div class="row row-cols-2">
-													<div class="text-start"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{tour.destino}}, {{queDepa(tour.departamento)}}</strong></span> <br>
+													<div class="text-start">
+														<span class="text-capitalize"><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg" style="width:20px; height:13.59px; display:inline;"></span> <span ><strong>{{tour.destino}},</strong></span><br>
+														<i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{queDepa(tour.departamento)}}</strong></span>
+														<div class="estrellas">
+															<i v-for="star in cuantasEstrellas(index)" class="icofont-star"></i>
+														</div>
 														<span v-if="tour.tipo==1" class="text-muted subText">{{queDura(tour.duracion)}}</span>
 														<span v-else class="text-muted subText">{{queDuraDia(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches-1)}}</span>
+													
 													</div>
 													<div class="text-end ">
 														<span class="precio2">S/ {{formatoMoneda(tour.peruanos.adultos)}}</span>
 														<p class="mb-0 text-end"><small>Precio normal</small></p>
 														<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0">S/ {{formatoMoneda(tour.oferta)}}</p>
 													</div>
-												</div>
 												</div>
 											</div>
 										</div>
@@ -1343,7 +1343,7 @@
 
 			variasActividades(queActividad) {
 
-				console.log('es la acti', queActividad);
+				//console.log('es la acti', queActividad);
 
 				var actividades = "";
 

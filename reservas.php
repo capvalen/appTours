@@ -60,7 +60,7 @@
 				<tr v-else v-for="(pedido, index) in pedidos" >
 					<td>{{index+1}}</td>
 					<td class="text-capitalize">{{pedido.nombre}} {{pedido.apellido}}</td>
-					<td class="text-capitalize">{{pedido.titulo.toLowerCase()}}</td>
+					<td class="text-capitalize"><a class="text-decoration-none" :href="'https://grupoeuroandino.com/tours/'+pedido.url" target="_blank">{{pedido.titulo.toLowerCase()}} <i class="icofont-external-link"></i></a></td>
 					<td>{{pedido.adultos}}</td>
 					<td>{{pedido.menores}}</td>
 					<td>{{parseFloat(pedido.total).toFixed(2)}}</td>
@@ -84,10 +84,10 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="indexPedido=null"></button>
 				</div>
 				<div class="modal-body" v-if="indexPedido!=null">
-					<p class="mb-0"><strong>Nombre paquete</strong> {{pedidos[indexPedido].titulo}}</p>
+					<p class="mb-0"><strong><a class="text-decoration-none" :href="'https://grupoeuroandino.com/tours/'+pedidos[indexPedido].url" target="_blank">{{pedidos[indexPedido].titulo}} <i class="icofont-external-link"></i></a></strong> </p>
 					<p class="mb-0"><strong>Fecha de pago</strong> {{fechaLatam(pedidos[indexPedido].fechaPago)}}</p>
 					<p class="mb-0"><strong>Fecha de inicio</strong> {{fechaSimple(pedidos[indexPedido].separado)}}</p>
-					<p class="mb-0"><strong>Monto de pago</strong> S/ {{pedidos[indexPedido].total}}</p>
+					<p class="mb-0"><strong>Total pagado</strong> S/ {{pedidos[indexPedido].total}}</p>
 					<p class="mb-0"><strong>N° Adultos</strong> {{pedidos[indexPedido].adultos}}</p>
 					<p class="mb-0"><strong>N° Niños</strong> {{pedidos[indexPedido].menores}}</p>
 					<hr>
@@ -98,8 +98,8 @@
 					<p class="mb-0"><strong>Correo</strong> {{pedidos[indexPedido].correo}}</p>
 					<p class="mb-0"><strong>Dirección</strong> {{pedidos[indexPedido].direccion}}</p>
 					<p class="mb-0"><strong>Nacionalidad</strong> 
-						<span v-if="pedidos[indexPedido].nacionalidad == '159'">Peruano</span>
-						<span v-else>Extranjero</span>
+						<span v-if="pedidos[indexPedido].nacionalidad == '159'">Peruana</span>
+						<span v-else>Extranjera</span>
 					</p>
 				</div>
 				<div class="modal-footer border-0">

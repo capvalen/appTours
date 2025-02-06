@@ -39,7 +39,6 @@
 	}
 
 	.estrellas{color: #ffd400;}
-.bandera {width: 20px;}
 	.precio2 {
 
 		font-size: 1.7rem;
@@ -93,6 +92,7 @@
 		#spanTickets{ background-color: #e91616; }
 		#spanTransporte{ background-color: #bf0ca9; }
 		.bandera { width: 20px; }
+		.titulo{font-size: 1.2rem;}
 </style>
 
 	<div class="container-fluid" id="app">
@@ -123,11 +123,13 @@
 
 								<div class="accordion-body">
 
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==-1 }" @click="idTour = -1" >Todos</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==-1 }" @click="idTour = -1; idDia=-1" >Todos</a></p>
 
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==1 }" @click="idTour = 1" >Tours</a></p>
 
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idTour = 2" >Paquetes turísticos</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idDia = 1" >Half day (medio día)</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idDia = 1" >Full day (1 día)</a></p>
 
 								</div>
 
@@ -283,7 +285,7 @@
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoHospedaje" aria-expanded="false" aria-controls="tipoHospedaje" data-bs-parent="#acordeonPadre">
 
-									Alojamiento
+									Alojamientos
 
 								</button>
 
@@ -410,14 +412,12 @@
 								</h5>
 
 						<div class="row row-cols-2">
-							<div>
-							    <p class="card-text mb-0" style="color:#000">
-										<span><img class="bandera" :src="'https://grupoeuroandino.com/images/banderas/'+bandera"></span>
-										<i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span>
-									</p>
+							<div style="color:#000">
+									<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"> <strong>{{queDepa(producto.departamento)}},</strong></span>
+									<br>
+									<i class="icofont-google-map"></i> <span class="text-capitalize"><strong> {{producto.destino}}</strong></span>
 									<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
 								<span class="text-muted subText">{{queDuracion(producto.duracion, producto.tipo)}}</span>
-
 							</div>
 
 							<div class="text-end " style="color:#000">

@@ -40,7 +40,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#categorias" type="button" role="tab" aria-controls="categorias" aria-selected="false">Categorías</button>
 			</li>
 			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#hospedajes" type="button" role="tab" aria-controls="hospedajes" aria-selected="false">Hospedajes</button>
+				<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#hospedajes" type="button" role="tab" aria-controls="hospedajes" aria-selected="false">Alojamientos</button>
 			</li>
 			<li class="nav-item" role="presentation">
 				<button class="nav-link" id="sitemap-tab" data-bs-toggle="tab" data-bs-target="#sitemap" type="button" role="tab" aria-controls="sitemap" aria-selected="false">Sitemap Google</button>
@@ -128,7 +128,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			</div>
 
 			<div class="tab-pane" id="hospedajes" role="tabpanel" aria-labelledby="hospedajes-tab">
-				<button class="btn btn-outline-primary mt-2" @click="crearHospedaje"><i class="icofont-diamond"></i> Nuevo hospedaje</button>
+				<button class="btn btn-outline-primary mt-2" @click="crearHospedaje"><i class="icofont-diamond"></i> Nuevo alojamiento</button>
 				<table class="table table-hover">
 						<thead>
 							<tr>
@@ -386,6 +386,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				.then(serv => serv.text())
 				.then(resp => alert(resp) )
 			},
+			crearHospedaje(){
+				if(alo=prompt('Ingrese un nombre para el nuevo alojamiento')){
+					axios.post(this.servidor+'Alojamientos.php',{
+						pedir: 'crear', alojamiento: alo
+					}).then(resp=> this.pedirComplementos())
+				}
+			}
 		}
 	}).mount('#app')
 	

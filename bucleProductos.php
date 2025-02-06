@@ -36,6 +36,7 @@
 		#spanTickets{ background-color: #e91616; }
 		#spanTransporte{ background-color: #bf0ca9; }	
 		.bandera {width: 20px;}
+		.titulo{font-size: 1.2rem;}
 	</style>
 	<div id="app">
 		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
@@ -64,15 +65,15 @@
 								<p class="mb-0 titulo ps-1 ">
 									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
 									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
-									
 								</p>
 								<!-- <div class="d-flex justify-content-between">
 									aquí iba la bandera
 								</div> -->								
 								<div class="row row-cols-2">
 									<div>
-									<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"></span>
-										<i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{tour.destino}}, {{queDepa(tour.departamento)}}</strong></span>
+										<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"> <strong>{{tour.destino}},</strong></span>
+										<br>
+										<i class="icofont-google-map"></i> <span class="text-capitalize"><strong> {{queDepa(tour.departamento)}}</strong></span>
 										<div class="estrellas">
 											<i v-for="star in cuantasEstrellas(index)" class="icofont-star"></i>
 										</div>
