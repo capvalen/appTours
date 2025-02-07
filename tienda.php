@@ -92,7 +92,8 @@
 		#spanTickets{ background-color: #e91616; }
 		#spanTransporte{ background-color: #bf0ca9; }
 		.bandera { width: 20px; }
-		.titulo{font-size: 1.2rem;}
+		.titulo{font-size: 1.25rem;}
+		.icofont-google-map{margin-left:3px!important;}
 </style>
 
 	<div class="container-fluid" id="app">
@@ -128,8 +129,8 @@
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==1 }" @click="idTour = 1" >Tours</a></p>
 
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idTour = 2" >Paquetes turísticos</a></p>
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idDia = 1" >Half day (medio día)</a></p>
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idDia = 1" >Full day (1 día)</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idDia = 1" >Half Day (Medio Día)</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idDia = 1" >Full Day (1 Día)</a></p>
 
 								</div>
 
@@ -390,7 +391,7 @@
 									<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
 											<span v-if="producto.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus</span>
 											<span v-if="producto.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
-											<span v-if="producto.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[producto.alojamiento]}}</span>
+											<span v-if="producto.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{retornarHospedaje(producto.alojamiento)}}</span>
 											<span v-if="producto.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
 											<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
 											<span v-if="producto.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
@@ -512,8 +513,8 @@
 		mounted:function(){
 
 			this.cargar();
-			this.dias.push('Half day (Medio día)')
-			this.dias.push('Full day (1 día)')
+			this.dias.push('Half Day (Medio Día)')
+			this.dias.push('Full Day (1 Día)')
 
 			for(let i=2; i<=31 ; i++ ){
 				this.dias.push(i +' días');

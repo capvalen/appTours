@@ -71,6 +71,7 @@
 			height: 320px!important;
     	object-fit: cover!important;
 		}
+		.icofont-google-map{margin-left:3px!important;}
 	</style>
 
 
@@ -677,7 +678,7 @@
 											<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
 												<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus</span>
 												<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
-												<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[tour.alojamiento]}}</span>
+												<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{retornarHospedaje(tour.alojamiento)}}</span>
 												<span v-if="tour.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
 												<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
 												<span v-if="tour.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>

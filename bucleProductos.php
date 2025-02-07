@@ -36,7 +36,8 @@
 		#spanTickets{ background-color: #e91616; }
 		#spanTransporte{ background-color: #bf0ca9; }	
 		.bandera {width: 20px;}
-		.titulo{font-size: 1.2rem;}
+		.titulo{font-size: 1.25rem;}
+		.icofont-google-map{margin-left:3px!important;}
 	</style>
 	<div id="app">
 		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">

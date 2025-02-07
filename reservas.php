@@ -47,7 +47,7 @@
 					<th>Adultos</th>
 					<th>Niños</th>
 					<th>Total</th>
-					<th>Moneda</th>
+					<th>Tipo</th>
 					<th>Estado</th>
 					<th>@</th>
 					<th></th>
@@ -63,7 +63,7 @@
 					<td class="text-capitalize"><a class="text-decoration-none" :href="'https://grupoeuroandino.com/tours/'+pedido.url" target="_blank">{{pedido.titulo.toLowerCase()}} <i class="icofont-external-link"></i></a></td>
 					<td>{{pedido.adultos}}</td>
 					<td>{{pedido.menores}}</td>
-					<td>{{parseFloat(pedido.total).toFixed(2)}}</td>
+					<td>S/ {{parseFloat(pedido.total).toFixed(2)}}</td>
 					<td>
 						<span v-if="pedido.moneda ==1">Pedido simple</span>
 						<span v-else>Izi-Pay</span>
@@ -87,7 +87,7 @@
 					<p class="mb-0"><strong><a class="text-decoration-none" :href="'https://grupoeuroandino.com/tours/'+pedidos[indexPedido].url" target="_blank">{{pedidos[indexPedido].titulo}} <i class="icofont-external-link"></i></a></strong> </p>
 					<p class="mb-0"><strong>Fecha de pago</strong> {{fechaLatam(pedidos[indexPedido].fechaPago)}}</p>
 					<p class="mb-0"><strong>Fecha de inicio</strong> {{fechaSimple(pedidos[indexPedido].separado)}}</p>
-					<p class="mb-0"><strong>Total pagado</strong> S/ {{pedidos[indexPedido].total}}</p>
+					<p class="mb-0"><strong>Total pagado</strong> S/ {{parseFloat(pedidos[indexPedido].total).toFixed(2)}}</p>
 					<p class="mb-0"><strong>N° Adultos</strong> {{pedidos[indexPedido].adultos}}</p>
 					<p class="mb-0"><strong>N° Niños</strong> {{pedidos[indexPedido].menores}}</p>
 					<hr>
