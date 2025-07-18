@@ -1,6 +1,6 @@
 <?php 
 $directorio = $_POST['ruta'];
-$final ="/home/perutra1/grupoeuroandino.com/app/render/images/subidas/";
+$final ="/home/grupemde/public_html/app/render/images/subidas/";
 
 $tipoArchivo = strtolower(pathinfo( $directorio . basename($_FILES["archivo"]["name"]) ,PATHINFO_EXTENSION));
 $queArchivo = uniqid() . "." . $tipoArchivo;
@@ -11,7 +11,7 @@ if (move_uploaded_file($_FILES["archivo"]["tmp_name"], $archivoFinal)) {
 	//echo "The file ". htmlspecialchars( basename( $_FILES["archivo"]["name"])). " has been uploaded.";
 
 
-	$archivoTemporal = "/home/perutra1/grupoeuroandino.com/app/render/images/sinmarca/". $queArchivo;
+	$archivoTemporal = "/home/grupemde/public_html/app/render/images/sinmarca/". $queArchivo;
 
 	// Cargar la imagen usando GD
 	$imagen = imagecreatefromstring(file_get_contents($archivoTemporal));
