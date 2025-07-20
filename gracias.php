@@ -1,7 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+//error_reporting(E_ALL);
+
 if( $_POST['id']<>-1 ):
 	require_once( __DIR__. './../api/conectkarl.php');
 	$idPedido = $_POST['id'];
@@ -9,11 +10,13 @@ if( $_POST['id']<>-1 ):
 	//echo 'el id de pedido ' . $idPedido;
 
 
-	$sql = $db->prepare("SELECT pe.*, JSON_EXTRACT(t.contenido, '$.duracion') as duracion, JSON_EXTRACT(t.contenido, '$.hora') as hora, tipo
+	$sql = $db->prepare("SELECT pe.*, JSON_EXTRACT(t.contenido, '$.duracion') as duracion, JSON_UNQUOTE( JSON_EXTRACT(t.contenido, '$.hora')) as hora, tipo, t.url
 	FROM `pedidos` pe inner join tours t on t.id = pe.idTour where pe.id = ?; ");
 	if( $sql->execute([ $idPedido ]) ){
 		$rowDatos = $sql->fetch(PDO::FETCH_ASSOC);
 		$duracionArray = ['Half Day (Medio día)', 'Full Day (1 día)'];
+
+		$hora = DateTime::createFromFormat('H:i', $rowDatos['hora']);
 		
 		if( is_numeric($rowDatos['duracion']) ){
 			$dias['dias'] = $rowDatos['duracion'];
@@ -29,7 +32,7 @@ if( $_POST['id']<>-1 ):
 			$tipo = 'Paquete turístico';
 		}
 		$_POST['duracion'] = $duracion;
-		$_POST['inicio'] = $rowDatos['separado'] . " a las ".str_replace('"', '',$rowDatos['hora']);
+		$_POST['inicio'] = $rowDatos['separado'] . " a las ". $hora->format('g:i a');
 		$_POST['tipo'] = $tipo;
 		if( $rowDatos['adultos'] >0){ $pasajeros = $rowDatos['adultos']. " adultos"; }
 		if( $rowDatos['menores'] >0){ $pasajeros .= ' y '. $rowDatos['menores']. " menores"; }
@@ -54,6 +57,7 @@ if( $_POST['id']<>-1 ):
 				$_POST['razonSocial'] = $rowDatos['apellido'] .' '. $rowDatos['nombre']; //poner razon social en el apellido
 				$_POST['cliDireccion'] = $rowDatos['direccion'] .' '. $rowDatos['ciudad'];
 				$_POST['celular'] = $rowDatos['celular'];
+				$_POST['pais'] = $rowDatos['nacionalidad'];
 				$_POST['nacionalidad'] = ($rowDatos['nacionalidad']==1)? 'Peruano' : 'Extranjero';
 				$_POST['crearArchivo'] = 0;
 		
@@ -82,7 +86,8 @@ if( $_POST['id']<>-1 ):
 					'unidadSunat' => 'NIU',
 					'nombre' => $rowDatos['titulo'],
 					'descripcionProducto' => $rowDatos['titulo'],
-					'subtotal' => $rowDatos['total']
+					'subtotal' => $rowDatos['total'],
+					'url' => $rowDatos['url']
 				]);
 				$_POST['total'] = $rowDatos['total'];
 				$_COOKIE['ckidUsuario']= 3;

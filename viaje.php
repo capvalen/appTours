@@ -104,13 +104,13 @@
 
 					<h2 class="text-danger">{{tourActivo.nombre}}</h2>
 
-					<div class="row">
-						<div v-if="tourActivo.transporte !=3" class="col-4 col-md text-center fs-6">
-							<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span style="display: inline-block;-webkit-transform:rotate(45deg)"><i class="icofont-airplane"></i></span></span> Avión</span>
-							<span v-else><span class="fs-2"><i class="icofont-bus"></i></span> Bus</span>
-						</div>
-						<div v-if="tourActivo.alojamiento" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-bed"></i></span> {{retornarHospedaje(tourActivo.alojamiento)}}</div>
-						<div v-if="tourActivo.alimentacion" class="col-4 col-md text-center fs-6"> <span class="fs-2"><i class="icofont-fork-and-knife"></i></span> Alimentación </div>
+					<div class="row">						
+							<div v-if="tourActivo.transporte !=3 && variosTours.tipo==2" class="col-4 col-md text-center fs-6">
+								<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span style="display: inline-block;-webkit-transform:rotate(45deg)"><i class="icofont-airplane"></i></span></span> Avión</span>
+								<span v-else><span class="fs-2"><i class="icofont-bus"></i></span> Bus</span>
+							</div>
+							<div v-if="tourActivo.alojamiento" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-bed"></i></span> {{retornarHospedaje(tourActivo.alojamiento)}}</div>
+							<div v-if="tourActivo.alimentacion" class="col-4 col-md text-center fs-6"> <span class="fs-2"><i class="icofont-fork-and-knife"></i></span> Alimentación </div>
 						<div class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-google-map"></i></span> <span>Tour</span></div>
 						<div v-if="tourActivo.guia" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-tracking"></i></span> Guía</div>
 						<div v-if="tourActivo.tickets" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-ticket"></i></span> Tickets</div>
@@ -676,10 +676,10 @@
 
 										<div v-if="tour.fotos.length>0" class="divImagen card-img-top position-relative">
 											<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
-												<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus</span>
-												<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
-												<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{retornarHospedaje(tour.alojamiento)}}</span>
-												<span v-if="tour.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
+													<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus {{variosTours.tipo}}</span>
+													<span v-else-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
+													<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{retornarHospedaje(tour.alojamiento)}}</span>
+													<span v-if="tour.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
 												<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
 												<span v-if="tour.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
 												<span v-if="tour.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>

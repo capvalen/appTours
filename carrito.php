@@ -32,7 +32,7 @@ include '../api/'
 				<div class="col-12 col-md-8">
 					<div class="card">
 						<div class="card-body">
-							<h3>Datos del comprador</h3>
+							<h3>Datos del comprador (v. 1.01)</h3>
 							<div class="row row-cols-1 row-cols-md-2">
 							<div class="col">
 									<div class="form-floating mb-3">
@@ -166,11 +166,11 @@ include '../api/'
 							<h3>Resumen del pedido</h3>
 							<p class="fs-4 text-capitalize"><a :href="'https://grupoeuroandino.com/tours/'+url" class="text-decoration-none">{{nomTour.toLowerCase()}}</a></p>
 							<p class="mb-0"><strong>Fecha de inicio:</strong> <span>{{empieza}}</span></p>
+							<p class="mb-0"><strong>Hora:</strong> <span>A las {{hora}}.</span></p>
 							<p class="mb-0"><strong>Nacionalidad:</strong> 
 								<span v-if="nacionalidad == 140">Peruana</span>
 								<span v-else>Extranjera</span>
 							</p>
-							<p class="mb-0"><strong>Hora:</strong> <span>A las {{hora}}.</span></p>
 							<p class="mb-0"><strong>Personas</strong> </p>
 							<div class="row row-cols-2">
 								<div class="col">
@@ -436,8 +436,8 @@ include '../api/'
 							if( parseInt(texto)>0 ){
 								this.idOrden=parseInt(texto);
 								toastBien.show();
-								this.crearToken();
-								//goToThanks();
+								//this.crearToken();
+								goToThanks();
 							}
 						})
 					 })
