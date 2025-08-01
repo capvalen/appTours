@@ -115,6 +115,7 @@ if( $_POST['id']<>-1 ):
 				$_POST['ruc'] = $datos[0]['rucEmisor'];
 				$_POST['correo'] = $rowDatos['correo'];
 				ob_start();
+				require_once(__DIR__. './../api/envio_whastapp.php');
 				require_once(__DIR__. './../api/correo.php');
 				ob_clean();
 		

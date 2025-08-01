@@ -436,8 +436,8 @@ include '../api/'
 							if( parseInt(texto)>0 ){
 								this.idOrden=parseInt(texto);
 								toastBien.show();
-								//this.crearToken();
-								goToThanks();
+								this.crearToken();
+								//goToThanks();
 							}
 						})
 					 })
@@ -468,9 +468,6 @@ include '../api/'
 					})
 				})
 				//onCheckout()
-
-
-				
 				modalPagar.show();
 			},
 			cambiarEntreFactura(){
@@ -539,7 +536,7 @@ include '../api/'
 		}
 		localStorage.setItem('carrito', JSON.stringify(app.carrito))
 
-		console.log('empeiza a redirigir')
+		//console.log('empeiza a redirigir')
 		var url = 'https://grupoeuroandino.com/gracias';
 		var form = $('<form action="' + url + '" method="post">' +
 			'<input type="text" name="id" value="' + app.idOrden + '" />' +
