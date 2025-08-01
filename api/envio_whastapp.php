@@ -8,7 +8,7 @@ $url = 'https://7105.api.greenapi.com/waInstance7105285338/sendInteractiveButton
 
 // Datos a enviar
 $data = array(
-	'chatId' => '51977692108@c.us',
+	'chatId' => '51947614293@c.us',
 	'body' => "*Una venta realizada*\n".
 		'El cliente _'.$_POST['razonSocial'].'_ ha realizado una compra del paquete _'.$_POST['jsonProductos'][0]['descripcionProducto']."_\n".'Para la fecha _'.$_POST['inicio']."_\n\n🐱 Revisa tu bandeja de sistema",
 	'buttons' => array(
