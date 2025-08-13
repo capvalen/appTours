@@ -89,8 +89,10 @@ include '../api/'
 									</div>
 								</div>
 							</div>
+							
 							<div class="row">
 								<div class="col">
+									<p><strong>Condiciones: </strong></p>
 									<div class="form-check">
 										<input class="form-check-input" type="checkbox" value="" id="chkPoliticas" v-model="politica">
 										<label class="form-check-label" for="chkPoliticas">
@@ -105,6 +107,27 @@ include '../api/'
 									</div>
 								</div>
 								<p class="mt-2"><small>* Todos los campos son requeridos</small></p>
+							</div>
+							<div class="row">
+								<div class="col">
+									<p class="mt-2"><strong>Restricciones: </strong></p>
+									<template v-for="(regla, index) in reglas">
+											<div class="row row row-cols-auto g-3 my-1">
+											<div class="col">
+												<p class="me-1"><i class="icofont-circled-right"></i> {{regla.regla}}. <a href="#!" class="text-decoration-none" data-bs-toggle="modal" @click="indexRegla=index" data-bs-target="#modalDetalleReglas"><i class="icofont-plus"></i> Detalles</a></p>
+											</div>
+											<div class="col">
+												<div class="btn-group" :role="'rules-group'+regla.id" >
+													<input type="radio" class="btn-check" :name="'rules-group'+regla.id" :id="'btnradio'+regla.id+'1'" autocomplete="off">
+													<label class="btn btn-outline-primary btn-sm" :for="'btnradio'+regla.id+'1'" @click="regla.respuesta='si'">Sí</label>
+													<input type="radio" class="btn-check" :name="'rules-group'+regla.id" :id="'btnradio'+regla.id+'2'" autocomplete="off">
+													<label class="btn btn-outline-primary btn-sm" :for="'btnradio'+regla.id+'2'" @click="regla.respuesta='no'">No</label>
+												</div>
+											</div>
+										</div>
+									</template>
+									
+								</div>
 							</div>
 						</div>
 					</div>
@@ -199,7 +222,7 @@ include '../api/'
 						</div>
 					</div>
 					<div class="d-grid gap-1 my-2">
-						<button class="btn btn-outline-danger btn-lg" @click="finalizarCompra">Finalizar compra</button>
+						<button class="btn btn-outline-danger btn-lg" @click="finalizarCompra"><i class="icofont-check-circled"></i> Finalizar compra</button>
 					</div>
 					<div>
 						<img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/83589178_2587722714818486_2444153424434954240_n.png" alt="" class="img-fluid">
@@ -268,11 +291,26 @@ include '../api/'
 				</div>
 			</div>
 		</div>
+
+		<!-- Modal para las reglas-->
+		<div class="modal fade" id="modalDetalleReglas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">Descripción</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p v-if="indexRegla>=0">{{reglas[indexRegla].instrucciones}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 <!-- Desarrollo -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <!-- Produccion -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
 
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -298,7 +336,13 @@ include '../api/'
 				ciudad: '', direccion: '',
 				politica: '', privacidad: '', mensajeError:'', hora:'',
 				precAdultos:'', precMenores:'', total:'', nomTour:'', adultoNormal:0,menorNormal:0, idOrden:-1, actiFactura:3, //3boleta, 1 factura
-				nRuc:'', nRazon:'', nDireccion:'', dolar:0, comision:0, totalDolar: 0, moneda:'soles', adulDolar:0, ninDolar:0, url:''
+				nRuc:'', nRazon:'', nDireccion:'', dolar:0, comision:0, totalDolar: 0, moneda:'soles', adulDolar:0, ninDolar:0, url:'', indexRegla:-1,
+				reglas:[
+					{id:1, regla: 'Restricciones Alimentarias', instrucciones:'Son limitaciones en la dieta de una persona, ya sea por motivos de salud, creencias religiosas, preferencias personales o alergias/intolerancias. Estas restricciones pueden implicar evitar ciertos alimentos o grupos de alimentos por completo, o simplemente reducir su consumo.', respuesta:'' },
+					{id:2,regla:'Condición Médica', instrucciones:'Se refiere a cualquier estado de salud que se aparta de lo normal, ya sea una enfermedad, un trastorno o una lesión. Estas condiciones pueden ser agudas (de corta duración y severas) o crónicas (de larga duración), y afectar tanto la salud física como mental.', respuesta:'' },
+					{id:3,regla:'Requerimientos Especiales', instrucciones:'Se refieren a las necesidades específicas y particulares que un cliente o usuario tiene al solicitar un servicio, más allá de los requisitos básicos. Estos requerimientos pueden abarcar aspectos como plazos de entrega, niveles de calidad, recursos específicos, o consideraciones técnicas, entre otros. En esencia, son las condiciones adicionales que se deben cumplir para que un servicio sea satisfactorio y cumpla con las expectativas del cliente.', respuesta:'' },
+					{id:4,regla:'Autorización de Uso de Imagen Fotográfica, audio y/o video', instrucciones:'Es un documento legal que otorga permiso a una persona o entidad para utilizar la imagen, voz y/o grabaciones audiovisuales de otra persona. Este permiso suele ser necesario cuando se pretende utilizar la imagen de alguien con fines comerciales, publicitarios, o en cualquier contexto donde su imagen pueda ser difundida públicamente.', respuesta:'' },
+				]
 			}
 		},
 		async mounted() {
@@ -381,21 +425,32 @@ include '../api/'
 			},
 			verificarCampos(){
 				if(this.nombres==''){ this.mensajeError='Falta completar sus nombres';  toastMal.show(); return false; }
-				else if(this.apellidos==''){ this.mensajeError='Falta completar sus apellidos';  toastMal.show(); return false; }
-				else if(this.documento==''){ this.mensajeError='Falta completar su documento de identidad';  toastMal.show(); return false; }
-				else if(this.correo==''){ this.mensajeError='Falta completar su e-mail';  toastMal.show(); return false; }
-				else if(this.celular==''){ this.mensajeError='Falta completar su celular';  toastMal.show(); return false; }
-				else if(this.ciudad==''){ this.mensajeError='Falta completar su ciudad';  toastMal.show(); return false; }
-				else if(this.direccion==''){ this.mensajeError='Falta completar su dirección';  toastMal.show(); return false; }
-				else if(!document.getElementById('chkPoliticas').checked){ this.mensajeError='Debe aceptar los Términos y condiciones';  toastMal.show(); return false; }
-				else if(!document.getElementById('chkPrivacidad').checked){ this.mensajeError='Debe aceptar las Políticas de privacidad';  toastMal.show(); return false; }
-				else if(document.getElementById('chkFactura').checked){ 
+				if(this.apellidos==''){ this.mensajeError='Falta completar sus apellidos';  toastMal.show(); return false; }
+				if(this.documento==''){ this.mensajeError='Falta completar su documento de identidad';  toastMal.show(); return false; }
+				if(this.correo==''){ this.mensajeError='Falta completar su e-mail';  toastMal.show(); return false; }
+				if(this.celular==''){ this.mensajeError='Falta completar su celular';  toastMal.show(); return false; }
+				if(this.ciudad==''){ this.mensajeError='Falta completar su ciudad';  toastMal.show(); return false; }
+				if(this.direccion==''){ this.mensajeError='Falta completar su dirección';  toastMal.show(); return false; }
+				if(!document.getElementById('chkPoliticas').checked){ this.mensajeError='Debe aceptar los Términos y condiciones';  toastMal.show(); return false; }
+				if(!document.getElementById('chkPrivacidad').checked){ this.mensajeError='Debe aceptar las Políticas de privacidad';  toastMal.show(); return false; }
+				if(document.getElementById('chkFactura').checked){ 
 					if( this.nRuc =='' || this.nRuc.length!=11 ){ this.mensajeError='Falta completar su RUC o está erróneo';  toastMal.show(); return false;  }
 					else if( this.nRazon =='' ){ this.mensajeError='Falta completar su razón social';  toastMal.show(); return false;  }
 					else if( this.nDireccion =='' ){ this.mensajeError='Falta completar su dirección fiscal';  toastMal.show(); return false;  }
 					else{ return true;}
 				 }
-				else{ return true;}
+
+				 let validacionReglas = true;
+
+				 this.reglas.forEach(regla => {
+					if(regla.respuesta == ''){
+						this.mensajeError='Debe rellenar todos las restricciones';  toastMal.show();
+						validacionReglas = false
+						return false;
+					}
+				 });
+
+				return validacionReglas;
 			},
 			finalizarCompra(){
 				//this.crearToken();}
