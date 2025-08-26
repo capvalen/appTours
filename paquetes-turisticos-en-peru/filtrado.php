@@ -25,11 +25,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<title>Filtro por producto</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-	
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/estilos.css">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
+<?php include("../app/render/headers.php");?>
 
 </head>
 
@@ -133,7 +129,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 </style>
 
 <!-- Inicio de Encabezado -->
-<?php include ("https://grupoeuroandino.com/app/render/menu.php");?>
+<?php include ("../app/render/menu.php");?>
 
 <!-- Fin de Encabezado -->
 

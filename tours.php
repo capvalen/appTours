@@ -467,7 +467,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			title: 'Tours Grupo Euroandino'
 		},
 		data: {
-			//servidor: 'http://localhost/euroAndinoApi/',
+			//servidor: 'http://localhost/appTours/api/',
 			servidor: 'https://grupoeuroandino.com/app/api/', fechasAnuladas:[], fechaSeleccionada:moment().format('YYYY-MM-DD'),
 			tour:{
 				nombre: '', url:'',

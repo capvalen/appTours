@@ -93,7 +93,7 @@
 	var app = new Vue({
 		el: '#app',
 		data:{
-			//servidor: 'http://localhost/euroAndinoApi/',
+			//servidor: 'http://localhost/appTours/api/',
 			servidor: 'https://grupoeuroandino.com/app/api/',
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],

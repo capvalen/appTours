@@ -325,7 +325,7 @@ include '../api/'
 		el:'#app',
 		data() {
 			return {
-				//servidor: 'http://localhost/euroAndinoApi/',
+				//servidor: 'http://localhost/appTours/api/',
 				servidor: 'https://grupoeuroandino.com/app/api/', 
 				carrito:null,
 				idProducto:null,adultos:0, kids:0,

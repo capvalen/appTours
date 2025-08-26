@@ -359,7 +359,7 @@ $.fn.bootstrapDP = datepicker;
 		data(){
 			return {
 				idProducto:-1,
-				//servidor: 'http://localhost/euroAndinoApi/',
+				//servidor: 'http://localhost/appTours/api/',
 				servidor: 'https://grupoeuroandino.com/app/api/',
 				variosTours:[], tourActivo:[{incluye:'', noIncluye:'', peruanos:{adultos:0, kids:0}, extranjeros:{adultos:0, kids:0}, duracion:0
 			}],

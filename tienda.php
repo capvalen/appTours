@@ -102,7 +102,7 @@
 
 			
 
-			<div class="col-12 col-md-3">
+			<div class="col-12 col-md-3" id="panelIzquierdo" @contextmenu.prevent="onRightClick">
 
 				<div class="col">
 
@@ -485,7 +485,7 @@
 
 		data: {
 
-			//servidor: 'http://localhost/euroAndinoApi/',
+			//servidor: 'http://localhost/appTours/api/',
 
 			servidor: 'https://grupoeuroandino.com/app/api/', 
 
@@ -673,6 +673,11 @@
 			retornarHospedaje(id){
 				let al = this.hospedajes.find(x=> x.id == id)
 				if (al) return al.alojamiento
+			},
+			onRightClick(event) {
+				// Aquí event es el MouseEvent del clic derecho
+				console.log("Clic derecho detectado", event);
+				//alert("Clic derecho deshabilitado");
 			}
 
 		}

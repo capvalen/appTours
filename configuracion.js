@@ -1,0 +1,1 @@
+window.lugarApi = 'http://localhost/appTours/api/'

@@ -3,8 +3,8 @@ $server="localhost";
 
 /* Net	*/
 $username="root";
-$password="";
-$datos= "perutravel";
+$password="*123456*";
+$datos= "euroandino_app";
 
 $cadena= mysqli_connect($server,$username,$password)or die("No se ha podido establecer la conexion");
 $sdb= mysqli_select_db($cadena,$datos)or die("La base de datos no existe");

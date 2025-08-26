@@ -43,8 +43,6 @@
 		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
 			<div class="col my-3" v-for="(tour, index) in contenidos">
 				<div class="card h-100 border-0  ">
-				
-
 					<div v-if="tour.fotos.length>0" class="divImagen card-img-top position-relative">
 						<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
 							<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus</span>
@@ -104,7 +102,7 @@
 	var app = new Vue({
 		el: '#app',
 		data:{
-			//servidor: 'http://localhost/euroAndinoApi/',
+			//servidor: 'http://localhost/appTours/api/',
 			servidor: 'https://grupoeuroandino.com/app/api/',
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],

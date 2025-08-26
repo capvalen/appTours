@@ -92,7 +92,7 @@
 
 			return {
 
-				//servidor: 'http://localhost/euroAndinoApi/',
+				//servidor: 'http://localhost/appTours/api/',
 
 				servidor: 'https://grupoeuroandino.com/app/api/', 
 

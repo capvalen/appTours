@@ -962,7 +962,7 @@
 
 					idProducto: -1, horarioSelect:-1,
 
-					//servidor: 'http://localhost/euroAndinoApi/',
+					//servidor: 'http://localhost/appTours/api/',
 					servidor: 'https://grupoeuroandino.com/app/api/',
 					lateral:'', dolar:0, precioDolares:0, inferior:'',
 					variosTours: [],

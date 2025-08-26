@@ -25,15 +25,19 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<title>Filtro por producto</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
 	
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/estilos.css">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
+	<?php
+	if( $indice>=0 ){ ?>
+		<meta property="og:title" content="Paquetes y tours de <?= $departamentos[$indice] ?> - Grupo Euro Andino">
+		<meta property="og:image" content="<?= $fotos[$indice] ?>">
+		<meta property="og:description" content="<?= strip_tags($descripcion[$indice]) ?>">
+		<?php
+	}
+	?>
+
+<?php include("../app/render/headers.php");?>
 
 </head>
-
-
 
 <body>
 
@@ -132,24 +136,28 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 </style>
 
-<!-- Inicio de Encabezado -->
-<?php include ("https://grupoeuroandino.com/app/render/menu.php");?>
+	<!-- Inicio de Encabezado -->
+	<?php include ("../app/render/menu.php");?>
 
-<!-- Fin de Encabezado -->
+	<!-- Fin de Encabezado -->
 
 	<div class="container-fluid" id="app">
 
-		<h1 class="fs-2 mt-3">
+		<div class="container">
+		    <h1 class="fs-2 mt-3">
 
-			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='1'):?> <span>Tours</span> <?php endif;?>
+			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='1'):?> <span>Tours en Perú</span> <?php endif;?>
 
-			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='2'):?> <span>Paquetes Turísticos en Perú</span><?php endif;?>
+			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='2'):?> <span>Paquetes turísticos en Perú</span><?php endif;?>
 
 			<?php if(isset($_GET['id'])):?> <span>Paquetes y tours de: <?= $departamentos[$_GET['id']-1];?> </span><?php endif;?>
 
-			<?php if(isset($_GET['texto'])):?> <span>Resultados por: <?= $texto=$_GET['texto'];?> </span><?php else: $texto=''; endif;?>
+			<?php if(isset($_GET['texto'])):?> <span>Resultados por: <?php $texto=$_GET['texto']; echo $departamentos[$indice]; ?> </span><?php else: $texto=''; endif;?>
 
 		</h1>
+		<p class="my-3"><?= $comentario[$indice];?></p>
+		
+		</div>
 
 		<div class="row row-cols-1 row-cols-lg-3 row-cols-xl-4">
 			<div class="col my-2 " v-for="(tour, index) in productos" :key="tour.id">
@@ -288,9 +296,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 				this.cargar();
 
 				for (let i = 1; i <= 31; i++) {
-
 					this.dias.push(i);
-
 				}
 
 				for (let dia = 2; dia <= 31; dia++) {
@@ -353,7 +359,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 					datos.append('texto', this.texto);
 
-					let respServ = await fetch(this.servidor + 'buscarFiltroTienda.php', {
+					let respServ = await fetch(this.servidor + 'buscarFiltroTienda.php?v1', {
 
 						method: 'POST',
 
@@ -364,17 +370,11 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 					//console.log( await respServ.json() );
 
 					this.pedidos = await respServ.json();
-
-
+					//console.log(this.pedidos)
 
 					this.pedidos.forEach(data => {
-
 						this.productos.push(JSON.parse(data.contenido))
-
 					})
-
-
-
 				},
 
 				queFoto(prod) {
@@ -412,7 +412,10 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 					return this.duracionDias.find( x => x.clave === idDuracion.dias ).valor + " / " + this.duracionNoches.find( x => x.clave === idDuracion.noches ).valor;
 
 				}
+
 				},
+
+
 				queId(index) {
 					return this.pedidos[index].id;
 				},
@@ -439,8 +442,6 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 					return parseInt(this.pedidos[index].calificacion)
 				}
 
-				
-
 			}
 
 		});
@@ -448,7 +449,6 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 	</script>
 
 </body>
-
 
 
 </html>

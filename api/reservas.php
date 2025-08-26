@@ -139,7 +139,7 @@
 	var app = new Vue({
 		el: '#app',
 		data: {
-			//servidor: 'http://localhost/euroAndinoApi/',
+			//servidor: 'http://localhost/appTours/api/',
 			servidor: 'https://grupoeuroandino.com/app/api/',
 			pedidos:[], indexPedido:null
 			
