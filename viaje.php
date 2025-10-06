@@ -20,7 +20,7 @@
 
 	error_reporting(E_ALL);
 
-	include('/home/perutra1/grupoeuroandino.com/app/api/conectkarl.php');
+	include('/home/grupemde/public_html/app/api/conectkarl.php');
 
 	$sqlBase = "SELECT id, JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.nombre')) as titulo,
 
@@ -171,19 +171,18 @@
 
 					<h4 class="mt-4 text-danger">Descripción</h4>
 
-					<div v-html="tourActivo.descripcion"></div>
+					<div class="text-justify" v-html="tourActivo.descripcion"></div>
 
 					<h4 class="mt-4 text-danger">Punto de Partida</h4>
 
-					<div class="w-100 text-break" v-html="tourActivo.partida"></div>
+					<div class="w-100 text-break text-justify" v-html="tourActivo.partida"></div>
 
-					<h4 class="mt-4 text-danger">Itinerario</h4>
-					
-					<div class="w-100 text-break p-2" v-html="tourActivo.itinerario"></div>
+					<h4 class="mt-4 text-danger">Itinerario</h4>					
+					<div class="w-100 p-2 text-justify" v-html="tourActivo.itinerario"></div>
 					<h4 class="mt-4 text-danger">Incluye</h4>
-					<div class="w-100 text-break p-2" id="divIncluye" v-html="tourActivo.incluye"></div>
+					<div class="w-100 p-2 text-justify" id="divIncluye" v-html="tourActivo.incluye"></div>
 					<h4 class="mt-4 text-danger">No incluye</h4>
-					<div class="w-100 text-break p-2" id="divNoIncluye" v-html="tourActivo.noIncluye"></div>
+					<div class="w-100 p-2 text-justify" id="divNoIncluye" v-html="tourActivo.noIncluye"></div>
 
 
 
@@ -1159,16 +1158,13 @@
 				}
 
 				for (let dia = 2; dia <= 15; dia++) {
-
-					this.anticipacion.push({
-						clave: dia + 1,
-						valor: dia + ' días'
-					});
-
+					this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
 				}
-				for (let dia = 30; dia <= 180; dia+=15) {
-							this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
-						}
+				this.anticipacion.push({ clave: 31, valor: 31 + ' días' });
+				for (let mes = 2; mes <= 11; mes++) {
+					this.anticipacion.push({ clave: mes*31, valor: mes + ' mes' });
+				}
+				this.anticipacion.push({ clave: 365, valor: '1 año' });
 
 				//$('#dtpFecha').bootstrapDP('setDate', moment().format('DD/MM/YYYY'))
 				/* $('#dtpFecha').bootstrapDP({
@@ -1590,7 +1586,6 @@
 					let al = this.hospedajes.find(x=> x.id == id)
 					if (al) return al.alojamiento
 				}
-
 			},
 
 			computed: {

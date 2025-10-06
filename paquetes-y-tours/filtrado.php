@@ -46,6 +46,7 @@ $simple = ['a', 'e', 'i', 'o', 'u', '-'];
 $aBuscar = str_replace( $tildes, $simple, $aBuscar );
 $indice =  array_search( $aBuscar, $departamentosUrl);
 $idDepartamento = $indice;
+//echo 'indice'. $indice; die();
 ?>
 
 <!DOCTYPE html>
@@ -62,7 +63,7 @@ $idDepartamento = $indice;
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Filtro por producto</title>
+	<title>Paquetes y tours de <?= $departamentos[$indice] ?> - Grupo Euro Andino </title>
 	
 	<?php
 	if( $indice>=0 ){ ?>
@@ -79,100 +80,71 @@ $idDepartamento = $indice;
 
 <body>
 
-<style>
-	.accordion-button:not(.collapsed) {
+	<style>
 
-		background-color: #ffffff;
+		.accordion-button:not(.collapsed) {
 
-		font-weight: bold;
+			background-color: #ffffff;
 
-}
+			font-weight: bold;
 
-
-
-	.activo {
-
-		color: #000 !important;
-
-		font-weight: bold;
-
-	}
-
-
-	.bandera {
-		width: 20px;
-	}
-
-	.estrellas {
-
-		color: #ffd400;
-
-	}
+		}
 
 
 
-	.precio2 {
+		.activo {
 
-		font-size: 1.7rem;
+			color: #000 !important;
 
-		font-weight: bold;
+			font-weight: bold;
 
-	}
+		}
+
+
+.bandera {width: 20px;}
+		.estrellas {
+
+			color: #ffd400;
+
+		}
 
 
 
-	.precioAnt2 {
+		.precio2 {
 
-		font-size: 0.8rem;
+			font-size: 1.7rem;
 
-		text-decoration: line-through;
+			font-weight: bold;
 
-	}
+		}
 
-	.card-img-top {
 
-		width: 100% !important;
 
-		height: 320px !important;
+		.precioAnt2 {
 
-		object-fit: cover !important;
-	}
+			font-size: 0.8rem;
 
-	.divOferta2 {
-		width: 70px;
-		height: 25px;
-		/* rgb(192, 0, 67);  */
-		margin-top: 1rem;
-		margin-right: 0rem;
-		color: white;
-		font-size: 0.8rem;
-	}
+			text-decoration: line-through;
 
-	#spanOferta {
-		background-color: #2768b7;
-	}
+		}
 
-	#spanAlimentacion {
-		background-color: #6745ef;
-	}
+		.card-img-top{
 
-	#spanTour {
-		background-color: #0cbf19;
-	}
+			width:100%!important;
 
-	#spanGuia {
-		background-color: #ffc107;
-	}
+			height: 320px!important;
 
-	#spanTickets {
-		background-color: #e91616;
-	}
+    	    object-fit: cover!important;
+		}
+		.divOferta2{width: 70px; height: 25px; /* rgb(192, 0, 67);  */ margin-top: 1rem; margin-right: 0rem; color:white; font-size: 0.8rem;  }
+		#spanOferta{ background-color: #2768b7; }
+		#spanAlimentacion{ background-color: #6745ef; }
+		#spanTour{ background-color: #0cbf19; }
+		#spanGuia{ background-color: #ffc107; }
+		#spanTickets{ background-color: #e91616; }
+		#spanTransporte{ background-color: #bf0ca9; }
 
-	#spanTransporte {
-		background-color: #bf0ca9;
-	}
-
-</style>
+	</style>
 
 	<!-- Inicio de Encabezado -->
 	<?php include ("../app/render/menu.php");?>
@@ -200,7 +172,7 @@ $idDepartamento = $indice;
 		<div class="row row-cols-1 row-cols-lg-3 row-cols-xl-4">
 			<div class="col my-2 " v-for="(tour, index) in productos" :key="tour.id">
 				<div class="card h-100 border-0  ">
-					<div v-if="tour.fotos.length>0" class="divImagen card-img-top position-relative">
+					<div v-if="tour.fotos?.length>0" class="divImagen card-img-top position-relative">
 						<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
 							<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus</span>
 							<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
@@ -312,7 +284,7 @@ $idDepartamento = $indice;
 
 				idDia: -1,
 
-				idPrecio: -1, idTransporte:-1, idHospedaje:-1, texto:'<?= $texto;?>',
+				idPrecio: -1, idTransporte:-1, idHospedaje:-1, texto:'',
 
 				precios: ['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00'],
 				hospedajes: ['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro'],
@@ -338,9 +310,9 @@ $idDepartamento = $indice;
 				}
 
 				for (let dia = 2; dia <= 31; dia++) {
-					this.duracion.push({ clave: dia+1, valor: dia + ' días / 0 noches' });
-					this.duracionDias.push({ clave: dia+1, valor: dia + ' días' });
-					this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
+				this.duracion.push({ clave: dia+1, valor: dia + ' días / 0 noches' });
+				this.duracionDias.push({ clave: dia+1, valor: dia + ' días' });
+				this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
 				}
 
 				this.buscarEnTienda();
@@ -410,16 +382,21 @@ $idDepartamento = $indice;
 					this.pedidos = await respServ.json();
 					//console.log(this.pedidos)
 
-					this.pedidos.forEach(data => {
-						this.productos.push(JSON.parse(data.contenido))
-					})
+					try {
+						this.pedidos.forEach(data => {
+							this.productos.push(JSON.parse(data.contenido))
+						})
+					} catch (error) {
+						console.log('err')
+						console.log(error)
+					}
 				},
 
 				queFoto(prod) {
 
 					//console.log( prod );
 
-					if (prod.fotos.length == 0) {
+					if (prod.fotos?.length == 0) {
 
 						return 'https://grupoEuroAndino.com/app/render/images/defecto.jpg';
 
@@ -451,11 +428,13 @@ $idDepartamento = $indice;
 
 				}
 
-				},
+			},
 
 
 				queId(index) {
+
 					return this.pedidos[index].id;
+
 				},
 				queDura(duracion){
 				return this.duracion[duracion-1].valor;

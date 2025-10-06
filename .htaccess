@@ -4,6 +4,7 @@
 RewriteEngine on
 CacheLookup on
 RewriteRule .* - [E=Cache-Control:no-autoflush]
+RewriteRule litespeed/debug/.*\.log$ - [F,L]
 RewriteRule \.litespeed_conf\.dat - [F,L]
 
 ### marker ASYNC start ###
@@ -11,14 +12,6 @@ RewriteCond %{REQUEST_URI} /wp-admin/admin-ajax\.php
 RewriteCond %{QUERY_STRING} action=async_litespeed
 RewriteRule .* - [E=noabort:1]
 ### marker ASYNC end ###
-
-### marker CACHE RESOURCE start ###
-RewriteRule wp-content/.*/[^/]*(responsive|css|js|dynamic|loader|fonts)\.php - [E=cache-control:max-age=3600]
-### marker CACHE RESOURCE end ###
-
-### marker FAVICON start ###
-RewriteRule favicon\.ico$ - [E=cache-control:max-age=86400]
-### marker FAVICON end ###
 
 ### marker DROPQS start ###
 CacheKeyModify -qs:fbclid
@@ -51,6 +44,7 @@ RewriteRule ^paquetes-turisticos-y-tours/([^/]+)/?$ tours-internacionales/filtra
 
 RewriteRule ^tours-en-peru/ tours-en-peru/filtrado.php?idTipo=1 [QSA,L]
 RewriteRule ^paquetes-turisticos-en-peru/ paquetes-turisticos-en-peru/filtrado.php?idTipo=2 [QSA,L]
+RewriteRule ^viajes-de-promocion-escolar/ viajes-de-promocion-escolar/filtrado.php?texto=$1 [QSA,L]
 
 RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -64,28 +58,3 @@ RewriteRule . /index.php [L]
 # Manual editing of this file may result in unexpected behavior.
 # To make changes to this file, use the cPanel MultiPHP INI Editor (Home >> Software >> MultiPHP INI Editor)
 # For more information, read our documentation (https://go.cpanel.net/EA4ModifyINI)
-<IfModule php8_module>
-   php_flag display_errors Off
-   php_value max_execution_time 18000
-   php_value max_input_time 12000
-   php_value max_input_vars 160000
-   php_value memory_limit 2048M
-   php_value post_max_size 2048M
-   php_value session.gc_maxlifetime 28800
-   php_value session.save_path "/var/cpanel/php/sessions/ea-php72"
-   php_value upload_max_filesize 2048M
-   php_flag zlib.output_compression Off
-</IfModule>
-<IfModule lsapi_module>
-   php_flag display_errors Off
-   php_value max_execution_time 18000
-   php_value max_input_time 12000
-   php_value max_input_vars 160000
-   php_value memory_limit 2048M
-   php_value post_max_size 2048M
-   php_value session.gc_maxlifetime 28800
-   php_value session.save_path "/var/cpanel/php/sessions/ea-php72"
-   php_value upload_max_filesize 2048M
-   php_flag zlib.output_compression Off
-</IfModule>
-# END cPanel-generated php ini directives, do not edit

@@ -504,12 +504,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.duracion.push({ clave: dia+1, valor: dia + ' días' });
 				this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
 			}
-			for (let dia = 2; dia <= 15; dia++) {
+				for (let dia = 2; dia <= 15; dia++) {
 				this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
 			}
-			for (let dia = 30; dia <= 180; dia+=15) {
-				this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
+			this.anticipacion.push({ clave: 31, valor: 31 + ' días' });
+			for (let mes = 2; mes <= 11; mes++) {
+				this.anticipacion.push({ clave: mes*31, valor: mes + ' mes' });
 			}
+			this.anticipacion.push({ clave: 365, valor: '1 año' });
 
 			var toolbarOptions = [
 			  ['bold', 'italic', 'underline', 'strike'],

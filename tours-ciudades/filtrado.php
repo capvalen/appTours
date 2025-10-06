@@ -162,13 +162,15 @@ $simple = ['a', 'e', 'i', 'o', 'u', '-'];
 $aBuscar = str_replace( $tildes, $simple, $aBuscar );
 $txtSimple = $aBuscar;
 $aBuscar = str_replace( ' ', '_', $aBuscar );
-$txtSimple = str_replace( '-', ' ', $aBuscar );
+$aBuscar = str_replace( '-', ' ', $aBuscar );
+$buscarWeb =  str_replace( '-', '_', $txtSimple );
 
-if(array_key_exists($aBuscar, $ciudades)){
-    $indice=$aBuscar;
+if(array_key_exists($buscarWeb, $ciudades)){
+    $indice=$buscarWeb;
 }else{
     $indice = -1;
 }
+//echo $indice;
 ?>
 
 <!DOCTYPE html>
@@ -311,9 +313,9 @@ if(array_key_exists($aBuscar, $ciudades)){
 
 			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='2'):?> <span>Paquetes turísticos</span><?php endif;?>
 
-			<?php if(isset($_GET['id'])):?> <span>Paquetes y tours de: <?= $departamentos[$_GET['id']-1];?> </span><?php endif;?>
+			<?php if(isset($_GET['id'])):?> <span>Tours y paquetes de: <?= $ciudades[$_GET['id']-1]['nombre'];?> </span><?php endif;?>
 
-			<?php if(isset($_GET['texto'])):?> <span>Paquetes y tours de <?php $texto=$_GET['texto']; echo $departamentos[$indice]; ?> </span><?php else: $texto=''; echo "Resultados de la ciudad: ".$txtSimple; endif;?>
+			<?php if(isset($_GET['texto'])):?> <span>Tours y paquetes de <?php $texto=$_GET['texto']; echo $ciudades[$indice]['nombre']; ?> </span><?php else: $texto=''; echo "Resultados de la ciudad: ".$txtSimple; endif;?>
 
 		</h1>
 			<?php if($indice<>-1):?> 
@@ -440,7 +442,7 @@ if(array_key_exists($aBuscar, $ciudades)){
 				idDia: -1,
 
 				idPrecio: -1, idTransporte:-1, idHospedaje:-1,
-				texto:'<?= $txtSimple;?>',
+				texto:'<?= $aBuscar;?>',
 
 				precios: ['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00'],
 				hospedajes: ['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro'],

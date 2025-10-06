@@ -105,7 +105,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</tr>
 				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
 					<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
-					<td @click="cargarPanel(todosTours[index].id, index)" class="">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
+					<td @click="cargarPanel(todosTours[index].id, index)" class="">
+						{{vTour.nombre}}
+						<span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)" title="Abrir link"><i class="icofont-external-link"></i></span>
+						<span class="text-success" title="Clonar"><i class="icofont-copy"></i></span>
+					</td>
 					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
 					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
 					<td>
@@ -342,39 +346,41 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<div class="row col d-grid gap-2 col-6 mx-auto">
 						<button type="button" class="btn btn-outline-dark" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
 					</div>
-					<p class="my-1"><strong>Precio Peruanos</strong></p>
-					<p class="my-1"><strong>Precio normal:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
-					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.adultos)}}</span> </p>
-					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.kids)}}</span> </p>
-					<p class="my-1 mt-3"><strong>Precio Extranjeros</strong></p>
-					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.adultos)}}</span> </p>
-					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.kids)}}</span> </p>
-					<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDura(tourActivo.duracion)}}</span></p>
-					<p class="my-1 mt-3"><strong>1° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora)}}</span></p>
-					<p v-if="tourActivo.hora2" class="my-1 mt-3"><strong>2° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora2)}}</span></p>
-					<p class="my-1 mt-3"><strong>Reglas de compra:</strong> </p>
-					<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
-					<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
-					<p class="my-1 mt-3"><strong>Destino:</strong> <span>{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
-					<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}} {{variasActividades()}}</span></p>
-					<p class="my-1 mt-3"><strong>Categorías:</strong> <span>{{variasCategorias()}}</span></p>
-					<p class="my-1 mt-3"><strong>Descripción:</strong> <br> </p>
-					<div class="w-100 text-break" v-html="tourActivo.descripcion"></div>
-					<p class="my-1"><strong>Punto de partida:</strong> <br> </p>
-					<div class="w-100 text-break" v-html="tourActivo.partida"></div>
-					<p class="my-1"><strong>Itinerario:</strong> <br> </p>
-					<div class="w-100 text-break" v-html="tourActivo.itinerario"></div>
-					<p class="my-1"><strong>Incluye:</strong></p>
-					<p class="ms-2" v-for="cadena in tourActivo.incluye.split('\n')"><i class="icofont-check-alt"></i> {{cadena}}</p>
-					<p class="my-1 mt-3"><strong>No incluye:</strong></p>
-					<p class="ms-2" v-for="cadena in tourActivo.noIncluye.split('\n')"><i class="icofont-close-line"></i> {{cadena}}</p>
-					<p class="my-1"><strong>Notas:</strong> <br> </p>
-					<div class="w-100 text-break" v-html="tourActivo.notas"></div>
-					
-					<div>
-						<p></p>
+					<div id="ocultar" class="d-none">
+						<p class="my-1"><strong>Precio Peruanos</strong></p>
+						<p class="my-1"><strong>Precio normal:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
+						<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.adultos)}}</span> </p>
+						<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.kids)}}</span> </p>
+						<p class="my-1 mt-3"><strong>Precio Extranjeros</strong></p>
+						<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.adultos)}}</span> </p>
+						<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.kids)}}</span> </p>
+						<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDura(tourActivo.duracion)}}</span></p>
+						<p class="my-1 mt-3"><strong>1° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora)}}</span></p>
+						<p v-if="tourActivo.hora2" class="my-1 mt-3"><strong>2° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora2)}}</span></p>
+						<p class="my-1 mt-3"><strong>Reglas de compra:</strong> </p>
+						<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
+						<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
+						<p class="my-1 mt-3"><strong>Destino:</strong> <span>{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
+						<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}} {{variasActividades()}}</span></p>
+						<p class="my-1 mt-3"><strong>Categorías:</strong> <span>{{variasCategorias()}}</span></p>
+						<p class="my-1 mt-3"><strong>Descripción:</strong> <br> </p>
+						<div class="w-100 text-break" v-html="tourActivo.descripcion"></div>
+						<p class="my-1"><strong>Punto de partida:</strong> <br> </p>
+						<div class="w-100 text-break" v-html="tourActivo.partida"></div>
+						<p class="my-1"><strong>Itinerario:</strong> <br> </p>
+						<div class="w-100 text-break" v-html="tourActivo.itinerario"></div>
+						<p class="my-1"><strong>Incluye:</strong></p>
+						<p class="ms-2" v-for="cadena in tourActivo.incluye.split('\n')"><i class="icofont-check-alt"></i> {{cadena}}</p>
+						<p class="my-1 mt-3"><strong>No incluye:</strong></p>
+						<p class="ms-2" v-for="cadena in tourActivo.noIncluye.split('\n')"><i class="icofont-close-line"></i> {{cadena}}</p>
+						<p class="my-1"><strong>Notas:</strong> <br> </p>
+						<div class="w-100 text-break" v-html="tourActivo.notas"></div>
+						
+						<div>
+							<p></p>
+						</div>
+						<button type="button" @click="eliminar()" class="btn btn-danger mt-3"><i class="icofont-ui-delete"></i> Eliminar paquete</button>
 					</div>
-					<button type="button" @click="eliminar()" class="btn btn-danger mt-3"><i class="icofont-ui-delete"></i> Eliminar paquete</button>
 					<div class="row my-2" >
 						<div class="col" v-if="tourActivo.fotos.length<16">
 							<p class="mb-0">Subir imágen:</p>
@@ -467,7 +473,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			title: 'Tours Grupo Euroandino'
 		},
 		data: {
-			//servidor: 'http://localhost/appTours/api/',
+			//servidor: 'http://localhost/euroAndinoApi/',
 			servidor: 'https://grupoeuroandino.com/app/api/', fechasAnuladas:[], fechaSeleccionada:moment().format('YYYY-MM-DD'),
 			tour:{
 				nombre: '', url:'',
@@ -509,14 +515,17 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			for (let dia = 2; dia <= 15; dia++) {
 				this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
 			}
-			for (let dia = 30; dia <= 180; dia+=15) {
-				this.anticipacion.push({ clave: dia+1, valor: dia + ' días' });
+			this.anticipacion.push({ clave: 31, valor: 31 + ' días' });
+			for (let mes = 2; mes <= 11; mes++) {
+				this.anticipacion.push({ clave: mes*31, valor: mes + ' mes' });
 			}
+			this.anticipacion.push({ clave: 365, valor: '1 año' });
 
 			var toolbarOptions = [
 				['bold', 'italic', 'underline', 'strike'],
 				[{ 'list': 'ordered'}, { 'list': 'bullet' }],
 				[{ 'header': [3, 4, false] }],
+				[{ 'align': [] }]
 			];
 
 			qDescripcion = new Quill('#qDescripcion', { theme: 'snow', modules: {

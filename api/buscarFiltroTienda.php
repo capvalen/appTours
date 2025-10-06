@@ -34,7 +34,7 @@ else{
 	$fPais='1';
 	if($_POST['idDepartamento']>-1){ $fDepartamento ="contenido like  '%\"departamento\":{$_POST['idDepartamento']},%'";}else{ $fDepartamento='1';}
 }
-if($_POST['texto']!=''){ $fTexto = "JSON_EXTRACT(contenido, '$.nombre') like '%{$_POST['texto']}%' OR JSON_EXTRACT(contenido, '$.destino') like '%{$_POST['texto']}%' "; }else{ $fTexto = '1';}
+if($_POST['texto']!=''){ $fTexto = "lower(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.nombre'))) COLLATE utf8mb4_unicode_ci like '%{$_POST['texto']}%' OR lower(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.destino'))) COLLATE utf8mb4_unicode_ci like '%{$_POST['texto']}%' "; }else{ $fTexto = '1';}
 if($_POST['idCiudad']!=''){ $fCiudades = "JSON_EXTRACT(contenido, '$.destino') = '{$_POST['idCiudad']}' "; }else{ $fCiudades = '1';}
 if($_POST['idCategoria']>-1){ $fCategoria ="JSON_EXTRACT(contenido, '$.categorias') like '%{$_POST['idCategoria']}%'";}else{ $fCategoria='1';}
 if($_POST['idDia']>-1)
