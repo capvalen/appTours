@@ -1,4 +1,5 @@
 <?php 
+
 include ("conectkarl.php");
 $_POST = json_decode(file_get_contents('php://input'),true);
 //var_dump($_POST['tour']['url']); die();
@@ -15,12 +16,12 @@ $resp = $sql->execute([ json_encode($_POST['tour'], JSON_UNESCAPED_UNICODE), $_P
 if($resp){
 	$idTour = $db->lastInsertId();
 
-	$sqlContar=$db->prepare("SELECT `url` from tours where `url` like concat(?,'%');");
+	$sqlContar=$db->prepare("SELECT `url` from tours where `url` like concat(?,'%') and activo = 1;");
 	$respContar = $sqlContar->execute([ $_POST['tour']['url'] ]);
 	$resultadosContar = $sqlContar->fetchAll(PDO::FETCH_ASSOC);
-	$repetidos = count($resultadosContar);
-	if($repetidos>1){
-		$nuevaUrl = $_POST['tour']['url'] .'-'.($repetidos+1);
+	$repetidos = count($resultadosContar)-1;
+	if($repetidos>0){
+		$nuevaUrl = $_POST['tour']['url'] .'-'.($repetidos);
 		$sqlUrl = $db->prepare("UPDATE `tours` SET url = ? where id = ?;");
 		$respUrl = $sqlUrl->execute([ $nuevaUrl, $idTour ]);
 

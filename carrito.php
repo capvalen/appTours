@@ -187,7 +187,7 @@ include '../api/'
 					<div class="card">
 						<div class="card-body text-muted">
 							<h3>Resumen del pedido</h3>
-							<p class="fs-4 text-capitalize"><a :href="'https://grupoeuroandino.com/tours/'+url" class="text-decoration-none">{{nomTour.toLowerCase()}}</a></p>
+							<p class="fs-4 text-capitalize" id="pTour"><a :href="'https://grupoeuroandino.com/tours/'+url" class="text-decoration-none">{{nomTour.toLowerCase()}}</a></p>
 							<p class="mb-0"><strong>Fecha de inicio:</strong> <span>{{empieza}}</span></p>
 							<p class="mb-0"><strong>Hora:</strong> <span>A las {{hora}}.</span></p>
 							<p class="mb-0"><strong>Nacionalidad:</strong> 
@@ -619,6 +619,8 @@ include '../api/'
         celular: document.getElementById('txtCelular').value,
         dni: document.getElementById('txtDNI').value,
         correo: document.getElementById('txtCorreo').value,
+        tour: document.getElementById('pTour').innerText,
+
     };
     
     navigator.sendBeacon('https://grupoeuroandino.com/app/api/correoSalida.php', JSON.stringify(datos));

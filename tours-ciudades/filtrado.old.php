@@ -186,7 +186,7 @@ if(array_key_exists($aBuscar, $ciudades)){
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Tours y paquetes: Ciudades - Grupo EuroAndino</title>
+	<title>Tours y paquetes: Ciudades - Grupo Euro Andino</title>
 	
 	<?php
 	if( $indice<>-1 ){ ?>

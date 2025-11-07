@@ -47,6 +47,7 @@ $aBuscar = str_replace( $tildes, $simple, $aBuscar );
 $indice =  array_search( $aBuscar, $departamentosUrl);
 $idDepartamento = $indice;
 //echo 'indice'. $indice; die();
+//echo  $departamentos[$indice];
 ?>
 
 <!DOCTYPE html>
@@ -367,7 +368,7 @@ $idDepartamento = $indice;
 
 					datos.append('idPrecio', this.idPrecio);
 
-					datos.append('texto', this.texto);
+					datos.append('texto', '<?= $departamentos[$indice]; ?>');
 
 					let respServ = await fetch(this.servidor + 'buscarFiltroTienda.php?v1', {
 

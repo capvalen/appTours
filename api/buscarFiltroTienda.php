@@ -1,7 +1,7 @@
 <?php 
-ini_set('display_errors', 1);
+/* ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL); */
 include ("conectkarl.php");
 
 $departamentos=['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'Chanchamayo', 'Chupaca', 'Concepción', 'Huancayo', 'Jauja', 'Junín', 'Satipo', 'Tarma', 'Yauli', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ];
@@ -32,7 +32,10 @@ if(isset($_POST['idPais'])){
 }
 else{
 	$fPais='1';
-	if($_POST['idDepartamento']>-1){ $fDepartamento ="contenido like  '%\"departamento\":{$_POST['idDepartamento']},%'";}else{ $fDepartamento='1';}
+	if($_POST['idDepartamento']>-1){ 
+		//$fDepartamento ="contenido like  '%\"departamento\":{$_POST['idDepartamento']},%'";}
+		$fDepartamento = "JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.departamento')) like {$_POST['idDepartamento']}";
+		}else $fDepartamento='1';
 }
 $fTexto = '1';
 if($_POST['texto']!=''){ $fTexto = "lower(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.nombre'))) COLLATE utf8mb4_unicode_ci like '%{$_POST['texto']}%' OR lower(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.destino'))) COLLATE utf8mb4_unicode_ci like '%{$_POST['texto']}%' "; }

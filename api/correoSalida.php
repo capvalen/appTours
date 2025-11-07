@@ -3,14 +3,17 @@ $input = file_get_contents('php://input');
 $datos = json_decode($input, true);
 
 $destinatario = "grupoeuroandino@hotmail.com";
-$asunto = "Cliente interesado";
+$asunto = "Reserva pendiente para {$datos['tour']}";
 $mensaje = "
 <html>
 <head>
-  <title>Cliente interesado</title>
+  <title>Reserva pendiente para {$datos['tour']}</title>
 </head>
 <body>
-  <p>Hemos detectado que este cliente puede estar interesado!</p>
+  <h5>Hola Grupo Euro Andino</h5>
+
+  <p>Tiene una reserva pendiente de pago para {$datos['tour']}</p>
+  <p>Se ha hecho una reserva y estamos esperando la confirmación del pago del viajero</p>
   <p><b>Nombre:</b> {$datos['nombre']}</p>
   <p><b>Dni:</b> {$datos['dni']}</p>
   <p><b>Celular:</b> {$datos['celular']}</p>

@@ -235,8 +235,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<div class="row">
 							<div class="col">
 								<div class="form-floating mb-3">
+									<input type="text" class="form-control" id="floDepartamento" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.departamento">
+									<label for="floDepartamento">Departamento </label>
+								</div>
+							</div>
+							<div class="col">
+								<div class="form-floating mb-3">
 									<input type="text" class="form-control" id="floDestino" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.destino">
-									<label for="floDestino">Ciudad <em style="font-size: 0.7rem">Ejm: Lima</em></label>
+									<label for="floDestino">Ciudad </label>
 								</div>
 							</div>
 						</div>
@@ -351,7 +357,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<p class="my-1 mt-3"><strong>Reglas de compra:</strong> </p>
 					<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
 					<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
-					<p class="my-1 mt-3"><strong>Destino:</strong> <span>{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
+					<p class="my-1 mt-3"><strong>Destino:</strong> <span>{{tourActivo.destino}} - {{tourActivo.departamento}}</span></p>
 					<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}} {{variasActividades()}}</span></p>
 					<p class="my-1 mt-3"><strong>Categorías:</strong> <span>{{variasCategorias()}}</span></p>
 					<p class="my-1 mt-3"><strong>Descripción:</strong> <br> </p>

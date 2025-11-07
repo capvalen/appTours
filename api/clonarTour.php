@@ -1,4 +1,8 @@
 <?php 
+/* ini_set('display_startup_errors', 1);
+    ini_set('display_errors', 1);
+    error_reporting(-1); */
+
 include ("conectkarl.php");
 $_POST = json_decode(file_get_contents('php://input'),true);
 
@@ -12,7 +16,10 @@ $resp = $sql->execute([ $_POST['id'] ]);
 $nuevo_id = $db->lastInsertId();
 
 $sql = $db->prepare("UPDATE tours 
-	SET contenido = JSON_SET(contenido, '$.fotos', '')
+	SET contenido = JSON_SET(contenido,
+	'$.fotos', '',
+	'$.url', url
+	)	
 	WHERE id = ?");
 $resp = $sql->execute([$nuevo_id]);
 //copiarConNombreAleatorio($fotos);

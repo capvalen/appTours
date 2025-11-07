@@ -72,6 +72,7 @@
     	object-fit: cover!important;
 		}
 		.icofont-google-map{margin-left:3px!important;}
+		ul{margin-bottom:0}
 	</style>
 
 
@@ -102,7 +103,7 @@
 
 				<div class="my-3 p-4 border rounded" id="divIzquierda">
 
-					<h2 class="text-danger">{{tourActivo.nombre}}</h2>
+					<h2 class="text-dark">{{tourActivo.nombre}}</h2>
 
 					<div class="row">						
 							<div v-if="tourActivo.transporte !=3 && variosTours.tipo==2" class="col-4 col-md text-center fs-6">
@@ -169,19 +170,19 @@
 
 					</div> -->
 
-					<h4 class="mt-4 text-danger">Descripción</h4>
+					<h5 class="mt-3 text-danger">Descripción</h5>
 
 					<div class="text-justify" v-html="tourActivo.descripcion"></div>
 
-					<h4 class="mt-4 text-danger">Punto de Partida</h4>
+					<h5 class="mt-3 text-danger">Punto de Partida</h5>
 
 					<div class="w-100 text-break text-justify" v-html="tourActivo.partida"></div>
 
-					<h4 class="mt-4 text-danger">Itinerario</h4>					
+					<h5 class="mt-3 text-danger">Itinerario</h5>					
 					<div class="w-100 p-2 text-justify" v-html="tourActivo.itinerario"></div>
-					<h4 class="mt-4 text-danger">Incluye</h4>
+					<h5 class="mt-3 text-danger">Incluye</h5>
 					<div class="w-100 p-2 text-justify" id="divIncluye" v-html="tourActivo.incluye"></div>
-					<h4 class="mt-4 text-danger">No incluye</h4>
+					<h5 class="mt-3 text-danger">No incluye</h5>
 					<div class="w-100 p-2 text-justify" id="divNoIncluye" v-html="tourActivo.noIncluye"></div>
 
 
@@ -586,7 +587,8 @@
 
 					<br><br>
 
-					<span><strong>Ciudad:</strong> {{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span><br>
+					<span class="text-capitalize" v-if="variosTours.pais == '140'"><strong>Ciudad:</strong> {{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span>
+					<span class="text-capitalize" v-else><strong>Departamento - Ciudad:</strong> {{tourActivo.destino}} - {{tourActivo.departamento}}</span><br>
 
 					<span><strong>Actividades:</strong> {{tourActivo.actividad}} {{variasActividades(tourActivo.actividades)}}</span><br>
 
@@ -669,8 +671,6 @@
 							<div class=" my-2 owl-carousel owl-theme">
 								<div class="col-12 my-3" v-for="(tour, index) in contenidos">
 									<div class="card border-0 h-100">
-									
-
 
 
 										<div v-if="tour.fotos.length>0" class="divImagen card-img-top position-relative">
@@ -1223,10 +1223,8 @@
 
 							loop: true,
 							margin: 20,
-							dots: true,
-
+							dots: false,
 							nav: true,
-
 							navText: ["<div class='nav-button owl-prev'>‹</div>", "<div class='nav-button owl-next'>›</div>"],
 
 							responsive: {
@@ -1323,9 +1321,12 @@
 			},
 
 			queAnticipa(valor) {
-
 				if (valor != null) {
-					if(valor==1){
+					if(valor >= 365)
+						return '1 año'
+					if(valor > 31)
+						return parseInt(valor/31) + ' meses'
+					else if(valor==1){
 						if( this.tourActivo.antes)
 						    if(this.tourActivo.antes == "0") return "Sin restricciones"
 							else return `${this.tourActivo.antes} hora${this.tourActivo.antes == 1 ? '':'s'} antes`
@@ -1348,7 +1349,7 @@
 
 					queActividad.forEach(actividad => {
 
-						actividades += " " + this.actividades2.find(x => x.id === actividad).concepto + ",";
+						actividades += " " + this.actividades2.find(x => x.id === actividad)?.concepto + ",";
 
 					});
 
@@ -1370,7 +1371,7 @@
 
 					queCategoria.forEach(actividad => {
 
-						categorias += " " + this.categorias2.find(x => x.id === actividad).concepto + ",";
+						categorias += " " + this.categorias2.find(x => x.id === actividad)?.concepto + ",";
 
 					});
 

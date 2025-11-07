@@ -44,7 +44,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 		font-weight: bold;
 
-}
+	}
 
 
 
