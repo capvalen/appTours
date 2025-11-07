@@ -46,19 +46,19 @@ include '../api/'
 								</div>
 								<div class="col">
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="" placeholder=" " v-model="documento" @keyup="buscarReniec()">
+										<input type="text" class="form-control" id="txtDNI" placeholder="" v-model="documento" @keyup="buscarReniec()">
 										<label for="floatingInput">N° Documento</label>
 									</div>
 								</div>
 								<div class="col">
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control text-capitalize" id="" placeholder=" " v-model="nombres">
+										<input type="text" class="form-control text-capitalize" id="txtNombres" placeholder=" " v-model="nombres">
 										<label for="floatingInput">Nombres</label>
 									</div>
 								</div>
 								<div class="col">
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control text-capitalize" id="" placeholder=" " v-model="apellidos">
+										<input type="text" class="form-control text-capitalize" id="txtApellidos" placeholder=" " v-model="apellidos">
 										<label for="floatingInput">Apellidos</label>
 									</div>
 								</div>
@@ -66,13 +66,13 @@ include '../api/'
 							<div class="row row-cols-1 row-cols-md-2">
 								<div class="col">
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="" placeholder=" " v-model="correo">
+										<input type="text" class="form-control" id="txtCorreo" placeholder=" " v-model="correo">
 										<label for="floatingInput">Email</label>
 									</div>
 								</div>
 								<div class="col">
 									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="" placeholder=" " v-model="celular">
+										<input type="text" class="form-control" id="txtCelular" placeholder=" " v-model="celular">
 										<label for="floatingInput">Celular</label>
 									</div>
 								</div>
@@ -599,6 +599,30 @@ include '../api/'
 		$('body').append(form);
 		form.submit();
 	}
+
+	window.addEventListener('beforeunload', function (e) {
+    // Mostrar diálogo de confirmación
+    e.preventDefault();
+    e.returnValue = '';
+    
+    // Opcional: Enviar datos al servidor
+    enviarDatosDesconexion();
+	});
+
+	function enviarDatosDesconexion() {
+		console.log('enviando')
+    // Usar navigator.sendBeacon para enviar datos de forma confiable
+		if(!document.getElementById('txtCelular').value) return false;
+
+    const datos = {
+        nombre: document.getElementById('txtApellidos').value + ' ' + document.getElementById('txtNombres').value,
+        celular: document.getElementById('txtCelular').value,
+        dni: document.getElementById('txtDNI').value,
+        correo: document.getElementById('txtCorreo').value,
+    };
+    
+    navigator.sendBeacon('https://grupoeuroandino.com/app/api/correoSalida.php', JSON.stringify(datos));
+}
 	
 	
 </script>

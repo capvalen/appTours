@@ -44,6 +44,12 @@ RewriteRule ^paquetes-turisticos-y-tours/([^/]+)/?$ tours-internacionales/filtra
 
 RewriteRule ^tours-en-peru/ tours-en-peru/filtrado.php?idTipo=1 [QSA,L]
 RewriteRule ^paquetes-turisticos-en-peru/ paquetes-turisticos-en-peru/filtrado.php?idTipo=2 [QSA,L]
+RewriteRule ^half-day half/filtrado.php?idDia=1 [QSA,L]
+RewriteRule ^half-days half/filtrado.php?idDia=1 [QSA,L]
+RewriteRule ^half-day-en-peru half/filtrado.php?idDia=1 [QSA,L]
+RewriteRule ^full-day-en-peru half/filtrado.php?idDia=2 [QSA,L]
+RewriteRule ^full-day half/filtrado.php?idDia=2 [QSA,L]
+RewriteRule ^full-days half/filtrado.php?idDia=2 [QSA,L]
 RewriteRule ^viajes-de-promocion-escolar/ viajes-de-promocion-escolar/filtrado.php?texto=$1 [QSA,L]
 
 RewriteRule ^index\.php$ - [L]

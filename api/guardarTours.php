@@ -14,6 +14,23 @@ $resp = $sql->execute([ json_encode($_POST['tour'], JSON_UNESCAPED_UNICODE), $_P
 
 if($resp){
 	$idTour = $db->lastInsertId();
+
+	$sqlContar=$db->prepare("SELECT `url` from tours where `url` like concat(?,'%');");
+	$respContar = $sqlContar->execute([ $_POST['tour']['url'] ]);
+	$resultadosContar = $sqlContar->fetchAll(PDO::FETCH_ASSOC);
+	$repetidos = count($resultadosContar);
+	if($repetidos>1){
+		$nuevaUrl = $_POST['tour']['url'] .'-'.($repetidos+1);
+		$sqlUrl = $db->prepare("UPDATE `tours` SET url = ? where id = ?;");
+		$respUrl = $sqlUrl->execute([ $nuevaUrl, $idTour ]);
+
+		$sql = $db->prepare("UPDATE tours 
+			SET contenido = JSON_SET(contenido, '$.url', ?)
+			WHERE id = ?");
+		$resp = $sql->execute([$nuevaUrl, $idTour]);
+	}
+
+
 	
 	foreach($_POST['tour']['actividades'] as $valor){
 		$sqlActiv = $db->prepare("INSERT INTO `tourActividades`(`idTour`, `idActividad`) VALUES (?, ?);");

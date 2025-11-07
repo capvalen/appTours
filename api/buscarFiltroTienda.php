@@ -1,7 +1,7 @@
 <?php 
-/* ini_set('display_errors', 1);
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL); */
+error_reporting(E_ALL);
 include ("conectkarl.php");
 
 $departamentos=['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'Chanchamayo', 'Chupaca', 'Concepción', 'Huancayo', 'Jauja', 'Junín', 'Satipo', 'Tarma', 'Yauli', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ];
@@ -27,14 +27,15 @@ $filas = [];
 if($_POST['idTour']>-1){ $fTour = "tipo = {$_POST['idTour']}"; } else{ $fTour="tipo in (1,2)";}
 if($_POST['idActividad']>-1){ $fActividad ="JSON_EXTRACT(contenido, '$.actividades') like '%{$_POST['idActividad']}%'";}else{ $fActividad='1';}
 if(isset($_POST['idPais'])){
-	$fPais = " and pais = {$_POST['idPais']} ";
+	$fPais = " pais = {$_POST['idPais']} ";
 	$fDepartamento = '1';
 }
 else{
 	$fPais='1';
 	if($_POST['idDepartamento']>-1){ $fDepartamento ="contenido like  '%\"departamento\":{$_POST['idDepartamento']},%'";}else{ $fDepartamento='1';}
 }
-if($_POST['texto']!=''){ $fTexto = "lower(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.nombre'))) COLLATE utf8mb4_unicode_ci like '%{$_POST['texto']}%' OR lower(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.destino'))) COLLATE utf8mb4_unicode_ci like '%{$_POST['texto']}%' "; }else{ $fTexto = '1';}
+$fTexto = '1';
+if($_POST['texto']!=''){ $fTexto = "lower(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.nombre'))) COLLATE utf8mb4_unicode_ci like '%{$_POST['texto']}%' OR lower(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.destino'))) COLLATE utf8mb4_unicode_ci like '%{$_POST['texto']}%' "; }
 if($_POST['idCiudad']!=''){ $fCiudades = "JSON_EXTRACT(contenido, '$.destino') = '{$_POST['idCiudad']}' "; }else{ $fCiudades = '1';}
 if($_POST['idCategoria']>-1){ $fCategoria ="JSON_EXTRACT(contenido, '$.categorias') like '%{$_POST['idCategoria']}%'";}else{ $fCategoria='1';}
 if($_POST['idDia']>-1)

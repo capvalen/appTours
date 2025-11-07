@@ -129,8 +129,8 @@
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==1 }" @click="idTour = 1" >Tours</a></p>
 
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idTour = 2" >Paquetes turísticos</a></p>
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idDia = 1" >Half Day (Medio Día)</a></p>
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idDia = 1" >Full Day (1 Día)</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==0 }" @click="idDia = 0" >Half Day (Medio Día)</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==1 }" @click="idDia = 1" >Full Day (1 Día)</a></p>
 
 								</div>
 
@@ -380,7 +380,7 @@
 
 
 
-			<div class="col-12-col-md-8 col-lg-9">
+			<div class="col-12-col-md-8 col-lg-9" id="top">
 
 				<div class="row row-cols-1 row-cols-md-3 row-cols-lg-3">
 
@@ -608,10 +608,13 @@
 				this.bandera = this.pedidos[0].namePais.toLowerCase().replace('/ \w+/g', '_') + '.jpeg'
 
 				this.pedidos.forEach(data =>{
-
 					this.productos.push(JSON.parse(data.contenido))
-
 				})
+				const elementoTop = document.getElementById('top');
+				window.scrollTo({
+            top: elementoTop.offsetTop,
+            behavior: 'smooth'
+        });
 
 			},
 

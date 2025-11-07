@@ -91,9 +91,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<tr>
 					<th>N°</th>
 					<th>Título</th>
-					<th>Precio Perú</th>
-					<th>Precio Ext.</th>
-					<th>Fechas</th>
+					<th class="d-none">Precio Perú</th>
+					<th class="d-none">Precio Ext.</th>
+					<th></th>
+					<th></th>
+					<th class="d-none">Fechas</th>
 					<th><i class="icofont-eye-alt"></i></th>
 				</tr>
 			</thead>
@@ -103,10 +105,16 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</tr>
 				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
 					<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
-					<td @click="cargarPanel(todosTours[index].id, index)" class="">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
-					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
-					<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
-					<td>
+					<td @click="cargarPanel(todosTours[index].id, index)" class="">{{vTour.nombre}} </td>
+					<td @click.stop="abrirLink(index)">
+						<span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)" title="Abrir link"><i class="icofont-external-link"></i></span>
+					</td>
+					<td @click.stop="clonar(index)">
+						<span class="text-success" title="Clonar"><i class="icofont-copy"></i></span>
+					</td>
+					<td class="d-none" @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
+					<td class="d-none" @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
+					<td class="d-none">
 						<button data-bs-toggle="offcanvas" data-bs-target="#offFechas" class="btn btn-sm btn-outline-secondary" @click.prevent="idGlobal=todosTours[index].id;tourActivo =JSON.parse(todosTours[index].contenido)"><span v-if="vTour.fechas">{{vTour.fechas.length}}</span> <span v-else>0</span></button>
 					</td>
 					<td @click="cargarPanel(todosTours[index].id, index)" >
@@ -771,7 +779,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				return( moment(hora, 'HH:mm').format('h:mm a') )
 			},
 			queAnticipa(valor){
-				return this.anticipacion[valor].valor;
+				if(valor >= 365)
+						return '1 año'
+				if(valor > 31)
+					return parseInt(valor/31) + ' meses'
+				else
+					return this.anticipacion[valor].valor;
 			},
 			queDepa(valor){
 				return this.departamentos[valor];
@@ -863,6 +876,17 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					.then( respuesta =>{
 						if(respuesta.data =='ok')
 							this.buscarProducto()
+					})
+				}
+			},
+			async clonar(index){
+				if(confirm(`¿Desea clonar el servicio de: ${this.variosTours[index].nombre}?`)){
+					const servidor = await axios.post(this.servidor + 'clonarTour.php',{
+						id: this.todosTours[index].id//, fotos: this.todosTours[index].fotos
+					})
+					.then( respuesta =>{
+						if(respuesta.data =='ok')
+							this.verTours()
 					})
 				}
 			},
