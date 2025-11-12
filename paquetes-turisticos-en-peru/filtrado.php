@@ -24,7 +24,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Filtro por producto</title>
+	<title>Paquetes Turísticos en Perú</title>
 <?php include("../app/render/headers.php");?>
 
 </head>

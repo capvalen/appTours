@@ -24,7 +24,11 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Filtro por producto</title>
+		<?php if($_GET['idDia']=='1'):?>
+			<title>Half Day en Perú - Grupo Euro Andino</title>
+		<?php else:?>
+			<title>Full Day en Perú - Grupo Euro Andino</title>
+		<?php endif?>
 	
 	<?php
 	if( $indice>=0 ){ ?>
@@ -48,7 +52,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 		font-weight: bold;
 
-}
+	}
 
 
 
@@ -145,6 +149,11 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 		<div class="container">
 		    <h1 class="fs-2 mt-3">
+				<?php if($_GET['idDia']=='1'):?>
+					<span>Half Day en Perú</span>
+				<?php else:?>
+					<span>Full Day en Perú</span>
+				<?php endif?>
 
 			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='1'):?> <span>Tours en Perú</span> <?php endif;?>
 

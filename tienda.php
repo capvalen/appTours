@@ -114,7 +114,7 @@
 
 								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoViaje" aria-expanded="true" aria-controls="tipoViaje" data-bs-parent="#acordeonPadre">
 
-									Tipo de viaje
+									Tipo de Viaje
 
 								</button>
 

@@ -18,7 +18,7 @@
 		.precioAnt{font-size: 0.8rem;text-decoration:line-through; color: rgb(58, 91, 255);}
 		.divOferta{ height:60px; border-radius: 50%; color:white; font-size: 0.8rem;  }
 		.precio2{font-size: 1.7rem;font-weight:bold; /* color: rgb(192, 0, 67); */}
-		.precioAnt2{font-size: 0.8rem;text-decoration:line-through; /* color: rgb(192, 0, 67); */}
+		.precioAnt2{text-decoration:line-through; /* color: rgb(192, 0, 67); */}
 		.divOferta2{width: 70px; height: 25px; /* rgb(192, 0, 67);  */ margin-top: 1rem; margin-right: 0rem; color:white; font-size: 0.8rem;  }
 		/* .estrellas{color: rgb(58, 91, 255);} */
 		.estrellas{color: #ffd400;}
@@ -38,6 +38,8 @@
 		.bandera {width: 20px;}
 		.titulo{font-size: 1.25rem;}
 		.icofont-google-map{margin-left:3px!important;}
+		.moneda-peque{font-size:15px}
+		#pegar p{line-height: 1;}
 	</style>
 	<div id="app">
 		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
@@ -69,7 +71,7 @@
 									aquí iba la bandera
 								</div> -->								
 								<div class="row row-cols-2">
-									<div>
+									<div class="">
 										<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"> <strong>{{tour.destino}},</strong></span>
 										<br>
 										<i class="icofont-google-map"></i> <span class="text-capitalize"><strong> {{queDepa(tour.departamento)}}</strong></span>
@@ -79,10 +81,10 @@
 										<span v-if="tour.tipo==1" class="text-muted subText">{{queDura(tour.duracion)}}</span>
 										<span v-else class="text-muted subText">{{queDuraDia(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches-1)}}</span>
 									</div>
-									<div class="text-end ">
-										<span class="precio2">S/ {{formatoMoneda(tour.peruanos.adultos)}}</span>
-										<p class="mb-0 text-end"><small>Precio normal</small></p>
-										<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0">S/ {{formatoMoneda(tour.oferta)}}</p>
+									<div class="d-flex flex-column align-items-end justify-content-end" id="pegar">
+											<p class="mb-0" style="font-size: 12px;">Desde</p>
+											<p class="mb-0"><span class="precio2"><span class="moneda-peque">S/.</span> {{formatoMoneda(tour.peruanos.adultos)}}</span></p>											
+											<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0" style="font-size: 14px"><span class="moneda">S/.</span> {{formatoMoneda(tour.oferta)}}</p>
 									</div>
 								</div>
 							</div>
@@ -94,9 +96,9 @@
 		</div>
 	</div>
 <!-- Vue desarrollo -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
 <!-- Vue producción -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 <script>
 	
 	var app = new Vue({
@@ -150,7 +152,7 @@
 				return this.departamentos[valor];
 			},
 			formatoMoneda(valor){
-				return parseFloat(valor).toFixed(2)
+				return parseFloat(valor).toFixed(0)
 			},
 			cuantasEstrellas(index){
 				return parseInt(this.tours[index].calificacion)

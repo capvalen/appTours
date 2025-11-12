@@ -28,7 +28,7 @@
 
 	IFNULL(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.fotos[0].nombreRuta')), 'defecto.jpg')as foto
 
-	FROM `tours` where url = '{$_GET['variable']}' limit 1;";
+	FROM `tours` where url = '{$_GET['variable']}' and activo = 1 limit 1;";
 
 	$sqlMeta = $db->query($sqlBase);
 
@@ -182,7 +182,7 @@
 					<div class="w-100 p-2 text-justify" v-html="tourActivo.itinerario"></div>
 					<h5 class="mt-3 text-danger">Incluye</h5>
 					<div class="w-100 p-2 text-justify" id="divIncluye" v-html="tourActivo.incluye"></div>
-					<h5 class="mt-3 text-danger">No incluye</h5>
+					<h5 class="mt-3 text-danger">No Incluye</h5>
 					<div class="w-100 p-2 text-justify" id="divNoIncluye" v-html="tourActivo.noIncluye"></div>
 
 
@@ -771,7 +771,7 @@
 									<small>Viajó el {{fechaFrom(comentario.fecha)}}</small>
 								</div>
 								<div>
-									<span>Nos calificó con</span> <span v-for="estrella in parseInt(comentario.calificacion)"><img src="http://grupoeuroandino.com/images/star.png" alt="estrella"></span>
+									<span>Nos calificó con</span> <span v-for="estrella in parseInt(comentario.calificacion)"><img src="https://grupoeuroandino.com/images/star.png" alt="estrella"></span>
 									<p class="text-capitalize">Comentario: {{comentario.comentario || 'Me gustó'}}</p>
 								</div>
 							</li>
@@ -886,7 +886,7 @@
 
 						<a href="https://grupoeuroandino.com/libro-de-reclamaciones/"><img src="https://grupoeuroandino.com/wp-content/uploads/elementor/thumbs/Libro-de-Reclamaciones-pqjdp1qustruv9u46xq03mwub2nazjop222m18a8h4.jpg" width="160" height="auto" style="margin-right:10px;"></a>
 
-						<a href="http://consultasenlinea.mincetur.gob.pe/directoriodeserviciosturisticos/DirPrestadores/DirBusquedaPrincipal/AgenciaViajes?IdGrupo=2"><img src="https://grupoeuroandino.com/wp-content/uploads/elementor/thumbs/Agencia-de-viajes-y-Turismo-Registrada-pqjfqac5b415hhgbj3eivnkskvnvqjfs4jzl6doxns.jpg" width="160" height="auto"></a>
+						<a href="https://consultasenlinea.mincetur.gob.pe/directoriodeserviciosturisticos/DirPrestadores/DirBusquedaPrincipal/AgenciaViajes?IdGrupo=2"><img src="https://grupoeuroandino.com/wp-content/uploads/elementor/thumbs/Agencia-de-viajes-y-Turismo-Registrada-pqjfqac5b415hhgbj3eivnkskvnvqjfs4jzl6doxns.jpg" width="160" height="auto"></a>
 
 					</div>
 
@@ -913,9 +913,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <!-- Desarrollo -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
 <!-- Produccion -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 
 
 	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
@@ -1202,49 +1202,31 @@
 
 				datos.append('departamento', this.tourActivo.departamento);
 
-				let respRecomendados = await fetch(this.servidor + 'pedirRecomendadosRandom.php', {
-
+				fetch(this.servidor + 'pedirRecomendadosRandom.php', {
 						method: 'POST',
 						body: datos
-
 					})
-
 					.then(response => response.json())
-
 					.then(data => {
-
 						this.recomendados = data;
-
 					}).then(() => {
-
 						$(".owl-carousel").owlCarousel({
-
 							autoplay: true,
-
 							loop: true,
 							margin: 20,
 							dots: false,
+							lazyLoad: true,
 							nav: true,
 							navText: ["<div class='nav-button owl-prev'>‹</div>", "<div class='nav-button owl-next'>›</div>"],
-
 							responsive: {
-
 								0: {
-
 									items: 1
-
 								},
-
 								600: {
-
 									items: 3
-
 								}
-
 							}
-
 						});
-
 					});
 
 				/* this.recomendados = await respRecomendados.json()
@@ -1387,19 +1369,22 @@
 
 			bloquearFechaDesde(fechaInicial) {
 
-				//console.log( fechaInicial.format('DD/MM/YYYY') );
-
+				//console.log('inicial', fechaInicial.format('DD/MM/YYYY') );
+				//console.log('fechas', this.tourActivo.fechas)
 				if(this.tourActivo.fechas){
 					for(let index = 0; index< this.tourActivo.fechas.length; index++){
 						this.diasMuertos.push(moment(this.tourActivo.fechas[index].fecha).format('DD/MM/YYYY'))
 					}
 				}
 				
-				for (let index = 1; index <= 90; index++) {
+				if( this.tourActivo.anticipacion==1) //horas
+					if( parseInt(this.tourActivo.antes) >=12 )
+						this.diasMuertos.push(moment().format('DD/MM/YYYY'));
+				if( this.tourActivo.anticipacion>1)
+					for (let index = 0; index <= this.tourActivo.anticipacion; index++)
+						this.diasMuertos.push(moment(moment.now()).add(index, 'days').format('DD/MM/YYYY'));
 
-					this.diasMuertos.push(moment(fechaInicial, 'DD/MM/YYYY').subtract(index, 'days').format('DD/MM/YYYY'));
-
-				}
+				
 				//console.log(this.diasMuertos);
 
 				//$('#dtpFecha').datepicker('destroy');
@@ -1410,7 +1395,8 @@
 					language: "es",
 					keyboardNavigation: false,
 					todayHighlight: true,
-					datesDisabled: this.diasMuertos
+					datesDisabled: this.diasMuertos,
+					startDate: new Date(),
 				});
 
 

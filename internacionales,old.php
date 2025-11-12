@@ -708,7 +708,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									console.log( 'err1' );
 								}else{ //subió bien
 									console.log( 'subio bien al indice ' + that.indexGlobal  );
-									
+									if(that.tourActivo.fotos == '') that.tourActivo.fotos = []
 									that.tourActivo.fotos.push({
 										'nombreRuta': response.data
 									});
