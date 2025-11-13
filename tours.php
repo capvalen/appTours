@@ -531,7 +531,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				['bold', 'italic', 'underline', 'strike'],
 				[{ 'list': 'ordered'}, { 'list': 'bullet' }],
 				[{ 'header': [3, 4, false] }],
-				[{ 'align': [] }]
+				[{ 'align': [] }],
 			];
 
 			qDescripcion = new Quill('#qDescripcion', { theme: 'snow', modules: {

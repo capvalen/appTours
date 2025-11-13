@@ -73,6 +73,8 @@
 		}
 		.icofont-google-map{margin-left:3px!important;}
 		ul{margin-bottom:0}
+		.moneda-peque{font-size:15px}
+	#pegar p{line-height: 1; color: #000;}
 	</style>
 
 
@@ -107,8 +109,9 @@
 
 					<div class="row">						
 							<div v-if="tourActivo.transporte !=3 && variosTours.tipo==2" class="col-4 col-md text-center fs-6">
+								<span  v-if="tourActivo.transporte==='1'"><span class="fs-2"><i class="icofont-bus"></i></span> Bus</span>
 								<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span style="display: inline-block;-webkit-transform:rotate(45deg)"><i class="icofont-airplane"></i></span></span> Avión</span>
-								<span v-else><span class="fs-2"><i class="icofont-bus"></i></span> Bus</span>
+								<span v-if="tourActivo.transporte==='4'"><span class="fs-2"><i class="icofont-ship-alt"></i></span> <span>Acuático</span></span>
 							</div>
 							<div v-if="tourActivo.alojamiento" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-bed"></i></span> {{retornarHospedaje(tourActivo.alojamiento)}}</div>
 							<div v-if="tourActivo.alimentacion" class="col-4 col-md text-center fs-6"> <span class="fs-2"><i class="icofont-fork-and-knife"></i></span> Alimentación </div>
@@ -179,11 +182,11 @@
 					<div class="w-100 text-break text-justify" v-html="tourActivo.partida"></div>
 
 					<h5 class="mt-3 text-danger">Itinerario</h5>					
-					<div class="w-100 p-2 text-justify" v-html="tourActivo.itinerario"></div>
+					<div class="w-100 px-2 text-justify" v-html="tourActivo.itinerario"></div>
 					<h5 class="mt-3 text-danger">Incluye</h5>
-					<div class="w-100 p-2 text-justify" id="divIncluye" v-html="tourActivo.incluye"></div>
+					<div class="w-100 px-2 text-justify" id="divIncluye" v-html="tourActivo.incluye"></div>
 					<h5 class="mt-3 text-danger">No Incluye</h5>
-					<div class="w-100 p-2 text-justify" id="divNoIncluye" v-html="tourActivo.noIncluye"></div>
+					<div class="w-100 px-2 text-justify" id="divNoIncluye" v-html="tourActivo.noIncluye"></div>
 
 
 
@@ -210,7 +213,7 @@
 					<h5 class="mt-3 text-danger">Notas</h5>
 					<div v-html="tourActivo.notas"></div>
 
-					<div class="w-100 text-break p-2" id="divNotas" v-html="entregarCorto(inferior, !verMas)"></div>
+					<div class="w-100 text-break px-2" id="divNotas" v-html="entregarCorto(inferior, !verMas)"></div>
 
 					<p @click="verMas = !verMas">
 
@@ -676,7 +679,9 @@
 										<div v-if="tour.fotos.length>0" class="divImagen card-img-top position-relative">
 											<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
 													<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus {{variosTours.tipo}}</span>
-													<span v-else-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
+													<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
+													<span v-if="tour.transporte==4" class="mx-1 px-1 rounded" id="spanTransporte">Barco</span>
+													
 													<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{retornarHospedaje(tour.alojamiento)}}</span>
 													<span v-if="tour.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
 												<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
@@ -711,10 +716,10 @@
 														<span v-else class="text-muted subText">{{queDuraDia(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches-1)}}</span>
 													
 													</div>
-													<div class="text-end ">
-														<span class="precio2">S/ {{formatoMoneda(tour.peruanos.adultos)}}</span>
-														<p class="mb-0 text-end"><small>Precio normal</small></p>
-														<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0">S/ {{formatoMoneda(tour.oferta)}}</p>
+													<div class="d-flex flex-column align-items-end justify-content-end" id="pegar">
+														<p class="mb-0" style="font-size: 12px;">Desde</p>
+														<p><span class="precio2"><span class="moneda-peque">S/.</span> {{formatoMonedaCero(tour.peruanos.adultos)}}</span></p>
+														<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0">S/. {{formatoMonedaCero(tour.oferta)}}</p>
 													</div>
 												</div>
 											</div>
@@ -1195,7 +1200,7 @@
 
 
 
-
+				$('.owl-carousel').owlCarousel('destroy');
 				let datos = new FormData();
 
 				datos.append('tipo', this.tourActivo.tipo);
@@ -1473,11 +1478,8 @@
 
 				},
 
-				formatoMoneda(valor) {
-
-					return parseFloat(valor).toFixed(2)
-
-				},
+				formatoMoneda(valor) { return parseFloat(valor).toFixed(2) },
+				formatoMonedaCero(valor) { return parseFloat(valor).toFixed(0) },
 
 				/* 	
 

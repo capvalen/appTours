@@ -229,8 +229,8 @@
 	<div class="container text-center" id="appBuscador">
 
 		<div class="position-relative">
-			<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);">
-			<span id="divLupa" class="position-absolute"><img src="https://perutravelservice.com/app/render/images/search.svg" alt=""></span>
+			<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);" @keyup.enter="irA('ultimo')">
+			<span id="divLupa" class="position-absolute"><img src="https://grupoeuroandino.com/images/search_icon.svg" alt="" style="width: 25px;"></span>
 		</div>
 			<!-- <div class="form-inline">
 				<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);">

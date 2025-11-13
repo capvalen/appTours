@@ -48,9 +48,6 @@
 	}
 
 	.precioAnt2 {
-
-		font-size: 0.8rem;
-
 		text-decoration: line-through;
 
 	}
@@ -94,6 +91,8 @@
 		.bandera { width: 20px; }
 		.titulo{font-size: 1.25rem; font-weight: bold;}
 		.icofont-google-map{margin-left:3px!important;}
+		.moneda-peque{font-size:15px}
+		#pegar p{line-height: 1; color: #000;}
 </style>
 
 	<div class="container-fluid" id="app">
@@ -421,13 +420,10 @@
 								<span class="text-muted subText">{{queDuracion(producto.duracion, producto.tipo)}}</span>
 							</div>
 
-							<div class="text-end " style="color:#000">
-
-								<span class="precio2"><span class="monedita fs-6">S/</span> {{formatoMoneda(producto.peruanos.adultos)}}</span>
-								<p class="mb-0 text-end"><small>Precio normal</small></p>
-
-								<p v-if="producto.oferta>0" class="precioAnt2 mb-0">S/ {{formatoMoneda(producto.oferta)}}</p>
-
+							<div class="d-flex flex-column align-items-end justify-content-end" id="pegar">
+								<p class="mb-0" style="font-size: 12px;">Desde</p>
+								<p><span class="precio2"><span class="moneda-peque">S/. </span> {{formatoMoneda(producto.peruanos.adultos)}}</span></p>
+								<p v-if="producto.oferta>0" class="precioAnt2 mb-0" style="font-size: 14px">S/. {{formatoMoneda(producto.oferta)}}</p>
 							</div>
 
 						</div>
@@ -664,7 +660,7 @@
 
 			formatoMoneda(valor){
 
-				return parseFloat(valor).toFixed(2)
+				return parseFloat(valor).toFixed(0)
 
 			},
 

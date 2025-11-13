@@ -236,6 +236,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<div class="form-floating mb-3">
 							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.transporte">
 								<option value="3">Ninguno</option>
+								<option value="4">Acuático</option>
 								<option value="2">Aéreo</option>
 								<option value="1">Terrestre</option>
 							</select>
@@ -525,6 +526,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			  ['bold', 'italic', 'underline', 'strike'],
 			  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
 				[{ 'header': [3, 4, false] }],
+				[{ 'align': [] }],
 			];
 
 			qDescripcion = new Quill('#qDescripcion', { theme: 'snow', modules: {

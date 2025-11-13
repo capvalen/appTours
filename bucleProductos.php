@@ -49,6 +49,7 @@
 						<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
 							<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus</span>
 							<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
+							<span v-if="tour.transporte==4" class="mx-1 px-1 rounded" id="spanTransporte">Barco</span>
 							<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[parseInt(tour.alojamiento)-1]}}</span>
 							<span v-if="tour.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
 							<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
@@ -60,8 +61,6 @@
 					</div>
 					<div class="card-body">
 						<div class="divProducto ">
-							
-							
 							<div>
 								<p class="mb-0 titulo ps-1 ">
 									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
