@@ -1,14 +1,10 @@
 <?php
 
-//var_dump($_GET); die();
-
 if (isset($_GET['id'])) { $idDepartamento = $_GET['id']-1; } else { $idDepartamento = -1; }
 
 if (isset($_GET['idTipo'])) { $idTipo = $_GET['idTipo']; } else { $idTipo = -1; }
 
 $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ];
-$descripcion = ['Reserva online Paquetes y Tours de Amazonas. Destinos y Actividades en Amazonas. Lugares, festividades, ciudades y pueblos de Amazonas', 'Reserva online Paquetes y Tours de Áncash. Destinos y Actividades en Áncash. Lugares, festividades, playas, ciudades y pueblos de Áncash', 'Reserva online Paquetes y Tours de Apurímac. Destinos y Actividades en Apurímac. Lugares, festividades, ciudades y pueblos de Apurímac', 'Reserva online Paquetes y Tours de Apurímac. Destinos y Actividades en Apurímac. Lugares, festividades, ciudades y pueblos de Apurímac', 'Reserva online Paquetes y Tours de Ayacucho. Destinos y Actividades en Ayacucho. Lugares, festividades, ciudades y pueblos de Ayacucho', 'Reserva online Paquetes y Tours de Cajamarca. Destinos y Actividades en Cajamarca. Lugares, festividades, ciudades y pueblos de Cajamarca', 'Reserva online Paquetes y Tours de Cusco. Destinos y Actividades en Cusco. Lugares, festividades, ciudades y pueblos de Cusco', 'Reserva online Paquetes y Tours del Callao. Destinos y Actividades en el Callao. Lugares, festividades, playas, ciudades y pueblos del Callao', 'Reserva online Paquetes y Tours de Huancavelica. Destinos y Actividades en Huancavelica. Lugares, festividades, ciudades y pueblos de Huancavelica','Reserva online Paquetes y Tours de Huánuco. Destinos y Actividades en Huánuco. Lugares, festividades, ciudades y pueblos de Huánuco', 'Reserva online Paquetes y Tours de Ica. Destinos y Actividades en Ica. Lugares, festividades, playas, ciudades y pueblos de Ica', 'Reserva online Paquetes y Tours de Junín. Destinos y Actividades en Junín. Lugares, festividades, ciudades y pueblos de Junín', 'Reserva online Paquetes y Tours de La Libertad. Destinos y Actividades en La Libertad. Lugares, festividades, playas, ciudades y pueblos de La Libertad', 'Reserva online Paquetes y Tours de Lambayeque. Destinos y Actividades en Lambayeque. Lugares, festividades, playas, ciudades y pueblos de Lambayeque', 'Reserva online Paquetes y Tours de Lima. Destinos y Actividades en Lima. Lugares, festividades, playas, ciudades y pueblos de Lima', 'Reserva online Paquetes y Tours de Loreto. Destinos y Actividades en Loreto. Lugares, festividades, ciudades y pueblos de Loreto', 'Reserva online Paquetes y Tours de Madre de Dios. Destinos y Actividades en Madre de Dios. Lugares, festividades, ciudades y pueblos de Madre de Dios', 'Reserva online Paquetes y Tours de Madre de Dios. Destinos y Actividades en Madre de Dios. Lugares, festividades, ciudades y pueblos de Madre de Dios', 'Reserva online Paquetes y Tours de Pasco. Destinos y Actividades en Pasco. Lugares, festividades, ciudades y pueblos de Pasco', 'Reserva online Paquetes y Tours de Piura. Destinos y Actividades en Piura. Lugares, festividades, playas, ciudades y pueblos de Piura', 'Reserva online Paquetes y Tours de Puno. Destinos y Actividades en Puno. Lugares, festividades, ciudades y pueblos de Puno','Reserva online Paquetes y Tours de San Martín. Destinos y Actividades en San Martín. Lugares, festividades, ciudades y pueblos de San Martín', 'Reserva online Paquetes y Tours de Tacna. Destinos y Actividades en Tacna. Lugares, festividades, playas, ciudades y pueblos de Tacna', 'Reserva online Paquetes y Tours de Tumbes. Destinos y Actividades en Tumbes. Lugares, festividades, playas, ciudades y pueblos de Tumbes', 'Reserva online Paquetes y Tours de Ucayali. Destinos y Actividades en Ucayali. Lugares, festividades, ciudades y pueblos de Ucayali' ];
-$fotos = ['https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-amazonas.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-ancash.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-apurimac.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-arequipa.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-ayacucho.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-cajamarca.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-cusco.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-callao.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-huancavelica.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-huanuco.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-ica.jpeg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-junin.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-la-libertad.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-lambayeque.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-lima.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-loreto.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-madre-de-dios.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-moquegua.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-pasco.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-piura.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-puno.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-san-martin.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-tacna.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-tumbes.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-ucayali.jpg']
 
 ?>
 
@@ -26,146 +22,188 @@ $fotos = ['https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tou
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Filtro por producto</title>
+	<title>Viajes de promoción escolar - Grupo Euro Andino</title>
+	
+	<?php
+	if( $indice>=0 ){ ?>
+		<meta property="og:title" content="Paquetes y tours de <?= $departamentos[$indice] ?> - Grupo Euro Andino">
+		<meta property="og:image" content="<?= $fotos[$indice] ?>">
+		<meta property="og:description" content="<?= strip_tags($descripcion[$indice]) ?>">
+		<?php
+	}
+	?>
 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
+<?php include("../app/render/headers.php");?>
 
 </head>
 
-
-
 <body>
 
-	<style>
+<style>
+	.accordion-button:not(.collapsed) {
 
-		.accordion-button:not(.collapsed) {
+		background-color: #ffffff;
 
-			background-color: #ffffff;
+		font-weight: bold;
 
-			font-weight: bold;
-
-		}
-
-
-
-		.activo {
-
-			color: #000 !important;
-
-			font-weight: bold;
-
-		}
+}
 
 
 
-		.estrellas {
+	.activo {
 
-			color: #ffd400;
+		color: #000 !important;
 
-		}
+		font-weight: bold;
 
-
-
-		.precio2 {
-
-			font-size: 1.7rem;
-
-			font-weight: bold;
-
-		}
+	}
 
 
+	.bandera {
+		width: 20px;
+	}
 
-		.precioAnt2 {
+	.estrellas {
 
-			font-size: 0.8rem;
+		color: #ffd400;
 
-			text-decoration: line-through;
+	}
 
-		}
 
-		.card-img-top{
 
-			width:100%!important;
+	.precio2 {
 
-			height: 250px!important;
+		font-size: 1.7rem;
 
-    	object-fit: cover!important;
+		font-weight: bold;
 
-		}
+	}
 
-	</style>
+
+
+	.precioAnt2 {
+		text-decoration: line-through;
+	}
+
+	.card-img-top {
+
+		width: 100% !important;
+
+		height: 320px !important;
+
+		object-fit: cover !important;
+	}
+
+	.divOferta2 {
+		width: 70px;
+		height: 25px;
+		/* rgb(192, 0, 67);  */
+		margin-top: 1rem;
+		margin-right: 0rem;
+		color: white;
+		font-size: 0.8rem;
+	}
+
+	#spanOferta {
+		background-color: #2768b7;
+	}
+
+	#spanAlimentacion {
+		background-color: #6745ef;
+	}
+
+	#spanTour {
+		background-color: #0cbf19;
+	}
+
+	#spanGuia {
+		background-color: #ffc107;
+	}
+
+	#spanTickets {
+		background-color: #e91616;
+	}
+
+	#spanTransporte {
+		background-color: #bf0ca9;
+	}
+	.moneda-peque{font-size:15px}
+	#pegar p{line-height: 1; color: #000;}
+</style>
+
+	<!-- Inicio de Encabezado -->
+	<?php include ("../app/render/menu.php");?>
+
+	<!-- Fin de Encabezado -->
 
 	<div class="container-fluid" id="app">
 
-		<h1 class="fs-2 mt-3">
+		<div class="container">
+		    <h1 class="fs-2 mt-3">
+			<span>Viajes de promoción escolar</span>
 
-			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='1'):?> <span>Tours</span> <?php endif;?>
-
-			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='2'):?> <span>Paquetes turísticos</span><?php endif;?>
+			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='2'):?> <span>Paquetes turísticos en Perú</span><?php endif;?>
 
 			<?php if(isset($_GET['id'])):?> <span>Paquetes y tours de: <?= $departamentos[$_GET['id']-1];?> </span><?php endif;?>
 
-			<?php if(isset($_GET['texto'])):?> <span>Resultados por: <?= $texto=$_GET['texto'];?> </span><?php else: $texto=''; endif;?>
+			<?php if(isset($_GET['texto'])):?> <span>Resultados por: <?php $texto=$_GET['texto']; echo $departamentos[$indice]; ?> </span><?php else: $texto=''; endif;?>
 
 		</h1>
+		<p class="my-3"><?= $comentario[$indice];?></p>
+		
+		</div>
 
 		<div class="row row-cols-1 row-cols-lg-3 row-cols-xl-4">
-
-			<div class="col my-2 " v-for="(producto, index) in productos" :key="producto.id">
-
-				<div class="card h-100">
-
-					<img :src="queFoto(producto)" class="card-img-top" alt="...">
-
-					<div class="card-body">
-
-						<h5 class="card-title text-capitalize mb-0">
-
-							<a v-if="producto.tipo==1" class="text-decoration-none text-dark" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
-
-							<a v-if="producto.tipo==2" class="text-decoration-none text-dark" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
-
-						</h5>
-
-
-
-						<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span></p>
-
-						<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
-
-
-
-
-
-						<div class="row row-cols-2">
-
-							<div>
-
-								<span>{{queDuracion(producto.duracion, producto.tipo)}}</span>
-
-							</div>
-
-							<div class="text-end ">
-
-								<span class="precio2"><span class="monedita fs-6">S/</span> {{formatoMoneda(producto.peruanos.adultos)}}</span>
-
-								<p v-if="producto.oferta>0" class="precioAnt2 mb-0">S/ {{formatoMoneda(producto.oferta)}}</p>
-
-							</div>
-
+			<div class="col my-2 " v-for="(tour, index) in productos" :key="tour.id">
+				<div class="card h-100 border-0  ">
+					<div v-if="tour.fotos.length>0" class="divImagen card-img-top position-relative">
+						<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
+							<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus</span>
+							<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
+							<span v-if="tour.transporte==4" class="mx-1 px-1 rounded" id="spanTransporte">Barco</span>
+							<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[tour.alojamiento]}}</span>
+							<span v-if="tour.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
+							<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
+							<span v-if="tour.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
+							<span v-if="tour.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
 						</div>
-
+						<a class="aImgs" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+						<a class="aImgs" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
 					</div>
-
+					<div class="card-body">
+						<div class="divProducto ">
+							<div>
+								<p class="mb-0 titulo ps-1 ">
+									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent">{{tour.nombre}}</a>
+									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent">{{tour.nombre}}</a>
+								</p>
+								<!-- <div class="d-flex justify-content-between">
+									aquí iba la bandera
+								</div> -->								
+								<div class="row row-cols-2">
+									<div>
+										<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"> <strong>{{tour.destino}},</strong></span>
+										<br>
+										<i class="icofont-google-map"></i> <span class="text-capitalize"><strong> {{queDepa(tour.departamento)}}</strong></span>
+										<div class="estrellas">
+											<i v-for="star in cuantasEstrellas(index)" class="icofont-star"></i>
+										</div>
+										<span v-if="tour.tipo==1" class="text-muted subText">{{queDura(tour.duracion)}}</span>
+										<span v-else class="text-muted subText">{{queDuraDia(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches-1)}}</span>
+									</div>
+									<div class="d-flex flex-column align-items-end justify-content-end" id="pegar">
+										<p class="mb-0" style="font-size: 12px;">Desde</p>
+										<p><span class="precio2"><span class="moneda-peque">S/.</span> {{formatoMoneda(tour.peruanos.adultos)}}</span></p>
+										<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0" style="font-size: 14px">S/. {{formatoMoneda(tour.oferta)}}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-
 			</div>
 
 			<div v-if="productos.length==0">
-
 				<p>No existen productos que coincidan</p>
 
 			</div>
@@ -220,52 +258,29 @@ $fotos = ['https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tou
 
 				categorias: [],
 
-				idTour: <?= $idTipo; ?>,
+				idTour: -1,
 
 				idActividad: -1,
 
-				idDepartamento: <?= $idDepartamento; ?>,
+				idDepartamento: -1,
 
-				idCategoria: -1,
+				idCategoria: '<?=  $_GET['idCategoria'] ?>',
 
 				idDia: -1,
 
-				idPrecio: -1, idTransporte:-1, idHospedaje:-1, texto:'<?= $texto;?>',
+				idPrecio: -1, idTransporte:-1, idHospedaje:-1, texto:'',
 
 				precios: ['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00'],
+				hospedajes: ['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro'],
 
 				actividadSelect: '',
-
 				categoriaSelect: '',
 
-				productos: [],
-
-				duracion: [
-
-					{ clave: 1, valor: 'Half Day (Medio día)' },
-
-					{ clave: 2, valor: 'Full Day (1 día)' }],
-
-				duracionDias: [
-
-					{ clave: 1, valor: 'Half Day (Medio día)' },
-
-					{ clave: 2, valor: 'Full Day (1 día)' }],
-
-				duracionNoches: [{
-
-					clave: 1,
-
-					valor: '0 noches'
-
-				}, {
-
-					clave: 2,
-
-					valor: '1 noche'
-
-				}],
-
+				productos: [], contenidos:[],
+				duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
+				duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
+				duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
+				departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 				pedidos: []
 
 			},
@@ -275,49 +290,17 @@ $fotos = ['https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tou
 				this.cargar();
 
 				for (let i = 1; i <= 31; i++) {
-
 					this.dias.push(i);
-
 				}
 
 				for (let dia = 2; dia <= 31; dia++) {
-
-					this.duracion.push({
-
-						clave: dia + 1,
-
-						valor: dia + " días / 0 noches"
-
-					});
-
-					this.duracionDias.push({
-
-						clave: dia + 1,
-
-						valor: dia + " días"
-
-					});
-
-					this.duracionNoches.push({
-
-						clave: dia + 1,
-
-						valor: dia + ' noches'
-
-					});
-
+					this.duracion.push({ clave: dia+1, valor: dia + ' días / 0 noches' });
+					this.duracionDias.push({ clave: dia+1, valor: dia + ' días' });
+					this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
 				}
 
 				this.buscarEnTienda();
-
-
-
-
-
 				//modalNuevo = new bootstrap.Modal( document.getElementById('modalNuevo') );
-
-
-
 			},
 
 			methods: {
@@ -381,18 +364,11 @@ $fotos = ['https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tou
 					//console.log( await respServ.json() );
 
 					this.pedidos = await respServ.json();
-					//console.log(pedidos)
-
-
+					//console.log(this.pedidos)
 
 					this.pedidos.forEach(data => {
-
 						this.productos.push(JSON.parse(data.contenido))
-
 					})
-
-
-
 				},
 
 				queFoto(prod) {
@@ -431,24 +407,33 @@ $fotos = ['https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tou
 
 				}
 
-			},
-
-				queDepa(valor) {
-
-					return this.departamentos[valor];
-
 				},
 
-				formatoMoneda(valor) {
-
-					return parseFloat(valor).toFixed(2)
-
-				},
 
 				queId(index) {
-
 					return this.pedidos[index].id;
-
+				},
+				queDura(duracion){
+				return this.duracion[duracion-1].valor;
+				},
+				//Nuevos:
+				queDuraDia(duracion){
+					//return this.duracion[duracion].valor;
+					return this.duracionDias.find( x => x.clave === duracion ).valor;
+				},
+				queDuraNoche(duracion){ 
+					if(duracion>=1){
+						return this.duracionNoches[duracion].valor;
+					}
+				},
+				queDepa(valor){
+					return this.departamentos[valor];
+				},
+				formatoMoneda(valor){
+					return parseFloat(valor).toFixed(0)
+				},
+				cuantasEstrellas(index){
+					return parseInt(this.pedidos[index].calificacion)
 				}
 
 			}

@@ -108,10 +108,10 @@
 					<h2 class="text-dark">{{tourActivo.nombre}}</h2>
 
 					<div class="row">						
-							<div v-if="tourActivo.transporte !=3 && variosTours.tipo==2" class="col-4 col-md text-center fs-6">
-								<span  v-if="tourActivo.transporte==='1'"><span class="fs-2"><i class="icofont-bus"></i></span> Bus</span>
-								<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span style="display: inline-block;-webkit-transform:rotate(45deg)"><i class="icofont-airplane"></i></span></span> Avión</span>
-								<span v-if="tourActivo.transporte==='4'"><span class="fs-2"><i class="icofont-ship-alt"></i></span> <span>Acuático</span></span>
+							<div v-if="tourActivo.transporte !=3 && variosTours.tipo==2" class="col-4 col-md text-center fs-6 text-capitalize">
+								<span  v-if="tourActivo.transporte==='1'"><span class="fs-2"><i class="icofont-bus"></i></span> <span>{{queTransporte()}}</span></span>
+								<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span style="display: inline-block;-webkit-transform:rotate(45deg)"><i class="icofont-airplane"></i></span></span> <span>{{queTransporte()}}</span></span>
+								<span v-if="tourActivo.transporte==='4'"><span class="fs-2"><i class="icofont-ship-alt"></i></span> <span>{{queTransporte()}}</span></span>
 							</div>
 							<div v-if="tourActivo.alojamiento" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-bed"></i></span> {{retornarHospedaje(tourActivo.alojamiento)}}</div>
 							<div v-if="tourActivo.alimentacion" class="col-4 col-md text-center fs-6"> <span class="fs-2"><i class="icofont-fork-and-knife"></i></span> Alimentación </div>
@@ -174,7 +174,6 @@
 					</div> -->
 
 					<h5 class="mt-3 text-danger">Descripción</h5>
-
 					<div class="text-justify" v-html="tourActivo.descripcion"></div>
 
 					<h5 class="mt-3 text-danger">Punto de Partida</h5>
@@ -680,8 +679,7 @@
 											<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
 													<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus {{variosTours.tipo}}</span>
 													<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
-													<span v-if="tour.transporte==4" class="mx-1 px-1 rounded" id="spanTransporte">Barco</span>
-													
+													<span v-if="tour.transporte==4" class="mx-1 px-1 rounded" id="spanTransporte">Barco</span>													
 													<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{retornarHospedaje(tour.alojamiento)}}</span>
 													<span v-if="tour.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
 												<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
@@ -693,9 +691,7 @@
 										</div>
 										
 										<div class="card-body">
-											<div class="divProducto ">
-								
-								
+											<div class="divProducto ">								
 												<div>
 													<p class="mb-0 titulo text-capitalize text-start"><strong>
 														<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
@@ -918,9 +914,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <!-- Desarrollo -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <!-- Produccion -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
 
 
 	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
@@ -1023,7 +1019,18 @@
 					}],
 
 					departamentos: ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'El Callao', 'Huancavelica', 'Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno', 'San Martín', 'Tacna', 'Tumbes', 'Ucayali'],
-
+					queTransportes: [
+						{ id: 0, transporte: "ninguno", idTransporte: 3 },
+						// Terrestre (1)
+						{ id: 1, transporte: "tren", idTransporte: 1 },
+						{ id: 2, transporte: "bus", idTransporte: 1 },
+						// Aéreo (2)
+						{ id: 3, transporte: "avión", idTransporte: 2 },
+						{ id: 4, transporte: "avioneta", idTransporte: 2 },
+						// Acuático (4)
+						{ id: 5, transporte: "barco", idTransporte: 4 },
+						{ id: 6, transporte: "lancha", idTransporte: 4 }
+					],
 					diasMuertos: [],
 					precioTotal: 0,
 					nacionalidad: -1,
@@ -1574,6 +1581,20 @@
 				retornarHospedaje(id){
 					let al = this.hospedajes.find(x=> x.id == id)
 					if (al) return al.alojamiento
+				},
+				queTransporte(){
+					if ( 'idTransporte' in this.tourActivo )
+						return this.queTransportes.find(tra => tra.id == this.tourActivo.idTransporte )?.transporte
+					else{
+						let texto = ''
+						switch(this.tourActivo.transporte){
+							case '1': texto = 'bus'; break;
+							case '2': texto = 'avión'; break;
+							case '3': texto = 'Ninguno'; break;
+							case '4': texto = 'barco'; break;
+						}
+						return texto
+					}
 				}
 			},
 

@@ -130,6 +130,7 @@
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idTour = 2" >Paquetes Turísticos</a></p>
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==0 }" @click="idDia = 0" >Half Day (Medio Día)</a></p>
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==1 }" @click="idDia = 1" >Full Day (1 Día)</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCategoria==38 }" @click="idCategoria = 38" >Viajes de promoción escolar</a></p>
 
 								</div>
 

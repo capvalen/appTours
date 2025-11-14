@@ -242,6 +242,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							</select>
 							<label for="floatingSelect">Tipo de transporte</label>
 						</div>
+						<div class="form-floating mb-3" v-if="tour.transporte!=3">
+							<select class="form-select text-capitalize" id="floatingSelect" aria-label="Floating label select example" v-model="tour.idTransporte">
+								<option class="text-capitalize" v-for="transporte in transportes" v-if="transporte.idTransporte == tour.transporte" :value="transporte.id">{{transporte.transporte}}</option>
+							</select>
+							<label for="floatingSelect">Sub Tipo de transporte</label>
+						</div>
 						<div class="form-floating mb-3">
 							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.alojamiento">
 								<option v-for="alojamiento in alojamientos" :value="alojamiento.id">{{alojamiento.alojamiento}}</option>
@@ -493,6 +499,18 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				destino: '', departamento: '', actividad:'', categoria:'',
 				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0, actividades:[], categorias: []
 			},
+			transportes: [
+				{ id: 0, transporte: "ninguno", idTransporte: 3 },
+				// Terrestre (1)
+				{ id: 1, transporte: "tren", idTransporte: 1 },
+				{ id: 2, transporte: "bus", idTransporte: 1 },
+				// Aéreo (2)
+				{ id: 3, transporte: "avión", idTransporte: 2 },
+				{ id: 4, transporte: "avioneta", idTransporte: 2 },
+				// Acuático (4)
+				{ id: 5, transporte: "barco", idTransporte: 4 },
+				{ id: 6, transporte: "lancha", idTransporte: 4 }
+			],
 			mensajeBien:'Guardado correctamente', mensajeMal:'Hubo un error al conectar',
 			variosTours:[], todosTours:[], idGlobal:-1, indexGlobal:-1, tourActivo:[],
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ], duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
