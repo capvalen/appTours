@@ -1,0 +1,46 @@
+
+.aImgs{
+  display:inline-block;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  text-decoration: none;
+}
+
+/* imagen dentro del link */
+.aImgs img{
+  display:block;
+  width:100%;
+  height:auto;
+  transition: transform .35s ease;
+}
+
+/* pseudo-elemento que actúa como 'shutter' */
+.aImgs::before{
+  content:"";
+  position:absolute;
+  /* Center the shutter */
+  left:50%;
+  top:50%;
+  /* large enough so rotated rectangle covers the image when scaled */
+  width:160%;
+  height:160%;
+  /* 70% white transparency as requested */
+  background: rgba(255,255,255,0.7);
+  /* rotate the rectangle 45deg */
+  transform: translate(-50%,-50%) rotate(45deg) scaleX(0);
+  transform-origin: center center;
+  transition: transform .8s cubic-bezier(.2,.9,.3,1), opacity .8s ease;
+  z-index:2;
+  pointer-events:none;
+}
+
+/* hover: expand the shutter horizontally (scaleX -> 1) and fade it out */
+.aImgs:hover::before{
+  transform: translate(-50%,-50%) rotate(45deg) scaleX(1);
+  opacity:0;
+	transition: transform .8s cubic-bezier(.2,.9,.3,1), opacity .8s ease;
+}
+.divOferta2{z-index: 3;}

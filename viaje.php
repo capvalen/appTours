@@ -1207,7 +1207,6 @@
 
 
 
-				$('.owl-carousel').owlCarousel('destroy');
 				let datos = new FormData();
 
 				datos.append('tipo', this.tourActivo.tipo);
@@ -1222,6 +1221,8 @@
 					.then(data => {
 						this.recomendados = data;
 					}).then(() => {
+						$('.owl-carousel').owlCarousel('destroy');
+
 						$(".owl-carousel").owlCarousel({
 							autoplay: true,
 							loop: true,
