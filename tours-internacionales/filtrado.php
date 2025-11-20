@@ -1222,7 +1222,7 @@ else
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Tours y Paquetes: Internacionales - Grupo EuroAndino</title>
+	<title>Paquetes Turísticos y Tours de <?= $paises[$indice]['nombre']; ?> - Grupo Euro Andino</title>
 	<link rel="icon" href="https://grupoeuroandino.com/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon-32x32.png" sizes="32x32" />
 	<?php
 	if( $indice<>-1 ){ ?>
@@ -1314,7 +1314,7 @@ else
 			<h1 class="fs-2 mt-3">
 				<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='1'):?> <span>Tours</span> <?php endif;?>
 				<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='2'):?> <span>Paquetes Turísticos</span><?php endif;?>
-				<?php if(isset($_GET['id'])):?> <span>Paquetes Turísticos y Tours de: <?= $departamentos[$_GET['id']-1];?> </span><?php endif;?>
+				<?php if(isset($_GET['id'])):?> <span>Paquetes Turísticos y Tours de <?= $paises[$indice]['nombre'];?> </span><?php endif;?>
 				<?php if($indice<>-1):?> <span>Paquetes Turísticos y Tours de <?= $paises[$indice]['nombre']; ?> </span><?php else: $texto=''; echo "Resultados del país: ".$txtSimple; endif;?>
 			</h1>
 			
@@ -1330,7 +1330,7 @@ else
 						<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
 								<span v-if="producto.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus</span>
 								<span v-if="producto.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
-								<span v-if="tour.transporte==4" class="mx-1 px-1 rounded" id="spanTransporte">Barco</span>
+								<span v-if="producto.transporte==4" class="mx-1 px-1 rounded" id="spanTransporte">Barco</span>
 								<span v-if="producto.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[producto.alojamiento]}}</span>
 								<span v-if="producto.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
 								<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
@@ -1446,10 +1446,11 @@ else
 				idDia: -1,
 
 				idPrecio: -1, idTransporte:-1, idHospedaje:-1, 
-				texto:'<?= $txtSimple;?>',
+				texto:'',
+				pais: '<?=  $paises[$indice]['id'] ?>?>',
 
 				precios: ['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00'],
-				hospedajes: ['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro'],
+				hospedajes: ['','Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro'],
 
 				actividadSelect: '',
 

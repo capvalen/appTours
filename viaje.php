@@ -108,7 +108,7 @@
 					<h2 class="text-dark">{{tourActivo.nombre}}</h2>
 
 					<div class="row">						
-							<div v-if="tourActivo.transporte !=3 && variosTours.tipo==2" class="col-4 col-md text-center fs-6 text-capitalize">
+							<div v-if="tourActivo.transporte !=3 || tourActivo.transporte!='' " class="col-4 col-md text-center fs-6 text-capitalize">
 								<span  v-if="tourActivo.transporte==='1'"><span class="fs-2"><i class="icofont-bus"></i></span> <span>{{queTransporte()}}</span></span>
 								<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span style="display: inline-block;-webkit-transform:rotate(45deg)"><i class="icofont-airplane"></i></span></span> <span>{{queTransporte()}}</span></span>
 								<span v-if="tourActivo.transporte==='4'"><span class="fs-2"><i class="icofont-ship-alt"></i></span> <span>{{queTransporte()}}</span></span>
@@ -210,7 +210,7 @@
 
 
 					<h5 class="mt-3 text-danger">Notas</h5>
-					<div v-html="tourActivo.notas"></div>
+					<div v-html="formatear(tourActivo.notas)"></div>
 
 					<div class="w-100 text-break px-2" id="divNotas" v-html="entregarCorto(inferior, !verMas)"></div>
 
@@ -1541,6 +1541,11 @@
 
 					}
 
+				},
+				formatear(){
+					let texto =  this.tourActivo.notas.replace('<p><br></p>', '')
+					if( texto !='') texto = texto+'<p><br></p>'
+					return texto
 				},
 				fechaFrom(fecha){
 					return moment(fecha).format('DD/MM/YYYY');
