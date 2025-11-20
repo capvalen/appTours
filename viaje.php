@@ -103,21 +103,21 @@
 
 				<!-- Empieza el bloque de descripción -->
 
-				<div class="my-3 p-4 border rounded" id="divIzquierda">
+				<div class="my-3 p-3 border rounded" id="divIzquierda">
 
-					<h2 class="text-dark">{{tourActivo.nombre}}</h2>
+					<h2 class="text-dark text-center">{{tourActivo.nombre}}</h2>
 
 					<div class="row">						
-							<div v-if="tourActivo.transporte !=3 || tourActivo.transporte!='' " class="col-4 col-md text-center fs-6 text-capitalize">
+							<div v-if="tourActivo.transporte !=3 && tourActivo.transporte!=undefined " class="col col-md text-center fs-6 text-capitalize">
 								<span  v-if="tourActivo.transporte==='1'"><span class="fs-2"><i class="icofont-bus"></i></span> <span>{{queTransporte()}}</span></span>
 								<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span style="display: inline-block;-webkit-transform:rotate(45deg)"><i class="icofont-airplane"></i></span></span> <span>{{queTransporte()}}</span></span>
 								<span v-if="tourActivo.transporte==='4'"><span class="fs-2"><i class="icofont-ship-alt"></i></span> <span>{{queTransporte()}}</span></span>
 							</div>
-							<div v-if="tourActivo.alojamiento" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-bed"></i></span> {{retornarHospedaje(tourActivo.alojamiento)}}</div>
-							<div v-if="tourActivo.alimentacion" class="col-4 col-md text-center fs-6"> <span class="fs-2"><i class="icofont-fork-and-knife"></i></span> Alimentación </div>
-						<div class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-google-map"></i></span> <span>Tour</span></div>
-						<div v-if="tourActivo.guia" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-tracking"></i></span> Guía</div>
-						<div v-if="tourActivo.tickets" class="col-4 col-md text-center fs-6"><span class="fs-2"><i class="icofont-ticket"></i></span> Tickets</div>
+							<div v-if="tourActivo.alojamiento" class="col col-md text-center fs-6"><span class="fs-2"><i class="icofont-bed"></i></span> {{retornarHospedaje(tourActivo.alojamiento)}}</div>
+							<div v-if="tourActivo.alimentacion" class="col col-md text-center fs-6"> <span class="fs-2"><i class="icofont-fork-and-knife"></i></span> Alimentación </div>
+						<div class="col col-md text-center fs-6"><span class="fs-2"><i class="icofont-google-map"></i></span> <span>Tour</span></div>
+						<div v-if="tourActivo.guia" class="col col-md text-center fs-6"><span class="fs-2"><i class="icofont-tracking"></i></span> Guía</div>
+						<div v-if="tourActivo.tickets" class="col col-md text-center fs-6"><span class="fs-2"><i class="icofont-ticket"></i></span> Tickets</div>
 					</div>
 
 					<!-- <div class="row row-cols-2 row-cols-md-3" v-if="tourActivo.tipo===2" id="divTransportes">
