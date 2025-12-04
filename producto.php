@@ -372,7 +372,7 @@ $.fn.bootstrapDP = datepicker;
 				diasMuertos:[], precioTotal:0, nacionalidad:-1, faltaPais:false, msjError:'',
 				incluidos:[], noIncluidos:[], faltaMinimo:true, recomendados:[],
 				transportes:['Terrestre', 'Aéreo', 'Ninguno'],
-				hospedajes:['Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge','Resort','Otro']
+				hospedajes:['','Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge','Resort','Otro', 'Casa', 'Casa 2', 'Casa 3', 'Airbnb', 'Rural']
 			}
 		},
 		mounted(){

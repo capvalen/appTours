@@ -32,7 +32,7 @@ include '../api/'
 				<div class="col-12 col-md-8">
 					<div class="card">
 						<div class="card-body">
-							<h3>Datos del comprador (v. 1.01)</h3>
+							<h3>Datos del viajero</h3>
 							<div class="row row-cols-1 row-cols-md-2">
 							<div class="col">
 									<div class="form-floating mb-3">
@@ -189,7 +189,7 @@ include '../api/'
 							<h3>Resumen del pedido</h3>
 							<p class="fs-4 text-capitalize" id="pTour"><a :href="'https://grupoeuroandino.com/tours/'+url" class="text-decoration-none">{{nomTour.toLowerCase()}}</a></p>
 							<p class="mb-0"><strong>Fecha de inicio:</strong> <span>{{empieza}}</span></p>
-							<p class="mb-0"><strong>Hora:</strong> <span>A las {{hora}}.</span></p>
+							<p class="mb-0"><strong>Hora:</strong> <span>A las {{formatoHora(hora)}}.</span></p>
 							<p class="mb-0"><strong>Nacionalidad:</strong> 
 								<span v-if="nacionalidad == 140">Peruana</span>
 								<span v-else>Extranjera</span>
@@ -552,6 +552,10 @@ include '../api/'
 				this.ninDolar = (this.precMenores/this.dolar)*(1+this.comision/100)
 				this.totalDolar = (this.total/this.dolar)*(1+this.comision/100)
 
+			},
+			formatoHora(horita){
+				let nuevo = moment(horita, 'HH:mm')
+				return nuevo.format('hh:mm a')
 			}
 		}
 	});

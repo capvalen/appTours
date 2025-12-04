@@ -1394,7 +1394,7 @@
 					if( parseInt(this.tourActivo.antes) >=12 )
 						this.diasMuertos.push(moment().format('DD/MM/YYYY'));
 				if( this.tourActivo.anticipacion>1)
-					for (let index = 0; index <= this.tourActivo.anticipacion; index++)
+					for (let index = 0; index < this.tourActivo.anticipacion-1; index++)
 						this.diasMuertos.push(moment(moment.now()).add(index, 'days').format('DD/MM/YYYY'));
 
 				
@@ -1543,7 +1543,7 @@
 
 				},
 				formatear(){
-					let texto =  this.tourActivo.notas.replace('<p><br></p>', '')
+					let texto =  this.tourActivo.notas?.replace('<p><br></p>', '')
 					if( texto !='') texto = texto+'<p><br></p>'
 					return texto
 				},

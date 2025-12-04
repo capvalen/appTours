@@ -22,7 +22,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Viajes de promoción escolar - Grupo Euro Andino</title>
+	<title>Viajes de Promoción Escolar - Grupo Euro Andino</title>
 	
 	<?php
 	if( $indice>=0 ){ ?>
@@ -140,7 +140,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 		<div class="container">
 		    <h1 class="fs-2 mt-3">
-			<span>Viajes de promoción escolar</span>
+			<span>Viajes de Promoción Escolar</span>
 
 			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='2'):?> <span>Paquetes turísticos en Perú</span><?php endif;?>
 
@@ -271,7 +271,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 				idPrecio: -1, idTransporte:-1, idHospedaje:-1, texto:'',
 
 				precios: ['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00'],
-				hospedajes: ['','Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro'],
+				hospedajes: ['','Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro', 'Casa', 'Casa 2', 'Casa 3', 'Airbnb', 'Rural'],
 
 				actividadSelect: '',
 				categoriaSelect: '',
