@@ -74,6 +74,7 @@
 		ul{margin-bottom:0}
 		.moneda-peque{font-size:15px}
 	#pegar p{line-height: 1; color: #000;}
+	#spanAvion {display: inline-block; transform:rotate(45deg)}
 	</style>
 
 
@@ -109,7 +110,7 @@
 					<div class="row">						
 							<div v-if="tourActivo.transporte !=3 && tourActivo.transporte!=undefined " class="col col-md text-center fs-6 text-capitalize">
 								<span  v-if="tourActivo.transporte==='1'"><span class="fs-2"><i class="icofont-bus"></i></span> <span>{{queTransporte()}}</span></span>
-								<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span style="display: inline-block;-webkit-transform:rotate(45deg)"><i class="icofont-airplane"></i></span></span> <span>{{queTransporte()}}</span></span>
+								<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span id="spanAvion"><i class="icofont-airplane"></i></span></span> <span>{{queTransporte()}}</span></span>
 								<span v-if="tourActivo.transporte==='4'"><span class="fs-2"><i class="icofont-ship-alt"></i></span> <span>{{queTransporte()}}</span></span>
 							</div>
 							<div v-if="tourActivo.alojamiento" class="col col-md text-center fs-6"><span class="fs-2"><i class="icofont-bed"></i></span> {{retornarHospedaje(tourActivo.alojamiento)}}</div>
@@ -913,9 +914,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <!-- Desarrollo -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
 <!-- Produccion -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 
 
 	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
@@ -926,7 +927,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.min.js"></script>
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
-	<script src="https://grupoeuroandino.com/css/owl.carousel.min.js" ></script>
+	<script src="https://grupoeuroandino.com/js/owl.carousel.min.js" ></script>
 
 
 
