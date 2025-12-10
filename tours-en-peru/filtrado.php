@@ -161,9 +161,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 				<div class="card h-100 border-0  ">
 					<div v-if="tour.fotos.length>0" class="divImagen card-img-top position-relative">
 						<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
-							<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus</span>
-							<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
-							<span v-if="tour.transporte==4" class="mx-1 px-1 rounded" id="spanTransporte">Barco</span>
+							<span class="text-capitalize" v-if="tour.idTransporte!=undefined && tour.idTransporte!=-1" class="mx-1 px-1 rounded" id="spanTransporte">{{queTransporte(tour)}}</span>
 							<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[tour.alojamiento]}}</span>
 							<span v-if="tour.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
 							<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
@@ -284,7 +282,19 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 				duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 				duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
 				departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-				pedidos: []
+				pedidos: [],
+				queTransportes: [
+					{ id: 0, transporte: "ninguno", idTransporte: 3 },
+					// Terrestre (1)
+					{ id: 1, transporte: "tren", idTransporte: 1 },
+					{ id: 2, transporte: "bus", idTransporte: 1 },
+					// Aéreo (2)
+					{ id: 3, transporte: "avión", idTransporte: 2 },
+					{ id: 4, transporte: "avioneta", idTransporte: 2 },
+					// Acuático (4)
+					{ id: 5, transporte: "barco", idTransporte: 4 },
+					{ id: 6, transporte: "lancha", idTransporte: 4 }
+				],
 
 			},
 
@@ -437,6 +447,20 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 				},
 				cuantasEstrellas(index){
 					return parseInt(this.pedidos[index].calificacion)
+				},
+				queTransporte(tourActivo){
+					if ( 'idTransporte' in tourActivo )
+						return this.queTransportes.find(tra => tra.id == tourActivo.idTransporte )?.transporte
+					else{
+						let texto = ''
+						switch(tourActivo.transporte){
+							case '1': texto = 'bus'; break;
+							case '2': texto = 'avión'; break;
+							case '3': texto = 'Ninguno'; break;
+							case '4': texto = 'barco'; break;
+						}
+						return texto
+					}
 				}
 
 			}

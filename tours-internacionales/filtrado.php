@@ -1337,7 +1337,7 @@ else
 								<span v-if="producto.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
 								<span v-if="producto.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
 							</div>
-							<a class="text-decoration-none text-dark" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">
+							<a  class="aImgs text-decoration-none text-dark" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">
 								<img :src="queFoto(producto)" class="card-img-top rounded-top" alt="...">
 							</a>
 				    </div>

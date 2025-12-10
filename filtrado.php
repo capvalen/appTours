@@ -281,17 +281,17 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 				departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 				pedidos: [],
 				queTransportes: [
-				{ id: 0, transporte: "ninguno", idTransporte: 3 },
-				// Terrestre (1)
-				{ id: 1, transporte: "tren", idTransporte: 1 },
-				{ id: 2, transporte: "bus", idTransporte: 1 },
-				// Aéreo (2)
-				{ id: 3, transporte: "avión", idTransporte: 2 },
-				{ id: 4, transporte: "avioneta", idTransporte: 2 },
-				// Acuático (4)
-				{ id: 5, transporte: "barco", idTransporte: 4 },
-				{ id: 6, transporte: "lancha", idTransporte: 4 }
-			],
+					{ id: 0, transporte: "ninguno", idTransporte: 3 },
+					// Terrestre (1)
+					{ id: 1, transporte: "tren", idTransporte: 1 },
+					{ id: 2, transporte: "bus", idTransporte: 1 },
+					// Aéreo (2)
+					{ id: 3, transporte: "avión", idTransporte: 2 },
+					{ id: 4, transporte: "avioneta", idTransporte: 2 },
+					// Acuático (4)
+					{ id: 5, transporte: "barco", idTransporte: 4 },
+					{ id: 6, transporte: "lancha", idTransporte: 4 }
+				],
 
 			},
 

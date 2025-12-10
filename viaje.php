@@ -13,12 +13,11 @@
 
 
 	<?php
-
+/*
 	ini_set('display_errors', 1);
-
 	ini_set('display_startup_errors', 1);
-
 	error_reporting(E_ALL);
+	*/
 
 	include('/home/grupemde/public_html/app/api/conectkarl.php');
 
@@ -927,7 +926,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.min.js"></script>
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js" integrity="sha512-gY25nC63ddE0LcLPhxUJGFxa2GoIyA5FLym4UJqHDEMHjp8RET6Zn/SHo1sltt3WuVtqfyxECP38/daUc/WVEA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://grupoeuroandino.com/css/owl.carousel.min.js" ></script>
 
 
 
@@ -1213,34 +1212,36 @@
 
 				datos.append('departamento', this.tourActivo.departamento);
 
-				fetch(this.servidor + 'pedirRecomendadosRandom.php', {
+				const response = await fetch(this.servidor + 'pedirRecomendadosRandom.php', {
 						method: 'POST',
 						body: datos
 					})
-					.then(response => response.json())
+				this.recomendados = await response.json()
+
+				$('.owl-carousel').owlCarousel('destroy');
+				$(".owl-carousel").owlCarousel({
+					autoplay: true,
+					loop: true,
+					margin: 20,
+					dots: false,
+					lazyLoad: true,
+					nav: true,
+					navText: ["<div class='nav-button owl-prev'>‹</div>", "<div class='nav-button owl-next'>›</div>"],
+					responsive: {
+						0: {
+							items: 1
+						},
+						600: {
+							items: 3
+						}
+					}
+				});
+					/* .then(response => response.json())
 					.then(data => {
 						this.recomendados = data;
 					}).then(() => {
-						$('.owl-carousel').owlCarousel('destroy');
-
-						$(".owl-carousel").owlCarousel({
-							autoplay: true,
-							loop: true,
-							margin: 20,
-							dots: false,
-							lazyLoad: true,
-							nav: true,
-							navText: ["<div class='nav-button owl-prev'>‹</div>", "<div class='nav-button owl-next'>›</div>"],
-							responsive: {
-								0: {
-									items: 1
-								},
-								600: {
-									items: 3
-								}
-							}
-						});
-					});
+						
+					}); */
 
 				/* this.recomendados = await respRecomendados.json()
 
