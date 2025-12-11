@@ -75,6 +75,7 @@
 		.moneda-peque{font-size:15px}
 	#pegar p{line-height: 1; color: #000;}
 	#spanAvion {display: inline-block; transform:rotate(45deg)}
+	.ql-align-justify{text-align: justify;}
 	</style>
 
 
@@ -914,9 +915,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <!-- Desarrollo -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <!-- Produccion -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
 
 
 	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
@@ -1218,25 +1219,31 @@
 						body: datos
 					})
 				this.recomendados = await response.json()
+				setTimeout(() => {
+					$('.owl-carousel').owlCarousel('destroy');
 
-				$('.owl-carousel').owlCarousel('destroy');
-				$(".owl-carousel").owlCarousel({
-					autoplay: true,
-					loop: true,
-					margin: 20,
-					dots: false,
-					lazyLoad: true,
-					nav: true,
-					navText: ["<div class='nav-button owl-prev'>‹</div>", "<div class='nav-button owl-next'>›</div>"],
-					responsive: {
-						0: {
-							items: 1
-						},
-						600: {
-							items: 3
+				}, 1000);
+				setTimeout(() => {
+					$(".owl-carousel").owlCarousel({
+						autoplay: true,
+						loop: true,
+						margin: 20,
+						dots: false,
+						lazyLoad: true,
+						nav: true,
+						navText: ["<div class='nav-button owl-prev'>‹</div>", "<div class='nav-button owl-next'>›</div>"],
+						responsive: {
+							0: {
+								items: 1
+							},
+							600: {
+								items: 3
+							}
 						}
-					}
-				});
+					});
+				}, 1000);
+
+				
 					/* .then(response => response.json())
 					.then(data => {
 						this.recomendados = data;

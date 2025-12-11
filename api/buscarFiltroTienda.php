@@ -25,12 +25,15 @@ $fPrecio ="1";
 $filas = [];
 
 if($_POST['idTour']>-1){ $fTour = "tipo = {$_POST['idTour']}"; } else{ $fTour="tipo in (1,2)";}
-if($_POST['idActividad']>-1){ $fActividad ="JSON_EXTRACT(contenido, '$.actividades') like '%{$_POST['idActividad']}%'";}else{ $fActividad='1';}
+if($_POST['idActividad']>-1){ $fActividad =
+	"JSON_CONTAINS(JSON_EXTRACT(contenido, '$.actividades'), '\"{$_POST['idActividad']}\"')";
+	//"JSON_EXTRACT(contenido, '$.actividades') like '%{$_POST['idActividad']}%'";
+}else{ $fActividad='1';}
 if(isset($_POST['idPais'])){
 	$fPais = " pais = {$_POST['idPais']} ";
 	$fDepartamento = '1';
 }
-else{
+if($_POST['idPais']==140 ){
 	$fPais='1';
 	if($_POST['idDepartamento']>-1){ 
 		//$fDepartamento ="contenido like  '%\"departamento\":{$_POST['idDepartamento']},%'";}
@@ -41,8 +44,9 @@ $fTexto = '1';
 if($_POST['texto']!=''){ $fTexto = "(lower(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.nombre'))) COLLATE utf8mb4_unicode_ci like '%{$_POST['texto']}%' OR lower(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.destino'))) COLLATE utf8mb4_unicode_ci like '%{$_POST['texto']}%') "; }
 if($_POST['idCiudad']!=''){ $fCiudades = "JSON_EXTRACT(contenido, '$.destino') = '{$_POST['idCiudad']}' "; }else{ $fCiudades = '1';}
 if($_POST['idCategoria']>-1){ $fCategoria ="JSON_EXTRACT(contenido, '$.categorias') like '%{$_POST['idCategoria']}%'";}else{ $fCategoria='1';}
+if($_POST['idTransporte']>-1){ $fTransporte ="JSON_EXTRACT(contenido, '$.transporte') like '%{$_POST['idTransporte']}%'";}else{ $fTransporte='1';}
 if($_POST['idDia']>0)
-	$fDuracion ="JSON_EXTRACT(contenido, '$.duracion') = {$_POST['idDia']}";
+	$fDuracion ="(JSON_EXTRACT(contenido, '$.duracion') = {$_POST['idDia']} OR JSON_EXTRACT(JSON_EXTRACT(contenido, '$.duracion'), '$.dias') = {$_POST['idDia']} )";
 	//if($_POST['idDia'] == 0 ) $fDuracion ="contenido like  '%\"dias\":1%' ";
 	//else $fDuracion ="contenido like  '%\"duracion\":{$_POST['idDia']}%'";
 else $fDuracion='1';
@@ -69,7 +73,7 @@ if($_POST['idPrecio']>-1){
 	}
 }
 
-$sentencia = "SELECT t.*, p.nombre as nombrePais, p.name as namePais, p.bandera FROM `tours` t inner join paises p on p.id = t.pais where activo=1 and visible = 1 and {$fTexto} and {$fPais} and {$fTour} and {$fActividad} and {$fDepartamento} and {$fCategoria} and {$fDuracion} and {$fPrecio} and {$fCiudades} and $fHospedaje;
+$sentencia = "SELECT t.*, p.nombre as nombrePais, p.name as namePais, p.bandera FROM `tours` t inner join paises p on p.id = t.pais where activo=1 and visible = 1 and {$fTexto} and {$fPais} and {$fTour} and {$fActividad} and {$fDepartamento} and {$fCategoria} and {$fDuracion} and {$fPrecio} and {$fCiudades} and {$fHospedaje} and {$fTransporte}
 order by rand();";
 //echo $sentencia; die();
 

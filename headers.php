@@ -2,7 +2,7 @@
 
 	<link rel="stylesheet" href="https://grupoeuroandino.com/icofont/icofont.min.css">
 	<link rel="stylesheet" href="https://grupoeuroandino.com/css/bootstrap-datepicker.min.css?v=1.1">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/css/owl.carousel.min.css />
+	<link rel="stylesheet" href="https://grupoeuroandino.com/css/owl.carousel.min.css" />
 	<link rel="stylesheet" href="https://grupoeuroandino.com/css/owl.theme.default.min.css"  />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
