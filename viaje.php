@@ -258,6 +258,24 @@
 					</div>
 
 				</div>
+				<div class="row col-7 mx-auto my-3">
+					<label for="">Horarios:</label>
+					<select name="" id="sltHorario" class="form-select" v-model="horarioSelect" @change="revisarAnticipacion()">
+						<option value="-1">{{horaLatam(tourActivo.hora).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
+						<option v-if="tourActivo.hora2" value="1">{{horaLatam(tourActivo.hora2).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
+					</select>
+				</div>
+				<div class="row col mx-auto my-3" v-if="mostrarRestriccionHorario">
+					<div class="alert alert-warning" role="alert">
+						Restricción de horario.
+					</div>
+				</div>
+				<div class="row col-7 mx-auto my-3">
+					<select class="form-select" id="sltPais" @change="comprobarNacionalidad()" v-model="nacionalidad">
+						<option value="-1">País o Nacionalidad</option>
+						<option v-for="pais in listaPaises" :value="pais.id">{{pais.pais}}</option>
+					</select>
+				</div>
 
 				<p class="fs-3 text-center text-muted mt-2">
 
@@ -328,250 +346,6 @@
 					<div class="alert alert-warning " role="alert">
 						Mínimo debe haber un <strong>adulto</strong>
 					</div>
-				</div>
-
-
-
-				<div class="row col-7 mx-auto my-3">
-
-					<select class="form-select" id="sltPais" @change="comprobarNacionalidad()" v-model="nacionalidad">
-
-						<option value="-1">País o Nacionalidad</option>
-
-						<option value="140">PERU</option>
-						<option value="1">Afganistán</option>
-						<option value="2">Albania</option>
-						<option value="3">Algeria</option>
-						<option value="4">American Samoa</option>
-						<option value="5">Andorra</option>
-						<option value="6">Angola</option>
-						<option value="7">Anguilla</option>
-						<option value="8">Antigua and Barbuda</option>
-						<option value="9">Argentina</option>
-						<option value="10">Armenia</option>
-						<option value="11">Aruba</option>
-						<option value="12">Australia</option>
-						<option value="13">Austria</option>
-						<option value="14">Azerbaijan</option>
-						<option value="15">Bahamas</option>
-						<option value="16">Bahrain</option>
-						<option value="17">Bangladesh</option>
-						<option value="18">Barbados</option>
-						<option value="19">Belarus</option>
-						<option value="20">Belgium</option>
-						<option value="21">Belize</option>
-						<option value="22">Benin</option>
-						<option value="23">Bermuda</option>
-						<option value="24">Bhutan</option>
-						<option value="25">Bolivia</option>
-						<option value="26">Bosnia and Herzegovina</option>
-						<option value="27">Botswana</option>
-						<option value="28">Brazil</option>
-						<option value="29">Brunei Darussalam</option>
-						<option value="30">Bulgaria</option>
-						<option value="31">Burkina Faso</option>
-						<option value="32">Burundi</option>
-						<option value="33">Cambodia</option>
-						<option value="34">Cameroon</option>
-						<option value="35">Canada</option>
-						<option value="36">Cape Verde</option>
-						<option value="37">Cayman Islands</option>
-						<option value="38">Central African Republic</option>
-						<option value="39">Chad</option>
-						<option value="40">Chile</option>
-						<option value="41">China</option>
-						<option value="42">Colombia</option>
-						<option value="43">Comoros</option>
-						<option value="44">Congo</option>
-						<option value="45">Congo, the Democratic Republic of the</option>
-						<option value="46">Cook Islands</option>
-						<option value="47">Costa Rica</option>
-						<option value="48">Cote D'Ivoire</option>
-						<option value="49">Croatia</option>
-						<option value="51">Cyprus</option>
-						<option value="52">Czech Republic</option>
-						<option value="53">Denmark</option>
-						<option value="54">Djibouti</option>
-						<option value="55">Dominica</option>
-						<option value="56">Dominican Republic</option>
-						<option value="57">Ecuador</option>
-						<option value="58">Egypt</option>
-						<option value="59">El Salvador</option>
-						<option value="60">Equatorial Guinea</option>
-						<option value="61">Eritrea</option>
-						<option value="62">Estonia</option>
-						<option value="63">Ethiopia</option>
-						<option value="64">Falkland Islands (Malvinas)</option>
-						<option value="65">Faroe Islands</option>
-						<option value="66">Fiji</option>
-						<option value="67">Finland</option>
-						<option value="68">France</option>
-						<option value="69">French Guiana</option>
-						<option value="70">French Polynesia</option>
-						<option value="71">Gabon</option>
-						<option value="72">Gambia</option>
-						<option value="73">Georgia</option>
-						<option value="74">Germany</option>
-						<option value="75">Ghana</option>
-						<option value="76">Gibraltar</option>
-						<option value="77">Greece</option>
-						<option value="78">Greenland</option>
-						<option value="79">Grenada</option>
-						<option value="80">Guadeloupe</option>
-						<option value="81">Guam</option>
-						<option value="82">Guatemala</option>
-						<option value="83">Guinea</option>
-						<option value="84">Guinea-Bissau</option>
-						<option value="85">Guyana</option>
-						<option value="86">Haiti</option>
-						<option value="87">Holy See (Vatican City State)</option>
-						<option value="88">Honduras</option>
-						<option value="89">Hong Kong</option>
-						<option value="90">Hungary</option>
-						<option value="91">Iceland</option>
-						<option value="92">India</option>
-						<option value="93">Indonesia</option>
-						<option value="95">Iraq</option>
-						<option value="96">Ireland</option>
-						<option value="97">Israel</option>
-						<option value="98">Italy</option>
-						<option value="99">Jamaica</option>
-						<option value="100">Japan</option>
-						<option value="101">Jordan</option>
-						<option value="102">Kazakhstan</option>
-						<option value="103">Kenya</option>
-						<option value="104">Kiribati</option>
-						<option value="106">Korea, Republic of</option>
-						<option value="107">Kuwait</option>
-						<option value="108">Kyrgyzstan</option>
-						<option value="109">Lao People's Democratic Republic</option>
-						<option value="110">Latvia</option>
-						<option value="111">Lebanon</option>
-						<option value="112">Lesotho</option>
-						<option value="113">Liberia</option>
-						<option value="114">Libyan Arab Jamahiriya</option>
-						<option value="115">Liechtenstein</option>
-						<option value="116">Lithuania</option>
-						<option value="117">Luxembourg</option>
-						<option value="118">Macao</option>
-						<option value="119">Macedonia, the Former Yugoslav Republic of</option>
-						<option value="120">Madagascar</option>
-						<option value="121">Malawi</option>
-						<option value="122">Malaysia</option>
-						<option value="123">Maldives</option>
-						<option value="124">Mali</option>
-						<option value="125">Malta</option>
-						<option value="126">Marshall Islands</option>
-						<option value="127">Martinique</option>
-						<option value="128">Mauritania</option>
-						<option value="129">Mauritius</option>
-						<option value="130">Mexico</option>
-						<option value="131">Micronesia, Federated States of</option>
-						<option value="132">Moldova, Republic of</option>
-						<option value="133">Monaco</option>
-						<option value="134">Mongolia</option>
-						<option value="135">Montserrat</option>
-						<option value="136">Morocco</option>
-						<option value="137">Mozambique</option>
-						<option value="139">Namibia</option>
-						<option value="159">Nauru</option>
-						<option value="141">Nepal</option>
-						<option value="142">Netherlands</option>
-						<option value="143">Netherlands Antilles</option>
-						<option value="144">New Caledonia</option>
-						<option value="145">New Zealand</option>
-						<option value="146">Nicaragua</option>
-						<option value="147">Niger</option>
-						<option value="148">Nigeria</option>
-						<option value="149">Niue</option>
-						<option value="150">Norfolk Island</option>
-						<option value="151">Northern Mariana Islands</option>
-						<option value="152">Norway</option>
-						<option value="153">Oman</option>
-						<option value="154">Pakistan</option>
-						<option value="155">Palau</option>
-						<option value="156">Panama</option>
-						<option value="157">Papua New Guinea</option>
-						<option value="158">Paraguay</option>
-						<option value="160">Philippines</option>
-						<option value="161">Pitcairn</option>
-						<option value="162">Poland</option>
-						<option value="163">Portugal</option>
-						<option value="164">Puerto Rico</option>
-						<option value="165">Qatar</option>
-						<option value="166">Reunion</option>
-						<option value="167">Romania</option>
-						<option value="168">Russian Federation</option>
-						<option value="169">Rwanda</option>
-						<option value="170">Saint Helena</option>
-						<option value="171">Saint Kitts and Nevis</option>
-						<option value="172">Saint Lucia</option>
-						<option value="173">Saint Pierre and Miquelon</option>
-						<option value="174">Saint Vincent and the Grenadines</option>
-						<option value="175">Samoa</option>
-						<option value="176">San Marino</option>
-						<option value="177">Sao Tome and Principe</option>
-						<option value="178">Saudi Arabia</option>
-						<option value="179">Senegal</option>
-						<option value="180">Seychelles</option>
-						<option value="181">Sierra Leone</option>
-						<option value="182">Singapore</option>
-						<option value="183">Slovakia</option>
-						<option value="184">Slovenia</option>
-						<option value="185">Solomon Islands</option>
-						<option value="186">Somalia</option>
-						<option value="187">South Africa</option>
-						<option value="188">Spain</option>
-						<option value="189">Sri Lanka</option>
-						<option value="190">Sudan</option>
-						<option value="191">Suriname</option>
-						<option value="192">Svalbard and Jan Mayen</option>
-						<option value="193">Swaziland</option>
-						<option value="194">Sweden</option>
-						<option value="195">Switzerland</option>
-						<option value="197">Taiwan, Province of China</option>
-						<option value="198">Tajikistan</option>
-						<option value="199">Tanzania, United Republic of</option>
-						<option value="200">Thailand</option>
-						<option value="201">Togo</option>
-						<option value="202">Tokelau</option>
-						<option value="203">Tonga</option>
-						<option value="204">Trinidad and Tobago</option>
-						<option value="205">Tunisia</option>
-						<option value="206">Turkey</option>
-						<option value="207">Turkmenistan</option>
-						<option value="208">Turks and Caicos Islands</option>
-						<option value="209">Tuvalu</option>
-						<option value="210">Uganda</option>
-						<option value="211">Ukraine</option>
-						<option value="212">United Arab Emirates</option>
-						<option value="213">United Kingdom</option>
-						<option value="214">United States</option>
-						<option value="215">Uruguay</option>
-						<option value="216">Uzbekistan</option>
-						<option value="217">Vanuatu</option>
-						<option value="218">Venezuela</option>
-						<option value="219">Viet Nam</option>
-						<option value="220">Virgin Islands, British</option>
-						<option value="221">Virgin Islands, U.s.</option>
-						<option value="222">Wallis and Futuna</option>
-						<option value="223">Western Sahara</option>
-						<option value="224">Yemen</option>
-						<option value="225">Zambia</option>
-						<option value="226">Zimbabwe</option>
-
-					</select>
-
-				</div>
-
-				<div class="row col-7 mx-auto my-3">
-					<label for="">Horarios:</label>
-
-					<select name="" id="sltHorario" class="form-select" v-model="horarioSelect">
-						<option value="-1">{{horaLatam(tourActivo.hora).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
-						<option v-if="tourActivo.hora2" value="1">{{horaLatam(tourActivo.hora2).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
-					</select>
-
 				</div>
 
 				<div class=" ms-5 ps-3" id="divDuracion">
@@ -929,7 +703,8 @@
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.min.js"></script>
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
 	<script src="https://grupoeuroandino.com/js/owl.carousel.min.js" ></script>
-
+	<script src="https://grupoeuroandino.com/app/render/js/paises.js" ></script>
+	
 
 
 	<script>
@@ -966,6 +741,7 @@
 					//servidor: 'http://localhost/appTours/api/',
 					servidor: 'https://grupoeuroandino.com/app/api/',
 					lateral:'', dolar:0, precioDolares:0, inferior:'',
+					listaPaises: PAISES_DATA,
 					variosTours: [],
 					tourActivo: [{
 						incluye: '',
@@ -1037,7 +813,7 @@
 					nacionalidad: -1,
 					faltaPais: false,
 					msjError: '',
-					verMas: false,
+					verMas: false, mostrarRestriccionHorario:false,
 
 					incluidos: [],
 					noIncluidos: [],
@@ -1053,7 +829,6 @@
 			},
 
 			mounted() {
-
 				//sacando el ID
 
 				const queryString = window.location.search;
@@ -1410,18 +1185,28 @@
 				//console.log(this.diasMuertos);
 
 				//$('#dtpFecha').datepicker('destroy');
+				let diasDisponibles = []
+				if(this.tourActivo.atencion){
+					diasDisponibles = this.tourActivo.atencion?.length==0 ? [] : [0,1,2,3,4,5,6]
+					this.tourActivo.atencion?.forEach(diaNo=>{
+						const index = diasDisponibles.indexOf(parseFloat(diaNo));
+						if (index > -1) diasDisponibles.splice(index, 1);
+					})
+				}
 
 				$('#dtpFecha').bootstrapDP({
 					language: 'es',
 					setDate: moment().format('DD/MM/YYYY'),
 					language: "es",
 					keyboardNavigation: false,
+					daysOfWeekDisabled: diasDisponibles,
 					todayHighlight: true,
 					datesDisabled: this.diasMuertos,
 					startDate: new Date(),
+				})
+				.on('changeDate', function(e) {
+					app.revisarAnticipacion()
 				});
-
-
 
 				$(".prev").each(function(i) {
 					$(".prev")[i].innerHTML = `<i class="icofont-rounded-left"></i>`
@@ -1432,7 +1217,25 @@
 				})
 
 			},
-
+			revisarAnticipacion(){
+				this.mostrarRestriccionHorario = false
+				let ahora = moment()
+				let horarioSeleccionado = moment( $('#dtpFecha').bootstrapDP('getFormattedDate') +' '+ ($('#sltHorario').val()  == -1 ? this.tourActivo.hora : this.tourActivo.hora2), 'DD/MM/YYYY HH:mm')
+				let diferencia = 
+					this.tourActivo.anticipacion == 1 ? horarioSeleccionado.diff(ahora, 'hours'): horarioSeleccionado.diff(ahora, 'days') //el 1 es horas, a partir de 2 es días
+				
+				if(this.tourActivo.anticipacion == 2 && this.tourActivo.antes == 0)	{
+					diferencia = horarioSeleccionado.diff(ahora, 'hours')
+					console.log('diff extra', diferencia)
+					if(diferencia <24 && diferencia <0) this.mostrarRestriccionHorario=true
+					return false
+				}
+				console.log('diff ofic', horarioSeleccionado)
+				if(diferencia > parseInt(this.tourActivo.antes) && diferencia>0 ){
+						console.log('se puede comprar')
+					}else
+						this.mostrarRestriccionHorario = true
+			},
 			horaLatam(hora) {
 
 				return (moment(hora, 'HH:mm').format('h:mm a'))
@@ -1497,28 +1300,6 @@
 
 				formatoMoneda(valor) { return parseFloat(valor).toFixed(2) },
 				formatoMonedaCero(valor) { return parseFloat(valor).toFixed(0) },
-
-				/* 	
-
-				comprobarRequisitos(){
-
-					if(this.nacionalidad==-1){
-
-						this.faltaPais=true; this.msjError = "Debe rellenar el campo de su nacionalidad antes de reservar"; return false;
-
-					}else if(!this.contarMinimoPersonas()){
-
-						this.faltaPais=true; this.msjError = "Se debe completar un mínimo de personas"; return false;
-
-					}else{
-
-						this.faltaPais=false;
-
-						return true;
-
-					}
-
-				} */
 
 				queDuraRecomendado(tipo, queDuracion, queDuracion2) {
 
@@ -1646,42 +1427,21 @@
 
 
 		$(document).ready(function() {
-
 			const signupForm = document.querySelector("#btnFormulario");
-
-
-
 			signupForm.addEventListener("click", async function(event) {
-
 				event.preventDefault();
 
 				var dato = new FormData();
-
 				dato.append('txtNombres', document.getElementById('txtNombres1').value)
-
 				dato.append('txtCorreo', document.getElementById('txtCorreo1').value)
 
-
-
 				let respuesta = await fetch('https://grupoeuroandino.com/app/api/correo_suscribir.php', {
-
 					method: 'POST',
 					body: dato
 
 				});
-
 				console.log(await respuesta.text())
-
-
-
 			});
-
-
-
-
-
-
-
 		});
 	</script>
 

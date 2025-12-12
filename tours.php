@@ -295,6 +295,15 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							</div>
 						</div>
 
+						<div class=" mb-3">
+							<label for="floDestino">Días de atención</label>
+							<div class="sltPicker">
+								<select class="selectpicker " id="sltDias" data-live-search="true" multiple data-max-options="7" >
+									<option v-for="(dia, index) in dias" :key="index" :value="dia.id">{{dia.day}}</option>
+								</select>
+							</div>
+						</div>
+
 						<!-- Create the editor container -->
 						<p class="mb-0 mt-2">Descripción</p>
 						<div class="editor" id="qDescripcion" ></div>
@@ -483,7 +492,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 
 	<script>
 	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
-	qSiIncluye, qNoIncluye,
+	qSiIncluye, qNoIncluye
 	tostadaOk, tostadaMal;
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
 	var rutaDocs = '/home/grupemde/public_html/app/render/images/sinmarca/'
@@ -513,7 +522,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				hora: "12:00",
 				anticipacion: 1, minimo: 1, transporte:1, alojamiento: 1,
 				destino: '', departamento: '', actividad:'', categoria:'',
-				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0, actividades:[], categorias: []
+				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:2, oferta:0, actividades:[], categorias: [], atencion:[]
 			},
 			transportes: [
 				{ id: 0, transporte: "ninguno", idTransporte: 3 },
@@ -532,7 +541,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			anticipacion: [{clave: 1, valor: 'Horas'}, {clave: 2, valor: '1 día'} ], antes:0,
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idDepartamento:-1
+			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idDepartamento:-1,
+			dias: [{'id':0,'day':'Domingo'},{'id':1,'day':'Lunes'},{'id':2,'day':'Martes'},{'id':3,'day':'Miércoles'},{'id':4,'day':'Jueves'},{'id':5,'day':'Viernes'},{'id':6,'day':'Sábado'}]
 		},
 		mounted:function(){
 			this.verTours();
@@ -608,6 +618,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				}).then(()=>{
 					$('#sltActividad2').selectpicker('refresh');
 					$('#sltCategoria2').selectpicker('refresh');
+					//$('#sltDias').selectpicker('refresh');
 				})
 			},
 			nuevoTourSimple(){
@@ -617,13 +628,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					extranjeros:{ adultos:0, kids:0 },
 					cupos: 1, duracion: 1, hora: "12:00",
 					anticipacion: 1, minimo: 1, destino: '', departamento: '', actividad:'', categoria:'',
-					descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1, oferta:0, actividades:[], categorias: []
+					descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1, oferta:0, actividades:[], categorias: [], atencion:[]
 				}
 				this.activarEditar=false;
 				$('#sltActividad2').selectpicker('val', '');
-				//$('#sltActividad2').selectpicker('refresh');
 				$('#sltCategoria2').selectpicker('val', '');
-				//$('#sltCategoria2').selectpicker('refresh');
+				$('#sltDias').selectpicker('val', '');
+				
 				modalNuevo.show();
 			},
 			extraerHtml(){
@@ -643,6 +654,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				}else{
 					this.tour.categorias = [];
 				}
+				if($('#sltDias').selectpicker('val') !=null){
+					this.tour.atencion = $('#sltDias').selectpicker('val');
+				}else{
+					this.tour.atencion = [];
+				}
 			},
 			guardarTour(){
 				this.extraerHtml();
@@ -655,11 +671,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						this.verTours();
 						modalNuevo.hide();
 						tostadaOk.show();
-
 					}
 				})
 				.catch((error)=>{ console.log( error );});
-				
 				
 			},
 			async verTours(){
@@ -694,6 +708,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				
 				$('#sltActividad2').selectpicker('val', '');
 				$('#sltCategoria2').selectpicker('val', '');
+				$('#sltDias').selectpicker('val', '');
 				this.idGlobal = queEs;
 				this.indexGlobal = indexEs;
 				this.tourActivo = this.variosTours[indexEs];
@@ -834,6 +849,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.tour = {...this.tourActivo};
 				$('#sltActividad2').selectpicker('val', this.tour.actividades);
 				$('#sltCategoria2').selectpicker('val', this.tour.categorias);
+				$('#sltDias').selectpicker('val', this.tour.atencion);
 				qDescripcion.setContents([]); qDescripcion.clipboard.dangerouslyPasteHTML(0, this.tour.descripcion);
 				qPartida.setContents([]); qPartida.clipboard.dangerouslyPasteHTML(0, this.tour.partida);
 				qItinerario.setContents([]); qItinerario.clipboard.dangerouslyPasteHTML(0, this.tour.itinerario);
