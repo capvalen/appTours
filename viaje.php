@@ -76,6 +76,12 @@
 	#pegar p{line-height: 1; color: #000;}
 	#spanAvion {display: inline-block; transform:rotate(45deg)}
 	.ql-align-justify{text-align: justify;}
+	.day { background: #eee; }
+	.datepicker table tr td.active.active{background-color: #FFD019;color: brown;}
+	.datepicker table tr td.active:hover.active{background-color: #FFD019;color: brown;}
+	.datepicker table tr td.day:hover {
+  background: #dc3545; color:white;}
+	#mostrarRestriccionHorario .alert{padding: 0px!important;}
 	</style>
 
 
@@ -259,15 +265,15 @@
 
 				</div>
 				<div class="row col-7 mx-auto my-3">
-					<label for="">Horarios:</label>
+					<label for=""><strong>Horarios</strong>:</label>
 					<select name="" id="sltHorario" class="form-select" v-model="horarioSelect" @change="revisarAnticipacion()">
 						<option value="-1">{{horaLatam(tourActivo.hora).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
 						<option v-if="tourActivo.hora2" value="1">{{horaLatam(tourActivo.hora2).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
 					</select>
 				</div>
-				<div class="row col mx-auto my-3" v-if="mostrarRestriccionHorario">
-					<div class="alert alert-warning" role="alert">
-						Restricción de horario.
+				<div class="row col-8 mx-auto my-1" v-if="mostrarRestriccionHorario" id="mostrarRestriccionHorario">
+					<div class="alert alert-warning text-center mb-0" role="alert">
+						<i class="icofont-warning"></i> No cumple con el tiempo de <br>anticipación de reserva
 					</div>
 				</div>
 				<div class="row col-7 mx-auto my-3">
@@ -1200,7 +1206,7 @@
 					language: "es",
 					keyboardNavigation: false,
 					daysOfWeekDisabled: diasDisponibles,
-					todayHighlight: true,
+					todayHighlight: false,
 					datesDisabled: this.diasMuertos,
 					startDate: new Date(),
 				})
@@ -1224,14 +1230,14 @@
 				let diferencia = 
 					this.tourActivo.anticipacion == 1 ? horarioSeleccionado.diff(ahora, 'hours'): horarioSeleccionado.diff(ahora, 'days') //el 1 es horas, a partir de 2 es días
 				
-				if(this.tourActivo.anticipacion == 2 && this.tourActivo.antes == 0)	{
+				if(this.tourActivo.anticipacion == 2 && parseInt(this.tourActivo.antes) == 0)	{
 					diferencia = horarioSeleccionado.diff(ahora, 'hours')
 					console.log('diff extra', diferencia)
 					if(diferencia <24 && diferencia <0) this.mostrarRestriccionHorario=true
 					return false
 				}
-				console.log('diff ofic', horarioSeleccionado)
-				if(diferencia > parseInt(this.tourActivo.antes) && diferencia>0 ){
+				console.log('diff oficial', diferencia, parseInt(this.tourActivo.anticipacion)-1)
+				if(diferencia >= parseInt(this.tourActivo.anticipacion)-1 ){
 						console.log('se puede comprar')
 					}else
 						this.mostrarRestriccionHorario = true

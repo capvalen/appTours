@@ -7,7 +7,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/estilos.css?v=1.10">
+	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/estilos.css?v=1.11">
 	<link rel="icon" href="https://grupoeuroandino.com/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon-32x32.png" sizes="32x32" />
 	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/efecto.css?v?1">
 

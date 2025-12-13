@@ -287,6 +287,15 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							</div>
 						</div>
 
+						<div class=" mb-3">
+							<label for="floDestino">Días de atención</label>
+							<div class="sltPicker">
+								<select class="selectpicker " id="sltDias" data-live-search="true" multiple data-max-options="7" >
+									<option v-for="(dia, index) in dias" :key="index" :value="dia.id">{{dia.day}}</option>
+								</select>
+							</div>
+						</div>
+
 						<!-- Create the editor container -->
 						<p class="mb-0 mt-2">Descripción</p>
 						<div class="editor" id="qDescripcion" ></div>
@@ -492,7 +501,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				extranjeros:{ adultos:0, kids:0 },
 				cupos: 1, duracion: 1, hora: "12:00", idPais:140,
 				anticipacion: 1, minimo: 1, destino: '', departamento: '', actividad:'', categoria:'',
-				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1, oferta:0, actividades:[], categorias: []
+				descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1, oferta:0, actividades:[], categorias: [],
+				dias: [{'id':0,'day':'Domingo'},{'id':1,'day':'Lunes'},{'id':2,'day':'Martes'},{'id':3,'day':'Miércoles'},{'id':4,'day':'Jueves'},{'id':5,'day':'Viernes'},{'id':6,'day':'Sábado'}]
 			},
 			paquete:{
 				nombre: '',
@@ -611,7 +621,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					extranjeros:{ adultos:0, kids:0 },
 					cupos: 1, duracion: 1, hora: "12:00",
 					anticipacion: 1, minimo: 1, destino: '', departamento: '', actividad:'', categoria:'',
-					descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1, oferta:0, actividades:[], categorias: [], idPais:140
+					descripcion: '', partida: '', itinerario: '', incluye: '', noIncluye:'', notas:'', fotos:[], tipo:1, oferta:0, actividades:[], categorias: [], idPais:140, atencion:[]
 				}
 				this.activarEditar=false;
 				$('#sltActividad2').selectpicker('val', '');
@@ -636,6 +646,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					this.tour.categorias = $('#sltCategoria2').selectpicker('val');
 				}else{
 					this.tour.categorias = [];
+				}
+				if($('#sltDias').selectpicker('val') !=null){
+					this.tour.atencion = $('#sltDias').selectpicker('val');
+				}else{
+					this.tour.atencion = [];
 				}
 			},
 			guardarTour(){
@@ -688,6 +703,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				
 				$('#sltActividad2').selectpicker('val', '');
 				$('#sltCategoria2').selectpicker('val', '');
+				$('#sltDias').selectpicker('val', '');
 				this.idGlobal = queEs;
 				this.indexGlobal = indexEs;
 				this.tourActivo = this.variosTours[indexEs];
@@ -823,6 +839,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.tour = {...this.tourActivo};
 				$('#sltActividad2').selectpicker('val', this.tour.actividades);
 				$('#sltCategoria2').selectpicker('val', this.tour.categorias);
+				$('#sltDias').selectpicker('val', this.tour.atencion);
 				qDescripcion.setContents([]); qDescripcion.clipboard.dangerouslyPasteHTML(0, this.tour.descripcion);
 				qPartida.setContents([]); qPartida.clipboard.dangerouslyPasteHTML(0, this.tour.partida);
 				qItinerario.setContents([]); qItinerario.clipboard.dangerouslyPasteHTML(0, this.tour.itinerario);

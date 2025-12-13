@@ -19,6 +19,10 @@ $idDia=-1;
 $idPrecio=-1;
 $idPais=-1;
 $idHospedaje=-1;
+$fTransporte=-1;
+$fPais=-1;
+$fDepartamento=-1;
+
 
 $fPrecio ="1";
 
@@ -38,7 +42,7 @@ if($_POST['idPais']==140 ){
 	if($_POST['idDepartamento']>-1){ 
 		//$fDepartamento ="contenido like  '%\"departamento\":{$_POST['idDepartamento']},%'";}
 		$fDepartamento = "JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.departamento')) = {$_POST['idDepartamento']}";
-		}else $fDepartamento='1';
+	}else $fDepartamento='1';
 }
 $fTexto = '1';
 if($_POST['texto']!=''){ $fTexto = "(lower(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.nombre'))) COLLATE utf8mb4_unicode_ci like '%{$_POST['texto']}%' OR lower(JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.destino'))) COLLATE utf8mb4_unicode_ci like '%{$_POST['texto']}%') "; }

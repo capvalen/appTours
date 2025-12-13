@@ -329,8 +329,8 @@ if(array_key_exists($buscarWeb, $ciudades)){
 				<div class="card h-100 border-0  ">
 					<div v-if="tour.fotos.length>0" class="divImagen card-img-top position-relative">
 						<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
-							<span class="text-capitalize" v-if="tour.idTransporte!=undefined && tour.idTransporte!=-1" class="mx-1 px-1 rounded" id="spanTransporte">{{queTransporte(tour)}}</span>
-							<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[tour.alojamiento]}}</span>
+							<span class="text-capitalize mx-1 px-1 rounded" v-if="tour.idTransporte!=undefined && tour.idTransporte!=-1 && tour.transporte!=3" class="mx-1 px-1 rounded" id="spanTransporte">{{queTransporte(tour)}}</span>
+							<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[parseInt(tour.alojamiento)]}}</span>
 							<span v-if="tour.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
 							<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
 							<span v-if="tour.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
