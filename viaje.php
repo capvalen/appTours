@@ -112,7 +112,7 @@
 
 				<div class="my-3 p-3 border rounded" id="divIzquierda">
 
-					<h2 class="text-dark text-center">{{tourActivo.nombre}}</h2>
+					<h2 class="text-danger text-center">{{tourActivo.nombre}}</h2>
 
 					<div class="row">						
 							<div v-if="tourActivo.transporte !=3 && tourActivo.transporte!=undefined " class="col col-md text-center fs-6 text-capitalize">
@@ -253,9 +253,9 @@
 
 				<div class="row">
 
-					<div class="col text-center bg-secondary bg-opacity-25 ">
+					<div class="col-9 mx-auto text-center bg-secondary bg-opacity-25 ">
 
-						<span class="fs-1"><strong class="text-danger"><small class="fs-3">S/</small> {{precioPorPersona}}</strong> <small class="fs-5">por persona</small></span>
+						<span class="fs-1" style="line-height: 1;"><strong class="text-danger"><small class="fs-5">S/.</small>{{precioPorPersona}}</strong> <small class="fs-5">por persona</small></span>
 
 					</div>
 
@@ -401,7 +401,7 @@
 
 					<div class="col text-center">
 
-						<span class='fs-2 text-muted'>Total: <strong style="color:#60696d" class="">S/ {{formatoMoneda(precioTotal)}}</strong></span>
+						<span class='fs-2 text-muted'>Total: <strong style="color:#60696d" class=""><span class="fs-5">S/.</span>{{formatoMoneda(precioTotal)}}</strong></span>
 						<p class="mb-2"><span>Total en dólares: <strong> USD {{precioDolares.toFixed(2)}}</strong></span></p>
 						
 					</div>
