@@ -148,7 +148,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 			<?php if(isset($_GET['id'])):?> <span>Paquetes y tours de: <?= $departamentos[$_GET['id']-1];?> </span><?php endif;?>
 
-			<?php if(isset($_GET['texto'])):?> <span>Resultados por: <?= $texto=$_GET['texto'];?> </span><?php else: $texto=''; endif;?>
+			<?php if(isset($_GET['texto'])):?> <span>Resultados para: <?= $texto=$_GET['texto'];?> </span><?php else: $texto=''; endif;?>
 
 		</h1>
 

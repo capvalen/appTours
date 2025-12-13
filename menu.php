@@ -167,8 +167,6 @@
 
 			<ul id="ulMenu" class=" p-0 m-0">
 
-				<li onclick="location.href='https://grupoeuroandino.com/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/path245.png" class="Ico"> INICIO</li>
-
 				<li onclick="location.href='https://grupoeuroandino.com/destinos-mas-populares-en-peru/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/peruico.png" class="Ico"> DESTINOS</li>
 				<li onclick="location.href='https://grupoeuroandino.com/ciudades-mas-populares-en-peru/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2023/11/geo2.png" class="Ico"> CIUDADES</li>
 

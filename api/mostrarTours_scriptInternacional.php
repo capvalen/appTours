@@ -9,11 +9,11 @@ $filas = [];
 if( $_POST['pais']>0 )
     $sql= $db->query("SELECT * FROM `tours` where visible=1 and activo=1 
     and pais= '{$_POST['pais']}'
-    order by registro desc ;"); //limit 30
+    order by rand() ;"); //limit 30
 else if( isset($_POST['texto']) )
     $sql= $db->query("SELECT * FROM `tours` where visible=1 and activo=1 
     and lower( JSON_EXTRACT(contenido, '$.destino' COLLATE utf8_general_ci)) LIKE '%{$_POST['texto']}%' COLLATE utf8_general_ci
-    order by registro desc ;"); //limit 30
+    order by rand() ;"); //limit 30
 
 if( $sql->execute()){
 	while( $row = $sql->fetch(PDO::FETCH_ASSOC) ){

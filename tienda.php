@@ -131,7 +131,7 @@
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idTour = 2" >Paquetes Turísticos</a></p>
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==0 }" @click="idDia = 0" >Half Day (Medio Día)</a></p>
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==1 }" @click="idDia = 1" >Full Day (1 Día)</a></p>
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCategoria==38 }" @click="idCategoria = 38" >Viajes de promoción escolar</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCategoria==38 }" @click="idCategoria = 38" >Viajes de Promoción Escolar</a></p>
 
 								</div>
 
@@ -390,7 +390,7 @@
 						<div class="card h-100 border-0  " >
 						    <div class="position-relative">
 									<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
-											<span class="text-capitalize mx-1 px-1 rounded" v-if="producto.idTransporte!=undefined && producto.idTransporte!=-1 && tour.transporte!=3"  id="spanTransporte">{{queTransporte(producto)}}</span>
+											<span class="text-capitalize mx-1 px-1 rounded" v-if="producto.idTransporte!=undefined && producto.idTransporte!=-1 && producto.transporte!=3"  id="spanTransporte">{{queTransporte(producto)}}</span>
 											<span v-if="producto.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{retornarHospedaje(producto.alojamiento)}}</span>
 											<span v-if="producto.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
 											<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>

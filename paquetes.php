@@ -379,38 +379,40 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<div class="row col d-grid gap-2 col-6 mx-auto">
 						<button type="button" class="btn btn-outline-dark" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
 					</div>
-					<p class="my-1"><strong>Precio Peruanos</strong></p>
-					<p class="my-1"><strong>Precio normal:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
-					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.adultos)}}</span> </p>
-					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.kids)}}</span> </p>
-					<p class="my-1 mt-3"><strong>Precio Extranjeros</strong></p>
-					<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.adultos)}}</span> </p>
-					<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.kids)}}</span> </p>
-					<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDuraDia(tourActivo.duracion.dias)}} / {{queDuraNoche(tourActivo.duracion.noches)}}</span></p>
-					<p class="my-1 mt-3"><strong>1° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora)}}</span></p>
-					<p class="my-1 mt-3"><strong>Reglas de compra:</strong> </p>
-					<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
-					<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
-					<p class="my-1 mt-3"><strong>Destino:</strong> <span class="text-capitalize">{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
-					<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}} {{variasActividades()}}</span></p>
-					<p class="my-1 mt-3"><strong>Categorías:</strong> <span>{{variasCategorias()}}</span></p>
-					<p class="my-1 mt-3"><strong>Descripción:</strong> <br> </p>
-					<div class="w-100 text-break" v-html="tourActivo.descripcion"></div>
-					<p class="my-1"><strong>Punto de partida:</strong> <br> </p>
-					<div class="w-100 text-break" v-html="tourActivo.partida"></div>
-					<p class="my-1"><strong>Itinerario:</strong> <br> </p>
-					<div class="w-100 text-break" v-html="tourActivo.itinerario"></div>
-					<p class="my-1"><strong>Incluye:</strong></p>
-					<p class="ms-2" v-for="cadena in tourActivo.incluye.split('\n')"><i class="icofont-check-alt"></i> {{cadena}}</p>
-					<p class="my-1 mt-3"><strong>No incluye:</strong></p>
-					<p class="ms-2" v-for="cadena in tourActivo.noIncluye.split('\n')"><i class="icofont-close-line"></i> {{cadena}}</p>
-					<p class="my-1"><strong>Notas:</strong> <br> </p>
-					<div class="w-100 text-break" v-html="tourActivo.notas"></div>
-					
-					<div>
-						<p></p>
+					<div id="ocultar" class="d-none">
+						<p class="my-1"><strong>Precio Peruanos</strong></p>
+						<p class="my-1"><strong>Precio normal:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
+						<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.adultos)}}</span> </p>
+						<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.kids)}}</span> </p>
+						<p class="my-1 mt-3"><strong>Precio Extranjeros</strong></p>
+						<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.adultos)}}</span> </p>
+						<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.kids)}}</span> </p>
+						<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDuraDia(tourActivo.duracion.dias)}} / {{queDuraNoche(tourActivo.duracion.noches)}}</span></p>
+						<p class="my-1 mt-3"><strong>1° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora)}}</span></p>
+						<p class="my-1 mt-3"><strong>Reglas de compra:</strong> </p>
+						<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
+						<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
+						<p class="my-1 mt-3"><strong>Destino:</strong> <span class="text-capitalize">{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
+						<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}} {{variasActividades()}}</span></p>
+						<p class="my-1 mt-3"><strong>Categorías:</strong> <span>{{variasCategorias()}}</span></p>
+						<p class="my-1 mt-3"><strong>Descripción:</strong> <br> </p>
+						<div class="w-100 text-break" v-html="tourActivo.descripcion"></div>
+						<p class="my-1"><strong>Punto de partida:</strong> <br> </p>
+						<div class="w-100 text-break" v-html="tourActivo.partida"></div>
+						<p class="my-1"><strong>Itinerario:</strong> <br> </p>
+						<div class="w-100 text-break" v-html="tourActivo.itinerario"></div>
+						<p class="my-1"><strong>Incluye:</strong></p>
+						<p class="ms-2" v-for="cadena in tourActivo.incluye.split('\n')"><i class="icofont-check-alt"></i> {{cadena}}</p>
+						<p class="my-1 mt-3"><strong>No incluye:</strong></p>
+						<p class="ms-2" v-for="cadena in tourActivo.noIncluye.split('\n')"><i class="icofont-close-line"></i> {{cadena}}</p>
+						<p class="my-1"><strong>Notas:</strong> <br> </p>
+						<div class="w-100 text-break" v-html="tourActivo.notas"></div>
+						
+						<div>
+							<p></p>
+						</div>
+						<button type="button" @click="eliminar()" class="btn btn-danger mt-3"><i class="icofont-ui-delete"></i> Eliminar paquete</button>
 					</div>
-					<button type="button" @click="eliminar()" class="btn btn-danger mt-3"><i class="icofont-ui-delete"></i> Eliminar paquete</button>
 					<div class="row my-2">
 						<div class="col" v-if="tourActivo.fotos.length<16">
 							<p class="mb-0">Subir imágen:</p>

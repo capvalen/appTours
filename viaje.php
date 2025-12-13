@@ -116,7 +116,13 @@
 
 					<div class="row">						
 							<div v-if="tourActivo.transporte !=3 && tourActivo.transporte!=undefined " class="col col-md text-center fs-6 text-capitalize">
-								<span  v-if="tourActivo.transporte==='1'"><span class="fs-2"><i class="icofont-bus"></i></span> <span>{{queTransporte()}}</span></span>
+								<span  v-if="tourActivo.transporte==='1'">
+									<span class="fs-2">
+										<i v-if="queTransporte()=='bus'" class="icofont-bus"></i>
+										<i v-if="queTransporte()=='tren'" class="icofont-train-line"></i>
+									</span>
+									<span>{{queTransporte()}}</span>
+								</span>
 								<span v-if="tourActivo.transporte==='2'"><span class="fs-2"><span id="spanAvion"><i class="icofont-airplane"></i></span></span> <span>{{queTransporte()}}</span></span>
 								<span v-if="tourActivo.transporte==='4'"><span class="fs-2"><i class="icofont-ship-alt"></i></span> <span>{{queTransporte()}}</span></span>
 							</div>
