@@ -1,0 +1,71 @@
+<div id="formulario">
+	<div class="w-100"><input type="date" id="fecha"></div>
+	<div class="w-100">
+		<select name="" id="pais" placeholder="País o nacionalidad">
+			<option value="1">Peruano</option>
+			<option value="1">Extranjero</option>
+		</select>
+	</div>
+	<div class="div w-100 d-inline">
+		<div class="w-50 me-2">
+			<input type="number" min="0" placeholder="Adultos">
+		</div>
+		<div class="w-50 ms-2">
+			<input type="number" min="0" placeholder="Niños">
+		</div>
+	</div>
+	<div class="w-100"><input type="text" id="nombres" placeholder="Nombres y Apellidos"></div>
+	<div class="w-100"><input type="text" id="celular" placeholder="Celular"></div>
+	<div class="w-100"><input type="text" id="email" placeholder="Email"></div>
+	<div class="div w-100 d-inline">
+		<div class="w-50 me-2">
+			<button class="btn d-inline" id="reservar"><span class="elementor-button-icon">
+				<i class="lnr lnr-cart" aria-hidden="true"></i>
+			</span> Reservar</button>
+		</div>
+		<div class="w-50 ms-2">
+						<button class="btn d-inline" id="whatsapp">
+							<span class="elementor-button-icon">
+								<i class="fab fa-whatsapp" aria-hidden="true"></i>
+							</span> Whatsapp
+						</button>
+		</div>
+	</div>
+</div>
+<style>
+	.w-50{width: 50%;}
+	.d-inline{display: flex;}
+	
+	.ms-2{
+		margin-left: 10px;
+	}
+	.me-2{
+		margin-right: 10px;
+	}
+	.w-100{
+		margin-bottom: 10px;
+	}
+	#formulario input, #formulario select{
+		border:1px solid rgb(180, 180, 180)!important;
+	}
+	.btn{
+		width: 100%; color:white;
+		border: none;
+		display: flex;
+		justify-content: center;
+		font-size: 1.2rem;
+	}
+	.btn .elementor-button-icon{
+		padding-right: 10px;
+		font-size: 1.8rem;
+	}
+	#reservar{ background-color: #ffa300; }
+	#whatsapp{ background-color: #10b916; }
+</style>
+<script>
+	jQuery(document).ready(function($) {
+		fecha = document.querySelector('#fecha')
+		const hoy = new Date().toISOString().slice(0, 10);
+		fecha.value = hoy
+	});
+</script>
