@@ -66,6 +66,7 @@
 			formData.append('pagina', document.title.replace('– Tours Huancayo', ''));
 			formData.append('action', 'enviar_correo_contacto'); // Nombre de la función en PHP
 
+			//Envía a traves de script
 			fetch('/wp-admin/admin-ajax.php', {
 					method: 'POST',
 					body: formData

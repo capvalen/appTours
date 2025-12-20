@@ -19,7 +19,7 @@ function procesar_formulario_contacto() {
     $destinatario = 'grupoeuroandino0@hotmail.com';
     $asunto = 'Nuevo interesado: ' . $nombre;
     $cuerpo = "Has recibido un nuevo mensaje de una persona interesada:<br><br>" .
-              "<b>En el tour:</b> $pagina<br>" .
+              "<b>Tour:</b> $pagina<br>" .
               "<b>Fecha:</b> $fecha<br>" .
               "<b>Nacionalidad:</b> $nacionalidad<br>" .
               "<b>Pasajeros:</b> $adultos (adultos) y $ninos (niños)<br>" .
