@@ -24,6 +24,20 @@ if($resp){
 		$resp = $sql->execute([$nuevaUrl, $idTour]);
 	}
 
+	/* $sqlContar = $db->prepare("UPDATE configuraciones SET contenido = contenido +1 where nombre = 'total_tours'; ");
+	$sqlContar->execute();
+
+	$valoresValidos = [
+		1 => 'total_half',
+		2 => 'total_full'
+	];
+	$duracion = $_POST['tour']['duracion'] ?? null;
+
+	if(isset($duracion)){
+		$sqlContar2 = $db->prepare("UPDATE configuraciones SET contenido = contenido +1 where nombre = ?; ");
+		$sqlContar2->execute([ $valoresValidos[ $duracion ] ]);
+	} */
+
 	$sqlCateg = $db->prepare("SELECT * FROM `categorias` where nombre = ?;");
 	$respCateg = $sqlCateg->execute([ $_POST['categoria'] ]);
 	if( $sqlCateg->rowCount()==0 ){

@@ -195,7 +195,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<div class="form-floating mb-3">
 							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.duracion">
 								<option v-for="dia in duracion" :value="dia.clave">{{dia.valor}}</option>
-								
 							</select>
 							<label for="floatingSelect">Duración</label>
 						</div>

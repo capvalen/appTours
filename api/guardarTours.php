@@ -2,7 +2,7 @@
 
 include ("conectkarl.php");
 $_POST = json_decode(file_get_contents('php://input'),true);
-//var_dump($_POST['tour']['url']); die();
+//var_dump($_POST['tour']); die();
 
 ( $_SERVER['REQUEST_METHOD'] === 'OPTIONS' )? die() : '';
 
@@ -30,6 +30,20 @@ if($resp){
 			WHERE id = ?");
 		$resp = $sql->execute([$nuevaUrl, $idTour]);
 	}
+
+	/* $sqlContar = $db->prepare("UPDATE configuraciones SET contenido = contenido +1 where nombre = 'total_tours'; ");
+	$sqlContar->execute();
+
+	$valoresValidos = [
+		1 => 'total_half',
+		2 => 'total_full'
+	];
+	$duracion = $_POST['tour']['duracion'] ?? null;
+
+	if(isset($duracion)){
+		$sqlContar2 = $db->prepare("UPDATE configuraciones SET contenido = contenido +1 where nombre = ?; ");
+		$sqlContar2->execute([ $valoresValidos[ $duracion ] ]);
+	} */
 
 
 	

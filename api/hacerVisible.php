@@ -7,7 +7,6 @@ $_POST = json_decode(file_get_contents('php://input'),true);
 $sql =$db->prepare("UPDATE `tours` SET `visible` = ? WHERE `id` = ?; ");
 $resp = $sql->execute([ $estado, $_POST['id'] ]);
 
-
 if($resp){
 	echo 'ok';
 }else{
