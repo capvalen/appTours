@@ -6,6 +6,11 @@ where visible = 1 and activo = 1;");
 $sqlSumaTours -> execute();
 $SumaTours = $sqlSumaTours -> fetchColumn();
 
+$sqlSumaPaquetes = $db->prepare("SELECT count(id) FROM `tours`
+where visible = 1 and activo = 1 and tipo = 2;");
+$sqlSumaPaquetes -> execute();
+$SumaPaquetes = $sqlSumaPaquetes -> fetchColumn();
+
 $sqlSumaHalf = $db->prepare("SELECT count(id) FROM `tours`
 where visible = 1 and activo = 1 and json_extract(contenido, '$.duracion') =1; ");
 $sqlSumaHalf -> execute();
@@ -53,9 +58,10 @@ $SumaDepartamentos = count($filasSumaDepartamentos);
 echo json_encode(
 	array(
 		0=>array(
-	'tours' => $SumaTours,
-	'half' => $SumaHalf,
-	'full' => $SumaFull,
+	'tours' => intval($SumaTours),
+	'paquetes' => intval($SumaPaquetes),
+	'half' => intval($SumaHalf),
+	'full' => intval($SumaFull),
 	'categorias' => $SumaCategorias,
 	'colegio' => $SumaColegio,
 	'actividades' => $SumaActividades,
