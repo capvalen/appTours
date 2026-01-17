@@ -833,7 +833,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let indexJuego = this.todosTours.map( tour => tour.id ).indexOf(this.idGlobal);
 				//console.log( indexJuego );
 				this.todosTours[indexJuego].visible=e.target.checked;
-
+			},
+			tipoTransporteChange(){
+				if( this.tour.transporte == 3 ) this.tour.idTransporte = null
 			},
 			abrirEdicion(){
 				this.activarEditar=true;

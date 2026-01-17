@@ -94,13 +94,13 @@ include '../api/'
 								<div class="col">
 									<p><strong>Condiciones: </strong></p>
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" value="" id="chkPoliticas" v-model="politica">
+										<input class="form-check-input" type="checkbox" id="chkPoliticas" v-model="politica">
 										<label class="form-check-label" for="chkPoliticas">
 										Acepto los <a class="text-decoration-none" href="https://grupoeuroandino.com/terminos-y-condiciones/" target="_blank">Términos y Condiciones Generales del Portal</a>
 										</label>
 									</div>
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" value="" id="chkPrivacidad" v-model="privacidad">
+										<input class="form-check-input" type="checkbox" id="chkPrivacidad" v-model="privacidad">
 										<label class="form-check-label" for="chkPrivacidad">
 										Acepto las <a class="text-decoration-none" href="https://grupoeuroandino.com/politicas-de-privacidad/" target="_blank">Políticas de privacidad</a>
 										</label>
@@ -334,7 +334,7 @@ include '../api/'
 				ciudad: 'huancayo', direccion: 'av huancavelica 435',  */
 				nombres: '', apellidos: '', documento: '', correo: '', celular: '', 
 				ciudad: '', direccion: '',
-				politica: '', privacidad: '', mensajeError:'', hora:'',
+				politica: true, privacidad: true, mensajeError:'', hora:'',
 				precAdultos:'', precMenores:'', total:'', nomTour:'', adultoNormal:0,menorNormal:0, idOrden:-1, actiFactura:3, //3boleta, 1 factura
 				nRuc:'', nRazon:'', nDireccion:'', dolar:0, comision:0, totalDolar: 0, moneda:'soles', adulDolar:0, ninDolar:0, url:'', indexRegla:-1,
 				reglas:[

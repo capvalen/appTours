@@ -237,7 +237,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							</div>
 						</div>
 						<div class="form-floating mb-3">
-							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.transporte">
+							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.transporte" @change="tipoTransporteChange">
 								<option value="3">Ninguno</option>
 								<option value="4">Acuático</option>
 								<option value="2">Aéreo</option>
@@ -841,6 +841,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				//console.log( indexJuego );
 				this.todosTours[indexJuego].visible=e.target.checked;
 
+			},
+			tipoTransporteChange(){
+				if( this.tour.transporte == 3 ) this.tour.idTransporte = null
 			},
 			abrirEdicion(){
 				this.activarEditar=true;

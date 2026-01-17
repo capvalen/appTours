@@ -36,35 +36,62 @@
 		}
 
 		#txtBuscador {
-			width: 80%;
-			margin: 0;
-			height: 44px;
+			width: 70%;
 			background-color: #fff;
+			border: none;
+			height: 50px;
+			font-size: 1.2rem;
+			border-radius: 20px;
+
+			/* margin: 0;
+			height: 44px;
+			
 			border: 2px solid #1e1e1e;
 			box-shadow: 0 0 0 0 #b5b5b5 inset;
-			border-radius: 50px;
 			padding: 1.5rem;
-			display: inline;
+			display: inline; */
+		}
+		#txtBuscador:focus{
+			outline: none;
 		}
 		#btnBuscador {
-			width: 15%;
+			width: 30%;
 			margin: 0;
-			height: 44px;
+			height: auto;
 			background-color: #fff;
-			border: 2px solid #1e1e1e;
+			border: none;
 			box-shadow: 0 0 0 0 #b5b5b5 inset;
 			border-radius: 50px;
-			padding: 1.5rem;
+			padding: 0rem;
 			display: inline;
 			color: white;
-    	background-color: #002865;
-			font-size:1.1em
+    	background-color: #ffa300;
+			font-size:1.3em;
+			font-weight: bold;
 		}
 		/* #btnBuscador:hover{color: #1e1e1e} */
 
-		#txtBuscador::placeholder {
+		#cajaBuscador{
+			width: 80%;
+			margin: 0 auto;
+			height: auto;
+			background-color: #fff;
+			border: transparent;
+			border-radius: 50px;
+			padding: 0.5rem;
+			/*sombra */
+			-webkit-box-shadow: 5px 5px 46px 16px rgba(0,0,0,0.6);
+			box-shadow: 5px 5px 46px 16px rgba(0,0,0,0.6);
+			display: flex;
+			justify-content: flex-start;
+		}
 
-			/* padding:2rem; */
+		@media (max-width: 480px) {
+			#cajaBuscador{width: 100%; }
+			#txtBuscador{height: 35px; }
+			#btnBuscador{font-size:0.8em;
+				font-weight: 400;	
+			}
 
 		}
 
@@ -227,10 +254,15 @@
 	</style>
 
 	<div class="container text-center" id="appBuscador">
+		
 
-		<div class="position-relative">
-			<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);" @keyup.enter="irA('ultimo')">
+		<div class="position-relative d-none">
+			<input type="text" id="txtBuscador2" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);" @keyup.enter="irA('ultimo')" >
 			<span id="divLupa" class="position-absolute"><img src="https://grupoeuroandino.com/images/search_icon.svg" alt="" style="width: 25px;"></span>
+		</div>
+		<div class="" id="cajaBuscador">
+			<input type="text" id="txtBuscador" v-model="texto" placeholder="¿A dónde vas a viajar?" @keyup="validar($event);" @keyup.enter="irA('ultimo')" autocomplete="off">
+			<button class="btn" id="btnBuscador" @click="irA('ultimo')">BUSCAR</button>
 		</div>
 			<!-- <div class="form-inline">
 				<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);">
