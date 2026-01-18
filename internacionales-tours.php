@@ -542,6 +542,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			tostadaMal = new bootstrap.Toast( document.getElementById('tostadaMal') );
 			offPanel = new bootstrap.Offcanvas( document.getElementById('offPanel') );
 			
+			const Block = Quill.import('blots/block');
+			Block.tagName = 'div';  // Cambia P por DIV
+			Quill.register(Block, true);
+			
 			for (let dia = 2; dia <= 31; dia++) {
 				this.duracion.push({ clave: dia+1, valor: dia + ' días / 0 noches' });
 			}
