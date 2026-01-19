@@ -106,9 +106,16 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<td>
 						<button data-bs-toggle="offcanvas" data-bs-target="#offFechas" class="btn btn-sm btn-outline-secondary" @click.prevent="idGlobal=todosTours[index].id;tourActivo =JSON.parse(todosTours[index].contenido)"><span v-if="vTour.fechas">{{vTour.fechas.length}}</span> <span v-else>0</span></button>
 					</td>
-					<td @click="cargarPanel(todosTours[index].id, index)" >
-						<span class="text-primary" v-if="esVisible(index)=='1'"><i class="icofont-check"></i></span>
-						<span class="text-danger" v-else><i class="icofont-close"></i></span>
+					<td >
+						<div class="form-check form-switch">
+							<input class="form-check-input" type="checkbox" role="switch" :id="'chkVisible'+index+1" @click="idGlobal =todosTours[index].id; hacerVisible($event)" :checked="todosTours[index].visible=='1'? 'checked':''">
+							<label v-if="todosTours[index].visible=='1'" class="form-check-label text-primary" :for="'chkVisible'+index+1"><i class="icofont-eye-alt"></i> Es visible</label>
+							<label v-else class="form-check-label " :for="'chkVisible'+index+1"><i class="icofont-eye-blocked"></i> No publicado</label>
+						</div>
+						<div class="d-none">
+							<span class="text-primary" v-if="esVisible(index)=='1'"><i class="icofont-check"></i></span>
+							<span class="text-danger" v-else><i class="icofont-close"></i></span>
+						</div>
 					</td>
 					<td @click.stop="eliminarTour(index)"><span class="text-danger"><i class="icofont-ui-delete"></i></span></td>
 				</tr>
