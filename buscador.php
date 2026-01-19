@@ -36,7 +36,7 @@
 		}
 
 		#txtBuscador {
-			width: 70%;
+			width: 75%;
 			background-color: #fff;
 			border: none;
 			height: 50px;
@@ -55,7 +55,7 @@
 			outline: none;
 		}
 		#btnBuscador {
-			width: 30%;
+			width: 25%;
 			margin: 0;
 			height: auto;
 			background-color: #fff;
@@ -148,7 +148,7 @@
 
 		.imagen {
 
-			width: 20%;
+			width: 15%;
 
 			padding: 0 0.5rem;
 
@@ -174,7 +174,7 @@
 
 		.titulo {
 
-			font-size: 1.1rem;
+			font-size: 1.05rem;
 
 			font-weight: bold;
 
@@ -233,6 +233,7 @@
 			#divLupa {
 				right: 51px
 			}
+			.titulo {font-size: 1rem!important; }
 
 		}
 
@@ -249,6 +250,7 @@
 			#divLupa {
 				right: 45px
 			}
+			.titulo {font-size: 1rem!important; }
 
 		}
 	</style>
@@ -261,7 +263,7 @@
 			<span id="divLupa" class="position-absolute"><img src="https://grupoeuroandino.com/images/search_icon.svg" alt="" style="width: 25px;"></span>
 		</div>
 		<div class="" id="cajaBuscador">
-			<input type="text" id="txtBuscador" v-model="texto" placeholder="¿A dónde vas a viajar?" @keyup="validar($event);" @keyup.enter="irA('ultimo')" autocomplete="off">
+			<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);" @keyup.enter="irA('ultimo')" autocomplete="off">
 			<button class="btn" id="btnBuscador" @click="irA('ultimo')">BUSCAR</button>
 		</div>
 			<!-- <div class="form-inline">
@@ -333,7 +335,7 @@
 
 					console.log(e.keyCode);
 
-					if (e.keyCode == 27) {
+					if (e.keyCode == 27) { //tecla esc
 
 						this.coincidencias = [];
 
