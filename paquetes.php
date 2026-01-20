@@ -120,7 +120,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<td >
 						<div class="form-check form-switch">
 							<input class="form-check-input" type="checkbox" role="switch" :id="'chkVisible'+index+1" @click="idGlobal =todosTours[index].id; hacerVisible($event)" :checked="todosTours[index].visible=='1'? 'checked':''">
-							<label v-if="todosTours[index].visible=='1'" class="form-check-label text-primary" :for="'chkVisible'+index+1"><i class="icofont-eye-alt"></i> Es visible</label>
+							<label v-if="todosTours[index].visible=='1'" class="form-check-label text-primary" :for="'chkVisible'+index+1"><i class="icofont-eye-alt"></i> Publicado</label>
 							<label v-else class="form-check-label " :for="'chkVisible'+index+1"><i class="icofont-eye-blocked"></i> No publicado</label>
 						</div>
 						<div class="d-none">
