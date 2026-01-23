@@ -9,7 +9,7 @@ if (isset($_GET['idTipo'])) { $idTipo = $_GET['idTipo']; } else { $idTipo = -1; 
 $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ];
 $departamentosUrl = ['amazonas', 'ancash', 'apurimac', 'arequipa', 'ayacucho', 'cajamarca', 'cusco', 'callao', 'huancavelica','huanuco', 'ica', 'junin', 'la-libertad', 'lambayeque', 'lima', 'loreto', 'madre-de-dios', 'moquegua', 'pasco', 'piura', 'puno','san-martin', 'tacna', 'tumbes', 'ucayali' ];
 $descripcion = ['Reserva online Paquetes y Tours de Amazonas. Destinos y Actividades en Amazonas. Lugares, festividades, ciudades y pueblos de Amazonas', 'Reserva online Paquetes y Tours de Áncash. Destinos y Actividades en Áncash. Lugares, festividades, playas, ciudades y pueblos de Áncash', 'Reserva online Paquetes y Tours de Apurímac. Destinos y Actividades en Apurímac. Lugares, festividades, ciudades y pueblos de Apurímac', 'Reserva online Paquetes y Tours de Apurímac. Destinos y Actividades en Apurímac. Lugares, festividades, ciudades y pueblos de Apurímac', 'Reserva online Paquetes y Tours de Ayacucho. Destinos y Actividades en Ayacucho. Lugares, festividades, ciudades y pueblos de Ayacucho', 'Reserva online Paquetes y Tours de Cajamarca. Destinos y Actividades en Cajamarca. Lugares, festividades, ciudades y pueblos de Cajamarca', 'Reserva online Paquetes y Tours de Cusco. Destinos y Actividades en Cusco. Lugares, festividades, ciudades y pueblos de Cusco', 'Reserva online Paquetes y Tours del Callao. Destinos y Actividades en el Callao. Lugares, festividades, playas, ciudades y pueblos del Callao', 'Reserva online Paquetes y Tours de Huancavelica. Destinos y Actividades en Huancavelica. Lugares, festividades, ciudades y pueblos de Huancavelica','Reserva online Paquetes y Tours de Huánuco. Destinos y Actividades en Huánuco. Lugares, festividades, ciudades y pueblos de Huánuco', 'Reserva online Paquetes y Tours de Ica. Destinos y Actividades en Ica. Lugares, festividades, playas, ciudades y pueblos de Ica', 'Reserva online Paquetes y Tours de Junín. Destinos y Actividades en Junín. Lugares, festividades, ciudades y pueblos de Junín', 'Reserva online Paquetes y Tours de La Libertad. Destinos y Actividades en La Libertad. Lugares, festividades, playas, ciudades y pueblos de La Libertad', 'Reserva online Paquetes y Tours de Lambayeque. Destinos y Actividades en Lambayeque. Lugares, festividades, playas, ciudades y pueblos de Lambayeque', 'Reserva online Paquetes y Tours de Lima. Destinos y Actividades en Lima. Lugares, festividades, playas, ciudades y pueblos de Lima', 'Reserva online Paquetes y Tours de Loreto. Destinos y Actividades en Loreto. Lugares, festividades, ciudades y pueblos de Loreto', 'Reserva online Paquetes y Tours de Madre de Dios. Destinos y Actividades en Madre de Dios. Lugares, festividades, ciudades y pueblos de Madre de Dios', 'Reserva online Paquetes y Tours de Madre de Dios. Destinos y Actividades en Madre de Dios. Lugares, festividades, ciudades y pueblos de Madre de Dios', 'Reserva online Paquetes y Tours de Pasco. Destinos y Actividades en Pasco. Lugares, festividades, ciudades y pueblos de Pasco', 'Reserva online Paquetes y Tours de Piura. Destinos y Actividades en Piura. Lugares, festividades, playas, ciudades y pueblos de Piura', 'Reserva online Paquetes y Tours de Puno. Destinos y Actividades en Puno. Lugares, festividades, ciudades y pueblos de Puno','Reserva online Paquetes y Tours de San Martín. Destinos y Actividades en San Martín. Lugares, festividades, ciudades y pueblos de San Martín', 'Reserva online Paquetes y Tours de Tacna. Destinos y Actividades en Tacna. Lugares, festividades, playas, ciudades y pueblos de Tacna', 'Reserva online Paquetes y Tours de Tumbes. Destinos y Actividades en Tumbes. Lugares, festividades, playas, ciudades y pueblos de Tumbes', 'Reserva online Paquetes y Tours de Ucayali. Destinos y Actividades en Ucayali. Lugares, festividades, ciudades y pueblos de Ucayali' ];
-$fotos = ['https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-amazonas.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-ancash.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-apurimac.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-arequipa.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-ayacucho.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-cajamarca.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-cusco.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-callao.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-huancavelica.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-huanuco.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-ica.jpeg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-junin.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-la-libertad.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-lambayeque.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-lima.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-loreto.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-madre-de-dios.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-moquegua.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-pasco.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-piura.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-puno.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-san-martin.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-tacna.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-tumbes.jpg', 'https://grupoeuroandino.com/wp-content/uploads/2023/07/paquetes-y-tours-ucayali.jpg'];
+$fotos = ['https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-amazonas.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-ancash.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-apurimac.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-arequipa.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-ayacucho.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-cajamarca.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-cusco.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-callao.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-huancavelica.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-huanuco.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-ica.jpeg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-junin.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-la-libertad.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-lambayeque.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-lima.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-loreto.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-madre-de-dios.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-moquegua.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-pasco.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-piura.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-puno.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-san-martin.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-tacna.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-tumbes.jpg', 'https://peru-travel.pe/wp-content/uploads/2023/07/paquetes-y-tours-ucayali.jpg'];
 
 $comentario =  [
    "El bosque tropical del Amazonas, que abarca gran parte del noroeste de Brasil y se extiende hasta Colombia, Perú y otros países de Sudamérica, es el bosque tropical más grande del mundo y es famoso por su biodiversidad. Está entrecruzado por miles de ríos, incluido el caudaloso Amazonas. Las ciudades aledañas, con arquitectura del siglo XIX de los días de la fiebre del caucho, incluyen a Manaos y Belém, en Brasil, y a Iquitos y Puerto Maldonado, en Perú.", 
@@ -65,11 +65,11 @@ $idDepartamento = $indice;
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Paquetes y Tours de <?= $departamentos[$indice] ?> - Grupo Euro Andino </title>
+	<title>Paquetes y Tours de <?= $departamentos[$indice] ?> - Perú Travel </title>
 	
 	<?php
 	if( $indice>=0 ){ ?>
-		<meta property="og:title" content="Paquetes y tours de <?= $departamentos[$indice] ?> - Grupo Euro Andino">
+		<meta property="og:title" content="Paquetes y tours de <?= $departamentos[$indice] ?> - Perú Travel">
 		<meta property="og:image" content="<?= $fotos[$indice] ?>">
 		<meta property="og:description" content="<?= strip_tags($descripcion[$indice]) ?>">
 		<?php
@@ -182,22 +182,22 @@ $idDepartamento = $indice;
 							<span v-if="tour.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
 							<span v-if="tour.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
 						</div>
-						<a class="aImgs" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
-						<a class="aImgs" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+						<a class="aImgs" v-if="tour.tipo==1" :href="'https://peru-travel.pe/tours/' + tour.url" target="_parent"><img class="img-fluid rounded-top" :src="'https://peru-travel.pe/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+						<a class="aImgs" v-if="tour.tipo==2" :href="'https://peru-travel.pe/tours/' + tour.url" target="_parent"><img class="img-fluid rounded-top" :src="'https://peru-travel.pe/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
 					</div>
 					<div class="card-body">
 						<div class="divProducto ">
 							<div>
 								<p class="mb-0 titulo ps-1 ">
-									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent">{{tour.nombre}}</a>
-									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent">{{tour.nombre}}</a>
+									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==1" :href="'https://peru-travel.pe/tours/' + tour.url" target="_parent">{{tour.nombre}}</a>
+									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==2" :href="'https://peru-travel.pe/tours/' + tour.url" target="_parent">{{tour.nombre}}</a>
 								</p>
 								<!-- <div class="d-flex justify-content-between">
 									aquí iba la bandera
 								</div> -->								
 								<div class="row row-cols-2">
 									<div>
-										<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"> <strong>{{tour.destino}},</strong></span>
+										<span><img class="bandera" src="https://peru-travel.pe/images/banderas/peru.jpeg"> <strong>{{tour.destino}},</strong></span>
 										<br>
 										<i class="icofont-google-map"></i> <span class="text-capitalize"><strong> {{queDepa(tour.departamento)}}</strong></span>
 										<div class="estrellas">
@@ -264,7 +264,7 @@ $idDepartamento = $indice;
 
 				//servidor: 'http://localhost/euroAndinoApi/',
 
-				servidor: 'https://grupoeuroandino.com/app/api/',
+				servidor: 'https://peru-travel.pe/app/api/',
 
 				departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 
@@ -411,11 +411,11 @@ $idDepartamento = $indice;
 
 					if (prod.fotos?.length == 0) {
 
-						return 'https://grupoEuroAndino.com/app/render/images/defecto.jpg';
+						return 'https://peru-travel.pe/app/render/images/defecto.jpg';
 
 					} else {
 
-						return 'https://grupoEuroAndino.com/app/render/images/subidas/' + prod.fotos[0].nombreRuta;
+						return 'https://peru-travel.pe/app/render/images/subidas/' + prod.fotos[0].nombreRuta;
 
 					}
 

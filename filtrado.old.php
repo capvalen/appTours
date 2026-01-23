@@ -28,7 +28,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
+	<link rel="stylesheet" href="https://peru-travel.pe/app/render/icofont/icofont.min.css">
 
 </head>
 
@@ -122,9 +122,9 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 						<h5 class="card-title text-capitalize mb-0">
 
-							<a v-if="producto.tipo==1" class="text-decoration-none text-dark" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
+							<a v-if="producto.tipo==1" class="text-decoration-none text-dark" :href="'https://peru-travel.pe/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
 
-							<a v-if="producto.tipo==2" class="text-decoration-none text-dark" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
+							<a v-if="producto.tipo==2" class="text-decoration-none text-dark" :href="'https://peru-travel.pe/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
 
 						</h5>
 
@@ -208,7 +208,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 				//servidor: 'http://localhost/appTours/api/',
 
-				servidor: 'https://grupoeuroandino.com/app/api/',
+				servidor: 'https://peru-travel.pe/app/api/',
 
 				departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 
@@ -399,11 +399,11 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 					if (prod.fotos.length == 0) {
 
-						return 'https://grupoEuroAndino.com/app/render/images/defecto.jpg';
+						return 'https://peru-travel.pe/app/render/images/defecto.jpg';
 
 					} else {
 
-						return 'https://grupoEuroAndino.com/app/render/images/subidas/' + prod.fotos[0].nombreRuta;
+						return 'https://peru-travel.pe/app/render/images/subidas/' + prod.fotos[0].nombreRuta;
 
 					}
 

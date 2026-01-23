@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Panel de paguetes - Grupo Euro-Andino</title>
-	<link rel="icon" type="image/png" href="https://grupoeuroandino.com/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
+	<link rel="icon" type="image/png" href="https://peru-travel.pe/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 	<link rel="stylesheet" href="icofont/icofont.min.css">
@@ -22,7 +22,7 @@
 	</style>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container">
-			<a class="navbar-brand" href="#">Grupo Euro Andino</a>
+			<a class="navbar-brand" href="#">Perú Travel</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -141,7 +141,7 @@
 		el: '#app',
 		data: {
 			//servidor: 'http://localhost/appTours/api/',
-			servidor: 'https://grupoeuroandino.com/app/api/',
+			servidor: 'https://peru-travel.pe/app/api/',
 			pedidos:[], indexPedido:null
 			
 		},

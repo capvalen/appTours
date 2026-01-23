@@ -11,7 +11,7 @@ include '../api/'
 	<title>Carrito</title>
 	<!-- CSS only -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
+	<link rel="stylesheet" href="https://peru-travel.pe/app/render/icofont/icofont.min.css">
 	
 	<!-- Javascript library. Should be loaded in head section -->
 	<!-- <script type="text/javascript" src="https://static.micuentaweb.pe/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js"  kr-public-key="99809654:publickey_tXwOD7MbbajQWgNUXaUU1UaIrlEqLFpESM2tz7weDTqNI"> </script> -->
@@ -96,13 +96,13 @@ include '../api/'
 									<div class="form-check">
 										<input class="form-check-input" type="checkbox" id="chkPoliticas" v-model="politica">
 										<label class="form-check-label" for="chkPoliticas">
-										Acepto los <a class="text-decoration-none" href="https://grupoeuroandino.com/terminos-y-condiciones/" target="_blank">Términos y Condiciones Generales del Portal</a>
+										Acepto los <a class="text-decoration-none" href="https://peru-travel.pe/terminos-y-condiciones/" target="_blank">Términos y Condiciones Generales del Portal</a>
 										</label>
 									</div>
 									<div class="form-check">
 										<input class="form-check-input" type="checkbox" id="chkPrivacidad" v-model="privacidad">
 										<label class="form-check-label" for="chkPrivacidad">
-										Acepto las <a class="text-decoration-none" href="https://grupoeuroandino.com/politicas-de-privacidad/" target="_blank">Políticas de privacidad</a>
+										Acepto las <a class="text-decoration-none" href="https://peru-travel.pe/politicas-de-privacidad/" target="_blank">Políticas de privacidad</a>
 										</label>
 									</div>
 								</div>
@@ -187,7 +187,7 @@ include '../api/'
 					<div class="card">
 						<div class="card-body text-muted">
 							<h3>Resumen del pedido</h3>
-							<p class="fs-4 text-capitalize" id="pTour"><a :href="'https://grupoeuroandino.com/tours/'+url" class="text-decoration-none">{{nomTour.toLowerCase()}}</a></p>
+							<p class="fs-4 text-capitalize" id="pTour"><a :href="'https://peru-travel.pe/tours/'+url" class="text-decoration-none">{{nomTour.toLowerCase()}}</a></p>
 							<p class="mb-0"><strong>Fecha de inicio:</strong> <span>{{empieza}}</span></p>
 							<p class="mb-0"><strong>Hora:</strong> <span>A las {{formatoHora(hora)}}.</span></p>
 							<p class="mb-0"><strong>Nacionalidad:</strong> 
@@ -225,7 +225,7 @@ include '../api/'
 						<button class="btn btn-outline-danger btn-lg" @click="finalizarCompra"><i class="icofont-check-circled"></i> Finalizar compra</button>
 					</div>
 					<div>
-						<img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/83589178_2587722714818486_2444153424434954240_n.png" alt="" class="img-fluid">
+						<img src="https://peru-travel.pe/wp-content/uploads/2022/06/83589178_2587722714818486_2444153424434954240_n.png" alt="" class="img-fluid">
 					</div>
 				</div>
 			</div>
@@ -315,7 +315,7 @@ include '../api/'
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://grupoeuroandino.com/app/render/js/moment.min.js"></script>
+<script src="https://peru-travel.pe/app/render/js/moment.min.js"></script>
 
 
 
@@ -326,7 +326,7 @@ include '../api/'
 		data() {
 			return {
 				//servidor: 'http://localhost/appTours/api/',
-				servidor: 'https://grupoeuroandino.com/app/api/', 
+				servidor: 'https://peru-travel.pe/app/api/', 
 				carrito:null,
 				idProducto:null,adultos:0, kids:0,
 				nacionalidad:-1, comienza:null,
@@ -512,7 +512,7 @@ include '../api/'
 				datos.append('correo', 'ejemplo1@hotmail.com')
 				datos.append('id', this.idOrden);
 
-				let respIzi = await fetch('https://grupoeuroandino.com/app/render/token.php',{
+				let respIzi = await fetch('https://peru-travel.pe/app/render/token.php',{
 					method:'POST', body: datos
 				})
 				.then(respuesta =>{
@@ -596,7 +596,7 @@ include '../api/'
 		localStorage.setItem('carrito', JSON.stringify(app.carrito))
 
 		//console.log('empeiza a redirigir')
-		var url = 'https://grupoeuroandino.com/gracias';
+		var url = 'https://peru-travel.pe/gracias';
 		var form = $('<form action="' + url + '" method="post">' +
 			'<input type="text" name="id" value="' + app.idOrden + '" />' +
 			'</form>');
@@ -627,7 +627,7 @@ include '../api/'
 
     };
     
-    navigator.sendBeacon('https://grupoeuroandino.com/app/api/correoSalida.php', JSON.stringify(datos));
+    navigator.sendBeacon('https://peru-travel.pe/app/api/correoSalida.php', JSON.stringify(datos));
 }
 	
 	

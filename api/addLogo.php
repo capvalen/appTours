@@ -1,7 +1,7 @@
 <?php
-$rutaImgs = "/home/grupemde/public_html/app/render/images/sinmarca/";
-$rutaLogos = "/home/grupemde/public_html/app/render/images/";
-$rutaMarca = "/home/grupemde/public_html/app/render/images/subidas/";
+$rutaImgs = "/home/grupemde/WEBS/peru-travel.pe/app/render/images/sinmarca/";
+$rutaLogos = "/home/grupemde/WEBS/peru-travel.pe/app/render/images/";
+$rutaMarca = "/home/grupemde/WEBS/peru-travel.pe/app/render/images/subidas/";
 $nombreArchivo = $_POST['nombreArchivo'];
 
 $fondo = $rutaImgs.$nombreArchivo;

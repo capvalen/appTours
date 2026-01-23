@@ -186,12 +186,12 @@ if(array_key_exists($aBuscar, $ciudades)){
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Tours y paquetes: Ciudades - Grupo Euro Andino</title>
+	<title>Tours y paquetes: Ciudades - Perú Travel</title>
 	
 	<?php
 	if( $indice<>-1 ){ ?>
-		<meta property="og:title" content="Tours y paquetes de <?= $ciudades[$indice]['nombre'] ?> - Grupo Euro Andino">
-		<meta property="og:image" content="https://grupoeuroandino.com/images/ciudades/<?= strtolower($ciudades[$indice]['foto']) ?>">
+		<meta property="og:title" content="Tours y paquetes de <?= $ciudades[$indice]['nombre'] ?> - Perú Travel">
+		<meta property="og:image" content="https://peru-travel.pe/images/ciudades/<?= strtolower($ciudades[$indice]['foto']) ?>">
 		<meta property="og:description" content="<?= strip_tags($ciudades[$indice]['descripcion']) ?>">
 		<?php
 	}
@@ -311,7 +311,7 @@ if(array_key_exists($aBuscar, $ciudades)){
 							<span v-if="producto.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
 							<span v-if="producto.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
 						</div>
-						<a class="text-decoration-none text-dark" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">
+						<a class="text-decoration-none text-dark" :href="'https://peru-travel.pe/tours/' + pedidos[index].url" target="_parent">
 							<img :src="queFoto(producto)" class="card-img-top rounded-top" alt="...">
 						</a>
 				    </div>
@@ -320,9 +320,9 @@ if(array_key_exists($aBuscar, $ciudades)){
 
 						<h5 class="card-title mb-0">
 
-							<a v-if="producto.tipo==1" class="text-decoration-none text-dark" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
+							<a v-if="producto.tipo==1" class="text-decoration-none text-dark" :href="'https://peru-travel.pe/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
 
-							<a v-if="producto.tipo==2" class="text-decoration-none text-dark" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
+							<a v-if="producto.tipo==2" class="text-decoration-none text-dark" :href="'https://peru-travel.pe/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
 
 						</h5>
 
@@ -340,7 +340,7 @@ if(array_key_exists($aBuscar, $ciudades)){
 						<div class="row row-cols-2">
 							<div>
 							    <p class="card-text mb-0">
-							        <span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"></span>
+							        <span><img class="bandera" src="https://peru-travel.pe/images/banderas/peru.jpeg"></span>
 							        <i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}, {{queDepa(producto.departamento)}}</strong></span>
 							        </p>
 							        <div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
@@ -411,7 +411,7 @@ if(array_key_exists($aBuscar, $ciudades)){
 
 				//servidor: 'http://localhost/euroAndinoApi/',
 
-				servidor: 'https://grupoeuroandino.com/app/api/',
+				servidor: 'https://peru-travel.pe/app/api/',
 
 				departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 
@@ -604,11 +604,11 @@ if(array_key_exists($aBuscar, $ciudades)){
 
 					if (prod.fotos.length == 0) {
 
-						return 'https://grupoEuroAndino.com/app/render/images/defecto.jpg';
+						return 'https://peru-travel.pe/app/render/images/defecto.jpg';
 
 					} else {
 
-						return 'https://grupoEuroAndino.com/app/render/images/subidas/' + prod.fotos[0].nombreRuta;
+						return 'https://peru-travel.pe/app/render/images/subidas/' + prod.fotos[0].nombreRuta;
 
 					}
 

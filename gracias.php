@@ -135,11 +135,11 @@ if( $_POST['id']<>-1 ):
 						<div class="card-body m-5">
 							<div class="row">
 								<div class="col-4 p-5">
-									<img src="https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino.png" classs="img-fluid">
+									<img src="https://peru-travel.pe/wp-content/uploads/2020/09/Grupo-Euro-Andino.png" classs="img-fluid">
 								</div>
 								<div class="col-6">
 									<h1 class="fs-3">Hola <span class="text-capitalize"><?= strtolower($rowDatos['nombre']); ?></span>, tu compra fue exitosa </h1>
-									<p>¡En nombre de GRUPO EURO ANDINO S.A.C. queremos agradecerte inmensamente por la confianza en nuestros servicios! Esperamos que estés súper contento con tu compra, tal como lo estamos nosotros.</p>
+									<p>¡En nombre de Perú Travel S.A.C. queremos agradecerte inmensamente por la confianza en nuestros servicios! Esperamos que estés súper contento con tu compra, tal como lo estamos nosotros.</p>
 									<p>En breve estaremos enviándole su comprobante (Boleta/Factura) al correo electrónico que registró: <?= $rowDatos['correo']; ?></p>
 								</div>
 							</div>

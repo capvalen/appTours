@@ -4,9 +4,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Sistema Interno Grupo Euro Andino</title>
+	<title>Sistema Interno Perú Travel</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/facturador/icofont.min.css">
+	<link rel="stylesheet" href="https://peru-travel.pe/app/facturador/icofont.min.css">
 	
 </head>
 <body>
@@ -16,8 +16,8 @@
 	<div class="container p-3 col-sm-4">
 		<div class="card">
 			<div class="card-body py-5">
-				<center><img src="https://grupoeuroandino.com/app/facturador/images/empresa.jpg" width="50%" alt=""></center>
-				<h4 class="card-title text-center" style="font-weight: 300;">Bienvenido al Grupo Euro Andino </h4>
+				<center><img src="https://peru-travel.pe/app/facturador/images/empresa.jpg" width="50%" alt=""></center>
+				<h4 class="card-title text-center" style="font-weight: 300;">Bienvenido a Perú Travel </h4>
 				<label for="">Usuario:</label>
 				<input type="text" class="form-control" id="txtNegocioLog" value="" autocomplete="nope">
 				<label for="">Contraseña:</label>
@@ -49,7 +49,7 @@ $('#txtlocalLog').keyup(function (e) {
 $('#btnAcceder').click(function() {
 	$.ajax({
 		type:'POST',
-		url: 'https://grupoeuroandino.com/app/api/validarSesion.php',
+		url: 'https://peru-travel.pe/app/api/validarSesion.php',
 		data: {user: $('#txtNegocioLog').val(), pws: $('#txtlocalLog').val()},
 		success: function(resp) { console.log( "respuesta " + resp);
 			//if (parseInt(iduser)>0){//console.log('el id es '+data)
@@ -92,7 +92,7 @@ $('#btnAcceder').click(function() {
 <style>
 	#imagen {
 		background-color: #eee;
-		background: url(https://grupoeuroandino.com/app/render/images/fondo.jpg);
+		background: url(https://peru-travel.pe/app/render/images/fondo.jpg);
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center center;

@@ -14,7 +14,7 @@ if($sql->execute()){
 	while($row = $sql->fetch(PDO::FETCH_ASSOC)){
 		// Crea el elemento <url>
 		$url = $dom->createElement('url');
-		$loc = $dom->createElement('loc', "https://grupoeuroandino.com/tours/".$row['url'] );
+		$loc = $dom->createElement('loc', "https://peru-travel.pe/tours/".$row['url'] );
 		$url->appendChild($loc);
 		$urlset->appendChild($url);
 	}
@@ -27,7 +27,7 @@ if($sql->execute()){
 // Agrega el elemento <urlset> al documento
 $dom->appendChild($urlset);
 
-$rutaArchivo = '/home/perutra1/grupoeuroandino.com/sitemap_tours.xml';
+$rutaArchivo = '/home/perutra1/peru-travel.pe/sitemap_tours.xml';
 $dom->save($rutaArchivo);
 
 echo 'Archivo XML guardado correctamente en: ' . $rutaArchivo;

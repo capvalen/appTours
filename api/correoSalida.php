@@ -10,7 +10,7 @@ $mensaje = "
   <title>Reserva pendiente para {$datos['tour']}</title>
 </head>
 <body>
-  <h5>Hola Grupo Euro Andino</h5>
+  <h5>Hola Perú Travel</h5>
 
   <p>Tiene una reserva pendiente de pago para {$datos['tour']}</p>
   <p>Se ha hecho una reserva y estamos esperando la confirmación del pago del viajero</p>
@@ -25,7 +25,7 @@ $mensaje = "
 // Cabeceras para email HTML
 $cabeceras = "MIME-Version: 1.0" . "\r\n";
 $cabeceras .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-$cabeceras .= "From: Grupo Euro Andino <facturas@grupoeuroandino.com>" . "\r\n";
+$cabeceras .= "From: Perú Travel <facturas@peru-travel.pe>" . "\r\n";
 
 // Enviar el email
 if(mail($destinatario, $asunto, $mensaje, $cabeceras)) {

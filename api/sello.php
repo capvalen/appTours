@@ -2,7 +2,7 @@
 require  "addLogo.php";
 
 // Directorio a recorrer
-$directorioSinMarca = '/home/grupemde/public_html/app/render/images/sinmarca/';
+$directorioSinMarca = '/home/grupemde/WEBS/peru-travel.pe/app/render/images/sinmarca/';
 
 // Abrir el directorio
 $archivos = scandir($directorioSinMarca);

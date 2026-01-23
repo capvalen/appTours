@@ -8,7 +8,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Panel de paguetes - Grupo Euro-Andino</title>
-	<link rel="icon" type="image/png" href="https://grupoeuroandino.com/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
+	<link rel="icon" type="image/png" href="https://peru-travel.pe/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 	<link rel="stylesheet" href="icofont/icofont.min.css">
@@ -189,7 +189,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		async function actualizarPanel(){
 			let datos = new FormData();
 			datos.append('panel',  quill.root.innerHTML.trim() )
-			let respServ = await fetch("https://grupoeuroandino.com/app/api/actualizarPanel.php",{
+			let respServ = await fetch("https://peru-travel.pe/app/api/actualizarPanel.php",{
 				method:'POST', body: datos
 			});
 			if( await respServ.text() =='ok' ){
@@ -201,7 +201,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		async function actualizarBajo(){
 			let datos = new FormData();
 			datos.append('contenido',  quillBajo.root.innerHTML.trim() )
-			let respServ = await fetch("https://grupoeuroandino.com/app/api/actualizarInferior.php",{
+			let respServ = await fetch("https://peru-travel.pe/app/api/actualizarInferior.php",{
 				method:'POST', body: datos
 			});
 			if( await respServ.text() =='ok' ){
@@ -211,7 +211,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			}
 		}
 		async function cargarPanel(){
-			let respServ = await fetch("https://grupoeuroandino.com/app/api/cargarPanel.php");
+			let respServ = await fetch("https://peru-travel.pe/app/api/cargarPanel.php");
 			let serv = await respServ.json();
 			document.getElementById('txtDolar').value = serv.dolar
 			document.getElementById('txtComision').value = serv.comision
@@ -224,7 +224,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			let datos = new FormData();
 			datos.append('dolar', document.getElementById('txtDolar').value )
 			datos.append('comision', document.getElementById('txtComision').value )
-			let serv = await fetch('https://grupoeuroandino.com/app/api/actualizarComisiones.php',{
+			let serv = await fetch('https://peru-travel.pe/app/api/actualizarComisiones.php',{
 				method:'POST', body: datos
 			})
 			if( await serv.text() == 'ok'){
@@ -240,7 +240,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	createApp({
 		data() {
 			return {
-				servidor: 'https://grupoeuroandino.com/app/api/', actividades:[], categorias:[],
+				servidor: 'https://peru-travel.pe/app/api/', actividades:[], categorias:[],
 				nTexto:'', hospedajes:[]
 			}
 		},

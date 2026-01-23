@@ -211,7 +211,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 				//servidor: 'http://localhost/euroAndinoApi/',
 
-				servidor: 'https://grupoeuroandino.com/app/api/',
+				servidor: 'https://peru-travel.pe/app/api/',
 
 				departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 
@@ -401,11 +401,11 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 					if (prod.fotos.length == 0) {
 
-						return 'https://grupoEuroAndino.com/app/render/images/defecto.jpg';
+						return 'https://peru-travel.pe/app/render/images/defecto.jpg';
 
 					} else {
 
-						return 'https://grupoEuroAndino.com/app/render/images/subidas/' + prod.fotos[0].nombreRuta;
+						return 'https://peru-travel.pe/app/render/images/subidas/' + prod.fotos[0].nombreRuta;
 
 					}
 

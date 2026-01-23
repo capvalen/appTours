@@ -16,7 +16,7 @@ $data = array(
 			"type"=> "url",
 			"buttonId"=>"1",
 			"buttonText"=>"⚜️ Panel de reservas",
-			"url"=>"https://grupoeuroandino.com/app/render/reservas.php",
+			"url"=>"https://peru-travel.pe/app/render/reservas.php",
 		))
 );
 

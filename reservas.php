@@ -5,7 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Panel de paguetes - Grupo Euro-Andino</title>
-	<link rel="icon" type="image/png" href="https://grupoeuroandino.com/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
+	<link rel="icon" type="image/png" href="https://peru-travel.pe/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 	<link rel="stylesheet" href="icofont/icofont.min.css">
@@ -60,7 +60,7 @@
 				<tr v-else v-for="(pedido, index) in pedidos" >
 					<td>{{index+1}}</td>
 					<td class="text-capitalize">{{pedido.nombre}} {{pedido.apellido}}</td>
-					<td class="text-capitalize"><a class="text-decoration-none" :href="'https://grupoeuroandino.com/tours/'+pedido.url" target="_blank">{{pedido.titulo.toLowerCase()}} <i class="icofont-external-link"></i></a></td>
+					<td class="text-capitalize"><a class="text-decoration-none" :href="'https://peru-travel.pe/tours/'+pedido.url" target="_blank">{{pedido.titulo.toLowerCase()}} <i class="icofont-external-link"></i></a></td>
 					<td>{{pedido.adultos}}</td>
 					<td>{{pedido.menores}}</td>
 					<td>S/ {{parseFloat(pedido.total).toFixed(2)}}</td>
@@ -84,7 +84,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="indexPedido=null"></button>
 				</div>
 				<div class="modal-body" v-if="indexPedido!=null">
-					<p class="mb-0"><strong><a class="text-decoration-none" :href="'https://grupoeuroandino.com/tours/'+pedidos[indexPedido].url" target="_blank">{{pedidos[indexPedido].titulo}} <i class="icofont-external-link"></i></a></strong> </p>
+					<p class="mb-0"><strong><a class="text-decoration-none" :href="'https://peru-travel.pe/tours/'+pedidos[indexPedido].url" target="_blank">{{pedidos[indexPedido].titulo}} <i class="icofont-external-link"></i></a></strong> </p>
 					<p class="mb-0"><strong>Fecha de pago</strong> {{fechaLatam(pedidos[indexPedido].fechaPago)}}</p>
 					<p class="mb-0"><strong>Fecha de inicio</strong> {{fechaSimple(pedidos[indexPedido].separado)}}</p>
 					<p class="mb-0"><strong>Total pagado</strong> S/ {{parseFloat(pedidos[indexPedido].total).toFixed(2)}}</p>
@@ -127,7 +127,7 @@
 		el: '#app',
 		data: {
 			//servidor: 'http://localhost/appTours/api/',
-			servidor: 'https://grupoeuroandino.com/app/api/',
+			servidor: 'https://peru-travel.pe/app/api/',
 			pedidos:[], indexPedido:null
 			
 		},

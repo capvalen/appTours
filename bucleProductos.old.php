@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Bucle</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
+	<link rel="stylesheet" href="https://peru-travel.pe/app/render/icofont/icofont.min.css">
 </head>
 <body class="container-fluid">
 	<style>
@@ -52,8 +52,8 @@
 					</div>
 
 					<div v-if="tour.fotos.length>0" class="divImagen card-img-top">
-						<a class="aImgs" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="framename"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
-						<a class="aImgs" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="framename"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+						<a class="aImgs" v-if="tour.tipo==1" :href="'https://peru-travel.pe/tours/' + tours[index].url" target="framename"><img class="img-fluid rounded-top" :src="'https://peru-travel.pe/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+						<a class="aImgs" v-if="tour.tipo==2" :href="'https://peru-travel.pe/tours/' + tours[index].url" target="framename"><img class="img-fluid rounded-top" :src="'https://peru-travel.pe/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
 					</div>
 					<div class="card-body">
 						<div class="divProducto ">
@@ -61,8 +61,8 @@
 							
 							<div>
 								<p class="mb-0 titulo ps-1 text-capitalize">
-									<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="framename">{{tour.nombre}}</a>
-									<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="framename">{{tour.nombre}}</a>
+									<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://peru-travel.pe/tours/' + tours[index].url" target="framename">{{tour.nombre}}</a>
+									<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://peru-travel.pe/tours/' + tours[index].url" target="framename">{{tour.nombre}}</a>
 									
 								</p>
 								<div class="estrellas">
@@ -95,7 +95,7 @@
 		el: '#app',
 		data:{
 			//servidor: 'http://localhost/appTours/api/',
-			servidor: 'https://grupoeuroandino.com/app/api/',
+			servidor: 'https://peru-travel.pe/app/api/',
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],

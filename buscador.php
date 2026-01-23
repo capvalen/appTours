@@ -10,7 +10,7 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Buscador - Grupo Euro Andino</title>
+	<title>Buscador - Perú Travel</title>
 
 
 
@@ -260,7 +260,7 @@
 
 		<div class="position-relative d-none">
 			<input type="text" id="txtBuscador2" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);" @keyup.enter="irA('ultimo')" >
-			<span id="divLupa" class="position-absolute"><img src="https://grupoeuroandino.com/images/search_icon.svg" alt="" style="width: 25px;"></span>
+			<span id="divLupa" class="position-absolute"><img src="https://peru-travel.pe/images/search_icon.svg" alt="" style="width: 25px;"></span>
 		</div>
 		<div class="" id="cajaBuscador">
 			<input type="text" id="txtBuscador" v-model="texto" placeholder="Ciudad, lugar, actividad" @keyup="validar($event);" @keyup.enter="irA('ultimo')" autocomplete="off">
@@ -281,7 +281,7 @@
 
 					<div class="imagen">
 
-						<img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+coincidencia.foto" alt="">
+						<img :src="'https://peru-travel.pe/app/render/images/subidas/'+coincidencia.foto" alt="">
 
 					</div>
 
@@ -351,7 +351,7 @@
 
 							datos.append('tipo', -1);
 
-							let resp = await fetch('https://grupoeuroandino.com/app/api/buscarTour_Portada.php', {
+							let resp = await fetch('https://peru-travel.pe/app/api/buscarTour_Portada.php', {
 
 								method: 'POST',
 								body: datos
@@ -374,11 +374,11 @@
 
 					if (id == 'ultimo') {
 
-						window.location.href = "https://grupoeuroandino.com/destinos/?texto=" + this.texto;
+						window.location.href = "https://peru-travel.pe/destinos/?texto=" + this.texto;
 
 					} else {
 
-						window.location.href = "https://grupoeuroandino.com/tours/" + this.coincidencias[index].url;
+						window.location.href = "https://peru-travel.pe/tours/" + this.coincidencias[index].url;
 
 					}
 

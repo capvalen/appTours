@@ -24,7 +24,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Paquetes Turísticos en Perú - Grupo Euro Andino</title>
+	<title>Paquetes Turísticos en Perú - Perú Travel</title>
 <?php include("../app/render/headers.php");?>
 
 </head>
@@ -160,22 +160,22 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 							<span v-if="tour.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
 							<span v-if="tour.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
 						</div>
-						<a class="aImgs" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
-						<a class="aImgs" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+						<a class="aImgs" v-if="tour.tipo==1" :href="'https://peru-travel.pe/tours/' + tour.url" target="_parent"><img class="img-fluid rounded-top" :src="'https://peru-travel.pe/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+						<a class="aImgs" v-if="tour.tipo==2" :href="'https://peru-travel.pe/tours/' + tour.url" target="_parent"><img class="img-fluid rounded-top" :src="'https://peru-travel.pe/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
 					</div>
 					<div class="card-body">
 						<div class="divProducto ">
 							<div>
 								<p class="mb-0 titulo ps-1 ">
-									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent">{{tour.nombre}}</a>
-									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent">{{tour.nombre}}</a>
+									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==1" :href="'https://peru-travel.pe/tours/' + tour.url" target="_parent">{{tour.nombre}}</a>
+									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==2" :href="'https://peru-travel.pe/tours/' + tour.url" target="_parent">{{tour.nombre}}</a>
 								</p>
 								<!-- <div class="d-flex justify-content-between">
 									aquí iba la bandera
 								</div> -->								
 								<div class="row row-cols-2">
 									<div>
-										<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"> <strong>{{tour.destino}},</strong></span>
+										<span><img class="bandera" src="https://peru-travel.pe/images/banderas/peru.jpeg"> <strong>{{tour.destino}},</strong></span>
 										<br>
 										<i class="icofont-google-map"></i> <span class="text-capitalize"><strong> {{queDepa(tour.departamento)}}</strong></span>
 										<div class="estrellas">
@@ -242,7 +242,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 				//servidor: 'http://localhost/euroAndinoApi/',
 
-				servidor: 'https://grupoeuroandino.com/app/api/',
+				servidor: 'https://peru-travel.pe/app/api/',
 
 				departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 
@@ -391,11 +391,11 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 					if (prod.fotos.length == 0) {
 
-						return 'https://grupoEuroAndino.com/app/render/images/defecto.jpg';
+						return 'https://peru-travel.pe/app/render/images/defecto.jpg';
 
 					} else {
 
-						return 'https://grupoEuroAndino.com/app/render/images/subidas/' + prod.fotos[0].nombreRuta;
+						return 'https://peru-travel.pe/app/render/images/subidas/' + prod.fotos[0].nombreRuta;
 
 					}
 

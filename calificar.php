@@ -72,7 +72,7 @@
 			async pedirData(){
 				let datos = new FormData()
 				datos.append('id', this.idPedido)
-				let serv = await fetch('https://grupoeuroandino.com/app/api/verPedidoPorId.php', {
+				let serv = await fetch('https://peru-travel.pe/app/api/verPedidoPorId.php', {
 					method:'POST', body:datos
 				})
 				const respuesta = await serv.json()
@@ -92,7 +92,7 @@
 				datos.append('calificacion', this.calificacion)
 				datos.append('comentario', this.comentario)
 				datos.append('fecha', this.fecha)
-				let serv = await fetch('https://grupoeuroandino.com/app/api/enviarEncuesta.php',{
+				let serv = await fetch('https://peru-travel.pe/app/api/enviarEncuesta.php',{
 					method:'POST', body:datos
 				})
 				const respuesta = await serv.text() 

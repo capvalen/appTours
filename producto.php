@@ -8,7 +8,7 @@
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
-	include ('/home/perutra1/public_html/WEBS/grupoeuroandino.com/app/api/conectkarl.php');
+	include ('/home/perutra1/public_html/WEBS/peru-travel.pe/app/api/conectkarl.php');
 	$sqlMeta = $db->query("SELECT JSON_UNQUOTE(JSON_EXTRACT(contenido-> '$.nombre')) as titulo,
 	JSON_UNQUOTE(JSON_EXTRACT(contenido-> '$.descripcion')) as descripcion,
 	IFNULL(JSON_UNQUOTE(JSON_EXTRACT(contenido-> '$.fotos[0].nombreRuta')), 'defecto.jpg')as foto
@@ -16,15 +16,15 @@
 	if($sqlMeta->execute()){
 		$row = $sqlMeta-> fetch(PDO::FETCH_ASSOC);
 		?>
-		<meta property="og:title" content="<?= $row['titulo']?> - Grupo Euro Andino">
-		<meta property="og:image" content="https://grupoeuroandino.com/app/render/images/subidas/<?= $row['foto']?>">
+		<meta property="og:title" content="<?= $row['titulo']?> - Perú Travel">
+		<meta property="og:image" content="https://peru-travel.pe/app/render/images/subidas/<?= $row['foto']?>">
 		<meta property="og:description" content="<?= strip_tags($row['descripcion'])?>">
 		<?php
 	}
 	?>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/bootstrap-datepicker.min.css?v=1.1">
+	<link rel="stylesheet" href="https://peru-travel.pe/app/render/icofont/icofont.min.css">
+	<link rel="stylesheet" href="https://peru-travel.pe/app/render/css/bootstrap-datepicker.min.css?v=1.1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -138,7 +138,7 @@
 		<div class="row">
 			<div class="col-12 col-md-8">
 				<div class="fotorama" data-nav="thumbs" data-width="100%">
-					<img v-for="foto in tourActivo.fotos" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+foto.nombreRuta">
+					<img v-for="foto in tourActivo.fotos" :src="'https://peru-travel.pe/app/render/images/subidas/'+foto.nombreRuta">
 					
 				</div>
 
@@ -149,8 +149,8 @@
 						<div class="col" v-if="tourActivo.transporte!='3'">
 							<div class="d-flex justify-content-between">
 								<div class="m-auto pe-2" >
-									<img v-if="tourActivo.transporte==='2'" src="https://grupoeuroandino.com/app/render/images/vuelo.png" alt="">
-									<img v-else  src="https://grupoeuroandino.com/app/render/images/carro.png" alt="">
+									<img v-if="tourActivo.transporte==='2'" src="https://peru-travel.pe/app/render/images/vuelo.png" alt="">
+									<img v-else  src="https://peru-travel.pe/app/render/images/carro.png" alt="">
 								</div>
 								<div class="text-start" >
 									<h6 class="mb-1
@@ -162,7 +162,7 @@
 						<div class="col">
 							<div class="d-flex justify-content-between">
 								<div class="m-auto ps-2">
-									<img src="https://grupoeuroandino.com/app/render/images/hostal.png" alt="">
+									<img src="https://peru-travel.pe/app/render/images/hostal.png" alt="">
 								</div >
 								<div class="text-start">
 									<h6 class="mb-1
@@ -282,7 +282,7 @@
 					</div>
 				</div>
 				<div class="row col">
-					<img src="https://grupoeuroandino.com/app/render/images/tarjetas.png" alt="" class="img-fluid">
+					<img src="https://peru-travel.pe/app/render/images/tarjetas.png" alt="" class="img-fluid">
 				</div>
 
 				<div class="row my-3 ">
@@ -306,7 +306,7 @@
 							<div class="carousel-wrapper">
 								<div class=" my-2 owl-carousel owl-theme">
 									<div class=" item" v-for="recomendado in recomendados" :key="recomendado.id">
-										<a :href="'https://grupoeuroandino.com/viaje/?id='+recomendado.id"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+recomendado.foto" alt="" class="img-fluid"></a>
+										<a :href="'https://peru-travel.pe/viaje/?id='+recomendado.id"><img :src="'https://peru-travel.pe/app/render/images/subidas/'+recomendado.foto" alt="" class="img-fluid"></a>
 										<h5 class="mb-0 text-start">{{recomendado.titulo}}</h5>
 										<p class="card-text mb-0 text-start"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{recomendado.destino}}, {{departamentos[recomendado.depa]}}</strong></span></p>
 										<div class="text-start estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
@@ -333,13 +333,13 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 	
-	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
-	<script src="https://grupoeuroandino.com/app/render/js/moment.min.js"></script>
+	<script src="https://peru-travel.pe/app/render/js/axios.min.js"></script>
+	<script src="https://peru-travel.pe/app/render/js/moment.min.js"></script>
 	<!-- extraído de https://fotorama.io/docs/4/dimensions/ -->
 	<link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
-	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.min.js"></script>
-	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
+	<script src="https://peru-travel.pe/app/render/js/bootstrap-datepicker.min.js"></script>
+	<script src="https://peru-travel.pe/app/render/js/bootstrap-datepicker.es.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js" integrity="sha512-gY25nC63ddE0LcLPhxUJGFxa2GoIyA5FLym4UJqHDEMHjp8RET6Zn/SHo1sltt3WuVtqfyxECP38/daUc/WVEA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
@@ -360,7 +360,7 @@ $.fn.bootstrapDP = datepicker;
 			return {
 				idProducto:-1,
 				//servidor: 'http://localhost/appTours/api/',
-				servidor: 'https://grupoeuroandino.com/app/api/',
+				servidor: 'https://peru-travel.pe/app/api/',
 				variosTours:[], tourActivo:[{incluye:'', noIncluye:'', peruanos:{adultos:0, kids:0}, extranjeros:{adultos:0, kids:0}, duracion:0
 			}],
 				precioPorPersona: 0, cantAdultos:0, cantKids:0,

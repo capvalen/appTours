@@ -1,6 +1,6 @@
 <?php
 // Ruta de la carpeta que contiene las imágenes
-$directorio = '/home/perutra1/grupoeuroandino.com/app/render/images/subidas/';
+$directorio = '/home/perutra1/peru-travel.pe/app/render/images/subidas/';
 
 // Obtener todas las imágenes en la carpeta
 $archivos = glob($directorio . '*.{jpg,jpeg,png}', GLOB_BRACE);

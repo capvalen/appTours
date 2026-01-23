@@ -15,7 +15,7 @@
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
+	<link rel="stylesheet" href="https://peru-travel.pe/app/render/icofont/icofont.min.css">
 
 </head>
 
@@ -53,7 +53,7 @@
 						<tr v-for="(carrito, index) in resultados" >
 							<td>{{index+1}}</td>
 							<td>
-								<img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+carrito.fotos[0].nombreRuta" width="128px">
+								<img :src="'https://peru-travel.pe/app/render/images/subidas/'+carrito.fotos[0].nombreRuta" width="128px">
 								<span>{{carrito.nombre}}</span>
 							</td>
 							<td>
@@ -66,7 +66,7 @@
 							</td>
 							<td>S/ {{monedaNacional(carrito.total)}}</td>
 							<td><a :href="retornarLink(carrito.idProducto)">Ir a la pasarela</a></td>
-							<td @click="borrarItem(index)" style="cursor:pointer"><img src="https://grupoeuroandino.com/app/render/images/x.svg" width="25" height="25"> Borrar</td>
+							<td @click="borrarItem(index)" style="cursor:pointer"><img src="https://peru-travel.pe/app/render/images/x.svg" width="25" height="25"> Borrar</td>
 						</tr>
 					</tbody>
 				</table>
@@ -94,7 +94,7 @@
 
 				//servidor: 'http://localhost/appTours/api/',
 
-				servidor: 'https://grupoeuroandino.com/app/api/', 
+				servidor: 'https://peru-travel.pe/app/api/', 
 
 				carritos:[], resultados:[]
 

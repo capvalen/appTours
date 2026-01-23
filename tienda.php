@@ -14,8 +14,8 @@
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/efecto.css?v?1">
+	<link rel="stylesheet" href="https://peru-travel.pe/app/render/icofont/icofont.min.css">
+	<link rel="stylesheet" href="https://peru-travel.pe/app/render/css/efecto.css?v?1">
 
 </head>
 
@@ -397,7 +397,7 @@
 											<span v-if="producto.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
 											<span v-if="producto.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
 										</div>
-									<a :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent" class="aImgs">
+									<a :href="'https://peru-travel.pe/tours/' + pedidos[index].url" target="_parent" class="aImgs">
 										<img :src="queFoto(producto)" class="card-img-top rounded-top" alt="...">
 									</a>
 								</div>
@@ -406,15 +406,15 @@
 
 								<p class="card-title mb-0 titulo ps-1">
 
-									<a class="text-decoration-none text-dark" v-if="producto.tipo=='1'" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
+									<a class="text-decoration-none text-dark" v-if="producto.tipo=='1'" :href="'https://peru-travel.pe/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
 
-									<a class="text-decoration-none text-dark" v-if="producto.tipo=='2'" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
+									<a class="text-decoration-none text-dark" v-if="producto.tipo=='2'" :href="'https://peru-travel.pe/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
 
 									</p>
 
 						<div class="row row-cols-2">
 							<div style="color:#000">
-									<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"> <strong>{{queDepa(producto.departamento)}},</strong></span>
+									<span><img class="bandera" src="https://peru-travel.pe/images/banderas/peru.jpeg"> <strong>{{queDepa(producto.departamento)}},</strong></span>
 									<br>
 									<i class="icofont-google-map"></i> <span class="text-capitalize"><strong> {{producto.destino}}</strong></span>
 									<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
@@ -462,7 +462,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
+	<script src="https://peru-travel.pe/app/render/js/axios.min.js"></script>
 
 
 
@@ -484,7 +484,7 @@
 
 			//servidor: 'http://localhost/appTours/api/',
 
-			servidor: 'https://grupoeuroandino.com/app/api/', 
+			servidor: 'https://peru-travel.pe/app/api/', 
 
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			ciudades:[], idCiudad:'', bandera:'',
@@ -636,11 +636,11 @@
 
 				if(prod.fotos.length==0){
 
-					return 'https://grupoeuroandino.com/app/render/images/defecto.jpg';
+					return 'https://peru-travel.pe/app/render/images/defecto.jpg';
 
 				}else{
 
-					return 'https://grupoeuroandino.com/app/render/images/subidas/'+ prod.fotos[0].nombreRuta;
+					return 'https://peru-travel.pe/app/render/images/subidas/'+ prod.fotos[0].nombreRuta;
 
 				}
 

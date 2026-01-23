@@ -14,7 +14,7 @@
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
+	<link rel="stylesheet" href="https://peru-travel.pe/app/render/icofont/icofont.min.css">
 
 </head>
 
@@ -338,9 +338,9 @@
 
 								<h5 class="card-title text-capitalize mb-0">
 
-									<a class="text-decoration-none text-dark" v-if="producto.tipo=='1'" :href="'https://grupoeuroandino.com/tour/?id=' + queId(index)" target="_parent">{{producto.nombre}}</a></strong>
+									<a class="text-decoration-none text-dark" v-if="producto.tipo=='1'" :href="'https://peru-travel.pe/tour/?id=' + queId(index)" target="_parent">{{producto.nombre}}</a></strong>
 
-									<a class="text-decoration-none text-dark" v-if="producto.tipo=='2'" :href="'https://grupoeuroandino.com/paqueteturistico/?id=' + queId(index)" target="_parent">{{producto.nombre}}</a></strong>
+									<a class="text-decoration-none text-dark" v-if="producto.tipo=='2'" :href="'https://peru-travel.pe/paqueteturistico/?id=' + queId(index)" target="_parent">{{producto.nombre}}</a></strong>
 
 								</h5>
 
@@ -426,7 +426,7 @@
 
 			//servidor: 'http://localhost/appTours/api/',
 
-			servidor: 'https://grupoeuroandino.com/app/api/', 
+			servidor: 'https://peru-travel.pe/app/api/', 
 
 			ciudades:[],
 
@@ -557,11 +557,11 @@
 
 				if(prod.fotos.length==0){
 
-					return 'https://grupoeuroandino.com/app/render/images/defecto.jpg';
+					return 'https://peru-travel.pe/app/render/images/defecto.jpg';
 
 				}else{
 
-					return 'https://grupoeuroandino.com/app/render/images/subidas/'+ prod.fotos[0].nombreRuta;
+					return 'https://peru-travel.pe/app/render/images/subidas/'+ prod.fotos[0].nombreRuta;
 
 				}
 

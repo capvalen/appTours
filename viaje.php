@@ -9,7 +9,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" type="image/png" href="https://grupoeuroandino.com/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
+	<link rel="icon" type="image/png" href="https://peru-travel.pe/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon.png">
 
 
 	<?php
@@ -19,7 +19,7 @@
 	error_reporting(E_ALL);
 	*/
 
-	include('/home/grupemde/public_html/app/api/conectkarl.php');
+	include('/home/grupemde/WEBS/peru-travel.pe/app/api/conectkarl.php');
 
 	$sqlBase = "SELECT id, JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.nombre')) as titulo,
 
@@ -39,13 +39,13 @@
 
 	?>
 
-		<meta property="og:title" content="<?= $rowMeta['titulo'] ?> - Grupo Euro Andino">
+		<meta property="og:title" content="<?= $rowMeta['titulo'] ?> - Perú Travel">
 
-		<title><?= $rowMeta['titulo'] ?> - Grupo Euro Andino</title>
+		<title><?= $rowMeta['titulo'] ?> - Perú Travel</title>
 
-		<!-- <meta property="og:image" content="https://grupoeuroandino.com/images/marcapomacocha-2.png"> -->
+		<!-- <meta property="og:image" content="https://peru-travel.pe/images/marcapomacocha-2.png"> -->
 
-		<meta property="og:image" content="https://grupoeuroandino.com/app/render/images/subidas/small-<?= $rowMeta['foto'] ?>">
+		<meta property="og:image" content="https://peru-travel.pe/app/render/images/subidas/small-<?= $rowMeta['foto'] ?>">
 
 		<meta property="og:description" content="<?= strip_tags($rowMeta['descripcion']) ?>">
 
@@ -100,7 +100,7 @@
 
 				<div class="fotorama" data-nav="thumbs" data-width="100%" @contextmenu="handler($event)">
 
-					<img v-for="foto in tourActivo.fotos" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+foto.nombreRuta">
+					<img v-for="foto in tourActivo.fotos" :src="'https://peru-travel.pe/app/render/images/subidas/'+foto.nombreRuta">
 
 
 
@@ -142,9 +142,9 @@
 								<div class="m-auto ps-2">
 									
 
-									<img v-if="tourActivo.transporte==='2'" src="https://grupoeuroandino.com/app/render/images/vuelo.png" alt="">
+									<img v-if="tourActivo.transporte==='2'" src="https://peru-travel.pe/app/render/images/vuelo.png" alt="">
 
-									<img v-else src="https://grupoeuroandino.com/app/render/images/carro2.png" style="width:38px">
+									<img v-else src="https://peru-travel.pe/app/render/images/carro2.png" style="width:38px">
 
 								</div>
 
@@ -166,7 +166,7 @@
 
 								<div class="m-auto px-2">
 
-									<img src="https://grupoeuroandino.com/app/render/images/hostal.png" style="width:50px">
+									<img src="https://peru-travel.pe/app/render/images/hostal.png" style="width:50px">
 
 								</div>
 
@@ -419,7 +419,7 @@
 				</div>
 
 				<div class="row col mt-3">
-					<img src="https://grupoeuroandino.com/app/render/images/tarjetas.png" alt="" class="img-fluid">
+					<img src="https://peru-travel.pe/app/render/images/tarjetas.png" alt="" class="img-fluid">
 
 				</div>
 
@@ -473,16 +473,16 @@
 												<span v-if="tour.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
 												<span v-if="tour.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
 											</div>
-											<a class="aImgs" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
-											<a class="aImgs" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+											<a class="aImgs" v-if="tour.tipo==1" :href="'https://peru-travel.pe/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://peru-travel.pe/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+											<a class="aImgs" v-if="tour.tipo==2" :href="'https://peru-travel.pe/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://peru-travel.pe/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
 										</div>
 										
 										<div class="card-body">
 											<div class="divProducto ">								
 												<div>
 													<p class="mb-0 titulo text-capitalize text-start"><strong>
-														<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
-														<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
+														<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://peru-travel.pe/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
+														<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://peru-travel.pe/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
 														</strong>
 													</p>
 													
@@ -490,7 +490,7 @@
 								
 												<div class="row row-cols-2">
 													<div class="text-start">
-														<span class="text-capitalize"><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg" style="width:20px; height:13.59px; display:inline;"></span> <span ><strong>{{tour.destino}},</strong></span><br>
+														<span class="text-capitalize"><img class="bandera" src="https://peru-travel.pe/images/banderas/peru.jpeg" style="width:20px; height:13.59px; display:inline;"></span> <span ><strong>{{tour.destino}},</strong></span><br>
 														<i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{queDepa(tour.departamento)}}</strong></span>
 														<div class="estrellas">
 															<i v-for="star in cuantasEstrellas(index)" class="icofont-star"></i>
@@ -512,7 +512,7 @@
 
 								<!-- <div class=" item" v-for="recomendado in recomendados" :key="recomendado.id">
 
-									<a :href="'https://grupoeuroandino.com/tour/'+recomendado.url"><img :src="'https://grupoeuroandino.com/app/render/images/subidas/'+recomendado.foto" alt="" class="img-fluid"></a>
+									<a :href="'https://peru-travel.pe/tour/'+recomendado.url"><img :src="'https://peru-travel.pe/app/render/images/subidas/'+recomendado.foto" alt="" class="img-fluid"></a>
 
 									<h5 class="mb-0 text-start">{{recomendado.titulo}}</h5>
 
@@ -559,7 +559,7 @@
 									<small>Viajó el {{fechaFrom(comentario.fecha)}}</small>
 								</div>
 								<div>
-									<span>Nos calificó con</span> <span v-for="estrella in parseInt(comentario.calificacion)"><img src="https://grupoeuroandino.com/images/star.png" alt="estrella"></span>
+									<span>Nos calificó con</span> <span v-for="estrella in parseInt(comentario.calificacion)"><img src="https://peru-travel.pe/images/star.png" alt="estrella"></span>
 									<p class="text-capitalize">Comentario: {{comentario.comentario || 'Me gustó'}}</p>
 								</div>
 							</li>
@@ -628,19 +628,19 @@
 
 				<div class="col-12 col-md-4">
 
-					<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2022/11/yape.png" alt=""></a>
+					<a href=""><img src="https://peru-travel.pe/wp-content/uploads/2022/11/yape.png" alt=""></a>
 
 				</div>
 
 				<div class="col-12 col-md-4">
 
-					<a href=""><img src="https://grupoeuroandino.com/images/pie2.png?v=2" alt=""></a>
+					<a href=""><img src="https://peru-travel.pe/images/pie2.png?v=2" alt=""></a>
 
 				</div>
 
 				<div class="col-12 col-md-4">
 
-					<a href=""><img src="https://grupoeuroandino.com/images/form.png?v=1" alt="" style="margin-bottom: 1em;"></a>
+					<a href=""><img src="https://peru-travel.pe/images/form.png?v=1" alt="" style="margin-bottom: 1em;"></a>
 
 					<form id="formulario">
 
@@ -648,7 +648,7 @@
 
 						<input type="email" id="txtCorreo1" placeholder="Ingresa tu Email">
 
-						<button id="btnFormulario"><img src="https://grupoeuroandino.com/images/address-book-solid.svg" id="enviarMnj"> SUSCRIBIRME</button>
+						<button id="btnFormulario"><img src="https://peru-travel.pe/images/address-book-solid.svg" id="enviarMnj"> SUSCRIBIRME</button>
 
 					</form>
 
@@ -656,25 +656,25 @@
 
 					<div class="d-flex" style="margin-bottom: 1em;">
 
-						<a href="https://www.facebook.com/grupoeuroandino/"><img src="https://grupoeuroandino.com/images/facebook.png" width="50" height="50"></a>
+						<a href="https://www.facebook.com/grupoeuroandino/"><img src="https://peru-travel.pe/images/facebook.png" width="50" height="50"></a>
 
-						<a href="https://twitter.com/grupoeuroandino/"><img src="https://grupoeuroandino.com/images/twitter.png" width="50" height="50" style="margin:0 5px;"></a>
+						<a href="https://twitter.com/grupoeuroandino/"><img src="https://peru-travel.pe/images/twitter.png" width="50" height="50" style="margin:0 5px;"></a>
 
-						<a href="https://twitter.com/grupoeuroandino/"><img src="https://grupoeuroandino.com/images/instagram.png" width="50" height="50" style="margin:0 5px;"></a>
+						<a href="https://twitter.com/grupoeuroandino/"><img src="https://peru-travel.pe/images/instagram.png" width="50" height="50" style="margin:0 5px;"></a>
 
-						<a href="https://www.youtube.com/channel/UCG31MOsbyOuHr6-LpH4Mkbw"><img src="https://grupoeuroandino.com/images/youtube.png" width="50" height="50" style="margin:0 5px;"></a>
+						<a href="https://www.youtube.com/channel/UCG31MOsbyOuHr6-LpH4Mkbw"><img src="https://peru-travel.pe/images/youtube.png" width="50" height="50" style="margin:0 5px;"></a>
 
-						<a href="https://www.linkedin.com/in/grupo-euro-andino-426b81123/"><img src="https://grupoeuroandino.com/images/in.png" width="50" height="50" style="margin:0 5px;"></a>
+						<a href="https://www.linkedin.com/in/grupo-euro-andino-426b81123/"><img src="https://peru-travel.pe/images/in.png" width="50" height="50" style="margin:0 5px;"></a>
 
-						<a href="https://www.flickr.com/photos/193956460@N06/"><img src="https://grupoeuroandino.com/images/cua.png" width="50" height="50" style="margin:0 5px;"></a>
+						<a href="https://www.flickr.com/photos/193956460@N06/"><img src="https://peru-travel.pe/images/cua.png" width="50" height="50" style="margin:0 5px;"></a>
 
 					</div>
 
 					<div>
 
-						<a href="https://grupoeuroandino.com/libro-de-reclamaciones/"><img src="https://grupoeuroandino.com/wp-content/uploads/elementor/thumbs/Libro-de-Reclamaciones-pqjdp1qustruv9u46xq03mwub2nazjop222m18a8h4.jpg" width="160" height="auto" style="margin-right:10px;"></a>
+						<a href="https://peru-travel.pe/libro-de-reclamaciones/"><img src="https://peru-travel.pe/wp-content/uploads/elementor/thumbs/Libro-de-Reclamaciones-pqjdp1qustruv9u46xq03mwub2nazjop222m18a8h4.jpg" width="160" height="auto" style="margin-right:10px;"></a>
 
-						<a href="https://consultasenlinea.mincetur.gob.pe/directoriodeserviciosturisticos/DirPrestadores/DirBusquedaPrincipal/AgenciaViajes?IdGrupo=2"><img src="https://grupoeuroandino.com/wp-content/uploads/elementor/thumbs/Agencia-de-viajes-y-Turismo-Registrada-pqjfqac5b415hhgbj3eivnkskvnvqjfs4jzl6doxns.jpg" width="160" height="auto"></a>
+						<a href="https://consultasenlinea.mincetur.gob.pe/directoriodeserviciosturisticos/DirPrestadores/DirBusquedaPrincipal/AgenciaViajes?IdGrupo=2"><img src="https://peru-travel.pe/wp-content/uploads/elementor/thumbs/Agencia-de-viajes-y-Turismo-Registrada-pqjfqac5b415hhgbj3eivnkskvnvqjfs4jzl6doxns.jpg" width="160" height="auto"></a>
 
 					</div>
 
@@ -706,16 +706,16 @@
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
 
 
-	<script src="https://grupoeuroandino.com/app/render/js/axios.min.js"></script>
+	<script src="https://peru-travel.pe/app/render/js/axios.min.js"></script>
 
-	<script src="https://grupoeuroandino.com/app/render/js/moment.min.js"></script>
+	<script src="https://peru-travel.pe/app/render/js/moment.min.js"></script>
 	
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
-	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.min.js"></script>
-	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
-	<script src="https://grupoeuroandino.com/js/owl.carousel.min.js" ></script>
-	<script src="https://grupoeuroandino.com/app/render/js/paises.js" ></script>
+	<script src="https://peru-travel.pe/app/render/js/bootstrap-datepicker.min.js"></script>
+	<script src="https://peru-travel.pe/app/render/js/bootstrap-datepicker.es.min.js"></script>
+	<script src="https://peru-travel.pe/js/owl.carousel.min.js" ></script>
+	<script src="https://peru-travel.pe/app/render/js/paises.js" ></script>
 	
 
 
@@ -751,7 +751,7 @@
 					idProducto: -1, horarioSelect:-1,
 
 					//servidor: 'http://localhost/appTours/api/',
-					servidor: 'https://grupoeuroandino.com/app/api/',
+					servidor: 'https://peru-travel.pe/app/api/',
 					lateral:'', dolar:0, precioDolares:0, inferior:'',
 					listaPaises: PAISES_DATA,
 					variosTours: [],
@@ -1447,7 +1447,7 @@
 				dato.append('txtNombres', document.getElementById('txtNombres1').value)
 				dato.append('txtCorreo', document.getElementById('txtCorreo1').value)
 
-				let respuesta = await fetch('https://grupoeuroandino.com/app/api/correo_suscribir.php', {
+				let respuesta = await fetch('https://peru-travel.pe/app/api/correo_suscribir.php', {
 					method: 'POST',
 					body: dato
 

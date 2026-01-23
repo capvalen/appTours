@@ -15,8 +15,8 @@ export default{
 		</div>
 
 		<div v-if="tour.fotos.length>0" class="divImagen card-img-top">
-			<a class="aImgs" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="framename"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
-			<a class="aImgs" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="framename"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+			<a class="aImgs" v-if="tour.tipo==1" :href="'https://peru-travel.pe/tours/' + tours[index].url" target="framename"><img class="img-fluid rounded-top" :src="'https://peru-travel.pe/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
+			<a class="aImgs" v-if="tour.tipo==2" :href="'https://peru-travel.pe/tours/' + tours[index].url" target="framename"><img class="img-fluid rounded-top" :src="'https://peru-travel.pe/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
 		</div>
 		<div class="card-body">
 			<div class="divProducto ">
@@ -24,8 +24,8 @@ export default{
 				
 				<div>
 					<p class="mb-0 titulo ps-1 text-capitalize">
-						<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="framename">{{tour.nombre}}</a>
-						<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="framename">{{tour.nombre}}</a>
+						<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://peru-travel.pe/tours/' + tours[index].url" target="framename">{{tour.nombre}}</a>
+						<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://peru-travel.pe/tours/' + tours[index].url" target="framename">{{tour.nombre}}</a>
 						
 					</p>
 					<div class="estrellas">
