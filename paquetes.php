@@ -934,7 +934,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			async clonar(index){
 				if(confirm(`¿Desea clonar el servicio de: ${this.variosTours[index].nombre}?`)){
 					const servidor = await axios.post(this.servidor + 'clonarTour.php',{
-						id: this.todosTours[index].id//, fotos: this.todosTours[index].fotos
+						id: this.todosTours[index].id,//, fotos: this.todosTours[index].fotos
+						url: this.todosTours[index].url
 					})
 					.then( respuesta =>{
 						if(respuesta.data =='ok')

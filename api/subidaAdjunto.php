@@ -40,7 +40,9 @@ if (move_uploaded_file($_FILES["archivo"]["tmp_name"], $archivoFinal)) {
 	// Liberar memoria
 	imagedestroy($imagen);
 	imagedestroy($nuevaImagen);
-
+	unlink($imnagen);
+	unlink($nuevaImagen);
+	
 	//echo $archivoTemporal;
 	$_POST['nombreArchivo'] = $queArchivo;
 	ob_start();

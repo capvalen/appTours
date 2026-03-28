@@ -194,13 +194,11 @@
 					<div class="w-100 text-break text-justify" v-html="tourActivo.partida"></div>
 
 					<h5 class="mt-3 text-danger">Itinerario</h5>					
-					<div class="w-100 px-2 text-justify" v-html="tourActivo.itinerario"></div>
+					<div class="w-100 px-2 text-justify ms-2" v-html="tourActivo.itinerario"></div>
 					<h5 class="mt-3 text-danger">Incluye</h5>
-					<div class="w-100 px-2 text-justify" id="divIncluye" v-html="tourActivo.incluye"></div>
+					<div class="w-100 px-2 text-justify ms-2" id="divIncluye" v-html="formatearLista(tourActivo.incluye)"></div>
 					<h5 class="mt-3 text-danger">No Incluye</h5>
-					<div class="w-100 px-2 text-justify" id="divNoIncluye" v-html="tourActivo.noIncluye"></div>
-
-
+					<div class="w-100 px-2 text-justify ms-2" id="divNoIncluye" v-html="formatearLista(tourActivo.noIncluye)"></div>
 
 					<!-- <h5 class="mt-3 text-danger">Incluye</h5>
 
@@ -223,7 +221,7 @@
 
 
 					<h5 class="mt-3 text-danger">Notas</h5>
-					<div v-html="formatear(tourActivo.notas)"></div>
+					<div id="divNotasPropias" v-html="formatear(tourActivo.notas)"></div>
 
 					<div class="w-100 text-break px-2" id="divNotas" v-html="entregarCorto(inferior, !verMas)"></div>
 
@@ -1345,8 +1343,12 @@
 
 				},
 				formatear(){
-					let texto =  this.tourActivo.notas?.replace('<p><br></p>', '')
-					if( texto !='') texto = texto+'<p><br></p>'
+					let texto =  this.tourActivo.notas?.replaceAll('<p><br></p>', '')
+					//if( texto !='') texto = texto+'<p><br></p>'
+					return texto
+				},
+				formatearLista(campo){
+					let texto =  campo?.replaceAll('<br>', '')
 					return texto
 				},
 				fechaFrom(fecha){

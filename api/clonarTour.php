@@ -8,11 +8,17 @@ $_POST = json_decode(file_get_contents('php://input'),true);
 
 ( $_SERVER['REQUEST_METHOD'] === 'OPTIONS' )? die() : '';
 
+$sqlContar = $db->prepare("SELECT count(id) as contador from tours
+WHERE url like ?
+and activo = 1 and visible = 1;");
+$respContar = $sqlContar->execute([ $_POST['url'].'%' ]);
+$resContar = $sqlContar->fetch(PDO::FETCH_OBJ);
+$contador = $resContar->contador;
 
 $sql =$db->prepare("INSERT INTO `tours` (`contenido`, `visible`, `activo`, `url`, `tipo`, `pais` )
-SELECT `contenido`, `visible`, `activo`, concat(`url`, '-1'), `tipo`, `pais` from tours
+SELECT `contenido`, `visible`, `activo`, concat(`url`, ?), `tipo`, `pais` from tours
 WHERE `id` = ?; ");
-$resp = $sql->execute([ $_POST['id'] ]);
+$resp = $sql->execute([ '-'.$contador, $_POST['id'] ]);
 $nuevo_id = $db->lastInsertId();
 
 $sql = $db->prepare("UPDATE tours 
