@@ -774,6 +774,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				if(this.tourActivo.url=='') alert('No se puede guardar con la url vacía')
 				else {
 					if(queTour==null){ queTour = this.tourActivo }
+					queTour.url =this.tourActivo.url 
+					queTour.queUrl =this.tourActivo.url
+					
 					axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria, url: this.tourActivo.url })
 					.then((response)=>{ console.log( response.data );
 						if(response.data =='ok'){

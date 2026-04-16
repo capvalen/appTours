@@ -256,7 +256,7 @@ p {
 
 	display: inline-block;
 
-	width: 160px;
+	width: 120px;
 
 	padding: 5px 0 5px 0;
 
@@ -282,8 +282,8 @@ p {
 .Ico {
 	margin: 0 0px 0 0;
 
-	width: 33px;
-	padding-right: 1rem;
+	width: 25px;
+	padding-right: 8px;
 
 }
 

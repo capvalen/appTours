@@ -148,11 +148,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @blur="crearURL()">
+							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @blur="/*crearURL()*/">
 							<label for="floNombre">Nombre del tour</label>
 						</div>
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floURL" placeholder="" autocomplete="off" v-model="tour.url" disabled>
+							<input type="text" class="form-control" id="floURL" placeholder="" autocomplete="off" v-model="tourActivo.url">
 							<label for="floURL">URL del tour</label>
 						</div>
 						<p class="mb-0">Precio normal:</p>
@@ -780,6 +780,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				if(this.tourActivo.url=='') alert('No se puede guardar con la url vacía')
 				else {
 					if(queTour==null){ queTour = this.tourActivo }
+					queTour.url =this.tourActivo.url 
+					queTour.queUrl =this.tourActivo.url 
+
 					axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria, url: this.tourActivo.url })
 					.then((response)=>{ console.log( response.data );
 						if(response.data =='ok'){

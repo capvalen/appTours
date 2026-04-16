@@ -151,6 +151,8 @@
 
 			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/store/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/ofertaico.png" class="Ico"> + Filtros</p>
 			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/destinos-internacionales/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2023/11/globe.png" class="Ico"> Internacionales</p>
+			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/blog'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2026/04/news.png" class="Ico"> BLOG</p>
+			
 			<p class="mb-0" onclick="location.href='https://grupoeuroandino-com.translate.goog/?_x_tr_sl=es&_x_tr_tl=en&_x_tr_hl=es&_x_tr_pto=wapp'" > <img src="https://grupoeuroandino.com/wp-content/uploads/2023/12/fondo-bandera-americana_23-21478-1.jpg" class="Ico"> Inglés </p>
 
 			<p class="mb-0" onclick="location.href='https://grupoeuroandino.com/shop-cart/'"> <img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/cart.png" class="Ico"> Carrito</p>
@@ -163,7 +165,7 @@
 
 	<div class="container-fluid mb-2 d-none d-md-block" id="menuVolver">
 
-		<div class="container-fluid d-flex justify-content-center align-items-center">
+		<div class="container d-flex justify-content-center align-items-center">
 
 			<ul id="ulMenu" class=" p-0 m-0">
 
@@ -173,11 +175,12 @@
 				<li onclick="location.href='https://grupoeuroandino.com/store/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/bolsaico.png" class="Ico"> TIENDA</li>
 
 				<li onclick="location.href='https://grupoeuroandino.com/store/'"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/ofertaico.png" class="Ico"> + FILTROS</li>
-				<li onclick="location.href='https://grupoeuroandino.com/destinos-internacionales/'" style="width:160px"><img src="https://grupoeuroandino.com/wp-content/uploads/2023/11/globe.png" class="Ico"> INTERNACIONALES</li>
+				<li onclick="location.href='https://grupoeuroandino.com/destinos-internacionales/'" style="width:160px!important"><img src="https://grupoeuroandino.com/wp-content/uploads/2023/11/globe.png" class="Ico"> INTERNACIONALES</li>
+				<li onclick="location.href='https://grupoeuroandino.com/blog'" ><img src="https://grupoeuroandino.com/wp-content/uploads/2026/04/news.png" class="Ico" > BLOG</li>
 
-				<li onclick="location.href='https://grupoeuroandino-com.translate.goog/?_x_tr_sl=es&_x_tr_tl=en&_x_tr_hl=es&_x_tr_pto=wapp'" class="ms-3" style="width: 50px;padding:0.5rem;"><img src="https://grupoeuroandino.com/wp-content/uploads/2023/12/fondo-bandera-americana_23-21478-1.jpg" class="Ico" style="padding:0.5rem" > </li>
+				<li onclick="location.href='https://grupoeuroandino-com.translate.goog/?_x_tr_sl=es&_x_tr_tl=en&_x_tr_hl=es&_x_tr_pto=wapp'" class="ms-3" style="width: 50px;padding:0.5rem;"><img src="https://grupoeuroandino.com/wp-content/uploads/2023/12/fondo-bandera-americana_23-21478-1.jpg" class="Ico" style="padding:0" > </li>
 
-				<li onclick="location.href='https://grupoeuroandino.com/shop-cart/'" class="" style="width: 50px;padding:0.5rem;"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/cart.png" class="Ico" style="padding:0.5rem"></li>
+				<li onclick="location.href='https://grupoeuroandino.com/shop-cart/'" class="" style="width: 50px;padding:0.5rem;"><img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/cart.png" class="Ico"></li>
 
 			</ul>
 
