@@ -6,6 +6,9 @@
 			<option value="1">Extranjero</option>
 		</select>
 	</div>
+	<div class="w-100 d-inline d-none">
+		<div class="alert " id="errorMinimoPasajeros">⚠️ El mínimo de personas es: <span id="spanMinimo"></span></div>
+	</div>
 	<div class="div w-100 d-inline">
 		<div class="w-50 me-2">
 			<input type="number" min="0" placeholder="Adultos" id="adultos" name="adultos">
@@ -40,12 +43,17 @@
 		celular = document.querySelector('#celular')
 		email = document.querySelector('#email')
 		pagina = document.title.replace(' – Tours Huancayo', '');
+		minimo_pasajeros = parseInt(document.querySelector('#minimo-pasajeros').dataset.minimo || 1)
 
 		const hoy = new Date().toISOString().slice(0, 10);
+		document.querySelector('#spanMinimo').innerText=minimo_pasajeros
 		fecha.value = hoy
 
-		window.enviarWhatsapp = ()=>{
+		window.enviarWhatsapp = ()=>{		
 			event.preventDefault();
+			adultos = document.querySelector('#adultos').value || 0
+			niños = document.querySelector('#niños').value || 0
+			
 			const mensaje = `*Hola Tours Huancayo* Quisiera más hacer una reservación del tour: *${pagina}*\n`+
 			`Con fecha: ${fecha.value}\n`+
 			`Nacionalidad: ${nacionalidad.value}\n`+
@@ -60,6 +68,20 @@
 
 		document.getElementById('formulario').addEventListener('submit', function(e) {
 			e.preventDefault();
+			adultos = document.querySelector('#adultos').value || 0
+			niños = document.querySelector('#niños').value || 0
+
+			let personas = parseInt(adultos) + parseInt(niños)
+			if( personas < minimo_pasajeros ){
+				document.querySelector('#errorMinimoPasajeros').parentNode.classList.remove('d-none')
+				document.querySelector('#adultos').classList.add('error')
+				document.querySelector('#niños').classList.add('error')
+				return
+			}else{
+				document.querySelector('#errorMinimoPasajeros').parentNode.classList.add('d-none')
+				document.querySelector('#adultos').classList.remove('error')
+				document.querySelector('#niños').classList.remove('error')
+			}
 
 			// Creamos los datos a enviar
 			let formData = new FormData(this);
@@ -84,6 +106,7 @@
 	});
 </script>
 <style>
+	.w-100{width: 100%;}
 	.w-50{width: 50%;}
 	.d-inline{display: flex;}
 	
@@ -96,8 +119,17 @@
 	.w-100{
 		margin-bottom: 10px;
 	}
+	#formulario .alert{
+		background-color: rgb(244, 106, 31);
+		border: 1px solid rgb(226, 18, 18);
+		padding: 6px;
+		color: white;
+	}
 	#formulario input, #formulario select{
 		border:1px solid rgb(180, 180, 180)!important;
+	}
+	#formulario .error{
+		border:1px solid rgb(226, 18, 18)!important;	
 	}
 	.btn{
 		width: 100%; color:white;
@@ -105,6 +137,9 @@
 		display: flex;
 		justify-content: center;
 		font-size: 1.2rem;
+	}
+	.d-none{
+		display: none;
 	}
 	.btn .elementor-button-icon{
 		padding-right: 10px;
