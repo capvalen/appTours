@@ -381,6 +381,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					</div>
 					<div class="row col d-grid gap-2 col-6 mx-auto">
 						<button type="button" class="btn btn-outline-dark" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
+						<button type="button" class="btn btn-outline-dark" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
 					</div>
 					<div id="ocultar" class="d-none">
 						<p class="my-1"><strong>Precio Peruanos</strong></p>
