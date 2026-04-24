@@ -109,12 +109,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
 						<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
 						<td @click="cargarPanel(todosTours[index].id, index)" class="">{{vTour.nombre}} </td>
-						<td @click.stop="abrirDescuentos(index)">
-							<span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirDescuentos(index)" title="Ver descuentos"><i class="icofont-sale-discount"></i></span>
+						<td @click.stop="tourActivo = vTour; idGlobal = todosTours[index].id; ">
+							<span class="text-primary" v-if="esVisible(index)=='1'" data-bs-toggle="offcanvas" href="#offDescuentos" title="Ver descuentos"><i class="icofont-sale-discount"></i></span>
 						</td>
 						<td @click.stop="abrirLink(index)">
 							<span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)" title="Abrir link"><i class="icofont-external-link"></i></span>
-						</td>
+						</td>					
 						<td @click.stop="clonar(index)">
 							<span class="text-success" title="Clonar"><i class="icofont-copy"></i></span>
 						</td>
@@ -458,26 +458,89 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					</div>
 				</div>
 			</div>
-			<div class="offcanvas offcanvas-start" tabindex="-1" id="offFechas" aria-labelledby="offFechasLabel">
+			<div class="offcanvas offcanvas-start" tabindex="-1" id="offDescuentos" aria-labelledby="offDescuentosLabel">
 				<div class="offcanvas-header">
-					<h5 class="offcanvas-title" id="offFechasLabel">Offcanvas</h5>
+					<h5 class="offcanvas-title" id="offDescuentosLabel">Descuentos</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body">
-					<div>
-						Ingrese las fechas para anular
-						<div class="input-group mb-3">
-							<input type="date" class="form-control" v-model="fechaSeleccionada" @keyup.enter="vetarFecha()">
-							<button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="vetarFecha()"><i class="icofont-simple-right"></i> Agregar</button>
+					<p class="text-muted"><small>Paquete seleccionado:</small></p>
+					<h5>{{tourActivo.nombre}}</h5>
+					<div class="w-100 my-4"><button class="btn btn-outline-secondary" id="btnNuevoDescuento"><i class="icofont-sale-discount"></i> Nuevo descuento</button></div>
+
+					<p class="mb-2">Listado de descuentos </p>
+					<div class="list-group">
+						<div href="#" class="list-group-item list-group-item-action " aria-current="true" v-for="(descuento, index) in todosDescuentos">
+							<div class="d-flex w-100 justify-content-between">
+								<p class="mb-1 text-capitalize">{{index+1}}. {{descuento.nombre_descuento}}</p>
+								<button class="btn btn-danger btn-sm" @click.stop="eliminarDescuento(index)"><i class="icofont-ui-delete"></i></button>
+							</div>
+							<p>Por <strong>{{descuento.tipo_descuento=='monto' ? 'S/' : ''}} {{descuento.valor_descuento}}{{descuento.tipo_descuento=='porcentaje' ? '%' : ''}}</strong> </p>
+							
+							<small>Desde {{fechaLatam(descuento.fecha_inicio)}}</small>
+							<small>- Hasta {{fechaLatam(descuento.fecha_fin)}}</small>
 						</div>
 					</div>
-					<p>Fechas anuladas:</p>
-					<ol class="list-group list-group-numbered">
-						<li class="list-group-item d-flex justify-content-between align-items-start" v-for="(fecha, indice) in tourActivo.fechas">
-							<div class="ms-2 me-auto"> <span>Fecha: {{fecha.fecha}}</span> </div>
-							<span class="badge bg-danger rounded-pill" @click="eliminarFecha(indice)"><i class="icofont-close"></i></span>
-						</li>
-					</ol>
+					<p v-if="todosDescuentos.length==0">No hay descuentos</p>
+				</div>
+			</div>
+			<div class="modal fade" id="modalNuevoDescuento" data-bs-backdrop="static" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+						<h5 class="modal-title">Nuevo descuento</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div v-if="erroresDescuento" class="alert alert-danger alert-dismissible fade show" role="alert">
+							<i class="icofont-close-circled"></i> {{erroresDescuento}}
+							<button type="button" class="btn-close" @click="erroresDescuento = ''"></button>
+						</div>
+							<div class="form-floating mb-3">
+								<input type="text" class="form-control" id="floNombreDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.nombre_descuento">
+								<label for="floNombreDescuento">Nombre del descuento</label>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label">Tipo de descuento</label>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" id="tipoMonto" value="monto" v-model="nuevoDescuento.tipo_descuento">
+											<label class="form-check-label" for="tipoMonto">Monto fijo (S/)</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" id="tipoPorcentaje" value="porcentaje" v-model="nuevoDescuento.tipo_descuento">
+											<label class="form-check-label" for="tipoPorcentaje">Porcentaje (%)</label>
+										</div>
+									</div>
+								</div>
+								<div class="col">
+									<label class="form-label">Valor de descuento</label>
+									<div class="form-floating mb-3">
+										<input type="number" class="form-control" id="floValorDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.valor_descuento">
+										<label for="floValorDescuento">Valor</label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="date" class="form-control" id="floFechaInicio" placeholder=" " v-model="nuevoDescuento.fecha_inicio">
+										<label for="floFechaInicio">Fecha de inicio</label>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="date" class="form-control" id="floFechaFin" placeholder=" " v-model="nuevoDescuento.fecha_fin">
+										<label for="floFechaFin">Fecha de fin</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-outline-primary" @click="crearDescuento"><i class="icofont-save"></i> Crear descuento</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -532,7 +595,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			anticipacion: [{clave: 1, valor: 'Horas'}, {clave: 2, valor: '1 día'} ], antes:0,
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idDepartamento:-1, alojamientos:[],
-			dias: [{'id':0,'day':'Domingo'},{'id':1,'day':'Lunes'},{'id':2,'day':'Martes'},{'id':3,'day':'Miércoles'},{'id':4,'day':'Jueves'},{'id':5,'day':'Viernes'},{'id':6,'day':'Sábado'}]
+			dias: [{'id':0,'day':'Domingo'},{'id':1,'day':'Lunes'},{'id':2,'day':'Martes'},{'id':3,'day':'Miércoles'},{'id':4,'day':'Jueves'},{'id':5,'day':'Viernes'},{'id':6,'day':'Sábado'}],
+			descuentos:[], nuevoDescuento:{ id_tour: -1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' }, erroresDescuento: ''
 		},
 		mounted:function(){
 			this.verTours();
@@ -542,6 +606,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			tostadaOk = new bootstrap.Toast( document.getElementById('tostadaOk') );
 			tostadaMal = new bootstrap.Toast( document.getElementById('tostadaMal') );
 			offPanel = new bootstrap.Offcanvas( document.getElementById('offPanel') );
+			
+			document.getElementById('btnNuevoDescuento').addEventListener('click', () => {
+				bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNuevoDescuento')).show();
+			});
 			
 			const Block = Quill.import('blots/block');
 			Block.tagName = 'div';  // Cambia P por DIV
@@ -823,6 +891,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				//return this.duracionNoches[duracion].valor; 
 				return this.duracionNoches.find( x => x.clave === duracion ).valor
 			},
+			fechaLatam(fecha){
+				return( moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY') )
+			},
 			horaLatam(hora){
 				return( moment(hora, 'HH:mm').format('h:mm a') )
 			},
@@ -970,6 +1041,76 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.tour.url = this.tourActivo.url;
 				this.tour.queUrl = this.tourActivo.url;
 				console.log('salir este', url);
+			},
+			agregarDescuento(){
+				if(!this.tourActivo.descuentos) this.tourActivo.descuentos = [];
+				if(this.nuevoDescuento.titulo && this.nuevoDescuento.descuento){
+					this.tourActivo.descuentos.push({...this.nuevoDescuento});
+					this.actualizarTour(this.tourActivo);
+					this.nuevoDescuento = { titulo:'', descripcion:'', descuento:'' };
+				}
+			},
+			eliminarDescuento(indice){
+				let idDescuento = this.todosDescuentos[indice].id;
+				if(confirm('¿Desea eliminar el descuento?')){
+					axios.post(this.servidor + 'Descuentos.php', {
+						pedir:'borrar',
+						id: idDescuento
+					})
+					.then( respuesta =>{
+						if(respuesta.data =='ok'){
+							let index = this.todosTours.findIndex( tour => tour.id === this.idGlobal );
+							this.todosTours[index].descuentos.splice(indice, 1);
+						}
+					})
+					.catch( error =>{ console.log( error ) });
+				}
+			},
+			crearDescuento(){
+				this.erroresDescuento = '';
+				
+				if(!this.nuevoDescuento.nombre_descuento || this.nuevoDescuento.nombre_descuento.trim() === '') {
+					this.erroresDescuento = 'El nombre del descuento es obligatorio';
+					return;
+				}
+				
+				if(!this.nuevoDescuento.fecha_inicio) {
+					this.erroresDescuento = 'La fecha de inicio es obligatoria';
+					return;
+				}
+				
+				if(!this.nuevoDescuento.fecha_fin) {
+					this.erroresDescuento = 'La fecha de fin es obligatoria';
+					return;
+				}
+				
+				if(parseFloat(this.nuevoDescuento.valor_descuento) <= 0) {
+					this.erroresDescuento = 'El valor del descuento debe ser mayor a 0';
+					return;
+				}
+				
+				this.nuevoDescuento.id_tour = this.idGlobal;
+				axios.post(this.servidor + 'Descuentos.php', {
+					pedir:'crear',
+					descuento: this.nuevoDescuento
+				})
+				.then( respuesta =>{
+					if(respuesta.data =='ok'){
+						let index = this.todosTours.findIndex( tour => tour.id === this.idGlobal );
+						this.todosTours[index].descuentos.unshift({...this.nuevoDescuento});
+						this.nuevoDescuento = { id_tour: this.idGlobal, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' };
+						this.erroresDescuento = '';
+						bootstrap.Modal.getInstance(document.getElementById('modalNuevoDescuento')).hide();
+					}
+				})
+				.catch( error =>{ console.log( error ) });
+			}
+		},
+		computed: {
+			todosDescuentos() {
+				let item = this.todosTours.find( tour => tour.id === this.idGlobal );
+				if(item) return item.descuentos;
+				else return [];
 			}
 		}
 	});

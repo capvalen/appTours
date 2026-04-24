@@ -102,6 +102,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					</tr>
 					<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
 						<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
+						<td @click.stop="tourActivo = vTour; idGlobal = todosTours[index].id; ">
+							<span class="text-primary" v-if="esVisible(index)=='1'" data-bs-toggle="offcanvas" href="#offDescuentos" title="Ver descuentos"><i class="icofont-sale-discount"></i></span>
+						</td>
 						<td @click="cargarPanel(todosTours[index].id, index)" class="">{{vTour.nombre}} <span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)"><i class="icofont-external-link"></i></span></td>
 						<td>{{nombrePais(index)}}</td>
 						<td @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
@@ -466,6 +469,91 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					</ol>
 				</div>
 			</div>
+			<div class="offcanvas offcanvas-start" tabindex="-1" id="offDescuentos" aria-labelledby="offDescuentosLabel">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" id="offDescuentosLabel">Descuentos</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<p class="text-muted"><small>Paquete seleccionado:</small></p>
+					<h5>{{tourActivo.nombre}}</h5>
+					<div class="w-100 my-4"><button class="btn btn-outline-secondary" id="btnNuevoDescuento"><i class="icofont-sale-discount"></i> Nuevo descuento</button></div>
+
+					<p class="mb-2">Listado de descuentos </p>
+					<div class="list-group">
+						<div href="#" class="list-group-item list-group-item-action " aria-current="true" v-for="(descuento, index) in todosDescuentos">
+							<div class="d-flex w-100 justify-content-between">
+								<p class="mb-1 text-capitalize">{{index+1}}. {{descuento.nombre_descuento}}</p>
+								<button class="btn btn-danger btn-sm" @click.stop="eliminarDescuento(index)"><i class="icofont-ui-delete"></i></button>
+							</div>
+							<p>Por <strong>{{descuento.tipo_descuento=='monto' ? 'S/' : ''}} {{descuento.valor_descuento}}{{descuento.tipo_descuento=='porcentaje' ? '%' : ''}}</strong> </p>
+							
+							<small>Desde {{fechaLatam(descuento.fecha_inicio)}}</small>
+							<small>- Hasta {{fechaLatam(descuento.fecha_fin)}}</small>
+						</div>
+					</div>
+					<p v-if="todosDescuentos.length==0">No hay descuentos</p>
+				</div>
+			</div>
+			<div class="modal fade" id="modalNuevoDescuento" data-bs-backdrop="static" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+						<h5 class="modal-title">Nuevo descuento</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div v-if="erroresDescuento" class="alert alert-danger alert-dismissible fade show" role="alert">
+							<i class="icofont-close-circled"></i> {{erroresDescuento}}
+							<button type="button" class="btn-close" @click="erroresDescuento = ''"></button>
+						</div>
+							<div class="form-floating mb-3">
+								<input type="text" class="form-control" id="floNombreDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.nombre_descuento">
+								<label for="floNombreDescuento">Nombre del descuento</label>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label">Tipo de descuento</label>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" id="tipoMonto" value="monto" v-model="nuevoDescuento.tipo_descuento">
+											<label class="form-check-label" for="tipoMonto">Monto fijo (S/)</label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="radio" id="tipoPorcentaje" value="porcentaje" v-model="nuevoDescuento.tipo_descuento">
+											<label class="form-check-label" for="tipoPorcentaje">Porcentaje (%)</label>
+										</div>
+									</div>
+								</div>
+								<div class="col">
+									<label class="form-label">Valor de descuento</label>
+									<div class="form-floating mb-3">
+										<input type="number" class="form-control" id="floValorDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.valor_descuento">
+										<label for="floValorDescuento">Valor</label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="date" class="form-control" id="floFechaInicio" placeholder=" " v-model="nuevoDescuento.fecha_inicio">
+										<label for="floFechaInicio">Fecha de inicio</label>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="date" class="form-control" id="floFechaFin" placeholder=" " v-model="nuevoDescuento.fecha_fin">
+										<label for="floFechaFin">Fecha de fin</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-outline-primary" @click="crearDescuento"><i class="icofont-save"></i> Crear descuento</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -532,7 +620,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			anticipacion: [{clave: 1, valor: 'Horas'}, {clave: 2, valor: '1 día'} ], antes:0,
 			departamentos:[], paises:[],
-			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idPais:-1
+			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idPais:-1,
+			nuevoDescuento:{ id_tour: -1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' }, erroresDescuento: ''
 		},
 		mounted:function(){
 			this.verTours();
@@ -541,6 +630,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			tostadaOk = new bootstrap.Toast( document.getElementById('tostadaOk') );
 			tostadaMal = new bootstrap.Toast( document.getElementById('tostadaMal') );
 			offPanel = new bootstrap.Offcanvas( document.getElementById('offPanel') );
+			
+			document.getElementById('btnNuevoDescuento').addEventListener('click', () => {
+				bootstrap.Modal.getOrCreateInstance(document.getElementById('modalNuevoDescuento')).show();
+			});
 			
 			const Block = Quill.import('blots/block');
 			Block.tagName = 'div';  // Cambia P por DIV
@@ -821,6 +914,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				//return this.duracion[duracion].valor;
 				return this.duracion.find( x => x.clave === duracion ).valor;
 			},
+			fechaLatam(fecha){
+				return( moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY') )
+			},
 			horaLatam(hora){
 				return( moment(hora, 'HH:mm').format('h:mm a') )
 			},
@@ -955,6 +1051,76 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.tour.url = this.tourActivo.url;
 				this.tour.queUrl = this.tourActivo.url;
 				console.log('salir este', url);
+			},
+			agregarDescuento(){
+				if(!this.tourActivo.descuentos) this.tourActivo.descuentos = [];
+				if(this.nuevoDescuento.titulo && this.nuevoDescuento.descuento){
+					this.tourActivo.descuentos.push({...this.nuevoDescuento});
+					this.actualizarTour(this.tourActivo);
+					this.nuevoDescuento = { titulo:'', descripcion:'', descuento:'' };
+				}
+			},
+			eliminarDescuento(indice){
+				let idDescuento = this.todosDescuentos[indice].id;
+				if(confirm('¿Desea eliminar el descuento?')){
+					axios.post(this.servidor + 'Descuentos.php', {
+						pedir:'borrar',
+						id: idDescuento
+					})
+					.then( respuesta =>{
+						if(respuesta.data =='ok'){
+							let index = this.todosTours.findIndex( tour => tour.id === this.idGlobal );
+							this.todosTours[index].descuentos.splice(indice, 1);
+						}
+					})
+					.catch( error =>{ console.log( error ) });
+				}
+			},
+			crearDescuento(){
+				this.erroresDescuento = '';
+				
+				if(!this.nuevoDescuento.nombre_descuento || this.nuevoDescuento.nombre_descuento.trim() === '') {
+					this.erroresDescuento = 'El nombre del descuento es obligatorio';
+					return;
+				}
+				
+				if(!this.nuevoDescuento.fecha_inicio) {
+					this.erroresDescuento = 'La fecha de inicio es obligatoria';
+					return;
+				}
+				
+				if(!this.nuevoDescuento.fecha_fin) {
+					this.erroresDescuento = 'La fecha de fin es obligatoria';
+					return;
+				}
+				
+				if(parseFloat(this.nuevoDescuento.valor_descuento) <= 0) {
+					this.erroresDescuento = 'El valor del descuento debe ser mayor a 0';
+					return;
+				}
+				
+				this.nuevoDescuento.id_tour = this.idGlobal;
+				axios.post(this.servidor + 'Descuentos.php', {
+					pedir:'crear',
+					descuento: this.nuevoDescuento
+				})
+				.then( respuesta =>{
+					if(respuesta.data =='ok'){
+						let index = this.todosTours.findIndex( tour => tour.id === this.idGlobal );
+						this.todosTours[index].descuentos.unshift({...this.nuevoDescuento});
+						this.nuevoDescuento = { id_tour: this.idGlobal, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' };
+						this.erroresDescuento = '';
+						bootstrap.Modal.getInstance(document.getElementById('modalNuevoDescuento')).hide();
+					}
+				})
+				.catch( error =>{ console.log( error ) });
+			}
+		},
+		computed: {
+			todosDescuentos() {
+				let item = this.todosTours.find( tour => tour.id === this.idGlobal );
+				if(item) return item.descuentos;
+				else return [];
 			}
 		}
 	});

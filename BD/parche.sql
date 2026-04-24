@@ -9,3 +9,4 @@ CREATE TABLE descuentos (
 	activo              BOOLEAN DEFAULT TRUE,
 	FOREIGN KEY (id_tour) REFERENCES tours(id)
 );
+ALTER TABLE `descuentos` CHANGE `id_descuento` `id` INT(11) NOT NULL AUTO_INCREMENT; 
