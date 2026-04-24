@@ -3,6 +3,7 @@ include ("conectkarl.php");
 
 $filas = [];
 $entrega = [];
+$descuento = [];
 
 $adultos =0;
 $menores = 0;
@@ -40,6 +41,11 @@ if( $sql->execute([$_POST['id']])){
 	$total = $adultos + $menores;
 	$url = $contenido['url'];
 
+	// Buscar descuento activo para este tour
+	$sqlDesc = $db->prepare("SELECT id, nombre_descuento, tipo_descuento, valor_descuento FROM `descuentos` WHERE `id_tour` = ? AND curdate() between fecha_inicio and fecha_fin AND `activo` = 1 limit 1;");
+	$sqlDesc->execute([$_POST['id']]);
+	$descuento = $sqlDesc->fetch(PDO::FETCH_ASSOC);
+
 	/* while(  ){
 		
 	} */
@@ -48,4 +54,18 @@ if( $sql->execute([$_POST['id']])){
 	echo $sql->errorinfo();
 }
 
-echo json_encode( array('nombre'=>$nombre, 'adultos'=> $adultos, 'menores' => $menores, 'total'=>$total, 'hora'=> $hora, 'adultoNormal'=> $adultNormal, 'menorNormal'=>$kidNormal, 'idProducto'=>$_POST['id'], 'fotos'=>$fotos, 'cantAdultos' => $_POST['adultos'], 'cantKids' => $_POST['kids'], 'url'=>$url ));
+echo json_encode( array(
+	'nombre'=>$nombre, 
+	'adultos'=> $adultos, 
+	'menores' => $menores, 
+	'total'=>$total, 
+	'hora'=> $hora, 
+	'adultoNormal'=> $adultNormal, 
+	'menorNormal'=>$kidNormal, 
+	'idProducto'=>$_POST['id'], 
+	'fotos'=>$fotos, 
+	'cantAdultos' => $_POST['adultos'], 
+	'cantKids' => $_POST['kids'], 
+	'url'=>$url,
+	'descuento' => $descuento
+));

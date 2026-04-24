@@ -4,7 +4,7 @@ $_POST = json_decode(file_get_contents('php://input'),true);
 
 switch($_POST['pedir']){
 	case 'borrar': borrar($db); break;
-	/* case 'listar': listar($db); break;*/
+	case 'listar': listar($db); break;
 	case 'crear': crear($db); break; 
 }
 
@@ -13,6 +13,22 @@ function borrar($db){
 	if($db->query($sql)){
 		echo 'ok';
 	}else{ echo 'error';}
+}
+
+function listar($db){
+	$id_tour = $_POST['id_tour'];
+	$sql = "SELECT * FROM `descuentos` WHERE `id_tour` = '{$id_tour}' and curdate() between fecha_inicio and fecha_fin AND `activo` = 1;";
+	$result = $db->query($sql);
+	
+	if($result){
+		$descuentos = array();
+		while($row = $result->fetch_assoc()){
+			$descuentos[] = $row;
+		}
+		echo json_encode($descuentos);
+	}else{
+		echo json_encode(['error' => 'No se pudo listar los descuentos']);
+	}
 }
 
 function crear($db){

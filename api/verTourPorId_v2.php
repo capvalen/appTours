@@ -5,12 +5,25 @@ $_POST = json_decode(file_get_contents('php://input'),true);
 
 $filas = [];
 $comentarios =[];
+$descuentos = [];
 
 $sql= $db->prepare("SELECT * FROM `tours` where activo=1 and id=?;"); //tipo=1 and 
 if( $sql->execute( [ $_POST['id'] ] )){
 	while( $row = $sql->fetch(PDO::FETCH_ASSOC) ){
 		$filas[] = $row;
 	}
+
+	// Obtener descuentos para este tour
+	$descuentos = [];
+	$sqlDesc = $db->prepare("SELECT * FROM `descuentos` WHERE id_tour = :idTour and activo = 1;");
+	$sqlDesc->bindParam(':idTour', $_POST['id'], PDO::PARAM_INT);
+	if($sqlDesc->execute()){
+		while ($desc = $sqlDesc->fetch(PDO::FETCH_ASSOC)) {
+			$descuentos[] = $desc;
+		}
+	}
+	
+	//$filas[0]['descuentos'] = $descuentos;
 
 	$sqlComentarios = $db->prepare("SELECT * FROM `comentarios` where idTour = ? order by fecha desc limit 5;");
 	if( $sqlComentarios->execute([ $_POST['id'] ] )){
@@ -23,4 +36,4 @@ if( $sql->execute( [ $_POST['id'] ] )){
 	echo $sql->errorinfo();
 }
 
-echo json_encode( array("tour" => $filas[0], "comentarios" => $comentarios) );
+echo json_encode( array("tour" => $filas[0], "comentarios" => $comentarios, "descuentos" => $descuentos) );

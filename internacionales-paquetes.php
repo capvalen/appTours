@@ -497,7 +497,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</div>
 				<div class="offcanvas-body">
 					<p class="text-muted"><small>Paquete seleccionado:</small></p>
-					<h5>{{tourActivo.nombre}}</h5>
+					<h5><i class="icofont-tracking"></i> {{tourActivo.nombre}}</h5>
 					<div class="w-100 my-4"><button class="btn btn-outline-secondary" id="btnNuevoDescuento"><i class="icofont-sale-discount"></i> Nuevo descuento</button></div>
 
 					<p class="mb-2">Listado de descuentos </p>
@@ -511,9 +511,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							
 							<small>Desde {{fechaLatam(descuento.fecha_inicio)}}</small>
 							<small>- Hasta {{fechaLatam(descuento.fecha_fin)}}</small>
+							<span v-if="estadoDescuento(descuento.fecha_inicio, descuento.fecha_fin)" class="badge bg-success ms-2">Activo</span>
+							<span v-else class="badge bg-secondary ms-2">Vencido</span>
 						</div>
 					</div>
-					<p v-if="todosDescuentos.length==0">No hay descuentos</p>
+					<p v-if="todosDescuentos?.length==0"><i class="icofont-brush"></i> No hay descuentos</p>
 				</div>
 			</div>
 			<div class="modal fade" id="modalNuevoDescuento" data-bs-backdrop="static" tabindex="-1">

@@ -18,8 +18,14 @@
 	ini_set('display_startup_errors', 1);
 	error_reporting(E_ALL);
 	*/
+	$host = preg_replace('#^www\.#i', '', parse_url('http://' . $_SERVER['HTTP_HOST'], PHP_URL_HOST));
 
-	include('/home/grupemde/public_html/app/api/conectkarl.php');
+	if ($host === 'grupoeuroandino.com') {
+		include('/home/grupemde/public_html/app/api/conectkarl.php');
+	} else {
+		include( 'api/conectkarl.php'); // Ruta relativa al script actual
+	}
+	
 
 	$sqlBase = "SELECT id, JSON_UNQUOTE(JSON_EXTRACT(contenido, '$.nombre')) as titulo,
 
@@ -55,7 +61,12 @@
 
 	?>
 
-<?php include("../app/render/headers.php");?>
+<?php 
+if ($host === 'grupoeuroandino.com') 
+	include("../app/render/headers.php");
+else
+	include('headers.php');
+	?>
 </head>
 
 <body>
@@ -73,6 +84,7 @@
 		.icofont-google-map{margin-left:3px!important;}
 		ul{margin-bottom:0}
 		.moneda-peque{font-size:15px}
+		.alerta-descuento{background:#fff3cd;border:1px solid #ffecb5;border-radius:8px;padding:10px 12px;color:#664d03;}
 	#pegar p{line-height: 1; color: #000;}
 	#spanAvion {display: inline-block; transform:rotate(45deg)}
 	.ql-align-justify{text-align: justify;}
@@ -86,7 +98,10 @@
 
 
 	<!-- Inicio de Encabezado -->
-	<?php include ("../app/render/menu.php");?>
+	<?php 
+	if ($host === 'grupoeuroandino.com') include ("../app/render/menu.php");
+	else include  ("menu.php");
+	?>
 
     <!-- Fin de Encabezado -->
 
@@ -404,6 +419,15 @@
 						
 					</div>
 
+				</div>
+
+				<div class="row" v-if="descuentoActivoTexto">
+					<div class="col-10 mx-auto">
+						<div class="alerta-descuento text-center my-2">
+							<strong>¡Descuento disponible!</strong><br>
+							<span class="text-capitalize">{{descuentoActivoTexto}}</span>
+						</div>
+					</div>
 				</div>
 
 				<div class="row">
@@ -832,7 +856,7 @@
 					categorias2: [],
 					actividades2: [], contenidos:[], comentarios:[],
 					transportes: ['Terrestre', 'Aéreo', 'Ninguno'],
-					hospedajes: []
+					hospedajes: [], descuentos:[]
 
 				}
 
@@ -927,6 +951,7 @@
 
 				this.variosTours = respuesta.data['tour'];
 				this.comentarios = respuesta.data['comentarios'];
+				this.descuentos = respuesta.data['descuentos'];
 
 				this.tourActivo = JSON.parse(this.variosTours.contenido);
 
@@ -1409,6 +1434,26 @@
 			},
 
 			computed: {
+				descuentoActivoTexto() {
+					if (!Array.isArray(this.descuentos) || this.descuentos.length === 0) return '';
+					const descuento = this.descuentos[0]
+
+					const nombre = (descuento.nombre_descuento ?? '').toString().trim();
+					const tipo = (descuento.tipo_descuento ?? '').toString().trim().toLowerCase();
+					const valor = parseFloat(descuento.valor_descuento ?? 0);
+
+					if (!nombre || Number.isNaN(valor)) return '';
+
+					if (tipo === 'monto') {
+						return `${nombre} S/ ${valor.toFixed(2)}`;
+					}
+
+					if (tipo === 'porcentaje') {
+						return `${nombre} ${valor.toFixed(2)}% off`;
+					}
+
+					return '';
+				},
 
 				queDuraComp() {
 

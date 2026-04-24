@@ -1,6 +1,8 @@
 
 <?php
-include '../api/'
+$host = preg_replace('#^www\.#i', '', parse_url('http://' . $_SERVER['HTTP_HOST'], PHP_URL_HOST));
+/* if ($host === 'grupoeuroandino.com') include '../api/';
+else include '/api'; */
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -196,7 +198,7 @@ include '../api/'
 							</p>
 							<p class="mb-0"><strong>Personas</strong> </p>
 							<div class="row row-cols-2">
-								<div class="col">
+								<div class="col-7">
 									<p class="mb-0">
 										<span v-if="adultos==1">1 adulto</span>
 										<span v-else>{{adultos}} adultos</span>
@@ -206,17 +208,38 @@ include '../api/'
 										<span v-else>{{kids}} niños</span>
 										<p class="gris fs-6" >(max. 10 años)</p>
 									</p>
-									<p class="mb-0 fs-4"><strong>Total</strong></p>
 								</div>
-								<div class="col" >
+								<div class="col-3 d-flex flex-column" >
 									<p class="mb-0" v-if="moneda == 'soles'"><span>S/</span> <span>{{parseFloat(precAdultos).toFixed(2)}}</span></p>
 									<p class="mb-0" v-if="moneda == 'dolares'"><span>$</span> <span>{{parseFloat(adulDolar).toFixed(2)}}</span></p>
 									<p class="mb-0" v-if="moneda == 'soles'"><span>S/</span> <span>{{parseFloat(precMenores).toFixed(2)}}</span></p>
 									<p class="mb-0" v-if="moneda == 'dolares'"><span>$</span> <span>{{parseFloat(ninDolar).toFixed(2)}}</span></p>
-									<br>
+								</div>
+							</div>
+							<div class="row ">
+								<div class="col">
+									<p class="mb-0 text-success" v-if="descuento!=null"><strong><i class="icofont-sale-discount"></i> Descuento</strong>: <span class="text-capitalize">{{descuento.nombre_descuento}} {{descuento.tipo_descuento=='monto' ? 'S/' : ''}} -{{descuento.valor_descuento}} {{descuento.tipo_descuento=='porcentaje' ? '%':''}}</span></p>
 
-									<p class="mb-0" v-if="moneda == 'soles'"><span class="gris">S/</span> <strong class="fs-4">{{parseFloat(total).toFixed(2)}}</strong></p>
-									<p class="mb-0" v-if="moneda == 'dolares'"><span class="gris">$</span> <strong class="fs-4">{{parseFloat(totalDolar).toFixed(2)}}</strong></p>
+								</div>
+							</div>
+							<div class="row row-cols-2">
+								<div class="col-7">
+									<p class="mb-0 gris" v-if="descuento!=null">Precio anterior</p>
+
+									<p class="mb-0 fs-4"><strong>Total a pagar</strong></p>
+								</div>
+								<div class="col-3">
+									<p class="mb-0 gris" v-if="descuento!=null">
+										<span v-if="moneda == 'soles'" class="text-decoration-line-through">S/ {{parseFloat(total).toFixed(2)}}</span>
+										<span v-if="moneda == 'dolares'" class="text-decoration-line-through">$ {{parseFloat(totalDolar).toFixed(2)}}</span>
+									</p>
+
+									<p class="mb-0 mt-auto" v-if="moneda == 'soles'">
+										<span class="d-flex align-items-end"><span class="gris lh-lg me-2">S/</span> <strong class="fs-4">{{parseFloat(precioFinalSoles).toFixed(2)}}</strong></span>
+									</p>
+									<p class="mb-0 mt-auto" v-if="moneda == 'dolares'">
+										<span class="d-flex align-items-end"><span class="gris lh-lg me-2">$</span> <strong class="fs-4">{{parseFloat(precioFinalDolares).toFixed(2)}}</strong></span>
+									</p>
 								</div>
 							</div>
 						</div>
@@ -336,7 +359,7 @@ include '../api/'
 				ciudad: '', direccion: '',
 				politica: true, privacidad: true, mensajeError:'', hora:'',
 				precAdultos:'', precMenores:'', total:'', nomTour:'', adultoNormal:0,menorNormal:0, idOrden:-1, actiFactura:3, //3boleta, 1 factura
-				nRuc:'', nRazon:'', nDireccion:'', dolar:0, comision:0, totalDolar: 0, moneda:'soles', adulDolar:0, ninDolar:0, url:'', indexRegla:-1,
+				nRuc:'', nRazon:'', nDireccion:'', dolar:0, comision:0, totalDolar: 0, moneda:'soles', adulDolar:0, ninDolar:0, url:'', indexRegla:-1, descuento:null,
 				reglas:[
 					{id:1, regla: 'Restricciones Alimentarias', instrucciones:'Son limitaciones en la dieta de una persona, ya sea por motivos de salud, creencias religiosas, preferencias personales o alergias/intolerancias. Estas restricciones pueden implicar evitar ciertos alimentos o grupos de alimentos por completo, o simplemente reducir su consumo.', respuesta:'' },
 					{id:2,regla:'Condición Médica', instrucciones:'Se refiere a cualquier estado de salud que se aparta de lo normal, ya sea una enfermedad, un trastorno o una lesión. Estas condiciones pueden ser agudas (de corta duración y severas) o crónicas (de larga duración), y afectar tanto la salud física como mental.', respuesta:'' },
@@ -411,9 +434,11 @@ include '../api/'
 				this.hora = espera.hora;
 				this.precAdultos = espera.adultos;
 				this.precMenores = espera.menores;
+				this.anterior = espera.total;
 				this.total = espera.total;
 				this.adultoNormal = espera.adultoNormal;
 				this.menorNormal = espera.menorNormal;
+				this.descuento = espera.descuento;
 
 				const queryString = window.location.search;
 				const urlParams = new URLSearchParams(queryString);
@@ -472,7 +497,9 @@ include '../api/'
 					datos.append('nacionalidad', this.nacionalidad)
 					datos.append('adultoNormal', this.adultoNormal)
 					datos.append('menorNormal', this.menorNormal)
-					datos.append('total', this.total)
+					datos.append('descuento', this.descuento.valor_descuento ?? 0)
+					datos.append('tipo_descuento', this.descuento.tipo_descuento ?? 'monto')
+					datos.append('total', this.precioFinalSoles )
 					datos.append('moneda', 1)//falta habilitar izipay
 					datos.append('titulo', this.nomTour)
 					datos.append('empieza', moment(this.empieza, 'DD/MM/YYYY').format('YYYY-MM-DD'))
@@ -502,9 +529,9 @@ include '../api/'
 			async crearToken(){
 				let datos = new FormData()
 				if( this.moneda == 'soles')
-					datos.append('monto', this.total*100)
+					datos.append('monto', this.precioFinalSoles *100)
 				else{
-					let mDolar = Math.round(this.total*(1+this.comision/100),1)*100 //La entrega es en decimales grandes
+					let mDolar = Math.round(this.precioFinalSoles *(1+this.comision/100),1)*100 //La entrega es en decimales grandes
 					datos.append('monto', mDolar)
 					console.log('quemMonto',mDolar)
 				}
@@ -556,6 +583,30 @@ include '../api/'
 			formatoHora(horita){
 				let nuevo = moment(horita, 'HH:mm')
 				return nuevo.format('hh:mm a')
+			}
+		},
+		computed:{
+			precioFinalSoles(){
+				let totalFinal = parseFloat(this.total);
+				if (this.descuento != null) {
+					if (this.descuento.tipo_descuento == 'monto') {
+						totalFinal -= parseFloat(this.descuento.valor_descuento);
+					} else if (this.descuento.tipo_descuento == 'porcentaje') {
+						totalFinal -= (totalFinal * parseFloat(this.descuento.valor_descuento)) / 100;
+					}
+				}
+				return totalFinal;
+			},
+			precioFinalDolares(){
+				let totalFinalDolar = parseFloat(this.totalDolar);
+				if (this.descuento != null) {
+					if (this.descuento.tipo_descuento == 'monto') {
+						totalFinalDolar -= parseFloat(this.descuento.valor_descuento) / this.dolar;
+					} else if (this.descuento.tipo_descuento == 'porcentaje') {
+						totalFinalDolar -= (totalFinalDolar * parseFloat(this.descuento.valor_descuento)) / 100;
+					}
+				}
+				return totalFinalDolar;
 			}
 		}
 	});

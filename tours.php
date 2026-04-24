@@ -483,8 +483,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body">
-					<p class="text-muted"><small>Paquete seleccionado:</small></p>
-					<h5>{{tourActivo.nombre}}</h5>
+					<p class="text-muted"><small>Tour seleccionado:</small></p>
+					<h5><i class="icofont-tracking"></i> {{tourActivo.nombre}}</h5>
 					<div class="w-100 my-4"><button class="btn btn-outline-secondary" id="btnNuevoDescuento"><i class="icofont-sale-discount"></i> Nuevo descuento</button></div>
 
 					<p class="mb-2">Listado de descuentos </p>
@@ -495,12 +495,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								<button class="btn btn-danger btn-sm" @click.stop="eliminarDescuento(index)"><i class="icofont-ui-delete"></i></button>
 							</div>
 							<p>Por <strong>{{descuento.tipo_descuento=='monto' ? 'S/' : ''}} {{descuento.valor_descuento}}{{descuento.tipo_descuento=='porcentaje' ? '%' : ''}}</strong> </p>
-							
 							<small>Desde {{fechaLatam(descuento.fecha_inicio)}}</small>
 							<small>- Hasta {{fechaLatam(descuento.fecha_fin)}}</small>
+							<span v-if="estadoDescuento(descuento.fecha_inicio, descuento.fecha_fin)" class="badge bg-success ms-2">Activo</span>
+							<span v-else class="badge bg-secondary ms-2">Vencido</span>
 						</div>
-					</div>
-					<p v-if="tourActivo?.length==0">No hay descuentos</p>
+					<p v-if="todosDescuentos?.length==0"><i class="icofont-brush"></i> No hay descuentos</p>
 				</div>
 			</div>
 			<div class="modal fade" id="modalNuevoDescuento" data-bs-backdrop="static" tabindex="-1">
@@ -923,6 +923,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			fechaLatam(fecha){
 				return( moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY') )
+			},
+			estadoDescuento(fechaInicio, fechaFin){
+				const hoy = moment().startOf('day');
+				const inicio = moment(fechaInicio, 'YYYY-MM-DD').startOf('day');
+				const fin = moment(fechaFin, 'YYYY-MM-DD').endOf('day');
+				if(!inicio.isValid() || !fin.isValid()) return false;
+				return hoy.isBetween(inicio, fin, undefined, '[]');
 			},
 			horaLatam(hora){
 				return( moment(hora, 'HH:mm').format('h:mm a') )
