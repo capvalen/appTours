@@ -79,6 +79,7 @@
 	
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="./configuracion.js?v=1.0"></script>
 
 <script>
 
@@ -94,7 +95,7 @@
 
 				//servidor: 'http://localhost/appTours/api/',
 
-				servidor: 'https://grupoeuroandino.com/app/api/', 
+				servidor: window.lugarApi, 
 
 				carritos:[], resultados:[]
 

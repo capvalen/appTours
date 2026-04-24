@@ -140,7 +140,7 @@
 		el: '#app',
 		data: {
 			//servidor: 'http://localhost/appTours/api/',
-			servidor: 'https://grupoeuroandino.com/app/api/',
+			servidor: window.lugarApi,
 			pedidos:[], indexPedido:null
 			
 		},

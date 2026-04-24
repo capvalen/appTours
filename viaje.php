@@ -714,7 +714,7 @@
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
 	<script src="https://grupoeuroandino.com/js/owl.carousel.min.js" ></script>
 	<script src="https://grupoeuroandino.com/app/render/js/paises.js" ></script>
-	
+	<script src="./configuracion.js?v=1.0"></script>
 
 
 	<script>
@@ -749,7 +749,7 @@
 					idProducto: -1, horarioSelect:-1,
 
 					//servidor: 'http://localhost/appTours/api/',
-					servidor: 'https://grupoeuroandino.com/app/api/',
+					servidor: window.lugarApi,
 					lateral:'', dolar:0, precioDolares:0, inferior:'',
 					listaPaises: PAISES_DATA,
 					variosTours: [],

@@ -167,6 +167,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	
 	<script src="js/axios.min.js"></script>
 	<script src="js/moment.min.js"></script>
+	<script src="./configuracion.js?v=1.0"></script>
 	<script>
 		var quill, quillBajo, comision, dolar;
 		var toolBarOptions = [
@@ -240,7 +241,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	createApp({
 		data() {
 			return {
-				servidor: 'https://grupoeuroandino.com/app/api/', actividades:[], categorias:[],
+				servidor: window.lugarApi, actividades:[], categorias:[],
 				nTexto:'', hospedajes:[]
 			}
 		},

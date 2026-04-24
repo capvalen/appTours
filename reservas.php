@@ -118,6 +118,7 @@
 	
 	<script src="js/axios.min.js"></script>
 	<script src="js/moment.min.js"></script>
+	<script src="./configuracion.js?v=1.0"></script>
 	<script>
 	var modalDetalles,
 	tostadaOk, tostadaMal;
@@ -127,7 +128,7 @@
 		el: '#app',
 		data: {
 			//servidor: 'http://localhost/appTours/api/',
-			servidor: 'https://grupoeuroandino.com/app/api/',
+			servidor: window.lugarApi,
 			pedidos:[], indexPedido:null
 			
 		},

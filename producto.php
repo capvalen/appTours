@@ -341,7 +341,7 @@
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.min.js"></script>
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js" integrity="sha512-gY25nC63ddE0LcLPhxUJGFxa2GoIyA5FLym4UJqHDEMHjp8RET6Zn/SHo1sltt3WuVtqfyxECP38/daUc/WVEA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+	<script src="./configuracion.js?v=1.0"></script>
 
 	<script>
 var datepicker = $.fn.datepicker.noConflict();
@@ -360,7 +360,7 @@ $.fn.bootstrapDP = datepicker;
 			return {
 				idProducto:-1,
 				//servidor: 'http://localhost/appTours/api/',
-				servidor: 'https://grupoeuroandino.com/app/api/',
+				servidor: window.lugarApi,
 				variosTours:[], tourActivo:[{incluye:'', noIncluye:'', peruanos:{adultos:0, kids:0}, extranjeros:{adultos:0, kids:0}, duracion:0
 			}],
 				precioPorPersona: 0, cantAdultos:0, cantKids:0,

@@ -55,435 +55,452 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	</style>
 	<?php include "nav.php";?>	</nav>
 
-	<div class="container" id="app">
-		<div class="row ">
-			<div class="col-8">
-				<p class="fs-1">Tours</p>
-			</div>
-			<div class="col-4 d-flex align-items-center">
-				<button class="btn btn-outline-primary" @click="nuevoTourSimple()"><i class="icofont-list"></i> Crear Tour</button>
-				<!-- <button class="btn btn-outline-success ms-2" @click="verTours()"><i class="icofont-list"></i> pedir datos</button> -->
-			</div>
-		</div>
-		<div class="row">
-		<div class="col-12 col-md-4">
-				<label for="" class="form-label"><i class="icofont-filter"></i> Filtrar por título</label>
-				<div class="input-group mb-3">
-					<input type="text" name="" id="txtFiltro" ref="txtFiltro" class="form-control" placeholder="Buscar por título" @keyup.enter="buscarProducto()">
-					<button class="btn btn-outline-secondary" type="button" @click="buscarProducto()"><i class="icofont-search"></i> Buscar</button>
+	<div id="app">
+		<div class="container ">
+			<div class="row ">
+				<div class="col-8">
+					<p class="fs-1">Tours</p>
+				</div>
+				<div class="col-4 d-flex align-items-center">
+					<button class="btn btn-outline-primary" @click="nuevoTourSimple()"><i class="icofont-list"></i> Crear Tour</button>
+					<!-- <button class="btn btn-outline-success ms-2" @click="verTours()"><i class="icofont-list"></i> pedir datos</button> -->
 				</div>
 			</div>
+			<div class="row">
 			<div class="col-12 col-md-4">
-				<label for="" class="form-label"><i class="icofont-filter"></i> Ciudad</label>
-				<div class="mb-3">
-					<input type="text" name="" id="txtFiltroCiudad" ref="txtFiltroCiudad" class="form-control" placeholder="Buscar por ciudad" @keyup.enter="buscarProducto()">
-				</div>
-			</div>
-			<div class="col-12 col-md-4">
-				<label for="" class="form-label"><i class="icofont-filter"></i> Departamentos</label>
-				<select class="form-select" v-model="idDepartamento" @change="buscarProducto()">
-					<option value="-1">Todos</option>
-					<option v-for="(departamento, index) in departamentos" :value="index">{{departamento}}</option>
-				</select>
-			</div>
-		</div>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>N°</th>
-					<th>Título</th>
-					<th class="d-none">Precio Perú</th>
-					<th class="d-none">Precio Ext.</th>
-					<th></th>
-					<th></th>
-					<th class="d-none">Fechas</th>
-					<th><i class="icofont-eye-alt"></i></th>
-					<th>@</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-if="variosTours.length == 0">
-					<td colspan=5>No hay tours</td>
-				</tr>
-				<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
-					<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
-					<td @click="cargarPanel(todosTours[index].id, index)" class="">
-						{{vTour.nombre}}
-					</td>
-					<td @click.stop="abrirLink(index)">
-						<span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)" title="Abrir link"><i class="icofont-external-link"></i></span>
-					</td>
-					<td @click.stop="clonar(index)">
-						<span class="text-success" title="Clonar"><i class="icofont-copy"></i></span>
-					</td>
-					<td class="d-none" @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
-					<td class="d-none" @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
-					<td class="d-none">
-						<button data-bs-toggle="offcanvas" data-bs-target="#offFechas" class="btn btn-sm btn-outline-secondary" @click.prevent="idGlobal=todosTours[index].id;tourActivo =JSON.parse(todosTours[index].contenido)"><span v-if="vTour.fechas">{{vTour.fechas.length}}</span> <span v-else>0</span></button>
-					</td>
-					<td >
-						<div class="form-check form-switch">
-							<input class="form-check-input" type="checkbox" role="switch" :id="'chkVisible'+index+1" @click="idGlobal =todosTours[index].id; hacerVisible($event)" :checked="todosTours[index].visible=='1'? 'checked':''">
-							<label v-if="todosTours[index].visible=='1'" class="form-check-label text-primary" :for="'chkVisible'+index+1"><i class="icofont-eye-alt"></i> Publicado</label>
-							<label v-else class="form-check-label " :for="'chkVisible'+index+1"><i class="icofont-eye-blocked"></i> No publicado</label>
-						</div>
-						<div class="d-none">
-							<span class="text-primary" v-if="esVisible(index)=='1'"><i class="icofont-check"></i></span>
-							<span class="text-danger" v-else><i class="icofont-close"></i></span>
-						</div>
-					</td>
-					<td @click.stop="eliminarTour(index)"><span class="text-danger"><i class="icofont-ui-delete"></i></span></td>
-				</tr>
-			</tbody>
-		</table>
-
-
-		<div class="modal fade" id="modalNuevo" data-bs-backdrop="static" tabindex="-1">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="d-flex justify-content-between mb-3">
-							<h5 v-if="!activarEditar" class="modal-title">Nuevo anuncio: Tour</h5>
-							<h5 v-else class="modal-title">Editar anuncio: Tour</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @blur="/*crearURL()*/">
-							<label for="floNombre">Nombre del tour</label>
-						</div>
-						<div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floURL" placeholder="" autocomplete="off" v-model="tourActivo.url">
-							<label for="floURL">URL del tour</label>
-						</div>
-						<p class="mb-0">Precio normal:</p>
-						<div class="row">
-							<div class="col">
-								<div class="form-floating mb-3">
-									<input type="number" class="form-control" id="floOferta" placeholder=" " autocomplete="off" v-model="tour.oferta">
-									<label for="floNombre">Normal</label>
-								</div>
-							</div>
-						</div>
-						<p class="mb-0">Precio para Peruanos:</p>
-						<div class="row ">
-							<div class="col">
-								<div class="form-floating mb-3">
-									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.peruanos.adultos">
-									<label for="floNombre">Adulto</label>
-								</div>
-							</div>
-							<div class="col">
-								<div class="form-floating mb-3">
-									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.peruanos.kids">
-									<label for="floNombre">Niños (max. 10 años)</label>
-								</div>
-							</div>
-						</div>
-						<p class="mb-0">Precio para Extranjeros:</p>
-						<div class="row ">
-							<div class="col">
-								<div class="form-floating mb-3">
-									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off"  v-model="tour.extranjeros.adultos">
-									<label for="floNombre">Adulto</label>
-								</div>
-							</div>
-							<div class="col">
-								<div class="form-floating mb-3">
-									<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.extranjeros.kids">
-									<label for="floNombre">Niños (max. 10 años)</label>
-								</div>
-							</div>
-						</div>
-						<div class="form-floating mb-3">
-							<input type="number" class="form-control" id="floCupos" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.cupos">
-							<label for="floCupos">Cupos disponibles</label>
-						</div>
-						
-						<div class="form-floating mb-3">
-							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.duracion">
-								<option v-for="dia in duracion" :value="dia.clave">{{dia.valor}}</option>
-							</select>
-							<label for="floatingSelect">Duración</label>
-						</div>
-						<div class="row">
-							<div class="col">
-								<div class="form-floating mb-3">
-									<input type="time" class="form-control" id="floHora" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora">
-									<label for="floHora">Primera Hora de inicio</label>
-								</div>
-							</div>
-							<div class="col">
-								
-								<div class="form-floating mb-3">
-									<input type="time" class="form-control" id="floHora2" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora2">
-									<label for="floHora2">Segunda Hora de inicio</label>
-								</div>
-							</div>
-						</div>
-						<p class="mb-0">Reglas de compra</p>
-						<div class="row">
-							<div class="col-6">
-								<div class="form-floating mb-3">
-									<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.anticipacion">
-										<option v-for="dia in anticipacion" :value="dia.clave">{{dia.valor}}</option>
-									</select>
-									<label for="floatingSelect">Anticipación</label>
-								</div>
-							</div>
-							<div class="col-6" v-if="tour.anticipacion == '1'">
-								<div class="form-floating mb-3">
-									<input type="number" class="form-control" id="floCupos" placeholder=" " max="23" min="1" autocomplete="off" value="0" v-model="tour.antes">
-									<label for="floCupos">Horas antes</label>
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="form-floating mb-3">
-									<input type="number" class="form-control" id="floCupos" placeholder=" " max="250" min="1" autocomplete="off" value="1" v-model="tour.minimo">
-									<label for="floCupos">Mínimo viajeros</label>
-								</div>
-							</div>
-						</div>
-						<div class="form-floating mb-3">
-							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.transporte" @change="tipoTransporteChange">
-								<option value="3">Ninguno</option>
-								<option value="4">Acuático</option>
-								<option value="2">Aéreo</option>
-								<option value="1">Terrestre</option>
-							</select>
-							<label for="floatingSelect">Tipo de transporte</label>
-						</div>
-						<div class="form-floating mb-3" v-if="tour.transporte!=3">
-							<select class="form-select text-capitalize" id="floatingSelect" aria-label="Floating label select example" v-model="tour.idTransporte">
-								<option class="text-capitalize" v-for="transporte in transportes" v-if="transporte.idTransporte == tour.transporte" :value="transporte.id">{{transporte.transporte}}</option>
-							</select>
-							<label for="floatingSelect">Sub Tipo de transporte</label>
-						</div>
-						<div class="row">
-							<div class="col">
-								<div class="form-floating mb-3">
-									<input type="text" class="form-control" id="floDestino" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.destino">
-									<label for="floDestino">Ciudad <em style="font-size: 0.7rem">Ejm: Lima</em></label>
-								</div>
-
-							</div>
-							<div class="col">
-								<div class="form-floating mb-3">
-								<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.departamento">
-									<option v-for="(depa, index) in departamentos" :value="index">{{depa}}</option>
-								</select>
-								<label for="floatingSelect">Departamento</label>
-							</div>
-							</div>
-						</div>
-						
-						<!-- <div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floDestino" placeholder=" " autocomplete="off" v-model="tour.actividad">
-							<label for="floDestino">Actividades</label>
-						</div> -->
-						<div class=" mb-3">
-							<label for="floDestino">Actividades</label>
-							<div class="sltPicker">
-								<select class="selectpicker" id="sltActividad2" data-live-search="true" multiple data-max-options="3">
-									<option v-for="nActividad in actividades2" :key="nActividad.id" :value="nActividad.id">{{nActividad.concepto}}</option>
-								</select>
-							</div>
-						</div>
-						<!-- <div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floDestino" placeholder=" "autocomplete="off" v-model="tour.categoria">
-							<label for="floDestino">Categoría</label>
-						</div> -->
-						<div class=" mb-3">
-							<label for="floDestino">Categorías</label>
-							<div class="sltPicker">
-								<select class="selectpicker" id="sltCategoria2" data-live-search="true" multiple data-max-options="3">
-									<option v-for="nCategoria in categorias2" :key="nCategoria.id" :value="nCategoria.id">{{nCategoria.concepto}}</option>
-								</select>
-							</div>
-						</div>
-
-						<div class=" mb-3">
-							<label for="floDestino">Días de atención</label>
-							<div class="sltPicker">
-								<select class="selectpicker " id="sltDias" data-live-search="true" multiple data-max-options="7" >
-									<option v-for="(dia, index) in dias" :key="index" :value="dia.id">{{dia.day}}</option>
-								</select>
-							</div>
-						</div>
-
-						<!-- Create the editor container -->
-						<p class="mb-0 mt-2">Descripción</p>
-						<div class="editor" id="qDescripcion" ></div>
-						<p class="mb-0 mt-2">Punto de partida</p>
-						<div class="editor" id="qPartida"></div>
-						<p class="mb-0 mt-2">Itinerario</p>
-						<div class="editor" id="qItinerario"></div>
-						<p class="mb-0 mt-2">Incluye</p>
-						<div class="editor" id="qSiIncluye"></div>
-						<p class="mb-0 mt-2">No incluye</p>
-						<div class="editor" id="qNoIncluye"></div>
-
-						<p class="mb-0 mt-2">Notas</p>
-						<div class="editor" id="qNotas"></div>
-						<p class="mb-0 mt-2">Opciones</p>
-						<div class="form-check">
-							<input class="form-check-input" type="checkbox" value="" id="chkAlimentacion" v-model="tour.alimentacion">
-							<label class="form-check-label" for="chkAlimentacion"> Alimentación</label>
-						</div>
-						<div class="form-check">
-							<input class="form-check-input" type="checkbox" value="" id="flexGuia"  v-model="tour.guia">
-							<label class="form-check-label" for="flexGuia"> Guía </label>
-						</div>
-						<div class="form-check">
-							<input class="form-check-input" type="checkbox" value="" id="flexTickets"  v-model="tour.tickets">
-							<label class="form-check-label" for="flexTickets"> Tickets </label>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button v-if="!activarEditar" type="button" @click="guardarTour()" class="btn btn-outline-primary"><i class="icofont-save"></i> Guardar anuncio</button>
-						<button v-else type="button" @click="actualizarTour(tour)" class="btn btn-outline-primary"><i class="icofont-save"></i> Actualizar anuncio</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="position-relative">
-			<div class="toast-container position-absolute bottom-0 end-0 p-3 me-4">
-				<div class="toast align-items-center text-white bg-success border-0" id="tostadaOk" role="alert" aria-live="assertive" aria-atomic="true">
-					<div class="d-flex">
-						<div class="toast-body"><i class="icofont-check"></i> 
-							{{mensajeBien}}
-						</div>
-						<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-					</div>
-				</div>
-				<div class="toast align-items-center text-white bg-danger border-0" id="tostadaMal" role="alert" aria-live="assertive" aria-atomic="true">
-					<div class="d-flex">
-						<div class="toast-body"> <i class="icofont-close-circled"></i>
-							{{mensajeMal}}
-						</div>
-						<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="offcanvas offcanvas-end" tabindex="-1" id="offPanel" aria-labelledby="offcanvasExampleLabel">
-			<div class="offcanvas-header">
-				<h5 class="offcanvas-title text-capitalize" id="offcanvasExampleLabel">{{tourActivo.nombre}}</h5>
-				<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-			</div>
-			<div class="offcanvas-body">
-				<div class="contenido"  v-if="indexGlobal!=-1">
-					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="chkVisible" @click="hacerVisible($event)" :checked="esVisible(indexGlobal)=='1'? 'checked':''">
-						<label v-if="esVisible(indexGlobal)=='1'" class="form-check-label text-primary" for="chkVisible"><i class="icofont-eye-alt"></i> Es visible</label>
-						<label v-else class="form-check-label " for="chkVisible"><i class="icofont-eye-blocked"></i> No está publicado</label>
-					</div>
-					<div class="row col d-grid gap-2 col-6 mx-auto">
-						<button type="button" class="btn btn-outline-dark" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
-						<button type="button" class="btn btn-outline-dark" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
-					</div>
-					<div id="ocultar" class="d-none">
-						<p class="my-1"><strong>Precio Peruanos</strong></p>
-						<p class="my-1"><strong>Precio normal:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
-						<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.adultos)}}</span> </p>
-						<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.kids)}}</span> </p>
-						<p class="my-1 mt-3"><strong>Precio Extranjeros</strong></p>
-						<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.adultos)}}</span> </p>
-						<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.kids)}}</span> </p>
-						<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDura(tourActivo.duracion)}}</span></p>
-						<p class="my-1 mt-3"><strong>1° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora)}}</span></p>
-						<p v-if="tourActivo.hora2" class="my-1 mt-3"><strong>2° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora2)}}</span></p>
-						<p class="my-1 mt-3"><strong>Reglas de compra:</strong> </p>
-						<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
-						<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
-						<p class="my-1 mt-3"><strong>Destino:</strong> <span>{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
-						<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}} {{variasActividades()}}</span></p>
-						<p class="my-1 mt-3"><strong>Categorías:</strong> <span>{{variasCategorias()}}</span></p>
-						<p class="my-1 mt-3"><strong>Descripción:</strong> <br> </p>
-						<div class="w-100 text-break" v-html="tourActivo.descripcion"></div>
-						<p class="my-1"><strong>Punto de partida:</strong> <br> </p>
-						<div class="w-100 text-break" v-html="tourActivo.partida"></div>
-						<p class="my-1"><strong>Itinerario:</strong> <br> </p>
-						<div class="w-100 text-break" v-html="tourActivo.itinerario"></div>
-						<p class="my-1"><strong>Incluye:</strong></p>
-						<p class="ms-2" v-for="cadena in tourActivo.incluye.split('\n')"><i class="icofont-check-alt"></i> {{cadena}}</p>
-						<p class="my-1 mt-3"><strong>No incluye:</strong></p>
-						<p class="ms-2" v-for="cadena in tourActivo.noIncluye.split('\n')"><i class="icofont-close-line"></i> {{cadena}}</p>
-						<p class="my-1"><strong>Notas:</strong> <br> </p>
-						<div class="w-100 text-break" v-html="tourActivo.notas"></div>
-						
-						<div>
-							<p></p>
-						</div>
-						<button type="button" @click="eliminar()" class="btn btn-danger mt-3"><i class="icofont-ui-delete"></i> Eliminar paquete</button>
-					</div>
-					<div class="row my-2" >
-						<div class="col" v-if="tourActivo.fotos.length<16">
-							<p class="mb-0">Subir imágen:</p>
-							<div class="input-group mb-3">
-								<input type="file" class="form-control" ref="archivoFile" id="txtArchivo" accept="image/*" multiple>
-								<button class="btn btn-outline-secondary" type="button" id="btnSubirArchivo" @click="subirANube()"><i class="icofont-upload-alt"></i></button>
-							</div>
-						</div>
-						<div class="col" v-else>
-							<p class="text-danger"><i class="icofont-gear-alt"></i> Se alcanzó el máximo de fotos</p>
-						</div>
-					</div>
-					<p class="my-1 mt-3"><strong>Fotografías</strong></p>
-					<div class="row row-cols-2" id="divFotografias">
-						<div class="col" v-for="(imagen, indice) in tourActivo.fotos">
-							<div class="card mb-3" >
-								<img :src="'images/subidas/'+imagen.nombreRuta" class="card-img-top" alt="...">
-								<ul class="list-group list-group-flush">
-									<li class="list-group-item">
-									<div class="form-check">
-										<input class="form-check-input" type="radio" name="flexRadios" :id="'flexRadioDefault'+indice" @change="fotoPrincipal(indice);">
-										<label class="form-check-label" :for="'flexRadioDefault'+indice"  @change="fotoPrincipal(indice);">
-											<span class="text-primary" v-if="queIndice==indice">Img. Principal</span>
-											<span v-else>Img. Secundaria</span>
-										</label>
-									</div>
-									</li>
-								</ul>
-								<div class="card-body py-1 ps-3">
-									<a href="#!" class="card-link text-danger text-decoration-none" @click="borrarFoto(indice)"><i class="icofont-close"></i> Borrar</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- <div class="my-1" v-for="imagen in tourActivo.fotos">
-						<img :src="'images/subidas/'+imagen.nombreRuta" class="img-fluid img-thumbnail border-0" alt="">
-					</div> -->
-
-				</div>
-			</div>
-		</div>
-
-		<div class="offcanvas offcanvas-start" tabindex="-1" id="offFechas" aria-labelledby="offFechasLabel">
-			<div class="offcanvas-header">
-				<h5 class="offcanvas-title" id="offFechasLabel">Offcanvas</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-			</div>
-			<div class="offcanvas-body">
-				<div>
-					Ingrese las fechas para anular
-
+					<label for="" class="form-label"><i class="icofont-filter"></i> Filtrar por título</label>
 					<div class="input-group mb-3">
-						<input type="date" class="form-control" v-model="fechaSeleccionada" @keyup.enter="vetarFecha()">
-						<button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="vetarFecha()"><i class="icofont-simple-right"></i> Agregar</button>
+						<input type="text" name="" id="txtFiltro" ref="txtFiltro" class="form-control" placeholder="Buscar por título" @keyup.enter="buscarProducto()">
+						<button class="btn btn-outline-secondary" type="button" @click="buscarProducto()"><i class="icofont-search"></i> Buscar</button>
 					</div>
 				</div>
-				<p>Fechas anuladas:</p>
-				<ol class="list-group list-group-numbered">
-					<li class="list-group-item d-flex justify-content-between align-items-start" v-for="(fecha, indice) in tourActivo.fechas">
-						<div class="ms-2 me-auto"> <span>Fecha: {{fecha.fecha}}</span> </div>
-						<span class="badge bg-danger rounded-pill" @click="eliminarFecha(indice)"><i class="icofont-close"></i></span>
-					</li>
-				</ol>
+				<div class="col-12 col-md-4">
+					<label for="" class="form-label"><i class="icofont-filter"></i> Ciudad</label>
+					<div class="mb-3">
+						<input type="text" name="" id="txtFiltroCiudad" ref="txtFiltroCiudad" class="form-control" placeholder="Buscar por ciudad" @keyup.enter="buscarProducto()">
+					</div>
+				</div>
+				<div class="col-12 col-md-4">
+					<label for="" class="form-label"><i class="icofont-filter"></i> Departamentos</label>
+					<select class="form-select" v-model="idDepartamento" @change="buscarProducto()">
+						<option value="-1">Todos</option>
+						<option v-for="(departamento, index) in departamentos" :value="index">{{departamento}}</option>
+					</select>
+				</div>
 			</div>
-		</div>		
-
+		</div>
+		<div class="container-fluid px-5" >
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>N°</th>
+						<th>Título</th>
+						<th class="d-none">Precio Perú</th>
+						<th class="d-none">Precio Ext.</th>
+						<th></th>
+						<th></th>
+						<th class="d-none">Fechas</th>
+						<th><i class="icofont-eye-alt"></i></th>
+						<th>@</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-if="variosTours.length == 0">
+						<td colspan=5>No hay tours</td>
+					</tr>
+					<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
+						<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
+						<td @click="cargarPanel(todosTours[index].id, index)" class="">
+							{{vTour.nombre}}
+						</td>
+						<td @click.stop="abrirDescuentos(index)">
+							<span class="text-primary" v-if="esVisible(index)=='1'" data-bs-toggle="offcanvas" href="#offDescuentos" title="Ver descuentos"><i class="icofont-sale-discount"></i></span>
+						</td>
+						<td @click.stop="abrirLink(index)">
+							<span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)" title="Abrir link"><i class="icofont-external-link"></i></span>
+						</td>
+						<td @click.stop="clonar(index)">
+							<span class="text-success" title="Clonar"><i class="icofont-copy"></i></span>
+						</td>
+						<td class="d-none" @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
+						<td class="d-none" @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
+						<td class="d-none">
+							<button data-bs-toggle="offcanvas" data-bs-target="#offFechas" class="btn btn-sm btn-outline-secondary" @click.prevent="idGlobal=todosTours[index].id;tourActivo =JSON.parse(todosTours[index].contenido)"><span v-if="vTour.fechas">{{vTour.fechas.length}}</span> <span v-else>0</span></button>
+						</td>
+						<td >
+							<div class="form-check form-switch">
+								<input class="form-check-input" type="checkbox" role="switch" :id="'chkVisible'+index+1" @click="idGlobal =todosTours[index].id; hacerVisible($event)" :checked="todosTours[index].visible=='1'? 'checked':''">
+								<label v-if="todosTours[index].visible=='1'" class="form-check-label text-primary" :for="'chkVisible'+index+1"><i class="icofont-eye-alt"></i> Publicado</label>
+								<label v-else class="form-check-label " :for="'chkVisible'+index+1"><i class="icofont-eye-blocked"></i> No publicado</label>
+							</div>
+							<div class="d-none">
+								<span class="text-primary" v-if="esVisible(index)=='1'"><i class="icofont-check"></i></span>
+								<span class="text-danger" v-else><i class="icofont-close"></i></span>
+							</div>
+						</td>
+						<td @click.stop="eliminarTour(index)"><span class="text-danger"><i class="icofont-ui-delete"></i></span></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="modal fade" id="modalNuevo" data-bs-backdrop="static" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="d-flex justify-content-between mb-3">
+								<h5 v-if="!activarEditar" class="modal-title">Nuevo anuncio: Tour</h5>
+								<h5 v-else class="modal-title">Editar anuncio: Tour</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="form-floating mb-3">
+								<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @blur="/*crearURL()*/">
+								<label for="floNombre">Nombre del tour</label>
+							</div>
+							<div class="form-floating mb-3">
+								<input type="text" class="form-control" id="floURL" placeholder="" autocomplete="off" v-model="tourActivo.url">
+								<label for="floURL">URL del tour</label>
+							</div>
+							<p class="mb-0">Precio normal:</p>
+							<div class="row">
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="number" class="form-control" id="floOferta" placeholder=" " autocomplete="off" v-model="tour.oferta">
+										<label for="floNombre">Normal</label>
+									</div>
+								</div>
+							</div>
+							<p class="mb-0">Precio para Peruanos:</p>
+							<div class="row ">
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.peruanos.adultos">
+										<label for="floNombre">Adulto</label>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.peruanos.kids">
+										<label for="floNombre">Niños (max. 10 años)</label>
+									</div>
+								</div>
+							</div>
+							<p class="mb-0">Precio para Extranjeros:</p>
+							<div class="row ">
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off"  v-model="tour.extranjeros.adultos">
+										<label for="floNombre">Adulto</label>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="number" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.extranjeros.kids">
+										<label for="floNombre">Niños (max. 10 años)</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-floating mb-3">
+								<input type="number" class="form-control" id="floCupos" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.cupos">
+								<label for="floCupos">Cupos disponibles</label>
+							</div>
+		
+							<div class="form-floating mb-3">
+								<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.duracion">
+									<option v-for="dia in duracion" :value="dia.clave">{{dia.valor}}</option>
+								</select>
+								<label for="floatingSelect">Duración</label>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="time" class="form-control" id="floHora" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora">
+										<label for="floHora">Primera Hora de inicio</label>
+									</div>
+								</div>
+								<div class="col">
+		
+									<div class="form-floating mb-3">
+										<input type="time" class="form-control" id="floHora2" placeholder=" " autocomplete="off" value="14:15" v-model="tour.hora2">
+										<label for="floHora2">Segunda Hora de inicio</label>
+									</div>
+								</div>
+							</div>
+							<p class="mb-0">Reglas de compra</p>
+							<div class="row">
+								<div class="col-6">
+									<div class="form-floating mb-3">
+										<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.anticipacion">
+											<option v-for="dia in anticipacion" :value="dia.clave">{{dia.valor}}</option>
+										</select>
+										<label for="floatingSelect">Anticipación</label>
+									</div>
+								</div>
+								<div class="col-6" v-if="tour.anticipacion == '1'">
+									<div class="form-floating mb-3">
+										<input type="number" class="form-control" id="floCupos" placeholder=" " max="23" min="1" autocomplete="off" value="0" v-model="tour.antes">
+										<label for="floCupos">Horas antes</label>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="form-floating mb-3">
+										<input type="number" class="form-control" id="floCupos" placeholder=" " max="250" min="1" autocomplete="off" value="1" v-model="tour.minimo">
+										<label for="floCupos">Mínimo viajeros</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-floating mb-3">
+								<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.transporte" @change="tipoTransporteChange">
+									<option value="3">Ninguno</option>
+									<option value="4">Acuático</option>
+									<option value="2">Aéreo</option>
+									<option value="1">Terrestre</option>
+								</select>
+								<label for="floatingSelect">Tipo de transporte</label>
+							</div>
+							<div class="form-floating mb-3" v-if="tour.transporte!=3">
+								<select class="form-select text-capitalize" id="floatingSelect" aria-label="Floating label select example" v-model="tour.idTransporte">
+									<option class="text-capitalize" v-for="transporte in transportes" v-if="transporte.idTransporte == tour.transporte" :value="transporte.id">{{transporte.transporte}}</option>
+								</select>
+								<label for="floatingSelect">Sub Tipo de transporte</label>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="form-floating mb-3">
+										<input type="text" class="form-control" id="floDestino" placeholder=" " max="250" min="1" autocomplete="off" v-model="tour.destino">
+										<label for="floDestino">Ciudad <em style="font-size: 0.7rem">Ejm: Lima</em></label>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-floating mb-3">
+									<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.departamento">
+										<option v-for="(depa, index) in departamentos" :value="index">{{depa}}</option>
+									</select>
+									<label for="floatingSelect">Departamento</label>
+								</div>
+								</div>
+							</div>
+		
+							<!-- <div class="form-floating mb-3">
+								<input type="text" class="form-control" id="floDestino" placeholder=" " autocomplete="off" v-model="tour.actividad">
+								<label for="floDestino">Actividades</label>
+							</div> -->
+							<div class=" mb-3">
+								<label for="floDestino">Actividades</label>
+								<div class="sltPicker">
+									<select class="selectpicker" id="sltActividad2" data-live-search="true" multiple data-max-options="3">
+										<option v-for="nActividad in actividades2" :key="nActividad.id" :value="nActividad.id">{{nActividad.concepto}}</option>
+									</select>
+								</div>
+							</div>
+							<!-- <div class="form-floating mb-3">
+								<input type="text" class="form-control" id="floDestino" placeholder=" "autocomplete="off" v-model="tour.categoria">
+								<label for="floDestino">Categoría</label>
+							</div> -->
+							<div class=" mb-3">
+								<label for="floDestino">Categorías</label>
+								<div class="sltPicker">
+									<select class="selectpicker" id="sltCategoria2" data-live-search="true" multiple data-max-options="3">
+										<option v-for="nCategoria in categorias2" :key="nCategoria.id" :value="nCategoria.id">{{nCategoria.concepto}}</option>
+									</select>
+								</div>
+							</div>
+							<div class=" mb-3">
+								<label for="floDestino">Días de atención</label>
+								<div class="sltPicker">
+									<select class="selectpicker " id="sltDias" data-live-search="true" multiple data-max-options="7" >
+										<option v-for="(dia, index) in dias" :key="index" :value="dia.id">{{dia.day}}</option>
+									</select>
+								</div>
+							</div>
+							<!-- Create the editor container -->
+							<p class="mb-0 mt-2">Descripción</p>
+							<div class="editor" id="qDescripcion" ></div>
+							<p class="mb-0 mt-2">Punto de partida</p>
+							<div class="editor" id="qPartida"></div>
+							<p class="mb-0 mt-2">Itinerario</p>
+							<div class="editor" id="qItinerario"></div>
+							<p class="mb-0 mt-2">Incluye</p>
+							<div class="editor" id="qSiIncluye"></div>
+							<p class="mb-0 mt-2">No incluye</p>
+							<div class="editor" id="qNoIncluye"></div>
+							<p class="mb-0 mt-2">Notas</p>
+							<div class="editor" id="qNotas"></div>
+							<p class="mb-0 mt-2">Opciones</p>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="chkAlimentacion" v-model="tour.alimentacion">
+								<label class="form-check-label" for="chkAlimentacion"> Alimentación</label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="flexGuia"  v-model="tour.guia">
+								<label class="form-check-label" for="flexGuia"> Guía </label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="flexTickets"  v-model="tour.tickets">
+								<label class="form-check-label" for="flexTickets"> Tickets </label>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button v-if="!activarEditar" type="button" @click="guardarTour()" class="btn btn-outline-primary"><i class="icofont-save"></i> Guardar anuncio</button>
+							<button v-else type="button" @click="actualizarTour(tour)" class="btn btn-outline-primary"><i class="icofont-save"></i> Actualizar anuncio</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="position-relative">
+				<div class="toast-container position-absolute bottom-0 end-0 p-3 me-4">
+					<div class="toast align-items-center text-white bg-success border-0" id="tostadaOk" role="alert" aria-live="assertive" aria-atomic="true">
+						<div class="d-flex">
+							<div class="toast-body"><i class="icofont-check"></i>
+								{{mensajeBien}}
+							</div>
+							<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+						</div>
+					</div>
+					<div class="toast align-items-center text-white bg-danger border-0" id="tostadaMal" role="alert" aria-live="assertive" aria-atomic="true">
+						<div class="d-flex">
+							<div class="toast-body"> <i class="icofont-close-circled"></i>
+								{{mensajeMal}}
+							</div>
+							<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="offcanvas offcanvas-end" tabindex="-1" id="offPanel" aria-labelledby="offcanvasExampleLabel">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title text-capitalize" id="offcanvasExampleLabel">{{tourActivo.nombre}}</h5>
+					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<div class="contenido"  v-if="indexGlobal!=-1">
+						<div class="form-check form-switch">
+							<input class="form-check-input" type="checkbox" role="switch" id="chkVisible" @click="hacerVisible($event)" :checked="esVisible(indexGlobal)=='1'? 'checked':''">
+							<label v-if="esVisible(indexGlobal)=='1'" class="form-check-label text-primary" for="chkVisible"><i class="icofont-eye-alt"></i> Es visible</label>
+							<label v-else class="form-check-label " for="chkVisible"><i class="icofont-eye-blocked"></i> No está publicado</label>
+						</div>
+						<div class="row col d-grid gap-2 col-6 mx-auto">
+							<button type="button" class="btn btn-outline-dark" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
+							<button type="button" class="btn btn-outline-dark" @click="abrirEdicion()"><i class="icofont-pen-alt-4"></i> Actualizar datos</button>
+						</div>
+						<div id="ocultar" class="d-none">
+							<p class="my-1"><strong>Precio Peruanos</strong></p>
+							<p class="my-1"><strong>Precio normal:</strong> <span>S/ {{formatoMoneda(tourActivo.oferta)}}</span> </p>
+							<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.adultos)}}</span> </p>
+							<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.peruanos.kids)}}</span> </p>
+							<p class="my-1 mt-3"><strong>Precio Extranjeros</strong></p>
+							<p class="my-1"><strong>Adultos:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.adultos)}}</span> </p>
+							<p class="my-1"><strong> Niños:</strong> <span>S/ {{formatoMoneda(tourActivo.extranjeros.kids)}}</span> </p>
+							<p class="my-1 mt-3"><strong>Duración:</strong> <span>{{queDura(tourActivo.duracion)}}</span></p>
+							<p class="my-1 mt-3"><strong>1° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora)}}</span></p>
+							<p v-if="tourActivo.hora2" class="my-1 mt-3"><strong>2° Hora de inicio:</strong> <span>{{horaLatam(tourActivo.hora2)}}</span></p>
+							<p class="my-1 mt-3"><strong>Reglas de compra:</strong> </p>
+							<p class="my-1 mt-3"><strong>Tiempo de anticipación:</strong> <span>{{queAnticipa(tourActivo.anticipacion)}}</span></p>
+							<p class="my-1 mt-3"><strong>Cantidad min. de viajeros:</strong> <span>{{tourActivo.minimo}}</span></p>
+							<p class="my-1 mt-3"><strong>Destino:</strong> <span>{{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span></p>
+							<p class="my-1 mt-3"><strong>Actividades:</strong> <span>{{tourActivo.actividad}} {{variasActividades()}}</span></p>
+							<p class="my-1 mt-3"><strong>Categorías:</strong> <span>{{variasCategorias()}}</span></p>
+							<p class="my-1 mt-3"><strong>Descripción:</strong> <br> </p>
+							<div class="w-100 text-break" v-html="tourActivo.descripcion"></div>
+							<p class="my-1"><strong>Punto de partida:</strong> <br> </p>
+							<div class="w-100 text-break" v-html="tourActivo.partida"></div>
+							<p class="my-1"><strong>Itinerario:</strong> <br> </p>
+							<div class="w-100 text-break" v-html="tourActivo.itinerario"></div>
+							<p class="my-1"><strong>Incluye:</strong></p>
+							<p class="ms-2" v-for="cadena in tourActivo.incluye.split('\n')"><i class="icofont-check-alt"></i> {{cadena}}</p>
+							<p class="my-1 mt-3"><strong>No incluye:</strong></p>
+							<p class="ms-2" v-for="cadena in tourActivo.noIncluye.split('\n')"><i class="icofont-close-line"></i> {{cadena}}</p>
+							<p class="my-1"><strong>Notas:</strong> <br> </p>
+							<div class="w-100 text-break" v-html="tourActivo.notas"></div>
+		
+							<div>
+								<p></p>
+							</div>
+							<button type="button" @click="eliminar()" class="btn btn-danger mt-3"><i class="icofont-ui-delete"></i> Eliminar paquete</button>
+						</div>
+						<div class="row my-2" >
+							<div class="col" v-if="tourActivo.fotos.length<16">
+								<p class="mb-0">Subir imágen:</p>
+								<div class="input-group mb-3">
+									<input type="file" class="form-control" ref="archivoFile" id="txtArchivo" accept="image/*" multiple>
+									<button class="btn btn-outline-secondary" type="button" id="btnSubirArchivo" @click="subirANube()"><i class="icofont-upload-alt"></i></button>
+								</div>
+							</div>
+							<div class="col" v-else>
+								<p class="text-danger"><i class="icofont-gear-alt"></i> Se alcanzó el máximo de fotos</p>
+							</div>
+						</div>
+						<p class="my-1 mt-3"><strong>Fotografías</strong></p>
+						<div class="row row-cols-2" id="divFotografias">
+							<div class="col" v-for="(imagen, indice) in tourActivo.fotos">
+								<div class="card mb-3" >
+									<img :src="'images/subidas/'+imagen.nombreRuta" class="card-img-top" alt="...">
+									<ul class="list-group list-group-flush">
+										<li class="list-group-item">
+										<div class="form-check">
+											<input class="form-check-input" type="radio" name="flexRadios" :id="'flexRadioDefault'+indice" @change="fotoPrincipal(indice);">
+											<label class="form-check-label" :for="'flexRadioDefault'+indice"  @change="fotoPrincipal(indice);">
+												<span class="text-primary" v-if="queIndice==indice">Img. Principal</span>
+												<span v-else>Img. Secundaria</span>
+											</label>
+										</div>
+										</li>
+									</ul>
+									<div class="card-body py-1 ps-3">
+										<a href="#!" class="card-link text-danger text-decoration-none" @click="borrarFoto(indice)"><i class="icofont-close"></i> Borrar</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="my-1" v-for="imagen in tourActivo.fotos">
+							<img :src="'images/subidas/'+imagen.nombreRuta" class="img-fluid img-thumbnail border-0" alt="">
+						</div> -->
+					</div>
+				</div>
+			</div>
+			<div class="offcanvas offcanvas-start" tabindex="-1" id="offFechas" aria-labelledby="offFechasLabel">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" id="offFechasLabel">Offcanvas</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<div>
+						Ingrese las fechas para anular
+						<div class="input-group mb-3">
+							<input type="date" class="form-control" v-model="fechaSeleccionada" @keyup.enter="vetarFecha()">
+							<button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="vetarFecha()"><i class="icofont-simple-right"></i> Agregar</button>
+						</div>
+					</div>
+					<p>Fechas anuladas:</p>
+					<ol class="list-group list-group-numbered">
+						<li class="list-group-item d-flex justify-content-between align-items-start" v-for="(fecha, indice) in tourActivo.fechas">
+							<div class="ms-2 me-auto"> <span>Fecha: {{fecha.fecha}}</span> </div>
+							<span class="badge bg-danger rounded-pill" @click="eliminarFecha(indice)"><i class="icofont-close"></i></span>
+						</li>
+					</ol>
+				</div>
+			</div>
+			<div class="offcanvas offcanvas-start" tabindex="-1" id="offDescuentos" aria-labelledby="offFechasLabel">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" id="offFechasLabel">Offcanvas</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<div>
+						Ingrese las fechas para anular
+						<div class="input-group mb-3">
+							<input type="date" class="form-control" v-model="fechaSeleccionada" @keyup.enter="vetarFecha()">
+							<button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="vetarFecha()"><i class="icofont-simple-right"></i> Agregar</button>
+						</div>
+					</div>
+					<p>Fechas anuladas:</p>
+					<ol class="list-group list-group-numbered">
+						<li class="list-group-item d-flex justify-content-between align-items-start" v-for="(fecha, indice) in tourActivo.fechas">
+							<div class="ms-2 me-auto"> <span>Fecha: {{fecha.fecha}}</span> </div>
+							<span class="badge bg-danger rounded-pill" @click="eliminarFecha(indice)"><i class="icofont-close"></i></span>
+						</li>
+					</ol>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -491,11 +508,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-	<script src="js/quill.min.js"></script>
-	<script src="js/axios.min.js"></script>
-	<script src="js/moment.min.js"></script>
+	<script src="./js/quill.min.js"></script>
+	<script src="./js/axios.min.js"></script>
+	<script src="./js/moment.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+	<script src="./configuracion.js?v=1.0"></script>
 
 	<script>
 	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
@@ -511,7 +529,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		},
 		data: {
 			//servidor: 'http://localhost/euroAndinoApi/',
-			servidor: 'https://grupoeuroandino.com/app/api/', fechasAnuladas:[], fechaSeleccionada:moment().format('YYYY-MM-DD'),
+			servidor: window.lugarApi,
+			fechasAnuladas:[], fechaSeleccionada:moment().format('YYYY-MM-DD'),
 			tour:{
 				nombre: '', url:'',
 				peruanos:{ adultos: 0, kids: 0 },
@@ -814,7 +833,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				if(this.tourActivo.actividades.length>0){
 					var actividades = "";
 					this.tourActivo.actividades.forEach(actividad =>{
-						actividades += " "+this.actividades2.find(x=> x.id === actividad ).concepto+",";
+						actividades += " "+this.actividades2.find(x=> x.id === actividad )?.concepto+",";
 					});
 					return actividades.substring(0, actividades.length-1)
 				}
@@ -823,7 +842,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				if(this.tourActivo.categorias.length>0){
 					var categorias = "";
 					this.tourActivo.categorias.forEach(actividad =>{
-						categorias += " "+this.categorias2.find(x=> x.id === actividad ).concepto+",";
+						categorias += " "+this.categorias2.find(x=> x.id === actividad )?.concepto+",";
 					});
 					return categorias.substring(0, categorias.length-1)
 				}

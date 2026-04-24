@@ -94,6 +94,7 @@
 		</div>
 	</div>
 <!-- Vue desarrollo -->
+<script src="./configuracion.js?v=1.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <!-- Vue producción -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
@@ -103,7 +104,7 @@
 		el: '#app',
 		data:{
 			//servidor: 'http://localhost/appTours/api/',
-			servidor: 'https://grupoeuroandino.com/app/api/',
+			servidor: window.lugarApi,
 			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
 			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
