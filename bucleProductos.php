@@ -94,7 +94,7 @@
 		</div>
 	</div>
 <!-- Vue desarrollo -->
-<script src="http://grupoeuroandino.com/app/render/configuracion.js?v=1.0"></script>
+<script src="https://grupoeuroandino.com/app/render/configuracion.js?v=1.0.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <!-- Vue producción -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->

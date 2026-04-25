@@ -738,7 +738,8 @@ else
 	<script src="https://grupoeuroandino.com/app/render/js/bootstrap-datepicker.es.min.js"></script>
 	<script src="https://grupoeuroandino.com/js/owl.carousel.min.js" ></script>
 	<script src="https://grupoeuroandino.com/app/render/js/paises.js" ></script>
-	<script src="./configuracion.js?v=1.0"></script>
+	<script src="https://grupoeuroandino.com/app/render/configuracion.js?v=1.0"></script>
+
 
 
 	<script>

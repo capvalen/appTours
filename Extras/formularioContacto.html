@@ -7,7 +7,7 @@
 		</select>
 	</div>
 	<div class="w-100 d-inline d-none">
-		<div class="alert " id="errorMinimoPasajeros">⚠️ El mínimo de personas es: <span id="spanMinimo"></span></div>
+		<div class="alert " id="errorMinimoPasajeros">⚠️ Mínimo de personas: <span id="spanMinimo"></span></div>
 	</div>
 	<div class="div w-100 d-inline">
 		<div class="w-50 me-2">
@@ -95,9 +95,10 @@
 			})
 			.then(response => response.text())
 			.then(data => {
-				alert('Mensaje enviado')
+				//alert('Mensaje enviado')
 				console.log(data)
 				document.getElementById('formulario').reset()
+				location.href = 'https://tourshuancayo.com/pago-final/'
 			})
 			.catch(error => {
 					console.error('Error:', error);
@@ -120,10 +121,10 @@
 		margin-bottom: 10px;
 	}
 	#formulario .alert{
-		background-color: rgb(244, 106, 31);
-		border: 1px solid rgb(226, 18, 18);
+		background-color: rgb(255, 255, 255);
+		/* border: 1px solid rgb(226, 18, 18); */
 		padding: 6px;
-		color: white;
+		color: #ffa300;
 	}
 	#formulario input, #formulario select{
 		border:1px solid rgb(180, 180, 180)!important;
