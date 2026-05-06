@@ -316,6 +316,7 @@
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<script src="https://grupoeuroandino.com/app/render/configuracion.js?v=1.0"></script>
 
 	<script>
 		var appBuscador = new Vue({
