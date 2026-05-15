@@ -45,6 +45,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			<li class="nav-item" role="presentation">
 				<button class="nav-link" id="sitemap-tab" data-bs-toggle="tab" data-bs-target="#sitemap" type="button" role="tab" aria-controls="sitemap" aria-selected="false">Sitemap Google</button>
 			</li>			
+			<li class="nav-item" role="presentation">
+				<button class="nav-link" id="promos-tab" data-bs-toggle="tab" data-bs-target="#promos" type="button" role="tab" aria-controls="promos" aria-selected="false">Promociones</button>
+			</li>			
 		</ul>
 		<div class="tab-content" id="myTabContent">
 			<div class="tab-pane fade show active p-3" id="lateral" role="tabpanel" aria-labelledby="lateral-tab">
@@ -152,7 +155,115 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<p>Para actualizar el sitemap de productos personalizados, haga click en el botón de abajo:</p>
 				<button class="btn btn-outline-primary" @click="enviarSitemap()">Enviar Sitemap XML</button>
 			</div>
+			<div class="tab-pane fade" id="promos" role="tabpanel" aria-labelledby="promos-tab">
+				<div class="container-fluid py-4 px-4">
+				<div class="row g-4">
+					<!-- Columna 1: Formulario -->
+					<div class="col-lg-4 col-md-5">
+						<div class="card h-100">
+							<div class="card-header"><i class="bi bi-plus-circle me-2"></i>Nuevo Descuento</div>
+							<div class="card-body p-4">
+								<form id="descuentoForm" onsubmit="return agregarDescuento(event)" novalidate>
+									<!-- Nombre del descuento -->
+									<div class="mb-3">
+										<label for="nombreDescuento" class="form-label">
+											<i class="bi bi-tag me-1"></i>Nombre del Descuento
+										</label>
+										<input type="text" class="form-control" id="nombreDescuento" placeholder="Ej: Descuento de Verano" required>
+										<div class="invalid-feedback">Por favor ingresa un nombre válido.</div>
+									</div>
+
+									<!-- Tipo de descuento -->
+									<div class="mb-3">
+										<label for="tipoDescuento" class="form-label">
+											<i class="bi bi-list-check me-1"></i>Tipo de Descuento
+										</label>
+										<select class="form-select" id="tipoDescuento" required>
+											<option value="" selected disabled>Selecciona el tipo...</option>
+											<option value="porcentaje">Porcentaje (%)</option>
+											<option value="monto">Monto Fijo ($)</option>
+										</select>
+										<div class="invalid-feedback">Por favor selecciona un tipo.</div>
+									</div>
+
+									<!-- Valor del descuento -->
+									<div class="mb-3">
+										<label for="valorDescuento" class="form-label">
+											<i class="bi bi-cash-coin me-1"></i>Valor del Descuento
+										</label>
+										<div class="input-group">
+												<input type="number" class="form-control valor-input" id="valorDescuento" placeholder="0.00" min="0" step="0.01" required>
+												<span class="input-group-text" id="simboloTipo">%</span>
+										</div>
+										<div class="invalid-feedback">Por favor ingresa un valor válido mayor a 0.</div>
+									</div>
+
+									<!-- Fecha de inicio -->
+									<div class="mb-3">
+										<label for="fechaInicio" class="form-label">
+											<i class="bi bi-calendar-event me-1"></i>Fecha de Inicio
+										</label>
+										<input type="date" class="form-control" id="fechaInicio" required>
+										<div class="invalid-feedback">Por favor selecciona una fecha de inicio.</div>
+									</div>
+
+									<!-- Fecha de fin -->
+									<div class="mb-3">
+										<label for="fechaFin" class="form-label">
+											<i class="bi bi-calendar-check me-1"></i>Fecha de Fin
+										</label>
+										<input type="date" class="form-control" id="fechaFin" required>
+										<div class="invalid-feedback">La fecha de fin debe ser posterior a la de inicio.</div>
+									</div>
+
+									<!-- Botón submit -->
+									<div class="d-grid">
+										<button type="submit" class="btn btn-primary">
+											<i class="bi bi-plus-lg me-2"></i>Agregar Descuento
+										</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<!-- Columna 2: Tabla -->
+					<div class="col-lg-8 col-md-7">
+						<div class="table-container h-100">
+							<div class="card-header d-flex justify-content-between align-items-center">
+								<span><i class="bi bi-table me-2"></i>Descuentos Registrados</span>
+								<span class="badge bg-white text-primary" id="contadorDescuentos">0 registros</span>
+							</div>
+							<div class="table-responsive">
+								<table class="table table-hover mb-0" id="tablaDescuentos">
+									<thead>
+										<tr>
+											<th>Imagen</th>
+											<th>Nombre</th>
+											<th>Tipo</th>
+											<th>Valor</th>
+											<th>Inicio</th>
+											<th>Fin</th>
+											<th class="text-center">Acciones</th>
+										</tr>
+									</thead>
+									<tbody id="tbodyDescuentos">
+										<tr id="emptyRow">
+											<td colspan="7" class="empty-state">
+												<i class="bi bi-inbox"></i>
+												<p class="mb-0">No hay descuentos registrados</p>
+												<small>Agrega uno desde el formulario</small>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
+	</div>
 
 
 		
@@ -220,7 +331,116 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			quill.clipboard.dangerouslyPasteHTML(0, serv.lateral);
 			quillBajo.clipboard.dangerouslyPasteHTML(0, serv.inferior);
 		}
-		async function actualizarComisiones(){
+		async function agregarDescuento(e){
+		e.preventDefault();
+		let form = document.getElementById('descuentoForm');
+		if(!form.checkValidity()){ form.classList.add('was-validated'); return false; }
+
+		let descuento = {
+			promocion: document.getElementById('nombreDescuento').value,
+			tipo: document.getElementById('tipoDescuento').value,
+			valor: document.getElementById('valorDescuento').value,
+			inicio: document.getElementById('fechaInicio').value,
+			fin: document.getElementById('fechaFin').value
+		};
+		try {
+			let resp = await axios.post(window.lugarApi + 'Descuentos.php', {
+				pedir: 'crearPromocion',
+				descuento: descuento
+			});
+			if(resp.data == 'ok'){
+				alert('Descuento agregado correctamente');
+				form.reset();
+				form.classList.remove('was-validated');
+				listarDescuentos();
+			}else{
+				alert('Hubo un error al guardar');
+			}
+		} catch (error) {
+			alert('Error de conexión');
+		}
+		return false;
+	}
+	async function listarDescuentos(){
+		try {
+			let resp = await axios.post(window.lugarApi + 'Descuentos.php', {
+				pedir: 'listarPromociones'
+			});
+			let tbody = document.getElementById('tbodyDescuentos');
+			let contador = document.getElementById('contadorDescuentos');
+			if(resp.data.length > 0){
+				tbody.innerHTML = resp.data.map(p => /*html*/
+					`<tr>
+						<td><img src="${p.imagen || './images/discount.png'}" width="35" height="auto" class="rounded"></td>
+						<td>${p.promocion}</td>
+						<td>${p.tipo == 'porcentaje' ? '%' : '$'}</td>
+						<td>${p.valor}${p.tipo == 'porcentaje' ? '%' : ''}</td>
+						<td>${fechaLatam(p.inicio)}</td>
+						<td>${fechaLatam(p.fin)}</td>
+						<td class="text-center">
+							<button class="btn btn-sm btn-outline-success" title="Adjuntar imágen" onclick="adjuntarFoto(${p.id})" ><i class="icofont-cloud-upload"></i></button>
+							<button class="btn btn-sm btn-outline-danger" title="Eliminar descuento" onclick="borrarDescuento(${p.id})"><i class="icofont-ui-delete"></i></button>
+						</td>
+					</tr>`
+				).join('');
+				contador.textContent = resp.data.length + ' registros';
+			}else{
+				tbody.innerHTML = '<tr id="emptyRow"><td colspan="7" class="empty-state"><i class="bi bi-inbox"></i><p class="mb-0">No hay descuentos registrados</p><small>Agrega uno desde el formulario</small></td></tr>';
+				contador.textContent = '0 registros';
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
+	async function adjuntarFoto(id){
+		let url = prompt('¿Cuál es la URL de la imagen?');
+		if(url){
+			try {
+				let resp = await axios.post(window.lugarApi + 'Descuentos.php', {
+					pedir: 'adjuntarFoto', id: id, url: url
+				});
+				if(resp.data == 'ok') listarDescuentos();
+			} catch (error) {
+				alert('Error de conexión');
+			}
+		}
+	}
+	async function adjuntarFoto(id){
+		let url = prompt('¿Cuál es la URL de la imagen?');
+		if(url){
+			try {
+				let resp = await axios.post(window.lugarApi + 'Descuentos.php', {
+					pedir: 'adjuntarFoto', id: id, url: url
+				});
+				if(resp.data == 'ok') listarDescuentos();
+			} catch (error) {
+				alert('Error de conexión');
+			}
+		}
+	}
+	async function borrarDescuento(id){
+		if(confirm('¿Desea borrar este descuento?')){
+			try {
+				let resp = await axios.post(window.lugarApi + 'Descuentos.php', {
+					pedir: 'borrarPromocion', id: id
+				});
+				if(resp.data == 'ok') listarDescuentos();
+			} catch (error) {
+				alert('Error de conexión');
+			}
+		}
+	}
+	
+	document.addEventListener('DOMContentLoaded', function(){
+		document.getElementById('tipoDescuento').addEventListener('change', function(){
+			document.getElementById('simboloTipo').textContent = this.value == 'porcentaje' ? '%' : 'S/';
+		});
+		listarDescuentos();
+	});
+	function fechaLatam(fecha){
+		return( moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY') )
+	}
+	async function actualizarComisiones(){
 			console.log('camp')
 			let datos = new FormData();
 			datos.append('dolar', document.getElementById('txtDolar').value )
@@ -238,11 +458,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		
 	const { createApp } = Vue
 
-	createApp({
+	const app = createApp({
 		data() {
 			return {
 				servidor: window.lugarApi, actividades:[], categorias:[],
-				nTexto:'', hospedajes:[]
+				nTexto:'', hospedajes:[], idGeneral:-1
 			}
 		},
 		mounted(){
@@ -393,9 +613,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						pedir: 'crear', alojamiento: alo
 					}).then(resp=> this.pedirComplementos())
 				}
-			}
+			},
+			
 		}
 	}).mount('#app')
+	window.vueApp = app;
 	
 	
 </script>

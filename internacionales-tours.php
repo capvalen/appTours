@@ -509,20 +509,29 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<i class="icofont-close-circled"></i> {{erroresDescuento}}
 							<button type="button" class="btn-close" @click="erroresDescuento = ''"></button>
 						</div>
-							<div class="form-floating mb-3">
+							<div class="form-floating mb-3 d-none">
 								<input type="text" class="form-control" id="floNombreDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.nombre_descuento">
 								<label for="floNombreDescuento">Nombre del descuento</label>
 							</div>
 							<div class="row">
+								<div class="col-12">
+									<div class="mb-3">
+										<label for="">Descuento</label>
+										<select class="form-select" id="sltDescuentoPadre" v-model="nuevoDescuento.id" @change="asignarDescuento(nuevoDescuento.id)">
+											<option v-for="descuento in listaDescuentos" :value="descuento.id">{{descuento.promocion}}</option>
+											<option v-if="listaDescuentos.length==0" value="-1">No hay descuentos registrados</option>
+										</select>
+									</div>
+								</div>
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label">Tipo de descuento</label>
-										<div class="form-check">
-											<input class="form-check-input" type="radio" id="tipoMonto" value="monto" v-model="nuevoDescuento.tipo_descuento">
+										<label class="form-label">Tipo Descuento</label>										
+										<div class="form-check" >
+											<input class="form-check-input" type="radio" id="tipoMonto" value="monto" v-model="nuevoDescuento.tipo_descuento" disabled>
 											<label class="form-check-label" for="tipoMonto">Monto fijo (S/)</label>
 										</div>
-										<div class="form-check">
-											<input class="form-check-input" type="radio" id="tipoPorcentaje" value="porcentaje" v-model="nuevoDescuento.tipo_descuento">
+										<div class="form-check" >
+											<input class="form-check-input" type="radio" id="tipoPorcentaje" value="porcentaje" v-model="nuevoDescuento.tipo_descuento" disabled>
 											<label class="form-check-label" for="tipoPorcentaje">Porcentaje (%)</label>
 										</div>
 									</div>
@@ -530,7 +539,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								<div class="col">
 									<label class="form-label">Valor de descuento</label>
 									<div class="form-floating mb-3">
-										<input type="number" class="form-control" id="floValorDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.valor_descuento">
+										<input type="number" class="form-control" id="floValorDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.valor_descuento" disabled>
 										<label for="floValorDescuento">Valor</label>
 									</div>
 								</div>
@@ -538,13 +547,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<div class="row">
 								<div class="col">
 									<div class="form-floating mb-3">
-										<input type="date" class="form-control" id="floFechaInicio" placeholder=" " v-model="nuevoDescuento.fecha_inicio">
+										<input type="date" class="form-control" id="floFechaInicio" placeholder=" " v-model="nuevoDescuento.fecha_inicio" disabled>
 										<label for="floFechaInicio">Fecha de inicio</label>
 									</div>
 								</div>
 								<div class="col">
 									<div class="form-floating mb-3">
-										<input type="date" class="form-control" id="floFechaFin" placeholder=" " v-model="nuevoDescuento.fecha_fin">
+										<input type="date" class="form-control" id="floFechaFin" placeholder=" " v-model="nuevoDescuento.fecha_fin" disabled>
 										<label for="floFechaFin">Fecha de fin</label>
 									</div>
 								</div>
@@ -623,7 +632,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			anticipacion: [{clave: 1, valor: 'Horas'}, {clave: 2, valor: '1 día'} ], antes:0,
 			departamentos:[], paises:[],
 			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idPais:-1,
-			nuevoDescuento:{ id_tour: -1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' }, erroresDescuento: ''
+			nuevoDescuento:{ id_tour: -1, id:-1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' }, erroresDescuento: '', listaDescuentos:[]
 		},
 		mounted:function(){
 			this.verTours();
@@ -712,6 +721,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let servPaises = await fetch(this.servidor+'pedirPaises.php',{ method: 'POST'})
 				let resPaises = await servPaises
 				this.paises = await resPaises.json();
+				axios.post(this.servidor + 'Descuentos.php', {
+					pedir:'listarPromociones'
+				})
+				.then(response=>{
+					this.listaDescuentos = response.data
+				})
 			},
 			nuevoTourSimple(){
 				this.tour={
@@ -1053,6 +1068,18 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				this.tour.url = this.tourActivo.url;
 				this.tour.queUrl = this.tourActivo.url;
 				console.log('salir este', url);
+			},
+			asignarDescuento(idDescuento){
+				let index = this.listaDescuentos.findIndex(d=>d.id==idDescuento)
+				if(index!=-1){
+					const descuento = this.listaDescuentos[index]
+					this.nuevoDescuento.nombre_descuento = descuento.promocion
+					this.nuevoDescuento.tipo_descuento = descuento.tipo
+					this.nuevoDescuento.tipo_descuento = descuento.tipo
+					this.nuevoDescuento.valor_descuento = descuento.valor
+					this.nuevoDescuento.fecha_inicio = descuento.inicio
+					this.nuevoDescuento.fecha_fin = descuento.fin
+				}
 			},
 			agregarDescuento(){
 				if(!this.tourActivo.descuentos) this.tourActivo.descuentos = [];
