@@ -522,7 +522,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-						<h5 class="modal-title">Nuevo descuento</h5>
+						<h5 class="modal-title">Descuentos disponibles</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -546,9 +546,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								</div>
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label">Tipo Descuento</label>										
-										<div class="form-check" >
-											<input class="form-check-input" type="radio" id="tipoMonto" value="monto" v-model="nuevoDescuento.tipo_descuento" disabled>
+										<label class="form-label">Tipo Descuento</label>
+												<input type="number" class="d-none" v-model="nuevoDescuento.promocion_id">
+												<div class="form-check" >
+													<input class="form-check-input" type="radio" id="tipoCombo" value="combo" v-model="nuevoDescuento.tipo_descuento" disabled>
+													<label class="form-check-label" for="tipoCombo">Combo</label>
+												</div>
+												<div class="form-check" >
+													<input class="form-check-input" type="radio" id="tipoMonto" value="monto" v-model="nuevoDescuento.tipo_descuento" disabled>
 											<label class="form-check-label" for="tipoMonto">Monto fijo (S/)</label>
 										</div>
 										<div class="form-check" >
@@ -640,7 +645,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			departamentos:[], paises:[],
 			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idPais:-1,
 			dias: [{'id':0,'day':'Domingo'},{'id':1,'day':'Lunes'},{'id':2,'day':'Martes'},{'id':3,'day':'Miércoles'},{'id':4,'day':'Jueves'},{'id':5,'day':'Viernes'},{'id':6,'day':'Sábado'}],
-			nuevoDescuento:{ id_tour: -1, id:-1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' }, erroresDescuento: '', listaDescuentos:[]
+			nuevoDescuento:{ id_tour: -1, promocion_id:-1, id:-1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' }, erroresDescuento: '', listaDescuentos:[]
 		},
 		mounted:function(){
 			this.verTours();
@@ -1064,6 +1069,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let index = this.listaDescuentos.findIndex(d=>d.id==idDescuento)
 				if(index!=-1){
 					const descuento = this.listaDescuentos[index]
+					this.nuevoDescuento.promocion_id = descuento.id
 					this.nuevoDescuento.nombre_descuento = descuento.promocion
 					this.nuevoDescuento.tipo_descuento = descuento.tipo
 					this.nuevoDescuento.tipo_descuento = descuento.tipo

@@ -51,13 +51,14 @@ function crearPromocion($db){
 
 function crear($db){
 	$id_tour = $_POST['descuento']['id_tour'];
+	$promocion_id = $_POST['descuento']['promocion_id'];
 	$nombre_descuento = $_POST['descuento']['nombre_descuento'];
 	$tipo_descuento = $_POST['descuento']['tipo_descuento'];
 	$valor_descuento = $_POST['descuento']['valor_descuento'];
 	$fecha_inicio = $_POST['descuento']['fecha_inicio'];
 	$fecha_fin = $_POST['descuento']['fecha_fin'];
 
-	$sql="INSERT INTO `descuentos` (`id_tour`, `nombre_descuento`, `tipo_descuento`, `valor_descuento`, `fecha_inicio`, `fecha_fin`, `activo`) VALUES ('{$id_tour}', '{$nombre_descuento}', '{$tipo_descuento}', '{$valor_descuento}', '{$fecha_inicio}', '{$fecha_fin}', 1);";
+	$sql="INSERT INTO `descuentos` (`id_tour`, `promocion_id`, `nombre_descuento`, `tipo_descuento`, `valor_descuento`, `fecha_inicio`, `fecha_fin`, `activo`) VALUES ('{$id_tour}', '{$promocion_id}',  '{$nombre_descuento}', '{$tipo_descuento}', '{$valor_descuento}', '{$fecha_inicio}', '{$fecha_fin}', 1);";
 	if($db->query($sql)){
 		echo 'ok';
 	}else{ echo 'error';}

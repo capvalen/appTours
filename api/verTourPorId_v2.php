@@ -10,18 +10,17 @@ $descuentos = [];
 $sql= $db->prepare("SELECT * FROM `tours` where activo=1 and id=?;"); //tipo=1 and 
 if( $sql->execute( [ $_POST['id'] ] )){
 	while( $row = $sql->fetch(PDO::FETCH_ASSOC) ){
+		// Obtener 1 descuento para este tour
+		$stmt = $db->prepare("SELECT d.*, p.imagen  FROM descuentos d
+		inner join promociones p on p.id = d.promocion_id
+		WHERE id_tour = ? AND d.activo = 1 AND CURDATE() BETWEEN fecha_inicio AND fecha_fin LIMIT 1;");
+		$stmt->execute([$row['id']]);
+		$descuento = $stmt->fetch(PDO::FETCH_ASSOC);
+		$row['descuento'] = $descuento ?: null;
+
 		$filas[] = $row;
 	}
 
-	// Obtener descuentos para este tour
-	$descuentos = [];
-	$sqlDesc = $db->prepare("SELECT * FROM `descuentos` WHERE id_tour = :idTour and activo = 1;");
-	$sqlDesc->bindParam(':idTour', $_POST['id'], PDO::PARAM_INT);
-	if($sqlDesc->execute()){
-		while ($desc = $sqlDesc->fetch(PDO::FETCH_ASSOC)) {
-			$descuentos[] = $desc;
-		}
-	}
 	
 	//$filas[0]['descuentos'] = $descuentos;
 
@@ -33,7 +32,7 @@ if( $sql->execute( [ $_POST['id'] ] )){
 	}
 }else{
 	echo $sql->debugDumpParams();
-	echo $sql->errorinfo();
+	print_r($sql->errorinfo());
 }
 
-echo json_encode( array("tour" => $filas[0], "comentarios" => $comentarios, "descuentos" => $descuentos) );
+echo json_encode( array("tour" => $filas[0], "comentarios" => $comentarios) );

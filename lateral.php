@@ -180,8 +180,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 										</label>
 										<select class="form-select" id="tipoDescuento" required>
 											<option value="" selected disabled>Selecciona el tipo...</option>
+											<option value="combo">Combo</option>
 											<option value="porcentaje">Porcentaje (%)</option>
-											<option value="monto">Monto Fijo ($)</option>
+											<option value="monto">Monto Fijo (S/)</option>
 										</select>
 										<div class="invalid-feedback">Por favor selecciona un tipo.</div>
 									</div>
@@ -192,7 +193,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 											<i class="bi bi-cash-coin me-1"></i>Valor del Descuento
 										</label>
 										<div class="input-group">
-												<input type="number" class="form-control valor-input" id="valorDescuento" placeholder="0.00" min="0" step="0.01" required>
+												<input type="number" class="form-control valor-input" id="valorDescuento" placeholder="0.00" min="0" step="1" required>
 												<span class="input-group-text" id="simboloTipo">%</span>
 										</div>
 										<div class="invalid-feedback">Por favor ingresa un valor válido mayor a 0.</div>
@@ -336,6 +337,15 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		let form = document.getElementById('descuentoForm');
 		if(!form.checkValidity()){ form.classList.add('was-validated'); return false; }
 
+		let tipo = document.getElementById('tipoDescuento').value;
+		let valor = document.getElementById('valorDescuento').value;
+		if(tipo == 'combo' && !/^\d+x\d+$/i.test(valor)){
+			alert('El valor del descuento combo debe tener el formato: (2x1, 3x2)');
+			return false;
+		}else{
+			valor = parseFloat(valor).toFixed(2)
+		}
+
 		let descuento = {
 			promocion: document.getElementById('nombreDescuento').value,
 			tipo: document.getElementById('tipoDescuento').value,
@@ -373,7 +383,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					`<tr>
 						<td><img src="${p.imagen || './images/discount.png'}" width="35" height="auto" class="rounded"></td>
 						<td>${p.promocion}</td>
-						<td>${p.tipo == 'porcentaje' ? '%' : '$'}</td>
+						<td>${p.tipo == 'combo' ? '©' : p.tipo == 'porcentaje' ? '%' : 'S/'}</td>
 						<td>${p.valor}${p.tipo == 'porcentaje' ? '%' : ''}</td>
 						<td>${fechaLatam(p.inicio)}</td>
 						<td>${fechaLatam(p.fin)}</td>
@@ -433,7 +443,22 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	
 	document.addEventListener('DOMContentLoaded', function(){
 		document.getElementById('tipoDescuento').addEventListener('change', function(){
-			document.getElementById('simboloTipo').textContent = this.value == 'porcentaje' ? '%' : 'S/';
+			let valorInput = document.getElementById('valorDescuento');
+			let simbolo = document.getElementById('simboloTipo');
+			if(this.value == 'combo'){
+				valorInput.type = 'text';
+				valorInput.placeholder = 'Ejm: 2x1';
+				valorInput.removeAttribute('min');
+				valorInput.removeAttribute('step');
+				simbolo.style.display = 'none';
+			} else {
+				valorInput.type = 'number';
+				valorInput.placeholder = '0.00';
+				valorInput.min = 0;
+				valorInput.step = '0.01';
+				simbolo.style.display = '';
+				simbolo.textContent = this.value == 'porcentaje' ? '%' : 'S/';
+			}
 		});
 		listarDescuentos();
 	});

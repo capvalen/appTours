@@ -44,92 +44,37 @@
 	</style>
 	<div id="app">
 		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
-			<div class="col my-3" v-for="(tour, index) in contenidos">
-				<div class="card h-100 border-0  ">
-					<div v-if="tour.fotos.length>0" class="divImagen card-img-top position-relative">
-						<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
-							<span class="text-capitalize mx-1 px-1 rounded" v-if="tour.idTransporte!=undefined && tour.transporte!='3'" id="spanTransporte">{{queTransporte(tour)}}</span>
-							<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[parseInt(tour.alojamiento)]}}</span>
-							<span v-if="tour.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
-							<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
-							<span v-if="tour.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
-							<span v-if="tour.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
-						</div>
-						<a class="aImgs" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
-						<a class="aImgs" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
-					</div>
-					<div class="card-body">
-						<div class="divProducto ">
-							<div>
-								<p class="mb-0 titulo ps-1 ">
-									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
-									<a class="text-decoration-none text-dark fw-bold" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
-								</p>
-								<!-- <div class="d-flex justify-content-between">
-									aquí iba la bandera
-								</div> -->								
-								<div class="row row-cols-2">
-									<div class="">
-										<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"> <strong>{{tour.destino}},</strong></span>
-										<br>
-										<i class="icofont-google-map"></i> <span class="text-capitalize"><strong> {{queDepa(tour.departamento)}}</strong></span>
-										<div class="estrellas">
-											<i v-for="star in cuantasEstrellas(index)" class="icofont-star"></i>
-										</div>
-										<span v-if="tour.tipo==1" class="text-muted subText">{{queDura(tour.duracion)}}</span>
-										<span v-else class="text-muted subText">{{queDuraDia(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches-1)}}</span>
-									</div>
-									<div class="d-flex flex-column align-items-end justify-content-end" id="pegar">
-											<p class="mb-0" style="font-size: 12px;">Desde</p>
-											<p class="mb-0"><span class="precio2"><span class="moneda-peque">S/.</span> {{formatoMoneda(tour.peruanos.adultos)}}</span></p>											
-											<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0" style="font-size: 14px"><span class="moneda">S/.</span> {{formatoMoneda(tour.oferta)}}</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+			<div class="col my-3" v-for="tour in contenidos">
+				<Card :duracion='duracion' :dias='dias' :noches='noches' :tour='tour'/>
 			</div>
 			
 		</div>
 	</div>
-<!-- Vue desarrollo -->
-<script src="https://grupoeuroandino.com/app/render/configuracion.js?v=1.0.1"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<script src="https://grupoeuroandino.com/app/render/configuracion.js?v=1.0.1"></script>
+	<!-- Vue desarrollo -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
 <!-- Vue producción -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
-<script>
-	
-	var app = new Vue({
-		el: '#app',
-		data:{
+<script type="module">
+	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.6';
+	const { createApp } = Vue;
+	const app = createApp({
+		data(){ return {
 			//servidor: 'http://localhost/appTours/api/',
 			servidor: window.lugarApi,
-			duracion: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
-			duracionDias: [{clave: 1, valor: 'Half Day (Medio día)'}, {clave: 2, valor: 'Full Day (1 día)'} ],
-			duracionNoches:[{clave: 1, valor:'0 noches'}, {clave: 2, valor:'1 noche'}],
-			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			tours:[],
 			contenidos:[], //{fotos:[{nombreRuta:''}], valor: 0, duracion:0, peruanos:{adultos:0, kids:0}, extranjeros:{adultos:0, kids:0},}
-			hospedajes: ['','Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro', 'Casa', 'Casa 2', 'Casa 3', 'Airbnb', 'Rural'],
-			queTransportes: [
-				{ id: 0, transporte: "ninguno", idTransporte: 3 },
-				// Terrestre (1)
-				{ id: 1, transporte: "tren", idTransporte: 1 },
-				{ id: 2, transporte: "bus", idTransporte: 1 },
-				// Aéreo (2)
-				{ id: 3, transporte: "avión", idTransporte: 2 },
-				{ id: 4, transporte: "avioneta", idTransporte: 2 },
-				// Acuático (4)
-				{ id: 5, transporte: "barco", idTransporte: 4 },
-				{ id: 6, transporte: "lancha", idTransporte: 4 }
-			],
-		},
+			duracion: [{ clave: 1, valor: 'Half Day (Medio día)' }, { clave: 2, valor: 'Full Day (1 día)' }],
+			dias: [{ clave: 1, valor: 'Half Day (Medio día)' }, { clave: 2, valor: 'Full Day (1 día)' }],
+			noches: [{ clave: 1, valor: '0 noches' }, { clave: 2, valor: '1 noche' }],
+		}},
+		components:{Card},
 		mounted(){
 			for (let dia = 2; dia <= 31; dia++) {
 				this.duracion.push({ clave: dia+1, valor: dia + ' días / 0 noches' });
-				this.duracionDias.push({ clave: dia+1, valor: dia + ' días' });
-				this.duracionNoches.push({ clave: dia+1, valor: dia + ' noches' });
+				this.dias.push({ clave: dia+1, valor: dia + ' días' });
+				this.noches.push({ clave: dia+1, valor: dia + ' noches' });
 			}
 			this.cargarTours();
 
@@ -142,52 +87,18 @@
 				this.tours = await respuesta.json();
 				this.contenidos=[];
 				this.tours.forEach(dato=>{
-					this.contenidos.push( JSON.parse(dato.contenido));
+					this.contenidos.push( {...JSON.parse(dato.contenido),
+						calificacion: dato.calificacion,
+						url: dato.url,
+						descuento: dato.descuento ?? []
+					});
 				});
-				console.log( this.contenidos);
+				console.table(this.contenidos);
 
 			},
-			queDura(duracion){
-				return this.duracion[duracion-1].valor;
-			},
-			queDuraDia(duracion){
-				//return this.duracion[duracion].valor;
-				return this.duracionDias.find( x => x.clave === duracion ).valor;
-			},
-			queDuraNoche(duracion){ 
-				if(duracion>=1){
-					return this.duracionNoches[duracion].valor;
-				}
-			 },
-			queDepa(valor){
-				return this.departamentos[valor];
-			},
-			formatoMoneda(valor){
-				return parseFloat(valor).toFixed(0)
-			},
-			cuantasEstrellas(index){
-				return parseInt(this.tours[index].calificacion)
-			},
-			retornarHospedaje(id){
-				let al = this.hospedajes.find(x=> x.id == id)
-				if (al) return al.alojamiento
-			},
-			queTransporte(tourActivo){
-				if ( 'idTransporte' in tourActivo )
-					if(tourActivo.transporte == '3') return ''
-					else return this.queTransportes.find(tra => tra.id == tourActivo.idTransporte )?.transporte
-				else{
-					let texto = ''
-					switch(tourActivo.transporte){
-						case '1': texto = 'bus'; break;
-						case '2': texto = 'avión'; break;
-						case '3': texto = 'Ninguno'; break;
-						case '4': texto = 'barco'; break;
-					}
-					return texto
-				}
-			}
+			
 		}
 	});
+	app.mount('#app');
 </script>
 </body>

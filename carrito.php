@@ -216,10 +216,9 @@ else include '/api'; */
 									<p class="mb-0" v-if="moneda == 'dolares'"><span>$</span> <span>{{parseFloat(ninDolar).toFixed(2)}}</span></p>
 								</div>
 							</div>
-							<div class="row ">
+							<div class="row " id="divDscto">
 								<div class="col">
-									<p class="mb-0 text-success" v-if="descuento!=null"><strong><i class="icofont-sale-discount"></i> Descuento</strong>: <span class="text-capitalize">{{descuento.nombre_descuento}} {{descuento.tipo_descuento=='monto' ? 'S/' : ''}} -{{descuento.valor_descuento}} {{descuento.tipo_descuento=='porcentaje' ? '%':''}}</span></p>
-
+									<p class="mb-0 text-success" v-if="descuento!=null"><strong><i class="icofont-sale-discount"></i> Descuento: </strong> <span class="text-capitalize">{{descuento.nombre_descuento}} {{descuento.tipo_descuento=='monto' ? 'S/' : ''}} - {{descuento.valor_descuento.replace(/x/g, ' x ')}} {{descuento.tipo_descuento=='porcentaje' ? '%':''}}</span></p>
 								</div>
 							</div>
 							<div class="row row-cols-2">
@@ -586,15 +585,40 @@ else include '/api'; */
 			}
 		},
 		computed:{
-			precioFinalSoles(){
+			precioFinalSoles() {
 				let totalFinal = parseFloat(this.total);
+				let descuentoAplicado = 0;
 				if (this.descuento != null) {
 					if (this.descuento.tipo_descuento == 'monto') {
 						totalFinal -= parseFloat(this.descuento.valor_descuento);
+						descuentoAplicado = parseFloat(this.descuento.valor_descuento);
 					} else if (this.descuento.tipo_descuento == 'porcentaje') {
-						totalFinal -= (totalFinal * parseFloat(this.descuento.valor_descuento)) / 100;
+						descuentoAplicado = (totalFinal * parseFloat(this.descuento.valor_descuento)) / 100;
+						totalFinal -= descuentoAplicado;
+					} else if (this.descuento.tipo_descuento == 'combo') {
+						let numero_personas = parseInt(this.adultos) + parseInt(this.kids)
+						let totalOriginal = totalFinal
+
+						// Parsear "3x2" -> { comprar: 3, pagar: 2 }
+						const [comprar, pagar] = this.descuento.valor_descuento.split('x').map(Number);
+						const n = parseInt(numero_personas) || 1;
+						
+						// Fórmula: totalFinal = (3n/2) + (n%3)
+						// donde "comprar" es el 3 y "pagar" es el 2
+						const gruposCompletos = Math.floor(n / comprar);
+						const restantes = n % comprar;
+						
+						// Precio por persona (del total original)
+						const precioPorPersona = totalFinal / n;
+						
+						// Total a pagar según el combo
+						totalFinal = (gruposCompletos * pagar * precioPorPersona) + (restantes * precioPorPersona);
+						
+						// Descuento aplicado
+						descuentoAplicado = (totalOriginal - totalFinal);
 					}
 				}
+
 				return totalFinal;
 			},
 			precioFinalDolares(){
@@ -604,7 +628,29 @@ else include '/api'; */
 						totalFinalDolar -= parseFloat(this.descuento.valor_descuento) / this.dolar;
 					} else if (this.descuento.tipo_descuento == 'porcentaje') {
 						totalFinalDolar -= (totalFinalDolar * parseFloat(this.descuento.valor_descuento)) / 100;
+					} else if (this.descuento.tipo_descuento == 'combo') {
+						let numero_personas = parseInt(this.adultos) + parseInt(this.kids)
+						let totalOriginal = totalFinalDolar
+
+						// Parsear "3x2" -> { comprar: 3, pagar: 2 }
+						const [comprar, pagar] = this.descuento.valor_descuento.split('x').map(Number);
+						const n = parseInt(numero_personas) || 1;
+						
+						// Fórmula: totalFinal = (3n/2) + (n%3)
+						// donde "comprar" es el 3 y "pagar" es el 2
+						const gruposCompletos = Math.floor(n / comprar);
+						const restantes = n % comprar;
+						
+						// Precio por persona (del total original)
+						const precioPorPersona = totalFinalDolar / n;
+						
+						// Total a pagar según el combo
+						totalFinal = (gruposCompletos * pagar * precioPorPersona) + (restantes * precioPorPersona);
+						
+						// Descuento aplicado
+						descuentoAplicado = (totalOriginal - totalFinal);
 					}
+					
 				}
 				return totalFinalDolar;
 			}

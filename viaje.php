@@ -424,6 +424,7 @@ else
 				<div class="row" v-if="descuentoActivoTexto">
 					<div class="col-10 mx-auto">
 						<div class="alerta-descuento text-center my-2">
+							<img :src="imagenDescuento" alt="img descuento" style="max-height: 60px; width: auto;" >
 							<strong>¡Descuento disponible!</strong><br>
 							<span class="text-capitalize">{{descuentoActivoTexto}}</span>
 						</div>
@@ -865,19 +866,12 @@ else
 
 			mounted() {
 				//sacando el ID
-
-				const queryString = window.location.search;
-
-				const urlParams = new URLSearchParams(queryString);
-
 				this.idProducto = '<?= $rowMeta['id']; ?>'
 
 				//console.log( 'el id es ' + this.idProducto );
 
 				this.cargarComplementos();
-
 				this.pedirDatos();
-
 			},
 
 		methods: {
@@ -926,22 +920,6 @@ else
 				});
 				console.log( this.contenidos);
 			},
-			queDura(duracion){
-				return this.duracion[duracion-1].valor;
-			},
-			queDuraDia(duracion){
-				//return this.duracion[duracion].valor;
-				return this.duracionDias.find( x => x.clave === duracion ).valor;
-			},
-			queDuraNoche(duracion){ 
-				if(duracion>=1){
-					return this.duracionNoches[duracion].valor;
-				}
-			 },
-			queDepa(valor){
-				return this.departamentos[valor];
-			},
-
 			async pedirDatos() {
 
 				var hoy = moment();
@@ -954,7 +932,9 @@ else
 				this.comentarios = respuesta.data['comentarios'];
 				this.descuentos = respuesta.data['descuentos'];
 
-				this.tourActivo = JSON.parse(this.variosTours.contenido);
+				this.tourActivo = {...JSON.parse(this.variosTours.contenido),
+					descuento: this.variosTours.descuento
+				};
 
 				this.precioPorPersona = this.tourActivo.peruanos.adultos;
 
@@ -1071,7 +1051,21 @@ else
 
 
 			},
-
+			queDura(duracion){
+				return this.duracion[duracion-1].valor;
+			},
+			queDuraDia(duracion){
+				//return this.duracion[duracion].valor;
+				return this.duracionDias.find( x => x.clave === duracion ).valor;
+			},
+			queDuraNoche(duracion){ 
+				if(duracion>=1){
+					return this.duracionNoches[duracion].valor;
+				}
+			 },
+			queDepa(valor){
+				return this.departamentos[valor];
+			},
 			contarMinimoPersonas() {
 
 				if (this.nacionalidad == 159 || this.nacionalidad == -1) {
@@ -1436,16 +1430,20 @@ else
 
 			computed: {
 				descuentoActivoTexto() {
-					if (!Array.isArray(this.descuentos) || this.descuentos.length === 0) return '';
-					const descuento = this.descuentos[0]
+					if(!this.tourActivo.descuento) return ''
+					const descuento = this.tourActivo.descuento
 
 					const nombre = (descuento.nombre_descuento ?? '').toString().trim();
 					const tipo = (descuento.tipo_descuento ?? '').toString().trim().toLowerCase();
-					const valor = parseFloat(descuento.valor_descuento ?? 0);
+					const valor = descuento.valor_descuento;
 
 					if (!nombre || Number.isNaN(valor)) return '';
 
+					if (tipo === 'combo') {
+						return `${valor} por ${nombre} `;
+					}
 					if (tipo === 'monto') {
+						valor = parseFloat(valor)
 						return `${nombre} S/ ${valor.toFixed(2)}`;
 					}
 
@@ -1455,9 +1453,7 @@ else
 
 					return '';
 				},
-
 				queDuraComp() {
-
 					try {
 
 						if (this.tourActivo.tipo == '2') {
@@ -1473,12 +1469,12 @@ else
 						}
 
 					} catch (error) {
-
-
-
 					}
-
 				},
+				imagenDescuento() {
+					return this.tourActivo.descuento?.imagen || 'https://grupoeuroandino.com/app/render/images/discount.png';
+				}
+				
 
 			},
 

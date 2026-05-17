@@ -524,7 +524,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<div class="row">
 								<div class="col-12">
 									<div class="mb-3">
-										<label for="">Descuento</label>
+										<label for="">Descuentos disponibles</label>
 										<select class="form-select" id="sltDescuentoPadre" v-model="nuevoDescuento.id" @change="asignarDescuento(nuevoDescuento.id)">
 											<option v-for="descuento in listaDescuentos" :value="descuento.id">{{descuento.promocion}}</option>
 											<option v-if="listaDescuentos.length==0" value="-1">No hay descuentos registrados</option>
@@ -533,10 +533,15 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								</div>
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label">Tipo Descuento</label>										
+										<label class="form-label">Tipo Descuento</label>
+										<input type="number" class="d-none" v-model="nuevoDescuento.promocion_id">
+										<div class="form-check" >
+											<input class="form-check-input" type="radio" id="tipoCombo" value="combo" v-model="nuevoDescuento.tipo_descuento" disabled>
+											<label class="form-check-label" for="tipoCombo">Combo</label>
+										</div>
 										<div class="form-check" >
 											<input class="form-check-input" type="radio" id="tipoMonto" value="monto" v-model="nuevoDescuento.tipo_descuento" disabled>
-											<label class="form-check-label" for="tipoMonto">Monto fijo (S/)</label>
+											<label class="form-check-label" for="tipoMonto">Monto (S/)</label>
 										</div>
 										<div class="form-check" >
 											<input class="form-check-input" type="radio" id="tipoPorcentaje" value="porcentaje" v-model="nuevoDescuento.tipo_descuento" disabled>
@@ -547,7 +552,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								<div class="col">
 									<label class="form-label">Valor de descuento</label>
 									<div class="form-floating mb-3">
-										<input type="number" class="form-control" id="floValorDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.valor_descuento" disabled>
+										<input type="text" class="form-control" id="floValorDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.valor_descuento" disabled>
 										<label for="floValorDescuento">Valor</label>
 									</div>
 								</div>
@@ -641,7 +646,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idDepartamento:-1,
 			dias: [{'id':0,'day':'Domingo'},{'id':1,'day':'Lunes'},{'id':2,'day':'Martes'},{'id':3,'day':'Miércoles'},{'id':4,'day':'Jueves'},{'id':5,'day':'Viernes'},{'id':6,'day':'Sábado'}],
-			nuevoDescuento:{ id_tour: -1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' },
+			nuevoDescuento:{ id_tour: -1, promocion_id:-1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' },
 			erroresDescuento: '', listaDescuentos:[]
 		},
 		mounted:function(){
@@ -1099,6 +1104,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let index = this.listaDescuentos.findIndex(d=>d.id==idDescuento)
 				if(index!=-1){
 					const descuento = this.listaDescuentos[index]
+					this.nuevoDescuento.promocion_id = descuento.id
 					this.nuevoDescuento.nombre_descuento = descuento.promocion
 					this.nuevoDescuento.tipo_descuento = descuento.tipo
 					this.nuevoDescuento.tipo_descuento = descuento.tipo
