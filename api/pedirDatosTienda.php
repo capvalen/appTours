@@ -16,7 +16,7 @@ if($sqlCiudades ->execute()){
 $sqlActividades = $db->query("SELECT idActividad as id, a.concepto as nombre FROM `tourActividades` t inner join actividades2 a on t.idActividad = a.id 
 inner join tours ts on ts.id = t.idTour
 where a.activo = 1 and ts.visible=1 and ts.activo=1
- group by idActividad");//SELECT * from actividades where activo = 1;
+ group by idActividad order by a.concepto asc");//SELECT * from actividades where activo = 1;
 if($sqlActividades ->execute()){
 	while($rowActividades = $sqlActividades->fetch(PDO::FETCH_ASSOC)){
 		$actividades[] = $rowActividades;
@@ -26,7 +26,7 @@ if($sqlActividades ->execute()){
 $sqlCategorias = $db->query("SELECT idCategoria as id, c.concepto  as nombre FROM `tourCategorias` t inner join categorias2 c on t.idCategoria = c.id 
 inner join tours ts on ts.id = t.idTour
 where c.activo = 1 and ts.visible=1 and ts.activo=1
-group by idCategoria");//SELECT * from categorias where activo = 1;
+group by idCategoria order by c.concepto asc");//SELECT * from categorias where activo = 1;
 if($sqlCategorias ->execute()){
 	while($rowCategorias = $sqlCategorias->fetch(PDO::FETCH_ASSOC)){
 		$categorias[] = $rowCategorias;

@@ -4,7 +4,7 @@ include ("conectkarl.php");
 $actividades = [];
 $categorias = [];
 
-$sql= $db->query("SELECT * FROM `actividades2` where activo = 1;");
+$sql= $db->query("SELECT * FROM `actividades2` where activo = 1 order by concepto asc;");
 if( $sql->execute()){
 	while( $row = $sql->fetch(PDO::FETCH_ASSOC) ){
 		$actividades[] = $row;
@@ -14,7 +14,7 @@ if( $sql->execute()){
 	echo $sql->errorinfo();
 }
 
-$sqlCategoria= $db->query("SELECT * FROM `categorias2` where activo = 1;");
+$sqlCategoria= $db->query("SELECT * FROM `categorias2` where activo = 1 order by concepto asc;");
 if( $sqlCategoria->execute()){
 	while( $rowCategoria = $sqlCategoria->fetch(PDO::FETCH_ASSOC) ){
 		$categorias[] = $rowCategoria;

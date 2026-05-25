@@ -141,7 +141,7 @@
 
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="acordeon3">
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoCiudad" aria-expanded="false" aria-controls="tipoCiudad" data-bs-parent="#acordeonPadre">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tipoCiudad" aria-expanded="false" aria-controls="tipoCiudad" data-bs-parent="#acordeonPadre">
 									Países
 								</button>
 							</h2>
@@ -158,7 +158,7 @@
 
 							<h2 class="accordion-header" id="acordeon2">
 
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoDepartamento" aria-expanded="false" aria-controls="tipoDepartamento" data-bs-parent="#acordeonPadre">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tipoDepartamento" aria-expanded="false" aria-controls="tipoDepartamento" data-bs-parent="#acordeonPadre">
 
 									Departamentos
 
@@ -181,13 +181,13 @@
 						</div>
 
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="acordeon3">
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoCiudad" aria-expanded="false" aria-controls="tipoCiudad" data-bs-parent="#acordeonPadre">
+							<h2 class="accordion-header" id="acordeonCiudades">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tipoCiudadesLista" aria-expanded="false" aria-controls="tipoCiudadesLista" data-bs-parent="#acordeonPadre">
 									Ciudades
 								</button>
 							</h2>
 
-							<div id="tipoCiudad" class="accordion-collapse collapse " aria-labelledby="tipoCiudad" >
+							<div id="tipoCiudadesLista" class="accordion-collapse collapse " aria-labelledby="acordeonCiudades" >
 								<div class="accordion-body">
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCiudad =='' }" @click="idCiudad = ''" >Todos</a></p>
 									<p  v-for="ciudad in ciudades" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCiudad == ciudad }" @click="idCiudad = ciudad" >{{ciudad}}</a></p>
@@ -201,7 +201,7 @@
 
 							<h2 class="accordion-header" id="acordeon4">
 
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoActividad" aria-expanded="false" aria-controls="tipoActividad" data-bs-parent="#acordeonPadre">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tipoActividad" aria-expanded="false" aria-controls="tipoActividad" data-bs-parent="#acordeonPadre">
 
 									Actividades
 
@@ -229,7 +229,7 @@
 
 							<h2 class="accordion-header" id="acordeon5">
 
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoCategoria" aria-expanded="false" aria-controls="tipoCategoria" data-bs-parent="#acordeonPadre">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tipoCategoria" aria-expanded="false" aria-controls="tipoCategoria" data-bs-parent="#acordeonPadre">
 
 									Categorías
 
@@ -257,7 +257,7 @@
 
 							<h2 class="accordion-header" id="acordeon6">
 
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoTransporte" aria-expanded="false" aria-controls="tipoTransporte" data-bs-parent="#acordeonPadre">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tipoTransporte" aria-expanded="false" aria-controls="tipoTransporte" data-bs-parent="#acordeonPadre">
 
 									Transporte
 
@@ -285,7 +285,7 @@
 
 							<h2 class="accordion-header" id="acordeon7">
 
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoHospedaje" aria-expanded="false" aria-controls="tipoHospedaje" data-bs-parent="#acordeonPadre">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tipoHospedaje" aria-expanded="false" aria-controls="tipoHospedaje" data-bs-parent="#acordeonPadre">
 
 									Alojamientos
 
@@ -313,7 +313,7 @@
 
 							<h2 class="accordion-header" id="acordeon8">
 
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoDia" aria-expanded="false" aria-controls="tipoDia" data-bs-parent="#acordeonPadre">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tipoDia" aria-expanded="false" aria-controls="tipoDia" data-bs-parent="#acordeonPadre">
 
 									Días
 
@@ -341,7 +341,7 @@
 
 							<h2 class="accordion-header" id="acordeon9">
 
-								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tipoPrecios" aria-expanded="false" aria-controls="tipoPrecios" data-bs-parent="#acordeonPadre">
+								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tipoPrecios" aria-expanded="false" aria-controls="tipoPrecios" data-bs-parent="#acordeonPadre">
 
 									Precios
 

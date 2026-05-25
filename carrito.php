@@ -218,7 +218,8 @@ else include '/api'; */
 							</div>
 							<div class="row " id="divDscto">
 								<div class="col">
-									<p class="mb-0 text-success" v-if="descuento!=null"><strong><i class="icofont-sale-discount"></i> Descuento: </strong> <span class="text-capitalize">{{descuento.nombre_descuento}} {{descuento.tipo_descuento=='monto' ? 'S/' : ''}} - {{descuento.valor_descuento.replace(/x/g, ' x ')}} {{descuento.tipo_descuento=='porcentaje' ? '%':''}}</span></p>
+									<p class="mb-0 text-success" v-if="descuento!=null"><strong><i class="icofont-sale-discount"></i> Descuento aplicado:</p>
+									<p class="text-success"><i class="icofont-sale-discount"></i> </strong> <span class="text-capitalize">{{descuento.nombre_descuento}} {{descuento.tipo_descuento=='monto' ? 'S/' : ''}} <span v-if="descuento.tipo_descuento!='combo'">-</span>{{descuento.valor_descuento}}{{descuento.tipo_descuento=='porcentaje' ? '%':''}}</span></p>
 								</div>
 							</div>
 							<div class="row row-cols-2">

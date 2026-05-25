@@ -92,8 +92,64 @@ else
 	.datepicker table tr td.active.active{background-color: #FFD019;color: brown;}
 	.datepicker table tr td.active:hover.active{background-color: #FFD019;color: brown;}
 	.datepicker table tr td.day:hover {
-  background: #dc3545; color:white;}
-	#mostrarRestriccionHorario .alert{padding: 0px!important;}
+  background: #dc3545; color:white;}		#mostrarRestriccionHorario .alert{padding: 0px!important;}
+
+		/* Overlay de carga */
+		.loader-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(33, 33, 33, 0.98);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			z-index: 9999;
+		}
+		.loader-overlay .loader-text {
+			margin-top: 20px;
+			font-size: 1.2rem;
+			color: #fff;
+			font-weight: 500;
+		}
+		.loader {
+			width: 8px;
+			height: 40px;
+			border-radius: 4px;
+			display: inline-block;
+			position: relative;
+			background: currentColor;
+			color: #fff;
+			box-sizing: border-box;
+			animation: animloader 0.6s 0.3s linear infinite alternate;
+		}
+		.loader::after,
+		.loader::before {
+			content: '';
+			box-sizing: border-box;
+			width: 8px;
+			height: 40px;
+			border-radius: 4px;
+			background: currentColor;
+			position: absolute;
+			bottom: 0;
+			left: 20px;
+			animation: animloader1 0.6s 0.45s linear infinite alternate;
+		}
+		.loader::before {
+			left: -20px;
+			animation-delay: 0s;
+		}
+		@keyframes animloader {
+			0% { height: 40px; transform: translateY(0); }
+			100% { height: 10px; transform: translateY(30px); }
+		}
+		@keyframes animloader1 {
+			0% { height: 48px; }
+			100% { height: 4.8px; }
+		}
 	</style>
 
 
@@ -108,6 +164,12 @@ else
 
 
 	<div class="container" id="app">
+
+		<!-- Overlay de carga -->
+		<div class="loader-overlay" v-if="cargando">
+			<span class="loader"></span>
+			<span class="loader-text">Armando tu propuesta de viaje</span>
+		</div>
 
 		<div class="row">
 
@@ -858,7 +920,8 @@ else
 					categorias2: [],
 					actividades2: [], contenidos:[], comentarios:[],
 					transportes: ['Terrestre', 'Aéreo', 'Ninguno'],
-					hospedajes: [], descuentos:[]
+					hospedajes: [], descuentos:[],
+					cargando: true
 
 				}
 
@@ -997,8 +1060,6 @@ else
 
 				this.cargarTours()
 
-
-
 				let datos = new FormData();
 
 				datos.append('tipo', this.tourActivo.tipo);
@@ -1020,7 +1081,7 @@ else
 						loop: true,
 						margin: 20,
 						dots: false,
-						lazyLoad: true,
+						/* lazyLoad: true, */
 						nav: true,
 						navText: ["<div class='nav-button owl-prev'>‹</div>", "<div class='nav-button owl-next'>›</div>"],
 						responsive: {
@@ -1033,6 +1094,7 @@ else
 						}
 					});
 				}, 1000);
+				this.cargando = false
 
 				
 					/* .then(response => response.json())

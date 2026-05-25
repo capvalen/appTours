@@ -65,80 +65,98 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<!-- <button class="btn btn-outline-success ms-2" @click="verTours()"><i class="icofont-list"></i> pedir datos</button> -->
 				</div>
 			</div>
+			<!-- antiguo panel vertical -->
+			
+		</div>
+		<div class="container-fluid px-3" >
 			<div class="row">
-			<div class="col-12 col-md-4">
-					<label for="" class="form-label"><i class="icofont-filter"></i> Filtrar por título</label>
-					<div class="input-group mb-3">
-						<input type="text" name="" id="txtFiltro" ref="txtFiltro" class="form-control" placeholder="Buscar" @keyup.enter="buscarProducto()">
-						<button class="btn btn-outline-secondary" type="button" @click="buscarProducto()"><i class="icofont-search"></i> Buscar</button>
+				<div class="col-12 col-md-4 col-lg-2">
+					<div class="row">
+						<div class="col-12 ">
+							<label for="" class="form-label"><i class="icofont-filter"></i> Filtrar por título</label>
+							<div class="input-group mb-3">
+								<input type="text" name="" id="txtFiltro" ref="txtFiltro" class="form-control" placeholder="Buscar" @keyup.enter="buscarProducto()">
+								<button class="btn btn-outline-secondary" type="button" @click="buscarProducto()"><i class="icofont-search"></i> Buscar</button>
+							</div>
+						</div>
+						<div class="col-12 d-none">
+							<label for="" class="form-label"><i class="icofont-filter"></i> Ciudad</label>
+							<div class="mb-3">
+								<input type="text" name="" id="txtFiltroCiudad" ref="txtFiltroCiudad" class="form-control" placeholder="Buscar por ciudad" @keyup.enter="buscarProducto()">
+							</div>
+						</div>
+						<div class="col-12 ">
+							<label for="" class="form-label"><i class="icofont-filter"></i> Departamentos</label>
+							<select class="form-select" v-model="idDepartamento" @change="buscarProducto('departamentos')">
+								<option value="-1">Todos</option>
+								<option v-for="(departamento, index) in departamentos" :value="index">{{departamento}}</option>
+							</select>
+						</div>
+						<div class="col-12 mt-3" v-if="idDepartamento != -1">
+							<label for="" class="form-label"><i class="icofont-filter"></i> Ciudades</label>
+							<div v-if="listadoCiudades.length == 0" class="text-muted small">Sin ciudades</div>
+							<div class="list-group list-group-flush" v-else>
+								<a href="#" class="list-group-item list-group-item-action" :class="{ active: ciudadSeleccionada == ciudad }" v-for="ciudad in listadoCiudades" :key="ciudad" @click.prevent="seleccionarCiudad(ciudad)">
+									<i class="icofont-rounded-right"></i> {{ciudad}}
+								</a>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div class="col-12 col-md-4">
-					<label for="" class="form-label"><i class="icofont-filter"></i> Ciudad</label>
-					<div class="mb-3">
-						<input type="text" name="" id="txtFiltroCiudad" ref="txtFiltroCiudad" class="form-control" placeholder="Buscar por ciudad" @keyup.enter="buscarProducto()">
-					</div>
-				</div>
-				<div class="col-12 col-md-4">
-					<label for="" class="form-label"><i class="icofont-filter"></i> Departamentos</label>
-					<select class="form-select" v-model="idDepartamento" @change="buscarProducto()">
-						<option value="-1">Todos</option>
-						<option v-for="(departamento, index) in departamentos" :value="index">{{departamento}}</option>
-					</select>
+				<div class="col col-md">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>N°</th>
+								<th>Título</th>
+								<th class="d-none">Precio Perú</th>
+								<th class="d-none">Precio Ext.</th>
+								<th></th>
+								<th></th>
+								<th class="d-none">Fechas</th>
+								<th><i class="icofont-eye-alt"></i></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-if="variosTours.length == 0">
+								<td colspan=5>No hay paquetes</td>
+							</tr>
+							<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
+								<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
+								<td @click="cargarPanel(todosTours[index].id, index)" class="">{{vTour.nombre}} </td>
+								<td @click.stop="tourActivo = vTour; idGlobal = todosTours[index].id; ">
+									<span class="text-primary" v-if="esVisible(index)=='1'" data-bs-toggle="offcanvas" href="#offDescuentos" title="Ver descuentos"><i class="icofont-sale-discount"></i></span>
+								</td>
+								<td @click.stop="abrirLink(index)">
+									<span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)" title="Abrir link"><i class="icofont-external-link"></i></span>
+								</td>					
+								<td @click.stop="clonar(index)">
+									<span class="text-success" title="Clonar"><i class="icofont-copy"></i></span>
+								</td>
+								<td class="d-none" @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
+								<td class="d-none" @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
+								<td class="d-none">
+									<button data-bs-toggle="offcanvas" data-bs-target="#offFechas" class="btn btn-sm btn-outline-secondary" @click.prevent="idGlobal=todosTours[index].id;tourActivo =JSON.parse(todosTours[index].contenido)"><span v-if="vTour.fechas">{{vTour.fechas.length}}</span> <span v-else>0</span></button>
+								</td>
+								<td >
+									<div class="form-check form-switch">
+										<input class="form-check-input" type="checkbox" role="switch" :id="'chkVisible'+index+1" @click="idGlobal =todosTours[index].id; hacerVisible($event)" :checked="todosTours[index].visible=='1'? 'checked':''">
+										<label v-if="todosTours[index].visible=='1'" class="form-check-label text-primary" :for="'chkVisible'+index+1"><i class="icofont-eye-alt"></i> Publicado</label>
+										<label v-else class="form-check-label " :for="'chkVisible'+index+1"><i class="icofont-eye-blocked"></i> No publicado</label>
+									</div>
+									<div class="d-none">
+										<span class="text-primary" v-if="esVisible(index)=='1'"><i class="icofont-check"></i></span>
+										<span class="text-danger" v-else><i class="icofont-close"></i></span>
+									</div>
+								</td>
+								<td @click.stop="eliminarTour(index)"><span class="text-danger"><i class="icofont-ui-delete"></i></span></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
-		<div class="container-fluid px-5" >
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>N°</th>
-						<th>Título</th>
-						<th class="d-none">Precio Perú</th>
-						<th class="d-none">Precio Ext.</th>
-						<th></th>
-						<th></th>
-						<th class="d-none">Fechas</th>
-						<th><i class="icofont-eye-alt"></i></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-if="variosTours.length == 0">
-						<td colspan=5>No hay paquetes</td>
-					</tr>
-					<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
-						<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
-						<td @click="cargarPanel(todosTours[index].id, index)" class="">{{vTour.nombre}} </td>
-						<td @click.stop="tourActivo = vTour; idGlobal = todosTours[index].id; ">
-							<span class="text-primary" v-if="esVisible(index)=='1'" data-bs-toggle="offcanvas" href="#offDescuentos" title="Ver descuentos"><i class="icofont-sale-discount"></i></span>
-						</td>
-						<td @click.stop="abrirLink(index)">
-							<span class="text-primary" v-if="esVisible(index)=='1'" @click.stop="abrirLink(index)" title="Abrir link"><i class="icofont-external-link"></i></span>
-						</td>					
-						<td @click.stop="clonar(index)">
-							<span class="text-success" title="Clonar"><i class="icofont-copy"></i></span>
-						</td>
-						<td class="d-none" @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.peruanos.adultos).toFixed(2)}}</td>
-						<td class="d-none" @click="cargarPanel(todosTours[index].id, index)">{{parseFloat(vTour.extranjeros.adultos).toFixed(2)}}</td>
-						<td class="d-none">
-							<button data-bs-toggle="offcanvas" data-bs-target="#offFechas" class="btn btn-sm btn-outline-secondary" @click.prevent="idGlobal=todosTours[index].id;tourActivo =JSON.parse(todosTours[index].contenido)"><span v-if="vTour.fechas">{{vTour.fechas.length}}</span> <span v-else>0</span></button>
-						</td>
-						<td >
-							<div class="form-check form-switch">
-								<input class="form-check-input" type="checkbox" role="switch" :id="'chkVisible'+index+1" @click="idGlobal =todosTours[index].id; hacerVisible($event)" :checked="todosTours[index].visible=='1'? 'checked':''">
-								<label v-if="todosTours[index].visible=='1'" class="form-check-label text-primary" :for="'chkVisible'+index+1"><i class="icofont-eye-alt"></i> Publicado</label>
-								<label v-else class="form-check-label " :for="'chkVisible'+index+1"><i class="icofont-eye-blocked"></i> No publicado</label>
-							</div>
-							<div class="d-none">
-								<span class="text-primary" v-if="esVisible(index)=='1'"><i class="icofont-check"></i></span>
-								<span class="text-danger" v-else><i class="icofont-close"></i></span>
-							</div>
-						</td>
-						<td @click.stop="eliminarTour(index)"><span class="text-danger"><i class="icofont-ui-delete"></i></span></td>
-					</tr>
-				</tbody>
-			</table>
-			<div class="modal fade" id="modalNuevo" data-bs-backdrop="static" tabindex="-1">
+		<div class="modal fade" id="modalNuevo" data-bs-backdrop="static" tabindex="-1">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-body">
@@ -612,7 +630,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idDepartamento:-1, alojamientos:[],
 			dias: [{'id':0,'day':'Domingo'},{'id':1,'day':'Lunes'},{'id':2,'day':'Martes'},{'id':3,'day':'Miércoles'},{'id':4,'day':'Jueves'},{'id':5,'day':'Viernes'},{'id':6,'day':'Sábado'}],
-			descuentos:[], nuevoDescuento:{ id_tour: -1, promocion_id:-1, id:-1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' }, erroresDescuento: '', listaDescuentos:[]
+			descuentos:[], nuevoDescuento:{ id_tour: -1, promocion_id:-1, id:-1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' }, erroresDescuento: '', listaDescuentos:[], listadoCiudades:[], ciudadSeleccionada:null
 		},
 		mounted:function(){
 			this.verTours();
@@ -864,7 +882,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							this.mensajeBien = "Se actualizó correctamente";
 							modalNuevo.hide();
 							tostadaOk.show();
-							this.verTours();
+							this.buscarProducto()
 						}
 					})
 					.catch((error)=>{ console.log( error );});
@@ -888,7 +906,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				if(this.tourActivo.actividades.length>0){
 					var actividades = "";
 					this.tourActivo.actividades.forEach(actividad =>{
-						actividades += " "+this.actividades2.find(x=> x.id === actividad ).concepto+",";
+						actividades += " "+this.actividades2.find(x=> x.id === actividad )?.concepto+",";
 					});
 					return actividades.substring(0, actividades.length-1)
 				}
@@ -907,11 +925,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			queDuraDia(duracion){
 				//return this.duracion[duracion].valor;
-				return this.duracion.find( x => x.clave === duracion ).valor;
+				return this.duracion.find( x => x.clave === duracion )?.valor;
 			},
 			queDuraNoche(duracion){ 
 				//return this.duracionNoches[duracion].valor; 
-				return this.duracionNoches.find( x => x.clave === duracion ).valor
+				return this.duracionNoches.find( x => x.clave === duracion )?.valor
 			},
 			fechaLatam(fecha){
 				return( moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY') )
@@ -925,7 +943,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				if(valor > 31)
 					return parseInt(valor/31) + ' meses'
 				else
-					return this.anticipacion[valor].valor;
+					return this.anticipacion[parseInt(valor)-1]?.valor;
 			},
 			queDepa(valor){
 				return this.departamentos[valor];
@@ -939,6 +957,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			tipoTransporteChange(){
 				if( this.tour.transporte == 3 ) this.tour.idTransporte = null
+			},			seleccionarCiudad(ciudad){
+				this.$refs.txtFiltroCiudad.value = ciudad
+				this.ciudadSeleccionada = ciudad;
+				this.buscarProducto()
 			},
 			abrirEdicion(){
 				this.activarEditar=true;
@@ -957,8 +979,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				offPanel.hide();
 				modalNuevo.show();
 			},
-			async buscarProducto(){
+			async buscarProducto(tipo=null){
 				//console.log( this.$refs.txtFiltro.value );
+				this.listadoCiudades = []
 				var that = this;
 				let respuesta = await axios.post(this.servidor+'buscarTour.php', {
 					texto: this.$refs.txtFiltro.value,
@@ -971,7 +994,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				
 				respuesta.data.forEach(dato=>{
 					that.todosTours.push(dato)
-					that.variosTours.push(JSON.parse(dato.contenido));
+					const datoFormateado = JSON.parse(dato.contenido)
+					that.variosTours.push(datoFormateado);
+					if(tipo && !this.listadoCiudades.includes(datoFormateado.destino))
+						this.listadoCiudades.push(datoFormateado.destino)
 				});
 			},
 			async fotoPrincipal(queIndice){
