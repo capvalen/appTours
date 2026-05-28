@@ -43,4 +43,42 @@
   opacity:0;
 	transition: transform .8s cubic-bezier(.2,.9,.3,1), opacity .8s ease;
 }
+.accordion-button:not(.collapsed){
+	background-color: #ffffff;
+	font-weight: bold;
+}
+
+.activo{
+	color: #000!important;
+	font-weight: bold;
+}
 .divOferta2{z-index: 3;}
+.subText{
+		font-size: 0.8rem;
+	}
+	.precio{font-size: 1.7rem;font-weight:bold; color: rgb(58, 91, 255);}
+	.precioAnt{font-size: 0.8rem;text-decoration:line-through; color: rgb(58, 91, 255);}
+	.divOferta{ height:60px; border-radius: 50%; color:white; font-size: 0.8rem;  }
+	.precio2{display: flex; font-size: 1.7rem;font-weight:bold; /* color: rgb(192, 0, 67); */}
+	.precioAnt2{text-decoration:line-through; /* color: rgb(192, 0, 67); */}
+	.divOferta2{width: 70px; height: 25px; /* rgb(192, 0, 67);  */ margin-top: 1rem; margin-right: 0rem; color:white; font-size: 0.8rem;  }
+	/* .estrellas{color: rgb(58, 91, 255);} */
+	.estrellas{color: #ffd400;}
+	.divImagen img{
+		width:100%!important;
+		height: 345px!important;
+		object-fit: cover!important;
+	}
+	.card{box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;transition: transform 220ms ease 0s;}
+	.card:hover{ transition: transform 220ms ease 0s; transform: translateX(0px) translateY(-11px); }
+	#spanOferta{ background-color: #2768b7; }
+	#spanAlimentacion{ background-color: #6745ef; }
+	#spanTour{ background-color: #0cbf19; }
+	#spanGuia{ background-color: #ffc107; }
+	#spanTickets{ background-color: #e91616; }
+	#spanTransporte{ background-color: #bf0ca9; }	
+	.bandera {width: 20px;}
+	.titulo{font-size: 1.25rem;}
+	.icofont-google-map{margin-left:3px!important;}
+	.moneda-peque{font-size:15px}
+	#pegar p{line-height: 1;}

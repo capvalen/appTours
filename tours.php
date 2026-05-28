@@ -93,7 +93,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								<option v-for="(departamento, index) in departamentos" :value="index">{{departamento}}</option>
 							</select>
 						</div>
-						<div class="col-12 mt-3" v-if="idDepartamento != -1">
+						<div class="col-12 mt-3" v-if="idDepartamento > -1">
 							<label for="" class="form-label"><i class="icofont-filter"></i> Ciudades</label>
 							<div v-if="listadoCiudades.length == 0" class="text-muted small">Sin ciudades</div>
 							<div class="list-group list-group-flush" v-else>
@@ -1017,11 +1017,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			seleccionarCiudad(ciudad){
 				this.$refs.txtFiltroCiudad.value = ciudad
 				this.ciudadSeleccionada = ciudad;
-				this.buscarProducto()
+				this.buscarProducto('ciudad')
 			},
 			async buscarProducto(tipo=null){
-				//console.log( this.$refs.txtFiltro.value );
-				this.listadoCiudades = []
+				if(tipo !== 'ciudad'){
+					this.listadoCiudades = []
+					this.$refs.txtFiltroCiudad.value =''
+				}
 				var that = this;
 				let respuesta = await axios.post(this.servidor+'buscarTour.php', {
 					texto: this.$refs.txtFiltro.value,
@@ -1037,7 +1039,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					const datoFormateado = JSON.parse(dato.contenido)
 					that.variosTours.push(datoFormateado);
 					if(tipo && !this.listadoCiudades.includes(datoFormateado.destino))
-						this.listadoCiudades.push(datoFormateado.destino)					
+						this.listadoCiudades.push(datoFormateado.destino)
 				});
 			},
 			async fotoPrincipal(queIndice){

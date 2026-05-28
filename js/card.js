@@ -101,7 +101,7 @@ export default {
 						<div class="col-3 d-flex flex-column align-items-end justify-content-end" id="pegar">
 								<p class="mb-0" style="font-size: 12px;">Desde</p>
 								<p class="mb-0"><span class="precio2"><span class="moneda-peque">S/.</span> {{formatoMoneda(tour.peruanos.adultos)}}</span></p>
-								<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0" style="font-size: 14px"><span class="moneda">S/.</span> {{formatoMoneda(tour.oferta)}}</p>
+								<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0" style="font-size: 14px"><span class="moneda">S/.</span> <span>{{formatoMoneda(tour.oferta)}}</span></p>
 						</div>
 					</div>
 				</div>

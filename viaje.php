@@ -167,8 +167,8 @@ else
 
 		<!-- Overlay de carga -->
 		<div class="loader-overlay" v-if="cargando">
-			<span class="loader"></span>
-			<span class="loader-text">Armando tu propuesta de viaje</span>
+			<span><img src="https://grupoeuroandino.com/images/avion.gif" alt=""></span>
+			<span class="loader-text">¡Viaja! El dinero se RECUPERA, el tiempo No.</span>
 		</div>
 
 		<div class="row">

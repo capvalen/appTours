@@ -74,6 +74,15 @@ try {
 									<div style="padding:25px 0px;text-align:center">
 										<a href="https://grupoeuroandino.com/app/render/calificar.php?id='.$_POST['id'].'" target="_blank" style="line-height: 16px;color: #ffffff;font-weight: 400;text-decoration: none;font-size: 12px;display: inline-block;padding: 8px 15px;background-color: #ffc135; color: #702400; border-radius: 5px;	min-width: 80px;">Calificar Servicio</a>
 									</div>
+									<div style="padding:10px 0px;margin:10px 0px;border-top:1px solid #dadce0;border-bottom:1px solid #dadce0;">
+										<p style="font-size:13px;color:rgba(0,0,0,0.7);margin-bottom:8px;"><strong>Ud. ha aceptado:</strong></p>
+										<ul style="font-size:12px;color:rgba(0,0,0,0.6);padding-left:20px;margin:4px 0;">
+											<li><a href="https://grupoeuroandino.com/terminos-y-condiciones/" target="_blank">Términos y Condiciones Generales del Portal</a></li>
+											<li><a href="https://grupoeuroandino.com/politicas-de-privacidad/" target="_blank">Políticas de privacidad</a></li>
+											<li><a href="https://grupoeuroandino.com/politicas-de-cancelacion/" target="_blank">Políticas de cancelación</a></li>
+											<li><a href="https://grupoeuroandino.com/carta-de-responsabilidad-contra-accidentes/" target="_blank">Carta de Responsabilidad contra accidentes</a></li>
+										</ul>
+									</div>
 									<div>
 										<p><small>Este es un sistema automático de aviso, por favor no responda este mensaje.</small></p>
 									</div>
