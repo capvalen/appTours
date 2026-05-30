@@ -50,7 +50,7 @@ $('#txtlocalLog').keyup(function (e) {
 $('#btnAcceder').click(function() {
 	$.ajax({
 		type:'POST',
-		url: window.lugarApi + '/validarSesion.php',
+		url: window.lugarApi + 'validarSesion.php',
 		data: {user: $('#txtNegocioLog').val(), pws: $('#txtlocalLog').val()},
 		success: function(resp) { console.log( "respuesta " + resp);
 			//if (parseInt(iduser)>0){//console.log('el id es '+data)

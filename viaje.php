@@ -21,7 +21,7 @@
 	$host = preg_replace('#^www\.#i', '', parse_url('http://' . $_SERVER['HTTP_HOST'], PHP_URL_HOST));
 
 	if ($host === 'grupoeuroandino.com') {
-		include('/home/grupemde/public_html/app/api/conectkarl.php');
+		include('/home/fhuczgkg/public_html/app/api/conectkarl.php');
 	} else {
 		include( 'api/conectkarl.php'); // Ruta relativa al script actual
 	}

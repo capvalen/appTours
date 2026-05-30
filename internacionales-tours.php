@@ -589,7 +589,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	qSiIncluye, qNoIncluye,
 	tostadaOk, tostadaMal;
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
-	var rutaDocs = '/home/grupemde/public_html/app/render/images/sinmarca/'
+	var rutaDocs = '/home/fhuczgkg/public_html/app/render/images/sinmarca/'
 	var app = new Vue({
 		name: 'tours',
 		el: '#app',
