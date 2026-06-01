@@ -623,7 +623,7 @@ else include '/api'; */
 						displayPaymentForm(letra)
 					})
 				})
-				//onCheckout()
+				
 				modalPagar.show();
 			},
 			cambiarEntreFactura(){
@@ -759,7 +759,59 @@ else include '/api'; */
 			alert("Payment failed !");
 		}
 	}
-	
+	function saltarDemo(){
+		app.nombres = 'Carlos';
+		app.apellidos = 'Pariona';
+		app.documento = '44475064';
+		app.correo = 'infocat.servicios@gmail.com';
+		app.celular = '977692108';
+		app.ciudad = 'Huancayo';
+		app.direccion = 'Av. Huancavelica 435';
+		
+		console.log('comenzar a guardar');
+		let datos = new FormData();
+		datos.append('nombres', app.nombres)
+		datos.append('apellidos', app.apellidos)
+		datos.append('tipoDocumento', document.getElementById('floDni').value)
+		datos.append('documento', app.documento)
+		datos.append('correo', app.correo)
+		datos.append('celular', app.celular)
+		datos.append('ciudad', app.ciudad)
+		datos.append('direccion', app.direccion)
+		
+		datos.append('id', app.idProducto)
+		datos.append('adultos', app.adultos)
+		datos.append('kids', app.kids)
+		datos.append('nacionalidad', app.nacionalidad)
+		datos.append('adultoNormal', app.adultoNormal)
+		datos.append('menorNormal', app.menorNormal)
+		datos.append('descuento', app.descuento.valor_descuento ?? 0)
+		datos.append('tipo_descuento', app.descuento.tipo_descuento ?? 'monto')
+		datos.append('total', app.precioFinalSoles )
+		datos.append('moneda', 1)
+		datos.append('titulo', app.nomTour)
+		datos.append('empieza', moment(app.empieza, 'DD/MM/YYYY').format('YYYY-MM-DD'))
+		
+		datos.append('tipoComprobante', app.actiFactura)
+		datos.append('nRuc', app.nRuc)
+		datos.append('nRazon', app.nRazon)
+		datos.append('nDireccion', app.nDireccion)
+
+		fetch(app.servidor+'guardarPedido.php', {
+			method:'POST', body:datos
+		})
+		.then(respo => { 
+			return respo.text().then(texto=>{
+				if( parseInt(texto)>0 ){
+					app.idOrden=parseInt(texto);
+					toastBien.show();
+					goToThanks();
+				}
+			})
+			})
+		
+	}
+
 	function goToThanks(){
 		let resol = app.carrito.findIndex( item => item.idProducto == app.idProducto)
 		if(resol>=0){

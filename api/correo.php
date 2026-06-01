@@ -20,13 +20,13 @@ try {
 		$mail->isSMTP();                                            //Send using SMTP
 		$mail->Host       = 'grupoeuroandino.com';                     //Set the SMTP server to send through
 		$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-		$mail->Username   = '';                     //SMTP username
-		$mail->Password   = '';                               //SMTP password
+		$mail->Username   = 'ventas@grupoeuroandino.com';                     //SMTP username
+		$mail->Password   = 'PONER_CLAVE';                               //SMTP password
 		$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
 		$mail->Port       = 465;                                   //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
 		//Recipients
-		$mail->setFrom('facturas@grupoeuroandino.com', "Grupo Euro Andino");
+		$mail->setFrom('ventas@grupoeuroandino.com', "Grupo Euro Andino");
 		$mail->addAddress($_POST['correo']);     //Add a recipient
 		$mail->addCC('grupoeuroandino@hotmail.com');     //Add a recipient
 

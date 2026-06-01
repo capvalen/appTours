@@ -1,8 +1,9 @@
 <?php
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-//error_reporting(E_ALL);
+/* ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL); */
 
+//var_dump($_POST);
 if( $_POST['id']<>-1 ):
 	require_once( __DIR__. './../api/conectkarl.php');
 	$idPedido = $_POST['id'];
@@ -67,7 +68,8 @@ if( $_POST['id']<>-1 ):
 					'direccion' => $rowDatos['direccion'] .' '. $rowDatos['ciudad'],
 					'tipo' => $rowDatos['tipoComprobante'],
 					'contado' => 1,
-					'adelanto' => 0
+					'adelanto' => 0,
+					'observaciones' => 'venta POS-web',
 				]);
 				$_POST['jsonCliente'] = $_POST['cliente'];
 				$_POST['cabecera'] = array([
@@ -92,13 +94,11 @@ if( $_POST['id']<>-1 ):
 				$_POST['total'] = $rowDatos['total'];
 				$_COOKIE['ckidUsuario']= 3;
 
-				setcookie("crearArchivo", 0);
-		
 				ob_start();
 				require __DIR__ . './../facturador/php/insertarBoleta.php';
 				$datos = json_decode(ob_get_contents(), true);
-				//ob_clean();
-				ob_end_clean();
+				ob_clean();
+				//ob_end_clean();
 				/* echo ('===== DATA: ====');
 				var_dump($datos); //[0]['serie']
 				echo ('===== FIN DATA ===='); */
