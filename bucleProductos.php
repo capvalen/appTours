@@ -18,14 +18,14 @@
 			
 		</div>
 	</div>
-	<script src="https://grupoeuroandino.com/app/render/configuracion.js?v=1.0.1"></script>
+	<script src="https://grupoeuroandino.com/app/render/configuracion.js?v=1.0.2"></script>
 	<!-- Vue desarrollo -->
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
 <!-- Vue producción -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
 <script type="module">
-	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.7';
+	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.8';
 	const { createApp } = Vue;
 	const app = createApp({
 		components:{Card},

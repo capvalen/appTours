@@ -43,7 +43,8 @@ export default {
 		},
 		queDuraNoche(duracion) {
 			if (duracion >= 1) {
-				return this.noches[duracion].valor;
+				//return this.noches[duracion].valor;
+				return this.noches.find(x => x.clave === duracion).valor;
 			}
 		},
 		formatoMoneda(valor) {

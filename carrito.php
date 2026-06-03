@@ -47,6 +47,9 @@ else include '/api'; */
 			color: #fff;
 			font-weight: 500;
 		}
+		@media (max-width: 576px) {
+			.loader-overlay { padding: 20px; text-align: center; }
+		}
 		.loader {
 			width: 8px;
 			height: 40px;
@@ -87,8 +90,9 @@ else include '/api'; */
 	<div id="app" class="p-4">
 		<!-- Overlay de carga -->
 		<div class="loader-overlay" v-if="cargando">
-			<span><img src="https://grupoeuroandino.com/images/avion.gif" alt=""></span>
-			<span class="loader-text">¡Viaja! El dinero se RECUPERA, el tiempo No.</span>
+			<span><img src="https://grupoeuroandino.com/images/viaja.png?v=1" alt=""></span>
+			<span class="loader-text">¡VIAJA! EL DINERO SE RECUPERA, EL TIEMPO NO.</span>
+
 		</div>
 		<div class="container" v-if="this.idProducto!=null">
 			<div class="row ">
