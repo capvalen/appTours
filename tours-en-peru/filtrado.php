@@ -25,15 +25,10 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<title>Tours en Perú - Grupo Euro Andino</title>
-	
-	<?php
-	if( $indice>=0 ){ ?>
-		<meta property="og:title" content="Paquetes y tours de <?= $departamentos[$indice] ?> - Grupo Euro Andino">
-		<meta property="og:image" content="<?= $fotos[$indice] ?>">
-		<meta property="og:description" content="<?= strip_tags($descripcion[$indice]) ?>">
-		<?php
-	}
-	?>
+
+	<meta property="og:title" content="Paquetes y Tours - Grupo Euro Andino">
+	<meta property="og:image" content="https://grupoeuroandino.com/wp-content/uploads/2025/06/Destinos-Huanuco.jpg">
+	<meta property="og:description" content="Descubre los mejores tours en Perú con Grupo Euroandino. Explora Machu Picchu, Cusco, Lima y más con guías expertos. ¡Reserva tu aventura andina hoy!">
 
 <?php include(__DIR__."/../app/render/headers.php");?>
 
@@ -59,10 +54,8 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 			<?php if(isset($_GET['id'])):?> <span>Paquetes y tours de: <?= $departamentos[$_GET['id']-1];?> </span><?php endif;?>
 
-			<?php if(isset($_GET['texto'])):?> <span>Resultados por: <?php $texto=$_GET['texto']; echo $departamentos[$indice]; ?> </span><?php else: $texto=''; endif;?>
-
 		</h1>
-		<p class="my-3"><?= $comentario[$indice];?></p>
+		<p class="my-3">Explora la magia de los Andes, la costa y la selva con nuestros Tours en Perú. Diseñamos experiencias inolvidables y recorridos auténticos para que conectes con la historia, la cultura y la naturaleza del país de la mano de los mejores expertos locales.</p>
 		
 		</div>
 
@@ -111,7 +104,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 				idDepartamento: <?= $idDepartamento; ?>,
 				idCategoria: -1,
 				idDia: -1,
-				idPrecio: -1, idTransporte:-1, idHospedaje:-1, texto:'<?= $texto;?>',
+				idPrecio: -1, idTransporte:-1, idHospedaje:-1, texto:'',
 				precios: ['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00'],
 				actividadSelect: '',
 				categoriaSelect: '',

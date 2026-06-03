@@ -25,6 +25,11 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<title>Paquetes Turísticos en Perú - Grupo Euro Andino</title>
+
+	<meta property="og:title" content="Paquetes Turísticos en Perú - Grupo Euro Andino">
+	<meta property="og:image" content="https://grupoeuroandino.com/wp-content/uploads/2025/06/Destinos-Huanuco.jpg">
+	<meta property="og:description" content="Encuentra paquetes turísticos en Perú con todo incluido. Viajes a medida para vacaciones perfectas en Cusco, la selva y la costa peruana. ¡Cotiza ahora!">
+
 	<?php include(__DIR__."/../app/render/headers.php");?>
 
 </head>
@@ -45,6 +50,8 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 			<?php if(isset($_GET['texto'])):?> <span>Resultados por: <?= $texto=$_GET['texto'];?> </span><?php else: $texto=''; endif;?>
 
 		</h1>
+		<p class="my-3">Disfruta de la máxima comodidad con nuestros Paquetes Turísticos en Perú. Nos encargamos de todo el itinerario, hoteles, traslados y excursiones para que solo te dediques a disfrutar. Encuentra el viaje perfecto, desde escapadas románticas hasta vacaciones familiares.</p>
+
  </div>
 
 	<div class="container-fluid" id="app">

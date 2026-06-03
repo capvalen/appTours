@@ -24,14 +24,10 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 	<title>Viajes de Promoción Escolar - Grupo Euro Andino</title>
 	
-	<?php
-	if( $indice>=0 ){ ?>
-		<meta property="og:title" content="Paquetes y tours de <?= $departamentos[$indice] ?> - Grupo Euro Andino">
-		<meta property="og:image" content="<?= $fotos[$indice] ?>">
-		<meta property="og:description" content="<?= strip_tags($descripcion[$indice]) ?>">
-		<?php
-	}
-	?>
+	<meta property="og:title" content="Paquetes y Tours para Viajes de promoción - Grupo Euro Andino">
+	<meta property="og:image" content="https://grupoeuroandino.com/wp-content/uploads/2025/06/Destinos-Huanuco.jpg">
+	<meta property="og:description" content="Organiza los mejores viajes de promoción escolar en Perú. Seguridad, diversión y aprendizaje garantizados para estudiantes. ¡Solicita tu programa aquí!">
+
 
 <?php include(__DIR__."/../app/render/headers.php");?>
 
@@ -51,15 +47,8 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 		<div class="container">
 		    <h1 class="fs-2 mt-3">
 			<span>Viajes de Promoción Escolar</span>
-
-			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='2'):?> <span>Paquetes turísticos en Perú</span><?php endif;?>
-
-			<?php if(isset($_GET['id'])):?> <span>Paquetes y tours de: <?= $departamentos[$_GET['id']-1];?> </span><?php endif;?>
-
-			<?php if(isset($_GET['texto'])):?> <span>Resultados por: <?php $texto=$_GET['texto']; echo $departamentos[$indice]; ?> </span><?php else: $texto=''; endif;?>
-
 		</h1>
-		<p class="my-3"><?= $comentario[$indice];?></p>
+		<p class="my-3">Celebra el fin de una etapa con nuestros Viajes de Promoción Escolar. Diseñamos itinerarios seguros, educativos y llenos de diversión en los destinos más increíbles del Perú. Garantizamos una logística impecable para que los estudiantes vivan una experiencia de graduación memorable y los padres tengan total tranquilidad.</p>
 		
 		</div>
 
@@ -68,7 +57,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 				<Card :duracion='duracion' :dias='dias' :noches='noches' :tour='tour'/>
 			</div>
 
-			<div v-if="productos.length==0" class="text-center my-5">
+			<div v-if="productos.length==0" class="text-center my-5 mx-auto">
 				<img src="https://grupoeuroandino.com/images/vacio.png" alt="Sin resultados" class="img-fluid mb-3" style="max-width: 200px;">
 				<h5 class="text-muted">No existen productos que coincidan</h5>
 				<p class="text-muted">Intenta con otros filtros de búsqueda</p>
