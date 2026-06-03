@@ -457,7 +457,7 @@ else
 					<span class="text-capitalize" v-if="variosTours.pais == '140'"><strong>Ciudad:</strong> {{tourActivo.destino}} - {{queDepa(tourActivo.departamento)}}</span>
 					<span class="text-capitalize" v-else><strong>Departamento - Ciudad:</strong> {{tourActivo.destino}} - {{tourActivo.departamento}}</span><br>
 
-					<span><strong>Actividades:</strong> {{tourActivo.actividad}} {{variasActividades(tourActivo.actividades)}}</span><br>
+					<span><strong>Actividades:</strong> {{tourActivo.actividad ?? ''}} {{variasActividades(tourActivo.actividades)}}</span><br>
 
 					<span><strong>Categorías:</strong> {{variasCategorias(tourActivo.categorias)}}</span><br>
 
@@ -920,8 +920,7 @@ else
 					noIncluidos: [],
 					faltaMinimo: true, faltaAdulto:true,
 					recomendados: [],
-					categorias2: [],
-					actividades2: [], contenidos:[], comentarios:[],
+					categorias2: [], actividades2: [], contenidos:[], comentarios:[],
 					transportes: ['Terrestre', 'Aéreo', 'Ninguno'],
 					hospedajes: [], descuentos:[],
 					cargando: true
@@ -945,15 +944,8 @@ else
 			async cargarComplementos() {
 
 				let servComplementos = await fetch(this.servidor + 'pedirComplementos.php', {
-
 					method: 'POST'
-
 				})
-				axios.post(this.servidor + 'Alojamientos.php',{
-					pedir: 'listar'
-				})
-				.then(serv=> this.hospedajes = serv.data )
-
 				let resServidor = await servComplementos
 
 				resServidor.json().then((queVino) => {
@@ -964,6 +956,12 @@ else
 					//asignar valor
 					//$('#sltActividad2').selectpicker('val', ['51', '53']);
 				})
+
+				axios.post(this.servidor + 'Alojamientos.php',{
+					pedir: 'listar'
+				})
+				.then(serv=> this.hospedajes = serv.data )
+
 				let servConfig = await fetch(this.servidor+ 'cargarPanel.php',{ method:'POST' })
 				let resConfig = await servConfig.json();
 				this.lateral = resConfig.lateral;
@@ -1214,49 +1212,19 @@ else
 			},
 
 			variasActividades(queActividad) {
-
-				//console.log('es la acti', queActividad);
-
-				var actividades = "";
-
-				if (queActividad != undefined) {
-
-					queActividad.forEach(actividad => {
-
-						actividades += " " + this.actividades2.find(x => x.id === actividad)?.concepto + ",";
-
-					});
-
-					return actividades.substring(0, actividades.length - 1)
-
-				} else {
-
-					return '-';
-
-				}
-
+				if (!queActividad || !Array.isArray(queActividad) || queActividad.length === 0) return '-';
+				return queActividad
+					.map(id => this.actividades2.find(x => x.id === parseInt(id))?.concepto)
+					.filter(Boolean)
+					.join(', ');
 			},
 
 			variasCategorias(queCategoria) {
-
-				if (queCategoria != undefined) {
-
-					var categorias = "";
-
-					queCategoria.forEach(actividad => {
-
-						categorias += " " + this.categorias2.find(x => x.id === actividad)?.concepto + ",";
-
-					});
-
-					return categorias.substring(0, categorias.length - 1)
-
-				} else {
-
-					return '-';
-
-				}
-
+				if (!queCategoria || !Array.isArray(queCategoria) || queCategoria.length === 0) return '-';
+				return queCategoria
+					.map(id => this.categorias2.find(x => x.id === parseInt(id))?.concepto)
+					.filter(Boolean)
+					.join(', ');
 			},
 
 			bloquearFechaDesde(fechaInicial) {

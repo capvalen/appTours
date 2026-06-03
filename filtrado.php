@@ -25,14 +25,8 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<title>Filtro por producto</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-
+	<?php include(__DIR__."/../app/render/headers.php");?>
 	
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/estilos.css">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/efecto.css?v=1.3">
-
-<?php include(__DIR__."/../app/render/headers.php");?>
 </head>
 
 <body>
@@ -59,24 +53,20 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 				<Card :duracion='duracion' :dias='dias' :noches='noches' :tour='tour'/>
 			</div>
 
-			<div v-if="productos.length==0">
-
-				<p>No existen productos que coincidan</p>
-
+			<div v-if="productos.length==0" class="text-center my-5">
+				<img src="https://grupoeuroandino.com/images/vacio.png" alt="Sin resultados" class="img-fluid mb-3" style="max-width: 200px;">
+				<h5 class="text-muted">No existen productos que coincidan</h5>
+				<p class="text-muted">Intenta con otros filtros de búsqueda</p>
 			</div>
 
 		</div>
 	</div>
 
-	<script src="https://grupoeuroandino.com/app/render/configuracion.js?v=1.0.2"></script>
-	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<?php include(__DIR__."/../app/render/footer.php");?>
 
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
 	<script type="module">
-	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.8';
+	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.10';
 		var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
 
 			tostadaOk, tostadaMal;

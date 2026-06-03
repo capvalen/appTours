@@ -64,6 +64,7 @@
 	.divOferta2{width: 70px; height: 25px; /* rgb(192, 0, 67);  */ margin-top: 1rem; margin-right: 0rem; color:white; font-size: 0.8rem;  }
 	/* .estrellas{color: rgb(58, 91, 255);} */
 	.estrellas{color: #ffd400;}
+	.divImagen {height: 345px!important;}
 	.divImagen img{
 		width:100%!important;
 		height: 345px!important;

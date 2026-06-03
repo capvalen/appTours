@@ -15,7 +15,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
 	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/icofont/icofont.min.css">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/efecto.css?v=1.3">
+	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/efecto.css?v=1.5">
 
 
 </head>
@@ -51,14 +51,14 @@
 
 								<div class="accordion-body">
 
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==-1 }" @click="idTour = -1; idDia=-1" >Todos</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==-1 }" @click="idTour = -1; idDia=-1; idCategoria=-1" >Todos</a></p>
 
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==1 }" @click="idTour = 1" >Tours</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==1 }" @click="idTour = 1; idDia=-1; idCategoria=-1" >Tours</a></p>
 
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idTour = 2" >Paquetes Turísticos</a></p>
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==0 }" @click="idDia = 0" >Half Day (Medio Día)</a></p>
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==1 }" @click="idDia = 1" >Full Day (1 Día)</a></p>
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCategoria==38 }" @click="idCategoria = 38" >Viajes de Promoción Escolar</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idTour = 2; idDia=-1; idCategoria=-1" >Paquetes Turísticos</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==0 }" @click="idTour=-1; idDia = 0; idCategoria=-1" >Half Day (Medio Día)</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==1 }" @click="idTour=-1; idDia = 1; idCategoria=-1" >Full Day (1 Día)</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCategoria==38 }" @click="idTour=-1; idDia=-1; idCategoria=38" >Viajes de Promoción Escolar</a></p>
 
 								</div>
 
@@ -254,7 +254,7 @@
 
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia ==-1 }" @click="idDia = -1" >Todos</a></p>
 
-									<p  v-for="(dia, index) in dias" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia == index }" @click="idDia = index" >{{dia}}</a></p>
+									<p  v-for="(dia, index) in dias" class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia == index }" @click="idDia = index" >{{dia.valor}}</a></p>
 
 								</div>
 
@@ -311,13 +311,14 @@
 			<div class="col-12 col-md-9 " id="top">
 
 				<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-
 					<div class="col my-2 " v-for="(tour, index) in productos" :key="tour.id">
 						<Card :duracion='duracion' :dias='dias' :noches='noches' :tour='tour'/>
-					<div v-if="productos.length==0">
-						<p>No existen productos que coincidan</p>
 					</div>
-
+				</div>
+				<div v-if="productos.length==0" class="text-center my-5">
+					<img src="https://grupoeuroandino.com/images/vacio.png" alt="Sin resultados" class="img-fluid mb-3" style="max-width: 200px;">
+					<h5 class="text-muted">No existen productos que coincidan</h5>
+					<p class="text-muted">Intenta con otros filtros de búsqueda</p>
 				</div>
 
 			</div>
@@ -339,7 +340,7 @@
 
 
 	<script type="module">
-	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.8';
+	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.9';
 	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
 
 	tostadaOk, tostadaMal;
@@ -363,8 +364,8 @@
 
 			precios:['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00' ], 
 
-			actividadSelect:'', categoriaSelect:'',transporteSelect:'', hospedajeSelect:'', productos:[],
-
+			actividadSelect:'', categoriaSelect:'',transporteSelect:'', hospedajes:[], hospedajeSelect:'', productos:[],
+			departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
 			duracion: [{ clave: 1, valor: 'Half Day (Medio día)' }, { clave: 2, valor: 'Full Day (1 día)' }],
 			dias: [{ clave: 1, valor: 'Half Day (Medio día)' }, { clave: 2, valor: 'Full Day (1 día)' }],
 			noches: [{ clave: 1, valor: '0 noches' }, { clave: 2, valor: '1 noche' }],
@@ -383,6 +384,7 @@
 				this.dias.push({ clave: dia+1, valor: dia + ' días' });
 				this.noches.push({ clave: dia+1, valor: dia + ' noches' });
 			}
+			
 			this.cargar();
 			this.buscarEnTienda();
 		},
@@ -394,7 +396,10 @@
 				let respServ = await fetch(this.servidor+'pedirDatosTienda.php',{
 					method:'POST'
 				});
-				
+				axios.post(this.servidor + 'Alojamientos.php',{
+					pedir: 'listar'
+				})
+				.then(serv=> this.hospedajes = serv.data )
 				let temporal = await respServ.json();
 
 				this.actividades = temporal[0];

@@ -63,7 +63,7 @@ export default {
 	},
 	template: /*html*/`
 	<div class="card h-100 border-0  ">
-		<div v-if="tour.fotos.length>0" class="divImagen card-img-top position-relative">
+		<div v-if="tour.fotos.length>0" class="divImagen position-relative" style="height: 345px;">
 			<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
 				<span class="text-capitalize mx-1 px-1 rounded" v-if="tour.idTransporte!=undefined && tour.transporte!='3'" id="spanTransporte">{{queTransporte(tour)}}</span>
 				<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[parseInt(tour.alojamiento)]}}</span>

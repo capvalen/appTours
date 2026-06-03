@@ -188,10 +188,8 @@ if(array_key_exists($buscarWeb, $ciudades)){
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<title>Tours y Paquetes de <?= $ciudades[$indice]['nombre'] ?> - Grupo Euro Andino</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/efecto.css?v=1.3">
 
-	
+	<!-- Propiedades de Meta -->
 	<?php
 	if( $indice>=0 ){ ?>
 		<meta property="og:title" content="Tours y paquetes de <?= $ciudades[$indice]['nombre'] ?> - Grupo Euro Andino">
@@ -238,24 +236,20 @@ if(array_key_exists($buscarWeb, $ciudades)){
 				<Card :duracion='duracion' :dias='dias' :noches='noches' :tour='tour'/>
 			</div>
 
-			<div v-if="productos.length==0">
-
-				<p>No existen productos que coincidan</p>
-
+			<div v-if="productos.length==0" class="text-center my-5">
+				<img src="https://grupoeuroandino.com/images/vacio.png" alt="Sin resultados" class="img-fluid mb-3" style="max-width: 200px;">
+				<h5 class="text-muted">No existen productos que coincidan</h5>
+				<p class="text-muted">Intenta con otros filtros de búsqueda</p>
 			</div>
 
 		</div>
 	</div>
 
-	<script src="https://grupoeuroandino.com/app/render/configuracion.js?v=1.0.2"></script>
-	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<?php include(__DIR__."/../app/render/footer.php");?>
 
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
 	<script type="module">
-	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.8';
+	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.10';
 
 		var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
 
@@ -265,7 +259,6 @@ if(array_key_exists($buscarWeb, $ciudades)){
 		const {createApp} = Vue
 		const app = createApp({
 
-			el: '#app',
 			components:{Card},
 			data(){return {
 
@@ -288,19 +281,18 @@ if(array_key_exists($buscarWeb, $ciudades)){
 				texto:'<?= $aBuscar;?>',
 
 				precios: ['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00'],
-				hospedajes: ['','Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro', 'Casa', 'Casa 2', 'Casa 3', 'Airbnb', 'Rural'],
 
 				actividadSelect: '',
 				categoriaSelect: '',
 
-				productos: [], contenidos:[],
+				productos: [],
 				duracion: [{ clave: 1, valor: 'Half Day (Medio día)' }, { clave: 2, valor: 'Full Day (1 día)' }],
 				dias: [{ clave: 1, valor: 'Half Day (Medio día)' }, { clave: 2, valor: 'Full Day (1 día)' }],
 				noches: [{ clave: 1, valor: '0 noches' }, { clave: 2, valor: '1 noche' }],
 				pedidos: [],
 			}},
 
-			mounted: function() {
+			mounted() {
 
 				this.cargar();
 				for (let dia = 2; dia <= 31; dia++) {
@@ -308,7 +300,6 @@ if(array_key_exists($buscarWeb, $ciudades)){
 					this.dias.push({ clave: dia+1, valor: dia + ' días' });
 					this.noches.push({ clave: dia+1, valor: dia + ' noches' });
 				}
-				this.cargar();
 				this.buscarEnTienda();
 			},
 
