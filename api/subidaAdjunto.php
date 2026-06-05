@@ -37,11 +37,13 @@ if (move_uploaded_file($_FILES["archivo"]["tmp_name"], $archivoFinal)) {
 
 	// Guardar la nueva imagen en el directorio final
 	imagejpeg($nuevaImagen, $previewFinal);
-	// Liberar memoria
+	// Liberar memoria (automático en PHP 8.4+)	
+	/*
 	imagedestroy($imagen);
 	imagedestroy($nuevaImagen);
-	unlink($imnagen);
+	unlink($imagen);
 	unlink($nuevaImagen);
+	*/
 	
 	//echo $archivoTemporal;
 	$_POST['nombreArchivo'] = $queArchivo;
