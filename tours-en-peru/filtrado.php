@@ -7,7 +7,7 @@ if (isset($_GET['id'])) { $idDepartamento = $_GET['id']-1; } else { $idDepartame
 if (isset($_GET['idTipo'])) { $idTipo = $_GET['idTipo']; } else { $idTipo = -1; }
 
 $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ];
-
+$idDia = 2;
 ?>
 
 <!DOCTYPE html>
@@ -99,11 +99,11 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 				actividades: [], categorias: [],
 
-				idTour: <?= $idTipo; ?>,
+				idTour: -1,
 				idActividad: -1,
 				idDepartamento: <?= $idDepartamento; ?>,
 				idCategoria: -1,
-				idDia: -1,
+				idDia: <?= $idDia; ?>,
 				idPrecio: -1, idTransporte:-1, idHospedaje:-1, texto:'',
 				precios: ['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00'],
 				actividadSelect: '',

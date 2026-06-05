@@ -40,9 +40,8 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 	<div class="container-fluid" id="app">
 		<div class="container">
 			<h1 class="fs-2 mt-3">
-
-				<?php if($idDia=='1'):?> <span>Paquetes turísticos Half Day en Perú</span><?php endif;?>
-				<?php if($idDia=='2'):?> <span>Paquetes turísticos Full Day en Perú</span><?php endif;?>
+				<?php if($idDia=='1'):?> <span>Half Day en Perú</span><?php endif;?>
+				<?php if($idDia=='2'):?> <span>Full Day en Perú</span><?php endif;?>
 				<?php if(isset($_GET['id'])):?> <span>Paquetes y tours de: <?= $departamentos[$_GET['id']-1];?> </span><?php endif;?>
 			</h1>
 
@@ -67,9 +66,6 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 	</div>
 
 	<?php include(__DIR__."/../app/render/footer.php");?>
-
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
 	<script type="module">
 	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.10';

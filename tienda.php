@@ -53,7 +53,7 @@
 
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==-1 }" @click="idTour = -1; idDia=-1; idCategoria=-1" >Todos</a></p>
 
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==1 }" @click="idTour = 1; idDia=-1; idCategoria=-1" >Tours</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==1 }" @click="idTour = 1; idDia=1; idCategoria=-1" >Tours</a></p>
 
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==2 }" @click="idTour = 2; idDia=-1; idCategoria=-1" >Paquetes Turísticos</a></p>
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==0 }" @click="idTour=-1; idDia = 0; idCategoria=-1" >Half Day (Medio Día)</a></p>

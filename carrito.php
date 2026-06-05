@@ -27,73 +27,8 @@ else include '/api'; */
 	<style>
 		.gris { color: #adadad; }
 		.form-control{border: 1px solid #ced4da!important;}
-		/* Overlay de carga */
-		.loader-overlay {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: rgba(33, 33, 33, 0.98);
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			z-index: 9999;
-		}
-		.loader-overlay .loader-text {
-			margin-top: 20px;
-			font-size: 1.2rem;
-			color: #fff;
-			font-weight: 500;
-		}
-		@media (max-width: 576px) {
-			.loader-overlay { padding: 20px; text-align: center; }
-		}
-		.loader {
-			width: 8px;
-			height: 40px;
-			border-radius: 4px;
-			display: inline-block;
-			position: relative;
-			background: currentColor;
-			color: #fff;
-			box-sizing: border-box;
-			animation: animloader 0.6s 0.3s linear infinite alternate;
-		}
-		.loader::after,
-		.loader::before {
-			content: '';
-			box-sizing: border-box;
-			width: 8px;
-			height: 40px;
-			border-radius: 4px;
-			background: currentColor;
-			position: absolute;
-			bottom: 0;
-			left: 20px;
-			animation: animloader1 0.6s 0.45s linear infinite alternate;
-		}
-		.loader::before {
-			left: -20px;
-			animation-delay: 0s;
-		}
-		@keyframes animloader {
-			0% { height: 40px; transform: translateY(0); }
-			100% { height: 10px; transform: translateY(30px); }
-		}
-		@keyframes animloader1 {
-			0% { height: 48px; }
-			100% { height: 4.8px; }
-		}
 	</style>
 	<div id="app" class="p-4">
-		<!-- Overlay de carga -->
-		<div class="loader-overlay" v-if="cargando">
-			<span><img src="https://grupoeuroandino.com/images/viaja.png?v=1" alt=""></span>
-			<span class="loader-text">¡VIAJA! EL DINERO SE RECUPERA, EL TIEMPO NO.</span>
-
-		</div>
 		<div class="container" v-if="this.idProducto!=null">
 			<div class="row ">
 				<div class="col-12 col-md-8">
@@ -170,18 +105,6 @@ else include '/api'; */
 										<input class="form-check-input" type="checkbox" id="chkPrivacidad" v-model="privacidad">
 										<label class="form-check-label" for="chkPrivacidad">
 										Acepto las <a class="text-decoration-none" href="https://grupoeuroandino.com/politicas-de-privacidad/" target="_blank">Políticas de privacidad</a>
-										</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" type="checkbox" id="chkCancelacion" v-model="cancelacion">
-										<label class="form-check-label" for="chkCancelacion">
-										Acepto las <a class="text-decoration-none" href="https://grupoeuroandino.com/politicas-de-cancelacion/" target="_blank">Políticas de cancelación</a>
-										</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" type="checkbox" id="chkCarta" v-model="carta">
-										<label class="form-check-label" for="chkCarta">
-										Acepto la <a class="text-decoration-none" href="https://grupoeuroandino.com/carta-de-responsabilidad-contra-accidentes/" target="_blank">Carta de Responsabilidad contra accidentes</a>
 										</label>
 									</div>
 								</div>
@@ -293,7 +216,7 @@ else include '/api'; */
 									<p class="mb-0" v-if="moneda == 'dolares'"><span>$</span> <span>{{parseFloat(ninDolar).toFixed(2)}}</span></p>
 								</div>
 							</div>
-							<div class="row " id="divDscto" v-if="descuento">
+							<div class="row " id="divDscto">
 								<div class="col">
 									<p class="mb-0 text-success" v-if="descuento!=null"><strong><i class="icofont-sale-discount"></i> Descuento aplicado:</p>
 									<p class="text-success"><i class="icofont-sale-discount"></i> </strong> <span class="text-capitalize">{{descuento.nombre_descuento}} {{descuento.tipo_descuento=='monto' ? 'S/' : ''}} <span v-if="descuento.tipo_descuento!='combo'">-</span>{{descuento.valor_descuento}}{{descuento.tipo_descuento=='porcentaje' ? '%':''}}</span></p>
@@ -434,9 +357,9 @@ else include '/api'; */
 				ciudad: 'huancayo', direccion: 'av huancavelica 435',  */
 				nombres: '', apellidos: '', documento: '', correo: '', celular: '', 
 				ciudad: '', direccion: '',
-				politica: true, privacidad: true, cancelacion:true, carta:true, mensajeError:'', hora:'',
+				politica: true, privacidad: true, mensajeError:'', hora:'',
 				precAdultos:'', precMenores:'', total:'', nomTour:'', adultoNormal:0,menorNormal:0, idOrden:-1, actiFactura:3, //3boleta, 1 factura
-				nRuc:'', nRazon:'', nDireccion:'', dolar:0, comision:0, totalDolar: 0, moneda:'soles', adulDolar:0, ninDolar:0, url:'', indexRegla:-1, descuento:null, cargando: true,
+				nRuc:'', nRazon:'', nDireccion:'', dolar:0, comision:0, totalDolar: 0, moneda:'soles', adulDolar:0, ninDolar:0, url:'', indexRegla:-1, descuento:null,
 				reglas:[
 					{id:1, regla: 'Restricciones Alimentarias', instrucciones:'Son limitaciones en la dieta de una persona, ya sea por motivos de salud, creencias religiosas, preferencias personales o alergias/intolerancias. Estas restricciones pueden implicar evitar ciertos alimentos o grupos de alimentos por completo, o simplemente reducir su consumo.', respuesta:'' },
 					{id:2,regla:'Condición Médica', instrucciones:'Se refiere a cualquier estado de salud que se aparta de lo normal, ya sea una enfermedad, un trastorno o una lesión. Estas condiciones pueden ser agudas (de corta duración y severas) o crónicas (de larga duración), y afectar tanto la salud física como mental.', respuesta:'' },
@@ -487,7 +410,6 @@ else include '/api'; */
 				horario: this.horario
 			});
 			localStorage.setItem('carrito', JSON.stringify(this.carrito))
-			this.cargando = false
 			
  			/*this.carrito.push({dato:1, data2:2})
 			localStorage.setItem('carrito', JSON.stringify(this.carrito)) 
@@ -627,7 +549,7 @@ else include '/api'; */
 						displayPaymentForm(letra)
 					})
 				})
-				
+				//onCheckout()
 				modalPagar.show();
 			},
 			cambiarEntreFactura(){
@@ -763,59 +685,7 @@ else include '/api'; */
 			alert("Payment failed !");
 		}
 	}
-	function saltarDemo(){
-		app.nombres = 'Carlos';
-		app.apellidos = 'Pariona';
-		app.documento = '44475064';
-		app.correo = 'infocat.servicios@gmail.com';
-		app.celular = '977692108';
-		app.ciudad = 'Huancayo';
-		app.direccion = 'Av. Huancavelica 435';
-		
-		console.log('comenzar a guardar');
-		let datos = new FormData();
-		datos.append('nombres', app.nombres)
-		datos.append('apellidos', app.apellidos)
-		datos.append('tipoDocumento', document.getElementById('floDni').value)
-		datos.append('documento', app.documento)
-		datos.append('correo', app.correo)
-		datos.append('celular', app.celular)
-		datos.append('ciudad', app.ciudad)
-		datos.append('direccion', app.direccion)
-		
-		datos.append('id', app.idProducto)
-		datos.append('adultos', app.adultos)
-		datos.append('kids', app.kids)
-		datos.append('nacionalidad', app.nacionalidad)
-		datos.append('adultoNormal', app.adultoNormal)
-		datos.append('menorNormal', app.menorNormal)
-		datos.append('descuento', app.descuento.valor_descuento ?? 0)
-		datos.append('tipo_descuento', app.descuento.tipo_descuento ?? 'monto')
-		datos.append('total', app.precioFinalSoles )
-		datos.append('moneda', 1)
-		datos.append('titulo', app.nomTour)
-		datos.append('empieza', moment(app.empieza, 'DD/MM/YYYY').format('YYYY-MM-DD'))
-		
-		datos.append('tipoComprobante', app.actiFactura)
-		datos.append('nRuc', app.nRuc)
-		datos.append('nRazon', app.nRazon)
-		datos.append('nDireccion', app.nDireccion)
-
-		fetch(app.servidor+'guardarPedido.php', {
-			method:'POST', body:datos
-		})
-		.then(respo => { 
-			return respo.text().then(texto=>{
-				if( parseInt(texto)>0 ){
-					app.idOrden=parseInt(texto);
-					toastBien.show();
-					goToThanks();
-				}
-			})
-			})
-		
-	}
-
+	
 	function goToThanks(){
 		let resol = app.carrito.findIndex( item => item.idProducto == app.idProducto)
 		if(resol>=0){

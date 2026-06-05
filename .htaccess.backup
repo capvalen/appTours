@@ -1,0 +1,77 @@
+# BEGIN LSCACHE
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+<IfModule LiteSpeed>
+RewriteEngine on
+CacheLookup on
+RewriteRule .* - [E=Cache-Control:no-autoflush]
+RewriteRule litespeed/debug/.*\.log$ - [F,L]
+RewriteRule \.litespeed_conf\.dat - [F,L]
+
+### marker ASYNC start ###
+RewriteCond %{REQUEST_URI} /wp-admin/admin-ajax\.php
+RewriteCond %{QUERY_STRING} action=async_litespeed
+RewriteRule .* - [E=noabort:1]
+### marker ASYNC end ###
+
+### marker DROPQS start ###
+CacheKeyModify -qs:fbclid
+CacheKeyModify -qs:gclid
+CacheKeyModify -qs:utm*
+CacheKeyModify -qs:_ga
+### marker DROPQS end ###
+
+</IfModule>
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+# END LSCACHE
+# BEGIN NON_LSCACHE
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+# END NON_LSCACHE
+
+<Files "configuracion.js">
+    Require all granted
+</Files>
+
+# BEGIN WordPress
+# Las directivas (líneas) entre «BEGIN WordPress» y «END WordPress» son
+# generadas dinámicamente y solo deberían ser modificadas mediante filtros de WordPress.
+# Cualquier cambio en las directivas que hay entre esos marcadores serán sobrescritas.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+
+RewriteRule ^tours/([^/]+)/?$ tours/viaje.php?variable=$1 [QSA,L]
+
+RewriteRule ^paquetes-y-tours/([^/]+)/?$ paquetes-y-tours/filtrado.php?texto=$1 [QSA,L]
+RewriteRule ^paquetes-turisticos-y-tours/([^/]+)/?$ tours-internacionales/filtrado.php?texto=$1 [QSA,L]
+RewriteRule ^tours-y-paquetes/([^/]+)/?$ tours-ciudades/filtrado.php?texto=$1 [QSA,L]
+RewriteRule ^tours-en-peru/ tours-en-peru/filtrado.php?idTipo=1 [QSA,L]
+RewriteRule ^paquetes-turisticos-en-peru/ paquetes-turisticos-en-peru/filtrado.php?idTipo=2 [QSA,L]
+RewriteRule ^half-day half/filtrado.php?idDia=1 [QSA,L]
+RewriteRule ^half-days half/filtrado.php?idDia=1 [QSA,L]
+RewriteRule ^half-day-en-peru half/filtrado.php?idDia=1 [QSA,L]
+RewriteRule ^full-day-en-peru half/filtrado.php?idDia=2 [QSA,L]
+RewriteRule ^full-day half/filtrado.php?idDia=2 [QSA,L]
+RewriteRule ^full-days half/filtrado.php?idDia=2 [QSA,L]
+RewriteRule ^viajes-de-promocion-escolar/ viajes-de-promocion-escolar/filtrado.php?idCategoria=38 [QSA,L]
+
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
+
+# BEGIN cPanel-generated php ini directives, do not edit
+# Manual editing of this file may result in unexpected behavior.
+# To make changes to this file, use the cPanel MultiPHP INI Editor (Home >> Software >> MultiPHP INI Editor)
+# For more information, read our documentation (https://go.cpanel.net/EA4ModifyINI)
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php84” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php84 .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit

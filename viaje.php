@@ -101,16 +101,24 @@ else
 			left: 0;
 			width: 100%;
 			height: 100%;
-			background: rgba(33, 33, 33, 0.98);
+			background: rgba(12, 12, 12);
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
 			z-index: 9999;
 		}
+		.loader-overlay img{
+			width: 100px;
+		}
+		.loader-overlay #overloadTextoGrande {
+			font-size: 4.5rem;
+			color: #fff;
+			font-weight: 700;
+		}
 		.loader-overlay .loader-text {
-			margin-top: 20px;
-			font-size: 1.2rem;
+			margin-top: 0px;
+			font-size: 0.6rem;
 			color: #fff;
 			font-weight: 500;
 		}
@@ -171,7 +179,8 @@ else
 		<!-- Overlay de carga -->
 		<div class="loader-overlay" v-if="cargando">
 			<span><img src="https://grupoeuroandino.com/images/viaja.png?v=1" alt=""></span>
-			<span class="loader-text">¡VIAJA! EL DINERO SE RECUPERA, EL TIEMPO NO.</span>
+			<span id="overloadTextoGrande">¡VIAJA!</span>
+			<span class="loader-text"> EL DINERO SE RECUPERA, EL TIEMPO NO.</span>
 		</div>
 
 		<div class="row">

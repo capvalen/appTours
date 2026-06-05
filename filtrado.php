@@ -25,13 +25,13 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<title>Filtro por producto</title>
-	<?php include(__DIR__."/../app/render/headers.php");?>
+	<?php include(__DIR__."/headers.php");?>
 	
 </head>
 
 <body>
 <!-- Inicio de Encabezado -->
-<?php include ( __DIR__."/../app/render/menu.php");?>
+<?php /* include ( __DIR__."/menu.php"); */?>
 
 <!-- Fin de Encabezado -->
 	<div class="container-fluid" id="app">
@@ -62,7 +62,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 		</div>
 	</div>
 
-	<?php include(__DIR__."/../app/render/footer.php");?>
+	<?php include(__DIR__."/footer.php");?>
 
 
 	<script type="module">
