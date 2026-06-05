@@ -81,5 +81,5 @@
 	.bandera {width: 20px;}
 	.titulo{font-size: 1.25rem;}
 	.icofont-google-map{margin-left:3px!important;}
-	.moneda-peque{font-size:15px}
+	.moneda-peque{font-size:15px; margin-top: 3px;}
 	#pegar p{line-height: 1;}

@@ -340,7 +340,7 @@
 
 
 	<script type="module">
-	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.9';
+	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.13';
 	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
 
 	tostadaOk, tostadaMal;

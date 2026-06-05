@@ -25,7 +25,7 @@
 <!-- Vue producción -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
 <script type="module">
-	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.9';
+	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.13';
 	const { createApp } = Vue;
 	const app = createApp({
 		components:{Card},

@@ -85,9 +85,9 @@ export default {
 					</div> -->
 					<div class="row ">
 						<div class="col-5">
-							<span class="text-muted subText"><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"> <strong>{{tour.destino}},</strong></span>
+							<span class="text-muted subText"><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg"> {{tour.destino}},</span>
 							<br>
-							<i class="icofont-google-map"></i> <span class="text-capitalize"><strong> {{queDepa(tour.departamento)}}</strong></span>
+							<i class="icofont-google-map"></i> <span class="text-capitalize text-muted subText"> {{queDepa(tour.departamento)}}</span>
 							<div class="estrellas">
 								<template v-for="star in parseInt(tour.calificacion)"><i class="icofont-star"></i></template>
 							</div>
