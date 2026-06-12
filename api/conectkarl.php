@@ -25,7 +25,7 @@ try {
 		dbname='.$datos,
 		$username,
 		$password,
-		array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
+		array(\Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8")
 	);
 } catch (Exception $e) {
 	echo "Problema con la conexion: ".$e->getMessage();
@@ -37,7 +37,7 @@ try {
 		dbname='.$datos,
 		$username,
 		$password,
-		array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
+		array(\Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8")
 	);
 } catch (Exception $e) {
 	echo "Problema con la conexion: ".$e->getMessage();

@@ -3,4 +3,4 @@ if (window.location.hostname === 'grupoeuroandino.com') {
 }else{
 	window.lugarApi = 'http://localhost/appTours/api/'
 }
-console.log('servir en '+window.lugarApi);
+//console.log('servir en '+window.lugarApi);

@@ -4,6 +4,7 @@ $_POST = json_decode(file_get_contents('php://input'),true);
 ( $_SERVER['REQUEST_METHOD'] === 'OPTIONS' )? die() : '';
 
 $filas = [];
+$contenido = [];
 $comentarios =[];
 $descuentos = [];
 
@@ -17,6 +18,7 @@ if( $sql->execute( [ $_POST['id'] ] )){
 		$stmt->execute([$row['id']]);
 		$descuento = $stmt->fetch(PDO::FETCH_ASSOC);
 		$row['descuento'] = $descuento ?: null;
+		$contenido = json_decode($row['contenido'], true) ?? [];
 
 		$filas[] = $row;
 	}
@@ -35,4 +37,4 @@ if( $sql->execute( [ $_POST['id'] ] )){
 	print_r($sql->errorinfo());
 }
 
-echo json_encode( array("tour" => $filas[0], "comentarios" => $comentarios) );
+echo json_encode( array("tour" => $filas[0], "contenido"=>$contenido, "comentarios" => $comentarios) );

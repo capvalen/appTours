@@ -93,6 +93,7 @@ else
 	.datepicker table tr td.active:hover.active{background-color: #FFD019;color: brown;}
 	.datepicker table tr td.day:hover {
   background: #dc3545; color:white;}		#mostrarRestriccionHorario .alert{padding: 0px!important;}
+	#smallSoles{vertical-align: super;}
 
 		/* Overlay de carga */
 		.loader-overlay {
@@ -342,7 +343,7 @@ else
 
 					<div class="col-9 mx-auto text-center bg-secondary bg-opacity-25 ">
 
-						<span class="fs-1" style="line-height: 1;"><strong class="text-danger"><small class="fs-5">S/.</small>{{precioPorPersona}}</strong> <small class="fs-5">por persona</small></span>
+						<span class="fs-1" style="line-height: 1;"><strong class="text-danger"><small id="smallSoles" class="fs-5">S/.</small>{{precioPorPersona}}</strong> <small class="fs-5">por persona</small></span>
 
 					</div>
 

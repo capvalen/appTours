@@ -321,6 +321,13 @@
 					<p class="text-muted">Intenta con otros filtros de búsqueda</p>
 				</div>
 
+				<div class="text-center my-4" v-if="paginaActual < totalPaginas">
+					<button class="btn btn-outline-primary btn-lg rounded-pill px-5" @click="cargarMas" :disabled="cargando">
+						<span v-if="!cargando"> <i class="icofont-dotted-down"></i> ¡Cargar más aventuras!</span>
+						<span v-else>Cargando...</span>
+					</button>
+				</div>
+
 			</div>
 
 			
@@ -375,6 +382,10 @@
 				{id: 4, transporte:'Acuático'}
 			],
 			paises:[], idPais:140,
+			paginaActual: 1,
+			totalPaginas: 1,
+			bloque: 50,
+			cargando: false,
 		}},
 
 		mounted(){
@@ -410,55 +421,47 @@
 			},
 
 			async buscarEnTienda(){
-				
+				this.cargando = true;
+				this.paginaActual = 1;
 				this.pedidos=[];
-
 				this.productos=[];
 
 				let datos = new FormData();
-
 				datos.append('idTour', this.idTour);
-
 				datos.append('idActividad', this.idActividad);
-
 				datos.append('actividad', this.actividadSelect);
-
 				datos.append('idPais', this.idPais);
 				datos.append('idDepartamento', this.idDepartamento);
 				datos.append('idCiudad', this.idCiudad);
-
 				datos.append('idCategoria', this.idCategoria);
-
 				datos.append('idTransporte', this.idTransporte);
-
 				datos.append('idHospedaje', this.idHospedaje);
-
 				datos.append('categoria', this.categoriaSelect);
-
 				datos.append('idDia', this.idDia+1);
-
 				datos.append('idPrecio', this.idPrecio);
-
 				datos.append('texto', this.texto);
+				datos.append('bloque', this.bloque);
+				datos.append('pagina', this.paginaActual);
 
 				let respServ = await fetch(this.servidor+'buscarFiltroTienda.php',{
-
 					method:'POST', body:datos
-
 				});
 
-				//console.log( await respServ.json() );
+				let resp = await respServ.json();
+				this.totalPaginas = resp.totalPaginas;
+				this.pedidos = resp.data;
 
-				this.pedidos = await respServ.json();
-				this.bandera = this.pedidos[0]?.namePais.toLowerCase().replace('/ \w+/g', '_') + '.jpeg'
+				this.bandera = resp.data[0]?.namePais.toLowerCase().replace('/ \w+/g', '_') + '.jpeg'
 
-				this.pedidos.forEach(dato =>{
+				resp.data.forEach(dato =>{
 					this.productos.push( {...JSON.parse(dato.contenido),
 						calificacion: dato.calificacion,
 						url: dato.url,
 						descuento: dato.descuento ?? []
 					});
 				})
+				this.cargando = false;
+
 				const elementoTop = document.getElementById('top');
 				window.scrollTo({
             top: elementoTop.offsetTop,
@@ -491,9 +494,43 @@
 			},
 			
 			onRightClick(event) {
-				// Aquí event es el MouseEvent del clic derecho
 				console.log("Clic derecho detectado", event);
-				//alert("Clic derecho deshabilitado");
+			},
+			async cargarMas(){
+				this.cargando = true;
+				this.paginaActual++;
+
+				let datos = new FormData();
+				datos.append('idTour', this.idTour);
+				datos.append('idActividad', this.idActividad);
+				datos.append('actividad', this.actividadSelect);
+				datos.append('idPais', this.idPais);
+				datos.append('idDepartamento', this.idDepartamento);
+				datos.append('idCiudad', this.idCiudad);
+				datos.append('idCategoria', this.idCategoria);
+				datos.append('idTransporte', this.idTransporte);
+				datos.append('idHospedaje', this.idHospedaje);
+				datos.append('categoria', this.categoriaSelect);
+				datos.append('idDia', this.idDia+1);
+				datos.append('idPrecio', this.idPrecio);
+				datos.append('texto', this.texto);
+				datos.append('bloque', this.bloque);
+				datos.append('pagina', this.paginaActual);
+
+				let respServ = await fetch(this.servidor+'buscarFiltroTienda.php',{
+					method:'POST', body:datos
+				});
+
+				let resp = await respServ.json();
+
+				resp.data.forEach(dato =>{
+					this.productos.push( {...JSON.parse(dato.contenido),
+						calificacion: dato.calificacion,
+						url: dato.url,
+						descuento: dato.descuento ?? []
+					});
+				})
+				this.cargando = false;
 			},
 		}
 

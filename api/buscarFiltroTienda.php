@@ -27,6 +27,9 @@ $fDepartamento=-1;
 
 $fPrecio ="1";
 
+$bloque = isset($_POST['bloque']) ? (int)$_POST['bloque'] : null;
+$pagina = isset($_POST['pagina']) ? (int)$_POST['pagina'] : 1;
+
 $filas = [];
 
 if($_POST['idTour']>-1){ $fTour = "tipo = {$_POST['idTour']}"; } else{ $fTour="tipo in (1,2)";}
@@ -89,16 +92,29 @@ if($_POST['idPrecio']>-1){
 	}
 }
 
-$sentencia = "SELECT t.*, p.nombre as nombrePais, p.name as namePais, p.bandera FROM `tours` t inner join paises p on p.id = t.pais where activo=1 and visible = 1 and {$fTexto} and {$fPais} and {$fTour} and {$fActividad} and {$fDepartamento} and {$fCategoria} and {$fDuracion} and {$fPrecio} and {$fCiudades} and {$fHospedaje} and {$fTransporte}
-order by rand() limit 50;";
+$where = "activo=1 and visible = 1 and {$fTexto} and {$fPais} and {$fTour} and {$fActividad} and {$fDepartamento} and {$fCategoria} and {$fDuracion} and {$fPrecio} and {$fCiudades} and {$fHospedaje} and {$fTransporte}";
+
+$sqlCount = "SELECT COUNT(*) as total FROM `tours` t inner join paises p on p.id = t.pais where $where;";
+$total = $db->query($sqlCount)->fetch(PDO::FETCH_ASSOC)['total'];
+
+$totalPaginas = $bloque ? max(1, (int)ceil($total / $bloque)) : 1;
+$offset = $bloque ? ($pagina - 1) * $bloque : 0;
+$limit = $bloque ? "LIMIT $bloque OFFSET $offset" : '';
+
+$sentencia = "SELECT t.*, p.nombre as nombrePais, p.name as namePais, p.bandera FROM `tours` t inner join paises p on p.id = t.pais where $where order by rand() $limit;";
 //echo $sentencia; die();
 
 $sql = $db->query($sentencia);
 if($sql->execute()){
-	//echo $sql->debugDumpParams();
 	while($row = $sql->fetch(PDO::FETCH_ASSOC)){
 		$filas[] = $row;
 	}
 }
 
-echo json_encode($filas);
+echo json_encode([
+	'data' => $filas,
+	'total' => (int)$total,
+	'pagina' => $pagina,
+	'totalPaginas' => $totalPaginas,
+	'bloque' => $bloque ?? (int)$total
+]);

@@ -6,6 +6,8 @@ if (isset($_GET['id'])) { $idDepartamento = $_GET['id']-1; } else { $idDepartame
 
 if (isset($_GET['idTipo'])) { $idTipo = $_GET['idTipo']; } else { $idTipo = -1; }
 
+$texto = isset($_GET['texto']) ? $_GET['texto'] : '';
+
 
  $paises = [
    [
@@ -1290,7 +1292,7 @@ else
 
 			width:100%!important;
 
-			height: 320px!important;
+			height: 345px!important;
 
     	object-fit: cover!important;
 
@@ -1310,90 +1312,34 @@ else
 
 	<div class="container-fluid" id="app">
 
-		<div class="container">
-			<h1 class="fs-2 mt-3">
-				<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='1'):?> <span>Tours</span> <?php endif;?>
-				<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='2'):?> <span>Paquetes Turísticos</span><?php endif;?>
-				<?php if(isset($_GET['id'])):?> <span>Paquetes Turísticos y Tours de <?= $paises[$indice]['nombre'];?> </span><?php endif;?>
-				<?php if($indice<>-1):?> <span>Paquetes Turísticos y Tours de <?= $paises[$indice]['nombre']; ?> </span><?php else: $texto=''; echo "Resultados del país: ".$txtSimple; endif;?>
-			</h1>
-			
-					<div class="row col">
-							<div class="text muted my-3"><p><?= $paises[$indice]['descripcion']?></p></div>
-					</div>
+		<h1 class="fs-2 mt-3">
+			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='1'):?> <span>Tours</span> <?php endif;?>
+			<?php if(isset($_GET['idTipo']) && $_GET['idTipo']=='2'):?> <span>Paquetes Turísticos</span><?php endif;?>
+			<?php if(isset($_GET['id'])):?> <span>Paquetes Turísticos y Tours de <?= $paises[$indice]['nombre'];?> </span><?php endif;?>
+			<?php if($indice<>-1):?> <span>Paquetes Turísticos y Tours de <?= $paises[$indice]['nombre']; ?> </span><?php else: echo "Resultados del país: ".$txtSimple; endif;?>
+		</h1>
+
+		<?php if($indice>-1):?>
+		<div class="row col">
+			<div class="text muted my-3"><p><?= $paises[$indice]['descripcion']?></p></div>
 		</div>
+		<?php endif;?>
+
 		<div class="row row-cols-1 row-cols-lg-3 row-cols-xl-4">
-
-			<div class="col my-2 " v-for="(producto, index) in productos" :key="producto.id">
-
-				<div class="card h-100 border-0"><div class="position-relative">
-						<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
-								<span class="text-capitalize mx-1 px-1 rounded" v-if="producto.idTransporte!=undefined && producto.idTransporte!=-1 && producto.transporte!='3'" id="spanTransporte">{{queTransporte(producto)}}</span>
-								<span v-if="producto.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{hospedajes[producto.alojamiento]}}</span>
-								<span v-if="producto.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
-								<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
-								<span v-if="producto.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
-								<span v-if="producto.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
-							</div>
-							<a  class="aImgs text-decoration-none text-dark" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">
-								<img :src="queFoto(producto)" class="card-img-top rounded-top" alt="...">
-							</a>
-				    </div>
-					<div class="card-body">
-
-						<p class=" mb-0 titulo ps-1">
-
-							<a v-if="producto.tipo==1" class="text-decoration-none text-dark" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
-
-							<a v-if="producto.tipo==2" class="text-decoration-none text-dark" :href="'https://grupoeuroandino.com/tours/' + pedidos[index].url" target="_parent">{{producto.nombre}}</a></strong>
-
-							</p>
-							<div class="row row-cols-2">
-								<div style="color:#000">
-									<span><img class="bandera" src="https://grupoeuroandino.com/images/banderas/<?= $foto?>"> <strong><?= $paises[$indice]['nombre']?>,</strong></span>
-									<br>
-									<p class="card-text mb-0"><i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{producto.destino}}</strong></span></p>
-									<div class="estrellas"><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></div>
-									<span class="text-muted subText">{{queDuracion(producto.duracion, producto.tipo)}}</span>
-								</div>
-
-						
-
-							<div class="d-flex flex-column align-items-end justify-content-end" id="pegar">
-								<p class="mb-0" style="font-size: 12px;">Desde</p>
-
-								<p><span class="precio2"><span class="monedita fs-6"><span class="moneda-peque">S/.</span> </span> {{formatoMoneda(producto.peruanos.adultos)}}</span></p>
-
-								<p v-if="producto.oferta>0" class="precioAnt2 mb-0" style="font-size: 14px">S/ {{formatoMoneda(producto.oferta)}}</p>
-
-							</div>
-						</div>
-
-						
-
-					</div>
-
-				</div>
-
+			<div class="col my-2 " v-for="(tour, index) in productos" :key="tour.id">
+				<Card :duracion='duracion' :dias='dias' :noches='noches' :tour='tour'/>
 			</div>
 
-			<div v-if="productos.length==0">
-
-				<p>No existen productos que coincidan</p>
-
+			<div v-if="productos.length==0" class="text-center my-5">
+				<img src="https://grupoeuroandino.com/images/vacio.png" alt="Sin resultados" class="img-fluid mb-3" style="max-width: 200px;">
+				<h5 class="text-muted">No existen productos que coincidan</h5>
+				<p class="text-muted">Intenta con otros filtros de búsqueda</p>
 			</div>
 
 		</div>
-
-
-
-
-
 	</div>
 
-
-
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 
 
 
@@ -1406,299 +1352,84 @@ else
 
 
 
-	<script>
+	<script type="module">
+	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.13';
+		const {createApp} = Vue
 
 		var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
-
 			tostadaOk, tostadaMal;
 
-		//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
-
-
-
-		var app = new Vue({
-
-			el: '#app',
-
-			data: {
-
-				//servidor: 'http://localhost/euroAndinoApi/',
-
+		const app = createApp({
+			components:{Card},
+			data(){return {
 				servidor: window.lugarApi,
-
-				departamentos:['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica','Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno','San Martín', 'Tacna', 'Tumbes', 'Ucayali' ],
-
-				dias: [],
-
-				actividades: [],
-
-				categorias: [],
-
-				idTour: -1,
-
+				actividades: [], categorias: [],
+				idTour: <?= $idTipo; ?>,
 				idActividad: -1,
-
-				idDepartamento: -1,
-
+				idDepartamento: <?= $idDepartamento; ?>,
 				idCategoria: -1,
-
 				idDia: -1,
-
-				idPrecio: -1, idTransporte:-1, idHospedaje:-1, 
-				texto:'',
-				pais: '<?=  $paises[$indice]['id'] ?>?>',
-
+				idPrecio: -1, idTransporte:-1, idHospedaje:-1, texto:'<?= $texto;?>',
+				pais: '<?= $indice+1;?>',
 				precios: ['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00'],
-				hospedajes: ['','Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro', 'Casa', 'Casa 2', 'Casa 3', 'Airbnb', 'Rural'],
-
 				actividadSelect: '',
-
 				categoriaSelect: '',
-
-				productos: [],
-
-				duracion: [
-
-					{ clave: 1, valor: 'Half Day (Medio día)' },
-
-					{ clave: 2, valor: 'Full Day (1 día)' }],
-
-				duracionDias: [
-
-					{ clave: 1, valor: 'Half Day (Medio día)' },
-
-					{ clave: 2, valor: 'Full Day (1 día)' }],
-
-				duracionNoches: [{
-
-					clave: 1,
-
-					valor: '0 noches'
-
-				}, {
-
-					clave: 2,
-
-					valor: '1 noche'
-
-				}],
-
+				productos: [], contenidos:[],
+				duracion: [{ clave: 1, valor: 'Half Day (Medio día)' }, { clave: 2, valor: 'Full Day (1 día)' }],
+				dias: [{ clave: 1, valor: 'Half Day (Medio día)' }, { clave: 2, valor: 'Full Day (1 día)' }],
+				noches: [{ clave: 1, valor: '0 noches' }, { clave: 2, valor: '1 noche' }],
 				pedidos: [],
-				queTransportes: [
-					{ id: 0, transporte: "ninguno", idTransporte: 3 },
-					// Terrestre (1)
-					{ id: 1, transporte: "tren", idTransporte: 1 },
-					{ id: 2, transporte: "bus", idTransporte: 1 },
-					// Aéreo (2)
-					{ id: 3, transporte: "avión", idTransporte: 2 },
-					{ id: 4, transporte: "avioneta", idTransporte: 2 },
-					// Acuático (4)
-					{ id: 5, transporte: "barco", idTransporte: 4 },
-					{ id: 6, transporte: "lancha", idTransporte: 4 }
-				],
-
-			},
-
-			mounted: function() {
-
-				this.cargar();
-
-				for (let i = 1; i <= 31; i++) {
-
-					this.dias.push(i);
-
-				}
-
+			}},
+			mounted() {
 				for (let dia = 2; dia <= 31; dia++) {
-
-					this.duracion.push({
-
-						clave: dia + 1,
-
-						valor: dia + " días / 0 noches"
-
-					});
-
-					this.duracionDias.push({
-
-						clave: dia + 1,
-
-						valor: dia + " días"
-
-					});
-
-					this.duracionNoches.push({
-
-						clave: dia + 1,
-
-						valor: dia + ' noches'
-
-					});
-
+					this.duracion.push({ clave: dia+1, valor: dia + ' días / 0 noches' });
+					this.dias.push({ clave: dia+1, valor: dia + ' días' });
+					this.noches.push({ clave: dia+1, valor: dia + ' noches' });
 				}
-
+				this.cargar();
 				this.buscarEnTienda();
-
-
-
-
-
-				//modalNuevo = new bootstrap.Modal( document.getElementById('modalNuevo') );
-
-
-
 			},
-
 			methods: {
-
 				async cargar() {
-
 					let respServ = await fetch(this.servidor + 'pedirDatosTienda.php', {
-
 						method: 'POST'
-
 					});
-
-					//console.log( await respServ.text() );
-
 					let temporal = await respServ.json();
-
 					this.actividades = temporal[0]
-
 					this.categorias = temporal[1]
-
 				},
-
 				async buscarEnTienda() {
-
 					this.pedidos = [];
-
 					this.productos = [];
-
 					let datos = new FormData();
-
 					datos.append('idTour', this.idTour);
-
 					datos.append('idActividad', this.idActividad);
-
 					datos.append('actividad', this.actividadSelect);
-
 					datos.append('idDepartamento', this.idDepartamento);
-
 					datos.append('idCategoria', this.idCategoria);
-
 					datos.append('idTransporte', this.idTransporte);
-
 					datos.append('idHospedaje', this.idHospedaje);
-
 					datos.append('categoria', this.categoriaSelect);
-
 					datos.append('idDia', this.idDia);
-
 					datos.append('idPrecio', this.idPrecio);
-
 					datos.append('texto', this.texto);
 					datos.append('pais', "<?= $indice+1;?>");
-
 					let respServ = await fetch(this.servidor + 'mostrarTours_scriptInternacional.php', {
-
 						method: 'POST',
-
 						body: datos
-
 					});
-
-					//console.log( await respServ.json() );
-
 					this.pedidos = await respServ.json();
-					//console.log(pedidos)
-
-
-
-					this.pedidos.forEach(data => {
-
-						this.productos.push(JSON.parse(data.contenido))
-
+					this.pedidos.forEach(dato => {
+						this.productos.push( {...JSON.parse(dato.contenido),
+							calificacion: dato.calificacion,
+							url: dato.url,
+							descuento: dato.descuento ?? []
+						});
 					})
-
-
-
 				},
-
-				queFoto(prod) {
-
-					//console.log( prod );
-
-					if (prod.fotos.length == 0) {
-
-						return 'https://grupoEuroAndino.com/app/render/images/defecto.jpg';
-
-					} else {
-
-						return 'https://grupoEuroAndino.com/app/render/images/subidas/' + prod.fotos[0].nombreRuta;
-
-					}
-
-				},
-
-				queDuracion(idDuracion, tipo){
-
-				if(tipo===1){
-
-					//return this.duracion[idDuracion].valor ;
-
-					return this.duracion.find( x => x.clave === idDuracion ).valor;
-
-				}
-
-				if(tipo===2){
-
-					//console.log( idDuracion );
-
-					//return this.duracion[idDuracion.dias-1].valor + " y "+ this.duracionNoches[idDuracion.noches-1].valor ;
-
-					return this.duracionDias.find( x => x.clave === idDuracion.dias ).valor + " / " + this.duracionNoches.find( x => x.clave === idDuracion.noches ).valor;
-
-				}
-
-			},
-
-				queDepa(valor) {
-
-					return this.departamentos[valor];
-
-				},
-
-				formatoMoneda(valor) {
-
-					return parseFloat(valor).toFixed(0)
-
-				},
-
-				queId(index) {
-
-					return this.pedidos[index].id;
-
-				},
-				queTransporte(tourActivo){
-					if ( 'idTransporte' in tourActivo )
-						return this.queTransportes.find(tra => tra.id == tourActivo.idTransporte )?.transporte
-					else{
-						let texto = ''
-						switch(tourActivo.transporte){
-							case '1': texto = 'bus'; break;
-							case '2': texto = 'avión'; break;
-							case '3': texto = 'Ninguno'; break;
-							case '4': texto = 'barco'; break;
-						}
-						return texto
-					}
-				}
-
 			}
-
 		});
-
+		app.mount('#app')
 	</script>
 
 </body>
