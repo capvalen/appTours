@@ -179,7 +179,7 @@ $idDepartamento = $indice;
 				datos.append('idPrecio', this.idPrecio);
 				datos.append('texto', '');
 				let respServ = await fetch(this.servidor + 'buscarFiltroTienda.php', { method: 'POST', body: datos });
-				this.pedidos = await respServ.json();
+				this.pedidos = (await respServ.json()).data;
 				try {
 					this.pedidos.forEach(data => {
 						this.productos.push({...JSON.parse(data.contenido),

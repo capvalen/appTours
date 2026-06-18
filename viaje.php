@@ -123,8 +123,10 @@ else
 			color: #fff;
 			font-weight: 500;
 		}
+		#smallSoles{ vertical-align: top; position: relative; top: 3px;}
 		@media (max-width: 576px) {
 			.loader-overlay { padding: 20px; text-align: center; }
+			#smallSoles{ font-size: 1rem !important;}
 		}
 		.loader {
 			width: 8px;

@@ -361,7 +361,7 @@ if(array_key_exists($buscarWeb, $ciudades)){
 
 					//console.log( await respServ.json() );
 
-					this.pedidos = await respServ.json();
+					this.pedidos = (await respServ.json()).data;
 					//console.log(this.pedidos)
 
 					this.pedidos.forEach(dato => {

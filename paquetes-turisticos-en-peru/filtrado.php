@@ -185,7 +185,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 					//console.log( await respServ.json() );
 
-					this.pedidos = await respServ.json();
+					this.pedidos = (await respServ.json()).data;
 					this.pedidos.forEach(dato => {
 						this.productos.push( {...JSON.parse(dato.contenido),
 							calificacion: dato.calificacion,

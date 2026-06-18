@@ -27,7 +27,7 @@ $fDepartamento=-1;
 
 $fPrecio ="1";
 
-$bloque = isset($_POST['bloque']) ? (int)$_POST['bloque'] : null;
+$bloque = isset($_POST['bloque']) ? (int)$_POST['bloque'] : 500;
 $pagina = isset($_POST['pagina']) ? (int)$_POST['pagina'] : 1;
 
 $filas = [];
