@@ -124,6 +124,7 @@ else
 			font-weight: 500;
 		}
 		#smallSoles{ vertical-align: top; position: relative; top: 3px;}
+		.img75{width: 85%!important;}
 		@media (max-width: 576px) {
 			.loader-overlay { padding: 20px; text-align: center; }
 			#smallSoles{ font-size: 1rem !important;}
@@ -728,19 +729,19 @@ else
 
 				<div class="col-12 col-md-4">
 
-					<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2022/11/yape.png" alt=""></a>
+					<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2026/06/pie1.webp" class="img75" alt=""></a>
 
 				</div>
 
 				<div class="col-12 col-md-4">
 
-					<a href=""><img src="https://grupoeuroandino.com/images/pie2.png?v=2" alt=""></a>
+					<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2026/06/pie2.webp" class="img75" alt=""></a>
 
 				</div>
 
 				<div class="col-12 col-md-4">
 
-					<a href=""><img src="https://grupoeuroandino.com/images/form.png?v=1" alt="" style="margin-bottom: 1em;"></a>
+					<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2026/06/pie3.webp?v=1" class="img75" alt="" style="margin-bottom: 1em;"></a>
 
 					<form id="formulario">
 
@@ -770,13 +771,7 @@ else
 
 					</div>
 
-					<div>
-
-						<a href="https://grupoeuroandino.com/libro-de-reclamaciones/"><img src="https://grupoeuroandino.com/wp-content/uploads/elementor/thumbs/Libro-de-Reclamaciones-pqjdp1qustruv9u46xq03mwub2nazjop222m18a8h4.jpg" width="160" height="auto" style="margin-right:10px;"></a>
-
-						<a href="https://consultasenlinea.mincetur.gob.pe/directoriodeserviciosturisticos/DirPrestadores/DirBusquedaPrincipal/AgenciaViajes?IdGrupo=2"><img src="https://grupoeuroandino.com/wp-content/uploads/elementor/thumbs/Agencia-de-viajes-y-Turismo-Registrada-pqjfqac5b415hhgbj3eivnkskvnvqjfs4jzl6doxns.jpg" width="160" height="auto"></a>
-
-					</div>
+			
 
 				</div>
 
