@@ -390,23 +390,23 @@ else
 
 				<div class="row container" id="divAdultos">
 
-					<div class="col-5 ">
+					<div class="col-6 offset-1">
 
 						<p v-if="tourActivo.tipo=='1'" class="text-muted text-end mb-0">Adultos</p>
 
-						<p v-else class="text-muted mb-0">en hab. matrimonial, doble ó triple</p>
+						<p v-else class="text-muted mb-0">En hab. matrimonial, doble ó triple</p>
 
 					</div>
 
-					<div class="col-6 ms-3">
+					<div class="col-5 ">
 
 						<div class="input-group mx-auto">
 
-							<button class="btn btn-outline-secondary border-0" type="button" @click='restarAdulto()'><i class="icofont-minus"></i></button>
+							<button class="btn btn-outline-secondary border border-end-0" type="button" @click='restarAdulto()'><i class="icofont-minus"></i></button>
 
-							<input type="text" class="form-control w-25 border-0 text-center text-muted" placeholder=" " @focusout="contarMinimoPersonas()" v-model="cantAdultos">
+							<input type="text" class="form-control w-25 border border-start-0 border-end-0 text-center text-muted" placeholder=" " @focusout="contarMinimoPersonas()" v-model="cantAdultos">
 
-							<button class="btn btn-outline-secondary border-0" type="button" @click="sumarAdulto()"><i class="icofont-plus"></i></button>
+							<button class="btn btn-outline-secondary border border-start-0" type="button" @click="sumarAdulto()"><i class="icofont-plus"></i></button>
 
 						</div>
 
@@ -414,25 +414,25 @@ else
 
 				</div>
 
-				<div class="row container mt-2" id="divKids">
+				<div class="row container my-2" id="divKids">
 
-					<div class="col-5 ">
+					<div class="col-6 offset-1">
 
 						<p v-if="tourActivo.tipo==1" class="text-muted text-end mb-0">Niños <br><small>(hasta 10 años)</small></p>
 
-						<p v-else class="text-muted mb-0">en hab. simple <small class="text fst-italic">(1 persona por habitación)</small></p>
+						<p v-else class="text-muted mb-0">En hab. simple <small class="text fst-italic">(1 persona por habitación)</small></p>
 
 					</div>
 
-					<div class="col-6 ms-3">
+					<div class="col-5 ">
 
 						<div class="input-group mx-auto">
 
-							<button class="btn btn-outline-secondary border-0" type="button" @click="restarKid()"><i class="icofont-minus"></i></button>
+							<button class="btn btn-outline-secondary border border-end-0" type="button" @click="restarKid()"><i class="icofont-minus"></i></button>
 
-							<input type="text" class="form-control w-25 border-0 text-center text-muted" placeholder=" " @focusout="contarMinimoPersonas()" v-model="cantKids">
+							<input type="text" class="form-control w-25 border border-start-0 border-end-0 text-center text-muted" placeholder=" " @focusout="contarMinimoPersonas()" v-model="cantKids">
 
-							<button class="btn btn-outline-secondary border-0" type="button" @click="sumarKid()"><i class="icofont-plus"></i></button>
+							<button class="btn btn-outline-secondary border border-start-0" type="button" @click="sumarKid()"><i class="icofont-plus"></i></button>
 
 						</div>
 
@@ -559,56 +559,8 @@ else
 						<div class="carousel-wrapper">
 
 							<div class=" my-2 owl-carousel owl-theme">
-								<div class="col-12 my-3" v-for="(tour, index) in contenidos">
-									<div class="card border-0 h-100">
-
-
-										<div v-if="tour.fotos.length>0" class="divImagen card-img-top position-relative">
-											<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
-													<span v-if="tour.transporte==1" class="mx-1 px-1 rounded" id="spanTransporte">Bus {{variosTours.tipo}}</span>
-													<span v-if="tour.transporte==2" class="mx-1 px-1 rounded" id="spanTransporte">Avión</span>
-													<span v-if="tour.transporte==4" class="mx-1 px-1 rounded" id="spanTransporte">Barco</span>													
-													<span v-if="tour.alojamiento" class="mx-1 px-1 rounded" id="spanOferta"> {{retornarHospedaje(tour.alojamiento)}}</span>
-													<span v-if="tour.alimentacion" class="mx-1 px-1 rounded" id="spanAlimentacion">Alimentación</span>
-												<span class="mx-1 px-1 rounded" id="spanTour">Tour</span>
-												<span v-if="tour.guia" class="mx-1 px-1 rounded" id="spanGuia">Guía</span>
-												<span v-if="tour.tickets" class="mx-1 px-1 rounded" id="spanTickets">Tickets</span>
-											</div>
-											<a class="aImgs" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
-											<a class="aImgs" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent"><img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/'+tour.fotos[0].nombreRuta" alt=""></a>
-										</div>
-										
-										<div class="card-body">
-											<div class="divProducto ">								
-												<div>
-													<p class="mb-0 titulo text-capitalize text-start"><strong>
-														<a class="text-decoration-none text-dark" v-if="tour.tipo==1" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
-														<a class="text-decoration-none text-dark" v-if="tour.tipo==2" :href="'https://grupoeuroandino.com/tours/' + tours[index].url" target="_parent">{{tour.nombre}}</a>
-														</strong>
-													</p>
-													
-												</div>
-								
-												<div class="row row-cols-2">
-													<div class="text-start">
-														<span class="text-capitalize"><img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg" style="width:20px; height:13.59px; display:inline;"></span> <span ><strong>{{tour.destino}},</strong></span><br>
-														<i class="icofont-google-map"></i> <span class="text-capitalize"><strong>{{queDepa(tour.departamento)}}</strong></span>
-														<div class="estrellas">
-															<i v-for="star in cuantasEstrellas(index)" class="icofont-star"></i>
-														</div>
-														<span v-if="tour.tipo==1" class="text-muted subText">{{queDura(tour.duracion)}}</span>
-														<span v-else class="text-muted subText">{{queDuraDia(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches-1)}}</span>
-													
-													</div>
-													<div class="d-flex flex-column align-items-end justify-content-end" id="pegar">
-														<p class="mb-0" style="font-size: 12px;">Desde</p>
-														<p><span class="precio2"><span class="moneda-peque">S/.</span> {{formatoMonedaCero(tour.peruanos.adultos)}}</span></p>
-														<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0">S/. {{formatoMonedaCero(tour.oferta)}}</p>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
+								<div class="col-12 my-3" v-for="(tour) in contenidos" :key="tour.id">
+									<Card :duracion="duracion" :dias="duracionDias" :noches="duracionNoches" :tour="tour" />
 								</div>
 
 								<!-- <div class=" item" v-for="recomendado in recomendados" :key="recomendado.id">
@@ -796,7 +748,7 @@ else
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <!-- Desarrollo -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
 <!-- Produccion -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
 
@@ -815,7 +767,8 @@ else
 
 
 
-	<script>
+	<script type="module">
+		import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.14';
 		var datepicker = $.fn.datepicker.noConflict();
 
 		$.fn.bootstrapDP = datepicker;
@@ -836,10 +789,8 @@ else
 
 		$(".next").each(function(i) {$(".next")[i].innerHTML = `<i class="icofont-rounded-right"></i>`}) */
 
-		var app = new Vue({
-
-			el: '#app',
-
+		const app = Vue.createApp({
+			components:{Card},
 			data() {
 
 				return {
@@ -987,9 +938,12 @@ else
 				this.tours = temp;
 				this.contenidos=[];
 				this.tours.forEach(dato=>{
-					this.contenidos.push( JSON.parse(dato.contenido));
+					this.contenidos.push( {...JSON.parse(dato.contenido),
+						calificacion: dato.calificacion,
+						url: dato.url,
+						descuento: dato.descuento ?? []
+					});
 				});
-				console.log( this.contenidos);
 			},
 			async pedirDatos() {
 
@@ -1518,7 +1472,7 @@ else
 
 			},
 
-		})
+		}).mount('#app')
 
 
 

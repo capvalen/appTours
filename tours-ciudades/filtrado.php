@@ -249,7 +249,7 @@ if(array_key_exists($buscarWeb, $ciudades)){
 
 
 	<script type="module">
-	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.13';
+	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.14';
 
 		var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
 
@@ -361,7 +361,8 @@ if(array_key_exists($buscarWeb, $ciudades)){
 
 					//console.log( await respServ.json() );
 
-					this.pedidos = (await respServ.json()).data;
+					//this.pedidos = (await respServ.json()).data;
+					this.pedidos = await respServ.json();
 					//console.log(this.pedidos)
 
 					this.pedidos.forEach(dato => {

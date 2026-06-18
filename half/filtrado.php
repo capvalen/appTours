@@ -68,7 +68,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 	<?php include(__DIR__."/../app/render/footer.php");?>
 
 	<script type="module">
-	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.13';
+	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.14';
 
 		var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
 			tostadaOk, tostadaMal;
