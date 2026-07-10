@@ -78,7 +78,7 @@ else
 		.estrellas{color: #ffd400;}
 		.divImagen img{
 			width:100%!important;
-			height: 320px!important;
+			height: 345px!important;
     	object-fit: cover!important;
 		}
 		.icofont-google-map{margin-left:3px!important;}
@@ -450,14 +450,19 @@ else
 						Mínimo debe haber un <strong>adulto</strong>
 					</div>
 				</div>
+				<div class="row col mx-auto my-3 " v-if="!faltaHabitacion">
+					<div class="alert alert-warning " role="alert">
+						Debe seleccionar al menos una <strong>habitación</strong>
+					</div>
+				</div>
 
-				<div class=" ms-5 ps-3" id="divDuracion">
+				<div class="row col-11 offset-1 my-3" id="divDuracion">
 
 					<span><strong>Anticipación:</strong> {{queAnticipa(tourActivo.anticipacion)}}</span><br>
 					<span><strong>Duración:</strong> {{queDuraComp}}</span><br>
 
 
-					<span><strong>Mínimo de viajeros:</strong>
+					<span><strong>Mínimo de viajeros: </strong>
 
 						<span v-if="tourActivo.minimo==1">1 viajero</span>
 
@@ -476,14 +481,12 @@ else
 
 				</div>
 
-				<div class="row col mx-auto mt-3 mb-0 " v-if="faltaPais">
-
-					<div class="alert alert-warning " role="alert">
-
-						{{msjError}}
-
+				<div class="row mt-3 mb-0 " v-if="faltaPais">
+					<div class="col-11 offset-1">
+						<div class="alert alert-warning " role="alert">
+							{{msjError}}
+						</div>
 					</div>
-
 				</div>
 
 
@@ -876,7 +879,7 @@ else
 
 					incluidos: [],
 					noIncluidos: [],
-					faltaMinimo: true, faltaAdulto:true,
+					faltaMinimo: true, faltaAdulto:true, faltaHabitacion:true,
 					recomendados: [],
 					categorias2: [], actividades2: [], contenidos:[], comentarios:[],
 					transportes: ['Terrestre', 'Aéreo', 'Ninguno'],
@@ -991,7 +994,7 @@ else
 				}
 				this.anticipacion.push({ clave: 31, valor: 31 + ' días' });
 				for (let mes = 2; mes <= 11; mes++) {
-					this.anticipacion.push({ clave: mes*31, valor: mes + ' mes' });
+					this.anticipacion.push({ clave: mes*31, valor: mes + ' meses' });
 				}
 				this.anticipacion.push({ clave: 365, valor: '1 año' });
 
@@ -1100,21 +1103,48 @@ else
 				}
 				this.precioDolares = this.precioTotal / this.dolar
 
+				if (this.tourActivo.tipo == '2') {
+					// Paquete: cantAdultos = hab. matrimonial (mín. 2 personas c/u), cantKids = hab. simple (1 persona c/u)
+					const totalPersonas = parseInt(this.cantKids) + parseInt(this.cantAdultos) * 2;
 
-				if(this.cantKids>0 && this.cantAdultos==0 ){
-					this.msjError = "Se debe reservar como mínimo un adulto";
-					return this.faltaAdulto = false;
-				}
-				else
-					this.faltaAdulto=true;
-					if ((this.cantAdultos + this.cantKids) < parseInt(this.tourActivo.minimo)) {
-						this.faltaPais = true;
-						this.msjError = "Debe rellenar el campo de su nacionalidad antes de reservar";
-						return this.faltaMinimo = false;
-					} else {
+					if (parseInt(this.cantAdultos) == 0 && parseInt(this.cantKids) == 0) {
+						this.faltaHabitacion = false;
 						this.faltaPais = false;
-						return this.faltaMinimo = true;
+						this.faltaAdulto = true;
+						this.faltaMinimo = true;
+						return false;
 					}
+					this.faltaHabitacion = true;
+					this.faltaAdulto = true;
+					this.faltaPais = false;
+
+					if (totalPersonas < parseInt(this.tourActivo.minimo)) {
+						this.faltaMinimo = false;
+						this.msjError = `La capacidad mínima debe cubrir ${this.tourActivo.minimo} personas`;
+						return false;
+					} else {
+						this.faltaMinimo = true;
+						return true;
+					}
+				} else {
+					// Tour simple: cantAdultos y cantKids son personas
+					if(this.cantKids>0 && this.cantAdultos==0 ){
+						this.msjError = "Se debe reservar como mínimo un adulto";
+						this.faltaAdulto = false;
+						this.faltaMinimo = true;
+						return false;
+					}
+					this.faltaAdulto = true;
+
+					if ((parseInt(this.cantAdultos) + parseInt(this.cantKids)) < parseInt(this.tourActivo.minimo)) {
+						this.faltaMinimo = false;
+						this.msjError = `La cantidad mínima de viajeros debe ser ${this.tourActivo.minimo}`;
+						return false;
+					} else {
+						this.faltaMinimo = true;
+						return true;
+					}
+				}
 			},
 
 			restarAdulto() {

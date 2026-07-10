@@ -883,11 +883,15 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					
 					axios.post(this.servidor+'actualizarTours.php', { id: this.idGlobal, tour: queTour, actividad: this.tour.actividad, categoria: this.tour.categoria, url: this.tourActivo.url })
 					.then((response)=>{ console.log( response.data );
-						if(response.data =='ok'){
+						if( response.data.tour ){
+							let index = this.todosTours.findIndex(t => t.id == this.idGlobal);
+							if(index !== -1){
+								this.todosTours[index] = response.data.tour;
+								this.variosTours[index] = JSON.parse(response.data.tour.contenido);
+							}
 							this.mensajeBien = "Se actualizó correctamente";
 							modalNuevo.hide();
 							tostadaOk.show();
-							this.verTours();
 						}
 					})
 					.catch((error)=>{ console.log( error );});

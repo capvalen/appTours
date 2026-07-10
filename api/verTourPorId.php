@@ -12,7 +12,7 @@ if( $sql->execute( [ $_POST['id'] ] )){
 	}
 }else{
 	echo $sql->debugDumpParams();
-	echo $sql->errorinfo();
+	print_r($sql->errorinfo());
 }
 
 echo json_encode($filas);

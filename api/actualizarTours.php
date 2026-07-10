@@ -54,10 +54,12 @@ if($resp){
 		$sqlInsertActividad -> execute([ $_POST['actividad'] ]);
 	} */
 	
-	echo 'ok';
+	$_POST['id'] = $idTour;
+	include __DIR__ . '/verTourPorId_v2.php';
+	exit;
 }else{
-	echo $sql->debugDumpParams();
-	echo $sql->errorinfo();
+	
+	echo json_encode(['ok' => false, 'error' => $sql->debugDumpParams()]);
 }
 
 ?>
