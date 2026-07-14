@@ -41,14 +41,28 @@ if( $sql->execute([$_POST['id']])){
 	$total = $adultos + $menores;
 	$url = $contenido['url'];
 
-	// Buscar descuento activo para este tour
-	$sqlDesc = $db->prepare("SELECT id, nombre_descuento, tipo_descuento, valor_descuento FROM `descuentos` WHERE `id_tour` = ? AND curdate() between fecha_inicio and fecha_fin AND `activo` = 1 limit 1;");
+	// Buscar descuento activo para este tour (individual)
+	$sqlDesc = $db->prepare("SELECT d.id, d.nombre_descuento, d.tipo_descuento, d.valor_descuento FROM `descuentos` d WHERE d.`id_tour` = ? AND curdate() between d.fecha_inicio and d.fecha_fin AND d.`activo` = 1 limit 1;");
 	$sqlDesc->execute([$_POST['id']]);
 	$descuento = $sqlDesc->fetch(PDO::FETCH_ASSOC);
 
-	/* while(  ){
-		
-	} */
+	// Si no hay descuento individual, buscar por alcance (país, departamento, ciudad)
+	if (!$descuento) {
+		$sqlScope = $db->prepare("
+			SELECT id, promocion AS nombre_descuento, tipo AS tipo_descuento, valor AS valor_descuento, alcance
+			FROM `promociones` 
+			WHERE activo = 1 AND CURDATE() BETWEEN inicio AND fin
+			  AND (
+				(alcance = 'pais' AND pais_id = ?) OR
+				(alcance = 'departamento' AND departamento = ?) OR
+				(alcance = 'ciudad' AND ciudad = ?)
+			  )
+			ORDER BY FIELD(alcance, 'ciudad', 'departamento', 'pais')
+			LIMIT 1
+		");
+		$sqlScope->execute([$tempo['pais'], $contenido['departamento'], $contenido['destino']]);
+		$descuento = $sqlScope->fetch(PDO::FETCH_ASSOC);
+	}
 }else{
 	//echo $sql->debugDumpParams();
 	echo $sql->errorinfo();

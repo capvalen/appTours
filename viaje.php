@@ -394,7 +394,7 @@ else
 
 						<p v-if="tourActivo.tipo=='1'" class="text-muted text-end mb-0">Adultos</p>
 
-						<p v-else class="text-muted mb-0">En hab. matrimonial, doble ó triple</p>
+						<p v-else class="text-muted mb-0">Habitación simple</p>
 
 					</div>
 
@@ -420,7 +420,7 @@ else
 
 						<p v-if="tourActivo.tipo==1" class="text-muted text-end mb-0">Niños <br><small>(hasta 10 años)</small></p>
 
-						<p v-else class="text-muted mb-0">En hab. simple <small class="text fst-italic">(1 persona por habitación)</small></p>
+						<p v-else class="text-muted mb-0">Menores <br><small>(hasta 10 años)</small></p>
 
 					</div>
 
@@ -448,11 +448,6 @@ else
 				<div class="row col mx-auto my-3 " v-if="!faltaAdulto">
 					<div class="alert alert-warning " role="alert">
 						Mínimo debe haber un <strong>adulto</strong>
-					</div>
-				</div>
-				<div class="row col mx-auto my-3 " v-if="!faltaHabitacion">
-					<div class="alert alert-warning " role="alert">
-						Debe seleccionar al menos una <strong>habitación</strong>
 					</div>
 				</div>
 
@@ -506,7 +501,7 @@ else
 					<div class="col-10 mx-auto">
 						<div class="alerta-descuento text-center my-2">
 							<img :src="imagenDescuento" alt="img descuento" style="max-height: 60px; width: auto;" >
-							<strong>¡Descuento disponible!</strong><br>
+							<p class="mb-0"><strong>¡Descuento disponible!</strong></p>
 							<span class="text-capitalize">{{descuentoActivoTexto}}</span>
 						</div>
 					</div>
@@ -684,19 +679,19 @@ else
 
 				<div class="col-12 col-md-4">
 
-					<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2026/06/pie1.webp" class="img75" alt=""></a>
+					<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2026/07/p1.webp" class="img75" alt=""></a>
 
 				</div>
 
 				<div class="col-12 col-md-4">
 
-					<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2026/06/pie2.webp" class="img75" alt=""></a>
+					<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2026/07/p2.webp" class="img75" alt=""></a>
 
 				</div>
 
 				<div class="col-12 col-md-4">
 
-					<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2026/06/pie3.webp?v=1" class="img75" alt="" style="margin-bottom: 1em;"></a>
+					<a href=""><img src="https://grupoeuroandino.com/wp-content/uploads/2026/07/p3a.webp" class="img75" alt="" style="margin-bottom: 1em;"></a>
 
 					<form id="formulario">
 
@@ -712,17 +707,15 @@ else
 
 					<div class="d-flex" style="margin-bottom: 1em;">
 
-						<a href="https://www.facebook.com/grupoeuroandino/"><img src="https://grupoeuroandino.com/images/facebook.png" width="50" height="50"></a>
+						<a href="https://www.tiktok.com/@grupoeuroandino/"><img src="https://grupoeuroandino.com/wp-content/uploads/2026/07/tiktok.png" width="50" height="50"></a>
 
-						<a href="https://twitter.com/grupoeuroandino/"><img src="https://grupoeuroandino.com/images/twitter.png" width="50" height="50" style="margin:0 5px;"></a>
+						<a href="https://www.facebook.com/grupoeuroandino/"><img src="https://grupoeuroandino.com/wp-content/uploads/2026/07/facebook.png" width="50" height="50" style="margin:0 5px;"></a>
 
-						<a href="https://twitter.com/grupoeuroandino/"><img src="https://grupoeuroandino.com/images/instagram.png" width="50" height="50" style="margin:0 5px;"></a>
+						<a href="https://www.instagram.com/grupoeuroandino/"><img src="https://grupoeuroandino.com/wp-content/uploads/2026/07/instagram.png" width="50" height="50" style="margin:0 5px;"></a>
 
-						<a href="https://www.youtube.com/channel/UCG31MOsbyOuHr6-LpH4Mkbw"><img src="https://grupoeuroandino.com/images/youtube.png" width="50" height="50" style="margin:0 5px;"></a>
+						<a href="https://twitter.com/grupoeuroandino/"><img src="https://grupoeuroandino.com/wp-content/uploads/2026/07/x.png" width="50" height="50" style="margin:0 5px;"></a>
 
-						<a href="https://www.linkedin.com/in/grupo-euro-andino-426b81123/"><img src="https://grupoeuroandino.com/images/in.png" width="50" height="50" style="margin:0 5px;"></a>
-
-						<a href="https://www.flickr.com/photos/193956460@N06/"><img src="https://grupoeuroandino.com/images/cua.png" width="50" height="50" style="margin:0 5px;"></a>
+						<a href="https://www.youtube.com/channel/UCG31MOsbyOuHr6-LpH4Mkbw"><img src="https://grupoeuroandino.com/wp-content/uploads/2026/07/youtube.png" width="50" height="50" style="margin:0 5px;"></a>
 
 					</div>
 
@@ -1104,8 +1097,8 @@ else
 				this.precioDolares = this.precioTotal / this.dolar
 
 				if (this.tourActivo.tipo == '2') {
-					// Paquete: cantAdultos = hab. matrimonial (mín. 2 personas c/u), cantKids = hab. simple (1 persona c/u)
-					const totalPersonas = parseInt(this.cantKids) + parseInt(this.cantAdultos) * 2;
+					// Paquete: cada adulto y niño cuenta como 1 persona
+					const totalPersonas = parseInt(this.cantAdultos) + parseInt(this.cantKids);
 
 					if (parseInt(this.cantAdultos) == 0 && parseInt(this.cantKids) == 0) {
 						this.faltaHabitacion = false;
@@ -1459,20 +1452,20 @@ else
 
 					const nombre = (descuento.nombre_descuento ?? '').toString().trim();
 					const tipo = (descuento.tipo_descuento ?? '').toString().trim().toLowerCase();
-					const valor = descuento.valor_descuento;
+					const valorStr = descuento.valor_descuento;
+					const valorNum = parseFloat(valorStr);
 
-					if (!nombre || Number.isNaN(valor)) return '';
+					if (!nombre || isNaN(valorNum)) return '';
 
 					if (tipo === 'combo') {
-						return `${valor} por ${nombre} `;
+						return `${valorStr} por ${nombre}`;
 					}
 					if (tipo === 'monto') {
-						valor = parseFloat(valor)
-						return `${nombre} S/ ${valor.toFixed(2)}`;
+						return `${nombre} S/ ${valorNum.toFixed(2)}`;
 					}
 
 					if (tipo === 'porcentaje') {
-						return `${nombre} ${valor.toFixed(2)}% off`;
+						return `${nombre} ${valorNum.toFixed(2)}% off`;
 					}
 
 					return '';

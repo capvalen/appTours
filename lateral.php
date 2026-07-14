@@ -217,6 +217,66 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 										<div class="invalid-feedback">La fecha de fin debe ser posterior a la de inicio.</div>
 									</div>
 
+									<!-- Alcance del descuento -->
+									<div class="mb-3">
+										<label for="alcanceDescuento" class="form-label">
+											<i class="bi bi-geo-alt me-1"></i>Alcance
+										</label>
+										<select class="form-select" id="alcanceDescuento" required>
+											<option value="individual" selected>Individual (tour específico)</option>
+											<option value="pais">País (Perú)</option>
+											<option value="departamento">Departamento</option>
+											<option value="ciudad">Ciudad</option>
+										</select>
+										<div class="invalid-feedback">Selecciona un alcance.</div>
+									</div>
+
+									<!-- País (se muestra cuando alcance = 'pais') -->
+									<div class="mb-3 d-none" id="grupoPais">
+										<label class="form-label">País</label>
+										<input type="text" class="form-control" value="Perú" disabled>
+										<input type="hidden" id="paisDescuento" value="140">
+									</div>
+
+									<!-- Departamento (se muestra cuando alcance = 'departamento') -->
+									<div class="mb-3 d-none" id="grupoDepartamento">
+										<label for="departamentoDescuento" class="form-label">Departamento</label>
+										<select class="form-select" id="departamentoDescuento">
+											<option value="">Seleccione...</option>
+											<option value="0">Amazonas</option>
+											<option value="1">Ancash</option>
+											<option value="2">Apurimac</option>
+											<option value="3">Arequipa</option>
+											<option value="4">Ayacucho</option>
+											<option value="5">Cajamarca</option>
+											<option value="6">Cusco</option>
+											<option value="7">Callao</option>
+											<option value="8">Huancavelica</option>
+											<option value="9">Huánuco</option>
+											<option value="10">Ica</option>
+											<option value="11">Junín</option>
+											<option value="12">La Libertad</option>
+											<option value="13">Lambayeque</option>
+											<option value="14">Lima</option>
+											<option value="15">Loreto</option>
+											<option value="16">Madre de Dios</option>
+											<option value="17">Moquegua</option>
+											<option value="18">Pasco</option>
+											<option value="19">Piura</option>
+											<option value="20">Puno</option>
+											<option value="21">San Martín</option>
+											<option value="22">Tacna</option>
+											<option value="23">Tumbes</option>
+											<option value="24">Ucayali</option>
+										</select>
+									</div>
+
+									<!-- Ciudad (se muestra cuando alcance = 'ciudad') -->
+									<div class="mb-3 d-none" id="grupoCiudad">
+										<label for="ciudadDescuento" class="form-label">Ciudad</label>
+										<input type="text" class="form-control" id="ciudadDescuento" placeholder="Ej: Arequipa">
+									</div>
+
 									<!-- Botón submit -->
 									<div class="d-grid">
 										<button type="submit" class="btn btn-primary">
@@ -241,16 +301,17 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 										<tr>
 											<th>Imagen</th>
 											<th>Nombre</th>
-											<th>Tipo</th>
-											<th>Valor</th>
-											<th>Inicio</th>
-											<th>Fin</th>
-											<th class="text-center">Acciones</th>
-										</tr>
-									</thead>
-									<tbody id="tbodyDescuentos">
-										<tr id="emptyRow">
-											<td colspan="7" class="empty-state">
+												<th>Alcance</th>
+												<th>Tipo</th>
+												<th>Valor</th>
+												<th>Inicio</th>
+												<th>Fin</th>
+												<th class="text-center">Acciones</th>
+											</tr>
+										</thead>
+										<tbody id="tbodyDescuentos">
+											<tr id="emptyRow">
+												<td colspan="8" class="empty-state">
 												<i class="bi bi-inbox"></i>
 												<p class="mb-0">No hay descuentos registrados</p>
 												<small>Agrega uno desde el formulario</small>
@@ -351,7 +412,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			tipo: document.getElementById('tipoDescuento').value,
 			valor: document.getElementById('valorDescuento').value,
 			inicio: document.getElementById('fechaInicio').value,
-			fin: document.getElementById('fechaFin').value
+			fin: document.getElementById('fechaFin').value,
+			alcance: document.getElementById('alcanceDescuento').value,
+			pais_id: document.getElementById('paisDescuento').value,
+			departamento: document.getElementById('departamentoDescuento').value,
+			ciudad: document.getElementById('ciudadDescuento').value
 		};
 		try {
 			let resp = await axios.post(window.lugarApi + 'Descuentos.php', {
@@ -383,6 +448,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					`<tr>
 						<td><img src="${p.imagen || './images/discount.png'}" width="35" height="auto" class="rounded"></td>
 						<td>${p.promocion}</td>
+						<td class="text-capitalize">${p.alcance || 'individual'}</td>
 						<td>${p.tipo == 'combo' ? '©' : p.tipo == 'porcentaje' ? '%' : 'S/'}</td>
 						<td>${p.valor}${p.tipo == 'porcentaje' ? '%' : ''}</td>
 						<td>${fechaLatam(p.inicio)}</td>
@@ -395,24 +461,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				).join('');
 				contador.textContent = resp.data.length + ' registros';
 			}else{
-				tbody.innerHTML = '<tr id="emptyRow"><td colspan="7" class="empty-state"><i class="bi bi-inbox"></i><p class="mb-0">No hay descuentos registrados</p><small>Agrega uno desde el formulario</small></td></tr>';
+				tbody.innerHTML = '<tr id="emptyRow"><td colspan="8" class="empty-state"><i class="bi bi-inbox"></i><p class="mb-0">No hay descuentos registrados</p><small>Agrega uno desde el formulario</small></td></tr>';
 				contador.textContent = '0 registros';
 			}
 		} catch (error) {
 			console.error(error);
-		}
-	}
-	async function adjuntarFoto(id){
-		let url = prompt('¿Cuál es la URL de la imagen?');
-		if(url){
-			try {
-				let resp = await axios.post(window.lugarApi + 'Descuentos.php', {
-					pedir: 'adjuntarFoto', id: id, url: url
-				});
-				if(resp.data == 'ok') listarDescuentos();
-			} catch (error) {
-				alert('Error de conexión');
-			}
 		}
 	}
 	async function adjuntarFoto(id){
@@ -459,6 +512,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				simbolo.style.display = '';
 				simbolo.textContent = this.value == 'porcentaje' ? '%' : 'S/';
 			}
+		});
+		document.getElementById('alcanceDescuento').addEventListener('change', function(){
+			document.getElementById('grupoPais').classList.add('d-none');
+			document.getElementById('grupoDepartamento').classList.add('d-none');
+			document.getElementById('grupoCiudad').classList.add('d-none');
+			if(this.value === 'pais') document.getElementById('grupoPais').classList.remove('d-none');
+			else if(this.value === 'departamento') document.getElementById('grupoDepartamento').classList.remove('d-none');
+			else if(this.value === 'ciudad') document.getElementById('grupoCiudad').classList.remove('d-none');
 		});
 		listarDescuentos();
 	});

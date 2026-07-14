@@ -1419,7 +1419,7 @@ else
 						body: datos
 					});
 					//this.pedidos = await respServ.json();
-					this.pedidos = (await respServ.json()).data;
+					this.pedidos = await respServ.json();
 					this.pedidos.forEach(dato => {
 						this.productos.push( {...JSON.parse(dato.contenido),
 							calificacion: dato.calificacion,

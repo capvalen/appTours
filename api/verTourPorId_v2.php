@@ -17,6 +17,28 @@ if( $sql->execute( [ $_POST['id'] ] )){
 		WHERE id_tour = ? AND d.activo = 1 AND CURDATE() BETWEEN fecha_inicio AND fecha_fin LIMIT 1;");
 		$stmt->execute([$row['id']]);
 		$descuento = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		// Si no hay individual, buscar por alcance
+		if (!$descuento) {
+			$contenido = json_decode($row['contenido'], true) ?? [];
+			$sqlScope = $db->prepare("SELECT id, promocion AS nombre_descuento, tipo AS tipo_descuento, valor AS valor_descuento, imagen
+				FROM `promociones` 
+				WHERE activo = 1 AND CURDATE() BETWEEN inicio AND fin
+				  AND (
+					(alcance = 'pais' AND pais_id = ?) OR
+					(alcance = 'departamento' AND departamento = ?) OR
+					(alcance = 'ciudad' AND ciudad = ?)
+				  )
+				ORDER BY FIELD(alcance, 'ciudad', 'departamento', 'pais')
+				LIMIT 1
+			");
+			$sqlScope->execute([$row['pais'], $contenido['departamento'] ?? '', $contenido['destino'] ?? '']);
+			$rowDescuento = $sqlScope->fetch(PDO::FETCH_ASSOC);
+			if ($rowDescuento) {
+				$descuento = $rowDescuento;
+			}
+		}
+
 		$row['descuento'] = $descuento ?: null;
 		$contenido = json_decode($row['contenido'], true) ?? [];
 

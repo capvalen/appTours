@@ -41,12 +41,15 @@ function crearPromocion($db){
 	$valor_descuento = $_POST['descuento']['valor'];
 	$fecha_inicio = $_POST['descuento']['inicio'];
 	$fecha_fin = $_POST['descuento']['fin'];
+	$alcance = $_POST['descuento']['alcance'] ?? 'individual';
+	$pais_id = $_POST['descuento']['pais_id'] ?? 140;
+	$departamento = $_POST['descuento']['departamento'] ?? null;
+	$ciudad = $_POST['descuento']['ciudad'] ?? null;
 
-	$sql="INSERT INTO `promociones` (`promocion`, `tipo`, `valor`, `inicio`, `fin`, `activo`) VALUES
-	( '{$nombre_descuento}', '{$tipo_descuento}', '{$valor_descuento}', '{$fecha_inicio}', '{$fecha_fin}', 1);";
-	if($db->query($sql)){
-		echo 'ok';
-	}else{ echo 'error';}
+	$sql = "INSERT INTO `promociones` (`promocion`, `tipo`, `valor`, `inicio`, `fin`, `activo`, `alcance`, `pais_id`, `departamento`, `ciudad`) VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?, ?)";
+	$stmt = $db->prepare($sql);
+	$resp = $stmt->execute([$nombre_descuento, $tipo_descuento, $valor_descuento, $fecha_inicio, $fecha_fin, $alcance, $pais_id, $departamento, $ciudad]);
+	echo $resp ? 'ok' : 'error';
 }
 
 function crear($db){
@@ -65,7 +68,7 @@ function crear($db){
 }
 
 function listarPromociones($db) {
-    $sql = "SELECT * FROM `promociones` WHERE  inicio >= CURDATE() AND `activo` = 1;";
+    $sql = "SELECT * FROM `promociones` WHERE `activo` = 1 ORDER BY inicio DESC;";
     $result = $db->query($sql);
 
     if ($result) {

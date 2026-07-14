@@ -353,8 +353,6 @@ else include '/api'; */
 				carrito:null,
 				idProducto:null,adultos:0, kids:0,
 				nacionalidad:-1, comienza:null,
-				/* nombres: 'carlos', apellidos: 'pariona', documento: '44475064', correo: 'infocat.servicios@gmail.com', celular: '977692108', 
-				ciudad: 'huancayo', direccion: 'av huancavelica 435',  */
 				nombres: '', apellidos: '', documento: '', correo: '', celular: '', 
 				ciudad: '', direccion: '',
 				politica: true, privacidad: true, mensajeError:'', hora:'',

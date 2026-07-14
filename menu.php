@@ -6,7 +6,7 @@
 
 			<div class="col mx-0 px-1" style="width:25%">
 
-				<a href="https://grupoeuroandino.com"><img src="https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-2048x1795.png" style="width: 94%; height: auto; margin-left:8px;" class="img-fluid p-3"></a>
+				<a href="https://grupoeuroandino.com"><img src="https://grupoeuroandino.com/wp-content/uploads/2026/07/Logo-Grupo-Euro-Andino.webp" style="width: 94%; height: auto; margin-left:8px;" class="img-fluid p-3"></a>
 
 			</div>
 
@@ -56,7 +56,7 @@
 
 				<div class="col text-center">
 
-					<a href="https://grupoeuroandino.com"><img src="https://grupoeuroandino.com/wp-content/uploads/2020/09/Grupo-Euro-Andino-2048x1795.png" id="imgLogo"></a>
+					<a href="https://grupoeuroandino.com"><img src="https://grupoeuroandino.com/wp-content/uploads/2026/07/Logo-Grupo-Euro-Andino.webp" id="imgLogo"></a>
 
 				</div>
 

@@ -1,3 +1,12 @@
+--2.220
+ALTER TABLE `promociones` 
+ADD COLUMN `alcance` ENUM('individual', 'pais', 'departamento', 'ciudad') 
+  NOT NULL DEFAULT 'individual' 
+  COMMENT 'Alcance del descuento' AFTER `imagen`,
+ADD COLUMN `pais_id` INT DEFAULT 140 AFTER `alcance`,
+ADD COLUMN `departamento` VARCHAR(100) DEFAULT NULL AFTER `pais_id`,
+ADD COLUMN `ciudad` VARCHAR(100) DEFAULT NULL AFTER `departamento`;
+
 --v. 2.6
 CREATE TABLE promociones (
 	id        INT PRIMARY KEY AUTO_INCREMENT,

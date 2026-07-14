@@ -525,7 +525,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<div class="mb-3">
 										<label for="">Descuento</label>
 										<select class="form-select" id="sltDescuentoPadre" v-model="nuevoDescuento.id" @change="asignarDescuento(nuevoDescuento.id)">
-											<option v-for="descuento in listaDescuentos" :value="descuento.id">{{descuento.promocion}}</option>
+											<option v-for="descuento in listaDescuentos" :value="descuento.id">{{descuento.promocion}} — {{descuento.alcance || 'individual'}}</option>
 											<option v-if="listaDescuentos.length==0" value="-1">No hay descuentos registrados</option>
 										</select>
 									</div>

@@ -521,8 +521,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<p v-if="todosDescuentos?.length==0"><i class="icofont-brush"></i> No hay descuentos</p>
 			</div>
 		</div>
+		</div>
 
-			<div class="modal fade" id="modalNuevoDescuento" data-bs-backdrop="static" tabindex="-1">
+		<div class="modal fade" id="modalNuevoDescuento" data-bs-backdrop="static" tabindex="-1">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -543,7 +544,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<div class="mb-3">
 										<label for="">Descuentos disponibles</label>
 										<select class="form-select" id="sltDescuentoPadre" v-model="nuevoDescuento.id" @change="asignarDescuento(nuevoDescuento.id)">
-											<option v-for="descuento in listaDescuentos" :value="descuento.id">{{descuento.promocion}}</option>
+											<option v-for="descuento in listaDescuentos" :value="descuento.id">{{descuento.promocion}} — {{descuento.alcance || 'individual'}}</option>
 											<option v-if="listaDescuentos.length==0" value="-1">No hay descuentos registrados</option>
 										</select>
 									</div>
@@ -596,6 +597,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</div>
 			</div>
 		</div>
+
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -690,7 +692,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			}
 			this.anticipacion.push({ clave: 31, valor: 31 + ' días' });
 			for (let mes = 2; mes <= 11; mes++) {
-				this.anticipacion.push({ clave: mes*31, valor: mes + ' meseses' });
+				this.anticipacion.push({ clave: mes*31, valor: mes + ' meses' });
 			}
 			this.anticipacion.push({ clave: 365, valor: '1 año' });
 
