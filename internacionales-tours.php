@@ -938,6 +938,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				//return this.duracion[duracion].valor;
 				return this.duracion.find( x => x.clave === duracion ).valor;
 			},
+			estadoDescuento(fechaInicio, fechaFin){
+				const hoy = moment().startOf('day');
+				const inicio = moment(fechaInicio, 'YYYY-MM-DD').startOf('day');
+				const fin = moment(fechaFin, 'YYYY-MM-DD').endOf('day');
+				if(!inicio.isValid() || !fin.isValid()) return false;
+				return hoy.isBetween(inicio, fin, undefined, '[]');
+			},
 			fechaLatam(fecha){
 				return( moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY') )
 			},
