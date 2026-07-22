@@ -159,6 +159,16 @@
 				});
 				this.pedidos = await respServer.json();
 			},
+	async buscarPedidos(){
+				const texto = document.getElementById('txtFiltro').value.replace(/\//g, '\\/');
+				var datos = new FormData();
+				datos.append('id', 'todos');
+				datos.append('texto', texto);
+				let respServer =await fetch(this.servidor + 'verPedidos.php', {
+					method:'POST', body:datos
+				});
+				this.pedidos = await respServer.json();
+			},
 			abrirModal(index){
 				this.indexPedido = index;
 				modalDetalles.show();
@@ -176,7 +186,7 @@
 					})
 					.then( respuesta =>{
 						if(respuesta.data =='ok')
-							this.buscarProducto()
+							this.llamarPedidos()
 					})
 				}
 			}

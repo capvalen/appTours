@@ -392,9 +392,8 @@ else
 
 					<div class="col-6 offset-1">
 
-						<p v-if="tourActivo.tipo=='1'" class="text-muted text-end mb-0">Adultos</p>
-
-						<p v-else class="text-muted mb-0">Habitación simple</p>
+						<p v-if="tourActivo.tipo=='1'" class="text-muted mb-0">Adultos</p>
+						<p v-else class="text-muted mb-0">En hab. matrimonial, doble ó triple</p>
 
 					</div>
 
@@ -418,9 +417,9 @@ else
 
 					<div class="col-6 offset-1">
 
-						<p v-if="tourActivo.tipo==1" class="text-muted text-end mb-0">Niños <br><small>(hasta 10 años)</small></p>
+						<p v-if="tourActivo.tipo==1" class="text-muted  mb-0">Niños <br><small>(hasta 10 años)</small></p>
 
-						<p v-else class="text-muted mb-0">Menores <br><small>(hasta 10 años)</small></p>
+						<p v-else class="text-muted mb-0">En hab. simple <small class="text fst-italic">(1 persona por habitación)</small></p>
 
 					</div>
 

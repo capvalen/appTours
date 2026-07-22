@@ -508,7 +508,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-						<h5 class="modal-title">Descuentos disponibles</h5>
+						<h5 class="modal-title">Nuevo descuento</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -523,7 +523,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<div class="row">
 								<div class="col-12">
 									<div class="mb-3">
-										<label for="">Descuento</label>
+										<label for="">Descuentos disponibles</label>
 										<select class="form-select" id="sltDescuentoPadre" v-model="nuevoDescuento.id" @change="asignarDescuento(nuevoDescuento.id)">
 											<option v-for="descuento in listaDescuentos" :value="descuento.id">{{descuento.promocion}} — {{descuento.alcance || 'individual'}}</option>
 											<option v-if="listaDescuentos.length==0" value="-1">No hay descuentos registrados</option>
@@ -533,14 +533,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label">Tipo Descuento</label>
-												<input type="number" class="d-none" v-model="nuevoDescuento.promocion_id">
-												<div class="form-check" >
-													<input class="form-check-input" type="radio" id="tipoCombo" value="combo" v-model="nuevoDescuento.tipo_descuento" disabled>
-													<label class="form-check-label" for="tipoCombo">Combo</label>
-												</div>
-												<div class="form-check" >
-													<input class="form-check-input" type="radio" id="tipoMonto" value="monto" v-model="nuevoDescuento.tipo_descuento" disabled>
-											<label class="form-check-label" for="tipoMonto">Monto fijo (S/)</label>
+										<input type="number" class="d-none" v-model="nuevoDescuento.promocion_id">
+										<div class="form-check" >
+											<input class="form-check-input" type="radio" id="tipoCombo" value="combo" v-model="nuevoDescuento.tipo_descuento" disabled>
+											<label class="form-check-label" for="tipoCombo">Combo</label>
+										</div>
+										<div class="form-check" >
+											<input class="form-check-input" type="radio" id="tipoMonto" value="monto" v-model="nuevoDescuento.tipo_descuento" disabled>
+											<label class="form-check-label" for="tipoMonto">Monto (S/)</label>
 										</div>
 										<div class="form-check" >
 											<input class="form-check-input" type="radio" id="tipoPorcentaje" value="porcentaje" v-model="nuevoDescuento.tipo_descuento" disabled>
@@ -551,7 +551,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								<div class="col">
 									<label class="form-label">Valor de descuento</label>
 									<div class="form-floating mb-3">
-										<input type="number" class="form-control" id="floValorDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.valor_descuento" disabled>
+										<input type="text" class="form-control" id="floValorDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.valor_descuento" disabled>
 										<label for="floValorDescuento">Valor</label>
 									</div>
 								</div>
@@ -580,7 +580,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		</div>
 	</div>
 
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<!-- Producción -->
+<!-- <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script> -->
+<!-- Desarrollo -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 	
 	
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
@@ -597,9 +600,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	tostadaOk, tostadaMal;
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
 	var rutaDocs = '/home/fhuczgkg/public_html/app/render/images/sinmarca/'
-	var app = new Vue({
-		el: '#app',
-		data: {
+	var app = Vue.createApp({
+		data() { return {
 			//servidor: 'http://localhost/appTours/api/',
 			servidor: window.lugarApi, fechasAnuladas:[], fechaSeleccionada:moment().format('YYYY-MM-DD'),
 			tour:{
@@ -631,6 +633,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idDepartamento:-1, alojamientos:[],
 			dias: [{'id':0,'day':'Domingo'},{'id':1,'day':'Lunes'},{'id':2,'day':'Martes'},{'id':3,'day':'Miércoles'},{'id':4,'day':'Jueves'},{'id':5,'day':'Viernes'},{'id':6,'day':'Sábado'}],
 			descuentos:[], nuevoDescuento:{ id_tour: -1, promocion_id:-1, id:-1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' }, erroresDescuento: '', listaDescuentos:[], listadoCiudades:[], ciudadSeleccionada:null
+			}
 		},
 		mounted:function(){
 			this.verTours();
@@ -935,6 +938,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				//return this.duracionNoches[duracion].valor; 
 				return this.duracionNoches.find( x => x.clave === duracion )?.valor
 			},
+			estadoDescuento(fechaInicio, fechaFin){
+				const hoy = moment().startOf('day');
+				const inicio = moment(fechaInicio, 'YYYY-MM-DD').startOf('day');
+				const fin = moment(fechaFin, 'YYYY-MM-DD').endOf('day');
+				if(!inicio.isValid() || !fin.isValid()) return false;
+				return hoy.isBetween(inicio, fin, undefined, '[]');
+			},
 			fechaLatam(fecha){
 				return( moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY') )
 			},
@@ -995,7 +1005,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				}
 				var that = this;
 				let respuesta = await axios.post(this.servidor+'buscarTour.php', {
-					texto: this.$refs.txtFiltro.value,
+					texto: this.$refs.txtFiltro.value.replace(/\//g, '\\/'),
 					ciudad: this.$refs.txtFiltroCiudad.value,
 					tipo: 2,
 					departamento: this.idDepartamento
@@ -1132,6 +1142,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					.then( respuesta =>{
 						if(respuesta.data =='ok'){
 							let index = this.todosTours.findIndex( tour => tour.id === this.idGlobal );
+							
 							this.todosTours[index].descuentos.splice(indice, 1);
 						}
 					})
@@ -1181,12 +1192,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		computed: {
 			todosDescuentos() {
 				let item = this.todosTours.find( tour => tour.id === this.idGlobal );
-				if(item) return item.descuentos;
-				else return [];
+				return item?.descuentos || [];
 			}
 		}
-	});
-	
+	}).mount('#app');
+
+	window.vueApp = app;
 </script>
 </body>
 </html>

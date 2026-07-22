@@ -23,8 +23,8 @@ if( $sql->execute()){
 		$filas[] = $row;
 	}
 }else{
-	//echo $sql->debugDumpParams();
-	echo $sql->errorinfo();
+	echo $sql->debugDumpParams();
+	//echo $sql->errorinfo();
 }
 
 echo json_encode($filas);

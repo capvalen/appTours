@@ -594,7 +594,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		</div>
 	</div>
 
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<!-- Producción -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<!-- Desarrollo -->
+<!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
 	
 	
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
@@ -612,9 +615,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	tostadaOk, tostadaMal;
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
 	var rutaDocs = '/home/fhuczgkg/public_html/app/render/images/sinmarca/'
-	var app = new Vue({
-		el: '#app',
-		data: {
+	var app = Vue.createApp({
+		data() { return {
 			//servidor: 'http://localhost/appTours/api/',
 			servidor: window.lugarApi, fechasAnuladas:[], fechaSeleccionada:moment().format('YYYY-MM-DD'),
 			tour:{
@@ -646,7 +648,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idPais:-1,
 			dias: [{'id':0,'day':'Domingo'},{'id':1,'day':'Lunes'},{'id':2,'day':'Martes'},{'id':3,'day':'Miércoles'},{'id':4,'day':'Jueves'},{'id':5,'day':'Viernes'},{'id':6,'day':'Sábado'}],
 			nuevoDescuento:{ id_tour: -1, promocion_id:-1, id:-1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' }, erroresDescuento: '', listaDescuentos:[]
-		},
+		}
+	},
 		mounted:function(){
 			this.verTours();
 			this.cargarComplementos();
@@ -940,6 +943,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				//return this.duracionNoches[duracion].valor; 
 				return this.duracionNoches.find( x => x.clave === duracion ).valor
 			},
+			estadoDescuento(fechaInicio, fechaFin){
+				const hoy = moment().startOf('day');
+				const inicio = moment(fechaInicio, 'YYYY-MM-DD').startOf('day');
+				const fin = moment(fechaFin, 'YYYY-MM-DD').endOf('day');
+				if(!inicio.isValid() || !fin.isValid()) return false;
+				return hoy.isBetween(inicio, fin, undefined, '[]');
+			},
 			fechaLatam(fecha){
 				return( moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY') )
 			},
@@ -984,7 +994,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				//console.log( this.$refs.txtFiltro.value );
 				var that = this;
 				let respuesta = await axios.post(this.servidor+'buscarTour.php', {
-					texto: this.$refs.txtFiltro.value,
+					texto: this.$refs.txtFiltro.value.replace(/\//g, '\\/'),
 					ciudad: '',
 					tipo: 2,
 					departamento: -1,
@@ -1153,8 +1163,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				else return [];
 			}
 		}
-	});
-	
+	}).mount('#app');
+
+	window.vueApp = app;
 </script>
 </body>
 </html>

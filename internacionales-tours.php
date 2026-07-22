@@ -16,7 +16,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<link rel="stylesheet" href="css/quill.bubble.css">
 	<link rel="stylesheet" href="css/quill.snow.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
-	<script src="https://unpkg.com/vue-meta/dist/vue-meta.min.js"></script>
 </head>
 <body>
 	<style>
@@ -573,7 +572,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		</div>
 	</div>
 
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<!-- Producción -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<!-- Desarrollo -->
+<!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
 	
 	
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
@@ -590,13 +592,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	tostadaOk, tostadaMal;
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
 	var rutaDocs = '/home/fhuczgkg/public_html/app/render/images/sinmarca/'
-	var app = new Vue({
-		name: 'tours',
-		el: '#app',
-		metaInfo: {
-			title: 'Tours Grupo Euroandino'
-		},
-		data: {
+	var app = Vue.createApp({
+		data() { return {
 			//servidor: 'http://localhost/appTours/api/',
 			servidor: window.lugarApi, fechasAnuladas:[], fechaSeleccionada:moment().format('YYYY-MM-DD'),
 			tour:{
@@ -638,7 +635,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			departamentos:[], paises:[],
 			activarEditar:false, categorias2:[], actividades2:[], queIndice:-1, idPais:-1,
 			nuevoDescuento:{ id_tour: -1, promocion_id:-1, id:-1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' }, erroresDescuento: '', listaDescuentos:[]
-		},
+		}
+	},
 		mounted:function(){
 			this.verTours();
 			this.cargarComplementos();
@@ -986,7 +984,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				//console.log( this.$refs.txtFiltro.value );
 				var that = this;
 				let respuesta = await axios.post(this.servidor+'buscarTour.php', {
-					texto: this.$refs.txtFiltro.value,
+					texto: this.$refs.txtFiltro.value.replace(/\//g, '\\/'),
 					ciudad: '',
 					tipo: 1,
 					departamento: -1,
@@ -1162,8 +1160,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				else return [];
 			}
 		}
-	});
-	
+	}).mount('#app');
+
+	window.vueApp = app;
 </script>
 </body>
 </html>

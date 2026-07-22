@@ -167,9 +167,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<!-- Nombre del descuento -->
 									<div class="mb-3">
 										<label for="nombreDescuento" class="form-label">
-											<i class="bi bi-tag me-1"></i>Nombre del Descuento
+											<i class="bi bi-tag me-1"></i>Nuevo Descuento
 										</label>
-										<input type="text" class="form-control" id="nombreDescuento" placeholder="Ej: Descuento de Verano" required>
+										<input type="text" class="form-control" id="nombreDescuento" placeholder="Ej: Semana Santa 2007" required>
 										<div class="invalid-feedback">Por favor ingresa un nombre válido.</div>
 									</div>
 
@@ -180,7 +180,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 										</label>
 										<select class="form-select" id="tipoDescuento" required>
 											<option value="" selected disabled>Selecciona el tipo...</option>
-											<option value="combo">Combo</option>
+											<option value="combo">Promoción</option>
 											<option value="porcentaje">Porcentaje (%)</option>
 											<option value="monto">Monto Fijo (S/)</option>
 										</select>
@@ -223,7 +223,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 											<i class="bi bi-geo-alt me-1"></i>Alcance
 										</label>
 										<select class="form-select" id="alcanceDescuento" required>
-											<option value="individual" selected>Individual (tour específico)</option>
+											<option value="individual" selected>Paquete turístico</option>
 											<option value="pais">País (Perú)</option>
 											<option value="departamento">Departamento</option>
 											<option value="ciudad">Ciudad</option>
@@ -448,8 +448,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					`<tr>
 						<td><img src="${p.imagen || './images/discount.png'}" width="35" height="auto" class="rounded"></td>
 						<td>${p.promocion}</td>
-						<td class="text-capitalize">${p.alcance || 'individual'}</td>
-						<td>${p.tipo == 'combo' ? '©' : p.tipo == 'porcentaje' ? '%' : 'S/'}</td>
+						<td class="text-capitalize">${p.alcance || 'Paquete turístico'}</td>
+						<td>${p.tipo == 'combo' ? 'Promoción' : p.tipo == 'porcentaje' ? '%' : 'S/'}</td>
 						<td>${p.valor}${p.tipo == 'porcentaje' ? '%' : ''}</td>
 						<td>${fechaLatam(p.inicio)}</td>
 						<td>${fechaLatam(p.fin)}</td>

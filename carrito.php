@@ -29,7 +29,7 @@ else include '/api'; */
 		.form-control{border: 1px solid #ced4da!important;}
 	</style>
 	<div id="app" class="p-4">
-		<div class="container" v-if="this.idProducto!=null">
+		<div class="container" v-if="idProducto!=null">
 			<div class="row ">
 				<div class="col-12 col-md-8">
 					<div class="card">
@@ -188,7 +188,7 @@ else include '/api'; */
 					</div>
 					<div class="card">
 						<div class="card-body text-muted">
-							<h3>Resumen del pedido</h3>
+							<h3>Resumen de Reserva</h3>
 							<p class="fs-4 text-capitalize" id="pTour"><a :href="'https://grupoeuroandino.com/tours/'+url" class="text-decoration-none">{{nomTour.toLowerCase()}}</a></p>
 							<p class="mb-0"><strong>Fecha de inicio:</strong> <span>{{empieza}}</span></p>
 							<p class="mb-0"><strong>Hora:</strong> <span>A las {{formatoHora(hora)}}.</span></p>
@@ -216,9 +216,9 @@ else include '/api'; */
 									<p class="mb-0" v-if="moneda == 'dolares'"><span>$</span> <span>{{parseFloat(ninDolar).toFixed(2)}}</span></p>
 								</div>
 							</div>
-							<div class="row " id="divDscto">
+							<div class="row " id="divDscto" v-if="descuento">
 								<div class="col">
-									<p class="mb-0 text-success" v-if="descuento!=null"><strong><i class="icofont-sale-discount"></i> Descuento aplicado:</p>
+									<p class="mb-0 text-success" ><strong><i class="icofont-sale-discount"></i> Descuento:</p>
 									<p class="text-success"><i class="icofont-sale-discount"></i> </strong> <span class="text-capitalize">{{descuento.nombre_descuento}} {{descuento.tipo_descuento=='monto' ? 'S/' : ''}} <span v-if="descuento.tipo_descuento!='combo'">-</span>{{descuento.valor_descuento}}{{descuento.tipo_descuento=='porcentaje' ? '%':''}}</span></p>
 								</div>
 							</div>
@@ -226,7 +226,7 @@ else include '/api'; */
 								<div class="col-7">
 									<p class="mb-0 gris" v-if="descuento!=null">Precio anterior</p>
 
-									<p class="mb-0 fs-4"><strong>Total a pagar</strong></p>
+									<p class="mb-0 fs-4"><strong>Total</strong></p>
 								</div>
 								<div class="col-3">
 									<p class="mb-0 gris" v-if="descuento!=null">
@@ -330,10 +330,10 @@ else include '/api'; */
 			</div>
 		</div>
 	</div>
+<!-- Producción -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 <!-- Desarrollo -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-<!-- Produccion -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
+<!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
 
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -344,8 +344,7 @@ else include '/api'; */
 
 <script>
 	var toastMal, modalPagar;
-	const app = new Vue({
-		el:'#app',
+	const app = Vue.createApp({
 		data() {
 			return {
 				//servidor: 'http://localhost/appTours/api/',
@@ -644,18 +643,19 @@ else include '/api'; */
 						const precioPorPersona = totalFinalDolar / n;
 						
 						// Total a pagar según el combo
-						totalFinal = (gruposCompletos * pagar * precioPorPersona) + (restantes * precioPorPersona);
+						totalFinalDolar = (gruposCompletos * pagar * precioPorPersona) + (restantes * precioPorPersona);
 						
 						// Descuento aplicado
-						descuentoAplicado = (totalOriginal - totalFinal);
 					}
 					
 				}
 				return totalFinalDolar;
 			}
 		}
-	});
-	
+	}).mount('#app');
+
+	window.vueApp = app;
+
 	function displayPaymentForm(formToken){
 		// Show the payment form
 		document.getElementById('paymentForm').style.display = 'block';

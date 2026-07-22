@@ -16,7 +16,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<link rel="stylesheet" href="css/quill.bubble.css">
 	<link rel="stylesheet" href="css/quill.snow.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
-	<script src="https://unpkg.com/vue-meta/dist/vue-meta.min.js"></script>
 </head>
 <body>
 	<style>
@@ -90,7 +89,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<label for="" class="form-label"><i class="icofont-filter"></i> Departamentos</label>
 							<select class="form-select" v-model="idDepartamento" @change="buscarProducto('departamentos')">
 								<option value="-1">Todos</option>
-								<option v-for="(departamento, index) in departamentos" :value="index">{{departamento}}</option>
+								<option v-for="(departamento, index) in departamentos" :key="index" :value="index">{{departamento}}</option>
 							</select>
 						</div>
 						<div class="col-12 mt-3" v-if="idDepartamento > -1">
@@ -123,7 +122,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<tr v-if="variosTours.length == 0">
 								<td colspan=5>No hay tours</td>
 							</tr>
-							<tr v-else v-for="(vTour, index) in variosTours" :data-id="todosTours[index].id">
+							<tr v-else v-for="(vTour, index) in variosTours" :key="todosTours[index].id" :data-id="todosTours[index].id">
 								<td @click="cargarPanel(todosTours[index].id, index)">{{index+1}}</td>
 								<td @click="cargarPanel(todosTours[index].id, index)" class="">
 									{{vTour.nombre}}
@@ -170,7 +169,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="form-floating mb-3">
-							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @blur="/*crearURL()*/">
+							<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre">
 							<label for="floNombre">Nombre del tour</label>
 						</div>
 						<div class="form-floating mb-3">
@@ -223,7 +222,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	
 						<div class="form-floating mb-3">
 							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.duracion">
-								<option v-for="dia in duracion" :value="dia.clave">{{dia.valor}}</option>
+								<option v-for="dia in duracion" :key="dia.clave" :value="dia.clave">{{dia.valor}}</option>
 							</select>
 							<label for="floatingSelect">Duración</label>
 						</div>
@@ -247,7 +246,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<div class="col-6">
 								<div class="form-floating mb-3">
 									<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.anticipacion">
-										<option v-for="dia in anticipacion" :value="dia.clave">{{dia.valor}}</option>
+										<option v-for="dia in anticipacion" :key="dia.clave" :value="dia.clave">{{dia.valor}}</option>
 									</select>
 									<label for="floatingSelect">Anticipación</label>
 								</div>
@@ -276,7 +275,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						</div>
 						<div class="form-floating mb-3" v-if="tour.transporte!=3">
 							<select class="form-select text-capitalize" id="floatingSelect" aria-label="Floating label select example" v-model="tour.idTransporte">
-								<option class="text-capitalize" v-for="transporte in transportes" v-if="transporte.idTransporte == tour.transporte" :value="transporte.id">{{transporte.transporte}}</option>
+								<option class="text-capitalize" v-for="transporte in subTransportes" :key="transporte.id" :value="transporte.id">{{transporte.transporte}}</option>
 							</select>
 							<label for="floatingSelect">Sub Tipo de transporte</label>
 						</div>
@@ -290,7 +289,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							<div class="col">
 								<div class="form-floating mb-3">
 								<select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="tour.departamento">
-									<option v-for="(depa, index) in departamentos" :value="index">{{depa}}</option>
+									<option v-for="(depa, index) in departamentos" :key="index" :value="index">{{depa}}</option>
 								</select>
 								<label for="floatingSelect">Departamento</label>
 							</div>
@@ -447,7 +446,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					</div>
 					<p class="my-1 mt-3"><strong>Fotografías</strong></p>
 					<div class="row row-cols-2" id="divFotografias">
-						<div class="col" v-for="(imagen, indice) in tourActivo.fotos">
+						<div class="col" v-for="(imagen, indice) in tourActivo.fotos" :key="indice">
 							<div class="card mb-3" >
 								<img :src="'images/subidas/'+imagen.nombreRuta" class="card-img-top" alt="...">
 								<ul class="list-group list-group-flush">
@@ -488,7 +487,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</div>
 				<p>Fechas anuladas:</p>
 				<ol class="list-group list-group-numbered">
-					<li class="list-group-item d-flex justify-content-between align-items-start" v-for="(fecha, indice) in tourActivo.fechas">
+					<li class="list-group-item d-flex justify-content-between align-items-start" v-for="(fecha, indice) in tourActivo.fechas" :key="indice">
 						<div class="ms-2 me-auto"> <span>Fecha: {{fecha.fecha}}</span> </div>
 						<span class="badge bg-danger rounded-pill" @click="eliminarFecha(indice)"><i class="icofont-close"></i></span>
 					</li>
@@ -507,7 +506,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 
 				<p class="mb-2">Listado de descuentos </p>
 				<div class="list-group">
-					<div href="#" class="list-group-item list-group-item-action " aria-current="true" v-for="(descuento, index) in todosDescuentos">
+					<div href="#" class="list-group-item list-group-item-action " aria-current="true" v-for="(descuento, index) in todosDescuentos" :key="descuento.id || index">
 						<div class="d-flex w-100 justify-content-between">
 							<p class="mb-1 text-capitalize">{{index+1}}. {{descuento.nombre_descuento}}</p>
 							<button class="btn btn-danger btn-sm" @click.stop="eliminarDescuento(index)"><i class="icofont-ui-delete"></i></button>
@@ -544,7 +543,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<div class="mb-3">
 										<label for="">Descuentos disponibles</label>
 										<select class="form-select" id="sltDescuentoPadre" v-model="nuevoDescuento.id" @change="asignarDescuento(nuevoDescuento.id)">
-											<option v-for="descuento in listaDescuentos" :value="descuento.id">{{descuento.promocion}} — {{descuento.alcance || 'individual'}}</option>
+											<option v-for="descuento in listaDescuentos" :key="descuento.id" :value="descuento.id">{{descuento.promocion}} — {{descuento.alcance || 'individual'}}</option>
 											<option v-if="listaDescuentos.length==0" value="-1">No hay descuentos registrados</option>
 										</select>
 									</div>
@@ -600,7 +599,10 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 
 	</div>
 
-	<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	<!-- Producción -->
+	<!-- <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script> -->
+	<!-- Desarrollo -->
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 	
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
@@ -613,17 +615,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 
 	<script>
 	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
-	qSiIncluye, qNoIncluye
+	qSiIncluye, qNoIncluye,
 	tostadaOk, tostadaMal;
 	//var rutaDocs = 'C:/xampp8/htdocs/euroAndinoApi/subidas/'; 
 	var rutaDocs = '/home/fhuczgkg/public_html/app/render/images/sinmarca/'
-	var app = new Vue({
+	var app = Vue.createApp({
 		name: 'tours',
-		el: '#app',
-		metaInfo: {
-			title: 'Tours Grupo Euroandino'
-		},
-		data: {
+		data() { return {
 			//servidor: 'http://localhost/euroAndinoApi/',
 			servidor: window.lugarApi,
 			fechasAnuladas:[], fechaSeleccionada:moment().format('YYYY-MM-DD'),
@@ -667,8 +665,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			dias: [{'id':0,'day':'Domingo'},{'id':1,'day':'Lunes'},{'id':2,'day':'Martes'},{'id':3,'day':'Miércoles'},{'id':4,'day':'Jueves'},{'id':5,'day':'Viernes'},{'id':6,'day':'Sábado'}],
 			nuevoDescuento:{ id_tour: -1, promocion_id:-1, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' },
 			erroresDescuento: '', listaDescuentos:[], listadoCiudades:[], ciudadSeleccionada:null
-		},
+		}},
 		mounted:function(){
+			document.title = 'Tours Grupo Euroandino';
 			this.verTours();
 			this.cargarComplementos();
 			modalNuevo = new bootstrap.Modal( document.getElementById('modalNuevo') );
@@ -1031,7 +1030,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				}
 				var that = this;
 				let respuesta = await axios.post(this.servidor+'buscarTour.php', {
-					texto: this.$refs.txtFiltro.value,
+					texto: this.$refs.txtFiltro.value.replace(/\//g, '\\/'),
 					ciudad: this.$refs.txtFiltroCiudad.value,
 					tipo: 1,
 					departamento: this.idDepartamento
@@ -1216,9 +1215,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let item = this.todosTours.find( tour => tour.id === this.idGlobal );
 				if(item) return item.descuentos;
 				else return [];
+			},
+			subTransportes() {
+				return this.transportes.filter(t => t.idTransporte == this.tour.transporte);
 			}
 		}
-	});
+	}).mount('#app');
 	
 </script>
 </body>
