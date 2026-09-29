@@ -46,7 +46,7 @@ $departamentos = ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Caj
 
 		<div class="container">
 		    <h1 class="fs-2 mt-3">
-			<span>Viajes de Promoción Escolar</span>
+			<span>Viajes de Promoción Escolar en Perú</span>
 		</h1>
 		<p class="my-3">Celebra el fin de una etapa con nuestros Viajes de Promoción Escolar. Diseñamos itinerarios seguros, educativos y llenos de diversión en los destinos más increíbles del Perú. Garantizamos una logística impecable para que los estudiantes vivan una experiencia de graduación memorable y los padres tengan total tranquilidad.</p>
 		
