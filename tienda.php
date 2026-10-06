@@ -51,7 +51,7 @@
 
 								<div class="accordion-body">
 
-									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==-1 }" @click="idTour = -1; idDia=-1; idCategoria=-1" >Todos</a></p>
+									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==-1 && idDia==-1 && idCategoria==-1 }" @click="idTour = -1; idDia=-1; idCategoria=-1" >Todos</a></p>
 
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idTour==1 }" @click="idTour = 1; idDia=1; idCategoria=-1" >Tours</a></p>
 
@@ -348,6 +348,22 @@
 
 	<script type="module">
 	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.14';
+
+	// --- Parámetros recibidos por URL -----------------------------------------
+	const ticParams = new URLSearchParams(window.location.search);
+
+	// idCategoria: si viene en la URL (ej. ?idCategoria=38) se usa ese valor;
+	// si no existe o viene vacío, se usa -1 (Todos).
+	const ticCat = ticParams.get('idCategoria');
+	const idCategoriaInicial = (ticCat !== null && ticCat.trim() !== '')? parseInt(ticCat, 10) : -1;	
+	
+	// idDia: 0 = Half Day, 1 = Full Day; si no existe o viene vacío, -1 (Todos).
+	const ticDia = ticParams.get('idDia');
+	const idDiaInicial = (ticDia !== null && ticDia.trim() !== '') ? parseInt(ticDia, 10) : -1;
+	
+	const ticTour = ticParams.get('idTour');
+	const idTourInicial = (ticTour !== null && ticTour.trim() !== '') ? parseInt(ticTour, 10) : -1;
+
 	var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,
 
 	tostadaOk, tostadaMal;
@@ -367,7 +383,7 @@
 
 			servidor: window.lugarApi, 
 			dias:[], actividades:[], categorias:[],
-			idTour:-1, idActividad:-1, idDepartamento:-1,idCategoria:-1, idDia:-1, idPrecio:-1, idTransporte:-1, idHospedaje:-1, idCiudad:-1, texto:'', idDuracion:-1,
+			idTour:idTourInicial, idActividad:-1, idDepartamento:-1,idCategoria:idCategoriaInicial, idDia:idDiaInicial, idPrecio:-1, idTransporte:-1, idHospedaje:-1, idCiudad:-1, texto:'', idDuracion:-1,
 
 			precios:['Hasta S/ 150.00', 'De S/ 151.00 a S/ 300.00', 'De S/ 301.00 a S/ 500.00', 'De S/ 501.00 a S/ 1000.00', 'De S/ 1001.00 a S/ 1500.00', 'De S/ 1501.00 a S/ 2000.00', 'Más de S/ 2000.00' ], 
 
