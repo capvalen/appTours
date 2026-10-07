@@ -14,8 +14,7 @@ jQuery(document).ready(function($) {
         jQuery('#carouselP .elementor-gallery-item').first().trigger('click');
     }
 });
-</script>
-<script>
+
 window.addEventListener('load', () => {
 	setTimeout(function () {
 
@@ -24,7 +23,14 @@ window.addEventListener('load', () => {
 		const clickTitleWithAnchor = (anchor) => {
 		tabsAccordionToggleTitles.forEach(title => {
 		if (title.querySelector(`#${anchor}`) != null || title.id === anchor || (title.closest('details') && title.closest('details').id === anchor)) {
-		if (title.getAttribute('aria-expanded') !== 'true' && !title.classList.contains('elementor-active')) title.click();
+		if (title.getAttribute('aria-expanded') !== 'true' && !title.classList.contains('elementor-active')) {
+		title.click();
+		// Evita que el foco quede atrapado en el tab tras el click simulado
+		setTimeout(() => {
+		const activo = document.activeElement;
+		if (activo && (activo === title || title.contains(activo))) activo.blur();
+		}, 0);
+		}
 		}
 		});
 		};
@@ -55,6 +61,6 @@ window.addEventListener('load', () => {
 		});
 		};
 
-	}, 300);
+	}, 100);
 });
 </script>

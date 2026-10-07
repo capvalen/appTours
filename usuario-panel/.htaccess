@@ -1,0 +1,4 @@
+# Protege las variables de entorno del panel de usuario.
+<Files ".env">
+    Require all denied
+</Files>

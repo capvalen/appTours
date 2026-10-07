@@ -140,6 +140,13 @@ else
 			.loader-overlay { padding: 20px; text-align: center; }
 			#smallSoles{ font-size: 1rem !important;}
 		}
+		@media (min-width: 992px) {
+			#dtpFecha {
+				width: 75%;
+				display: flex;
+				margin: 0 auto;
+			}
+		}
 		.loader {
 			width: 8px;
 			height: 40px;

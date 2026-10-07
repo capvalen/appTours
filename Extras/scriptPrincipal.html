@@ -1,0 +1,106 @@
+<style>
+.e-loop-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.0s ease, transform 2.0s;
+}
+.e-loop-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--animation-order) * 0.3s);
+}
+</style>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+    let loopObserver = null;
+
+    function animateVisibleLoopItems() {
+        const items = document.querySelectorAll('.e-loop-item');
+        let order = 1;
+
+        items.forEach(item => {
+            item.classList.remove('visible');
+
+            if (item.offsetParent !== null) {
+                item.style.setProperty('--animation-order', order++);
+                setTimeout(() => {
+                    item.classList.add('visible');
+                }, 100);
+            }
+        });
+    }
+
+    function observeLoopContainer() {
+        if (loopObserver) {
+            loopObserver.disconnect(); // 🛑 Stop old observer
+        }
+
+        const firstItem = document.querySelector('.e-loop-item');
+        if (!firstItem) return;
+
+        const loopContainer = firstItem.parentElement;
+        if (!loopContainer) return;
+
+        loopObserver = new MutationObserver(function(mutationsList) {
+            let itemsChanged = false;
+
+            mutationsList.forEach(mutation => {
+                if (mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0) {
+                    itemsChanged = true;
+                }
+            });
+
+            if (itemsChanged) {
+                setTimeout(() => {
+                    animateVisibleLoopItems();
+                }, 100);
+            }
+        });
+
+        loopObserver.observe(loopContainer, { childList: true });
+    }
+
+    animateVisibleLoopItems(); // Initial load
+    observeLoopContainer();    // Initial observe
+
+    // 🔥 After filter click, wait, then re-attach observer
+    jQuery(function($) {
+        $(document).on('click', '.e-filter-item', function() {
+            setTimeout(function() {
+                animateVisibleLoopItems();
+                observeLoopContainer();
+            }, 800); // ⏳ allow Elementor Ajax to complete
+        });
+    });
+
+});
+
+	document.querySelectorAll('.boton-reserva').forEach(function(boton) {
+    const enlace = boton.querySelector('a');
+	if (enlace && enlace.hasAttribute('href')) {
+        const hrefActual = enlace.getAttribute('href');
+
+	// Evita duplicar el hash si ya lo tiene
+	if (!hrefActual.includes('#medios-de-pago')) {
+            // Si el href ya tiene otro hash, lo reemplaza; si no, lo agrega
+            const hrefLimpio = hrefActual.split('#')[0];
+	enlace.setAttribute('href', hrefLimpio + '#medios-de-pago');
+        }
+    }
+});
+
+	document.querySelectorAll('.boton-itinerario').forEach(function(boton) {
+    const enlace = boton.querySelector('a');
+	if (enlace && enlace.hasAttribute('href')) {
+        const hrefActual = enlace.getAttribute('href');
+
+	// Evita duplicar el hash si ya lo tiene
+	if (!hrefActual.includes('#itinerario')) {
+            // Si el href ya tiene otro hash, lo reemplaza; si no, lo agrega
+            const hrefLimpio = hrefActual.split('#')[0];
+	enlace.setAttribute('href', hrefLimpio + '#itinerario');
+        }
+    }
+});
+</script>

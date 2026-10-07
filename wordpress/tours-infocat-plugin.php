@@ -12,6 +12,8 @@
  *   - /full-days-en-peru                    -> template-tienda.php  (idCategoria=-1, idDia=1)
  *   - /tours-en-peru                         -> template-tienda.php  (idCategoria=-1, idDia=-1)
  *   - /paquetes-turisticos-en-peru           -> template-tienda.php
+ *   - /registro-panel                        -> template-panel.php (registro de cuenta)
+ *   - /login-panel                           -> template-login-panel.php (inicio de sesión)
  */
 
 // 1. Le dice a WordPress que reconozca los parámetros "variable" y "vista"
@@ -33,7 +35,7 @@ add_action('init', function() {
 
 	// Rutas de la tienda -> index.php?vista=...
 	add_rewrite_rule(
-		'^(viajes-de-promocion-escolar-en-peru|half-days-en-peru|full-days-en-peru|tours-en-peru|paquetes-turisticos-en-peru)/?$',
+		'^(viajes-de-promocion-escolar-en-peru|half-days-en-peru|full-days-en-peru|tours-en-peru|paquetes-turisticos-en-peru|registro-panel|login-panel)/?$',
 		'index.php?vista=$matches[1]',
 		'top'
 	);
@@ -48,16 +50,25 @@ add_filter('template_include', function($template) {
 		'half-days-en-peru',
 		'full-days-en-peru',
 		'tours-en-peru',
-		'paquetes-turisticos-en-peru'
+		'paquetes-turisticos-en-peru',
 	];
 	$vista = get_query_var('vista');
+
+	// La ruta /registro-panel carga el registro del panel de usuario (template-panel.php)
+	if ($vista === 'registro-panel') {
+			return get_theme_file_path('template-panel.php');
+	}
+
+	// La ruta /login-panel carga el login del panel de usuario (template-login-panel.php)
+	if ($vista === 'login-panel') {
+			return get_theme_file_path('template-login-panel.php');
+	}
 
 	//si la url contiene el parametro vista, carga el template-tienda.php
 	if (in_array($vista, $vistas_tienda, true)) {
 			return get_theme_file_path('template-tienda.php');
 	}
 
-	// Si no ubica el parámetro 'vista', carga el template-viajes.php
 	if (get_query_var('variable')) {
 			return get_theme_file_path('template-viajes.php');
 	}

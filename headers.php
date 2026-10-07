@@ -10,21 +10,3 @@
 	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/estilos.css?v=1.16">
 	<link rel="stylesheet" href="https://grupoeuroandino.com/app/render/css/efecto.css?v=1.8">
 	<link rel="icon" href="https://grupoeuroandino.com/wp-content/uploads/2023/07/cropped-Grupo-Euro-Andino-favicon-32x32.png" sizes="32x32" />
-
-<style>
- #whatsapp{
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-}
-#whatsapp img{
-    width:60px;
-}
-</style>
-<div id="whatsapp">
-    <a href="https://api.whatsapp.com/send/?phone=51947614293" target="_blank">
-  <img src="https://grupoeuroandino.com/images/logo_whats.png" alt="Logo whastapp"></a>
-</div>
-<script>
-    
-</script>

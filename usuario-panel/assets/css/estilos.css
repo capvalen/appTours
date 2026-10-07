@@ -1,0 +1,221 @@
+:root{
+    --gea-primario: #0d6efd;
+    --gea-oscuro:   #0f172a;
+}
+
+body.fondo-auth{
+    min-height: 100vh;
+    background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 45%, #e0f2fe 100%);
+    font-family: 'Roboto', system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--gea-oscuro);
+}
+
+/* Card con sombra */
+.card-auth{
+    border: 0;
+    border-radius: 1.25rem;
+    box-shadow: 0 1.25rem 3rem rgba(15, 23, 42, .15),
+                0 .25rem .75rem rgba(15, 23, 42, .08);
+    transition: box-shadow .25s ease;
+}
+.card-auth:hover{
+    box-shadow: 0 1.5rem 3.5rem rgba(15, 23, 42, .18),
+                0 .25rem .75rem rgba(15, 23, 42, .08);
+}
+
+.card-auth .form-control{
+    border-radius: .75rem;
+    padding: .7rem .9rem;
+}
+.card-auth .form-control:focus{
+    box-shadow: 0 0 0 .2rem rgba(13, 110, 253, .18);
+}
+.card-auth .btn{
+    border-radius: .75rem;
+    padding: .7rem 1rem;
+    font-weight: 600;
+}
+
+.icono-auth{
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border-radius: 1rem;
+    background: rgba(13, 110, 253, .1);
+    color: var(--gea-primario);
+    font-size: 1.5rem;
+}
+
+/* Divisor "o" */
+.divisor-o{
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    color: #94a3b8;
+    font-size: .85rem;
+    margin: 1.25rem 0;
+}
+.divisor-o::before,
+.divisor-o::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+/* Botón de Google */
+.btn-google{
+    background: #fff;
+    border: 1px solid #dadce0;
+    color: #3c4043;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    transition: background .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.btn-google:hover{
+    background: #f8f9fa;
+    border-color: #c6c9cc;
+    color: #202124;
+    box-shadow: 0 1px 3px rgba(60, 64, 67, .18);
+}
+.btn-google:disabled{
+    opacity: .65;
+}
+.btn-google svg,
+.btn-google img{
+    width: 20px !important;
+    height: 20px !important;
+    max-width: 20px;
+    max-height: 20px;
+    flex-shrink: 0;
+}
+
+/* Tabla de compras: filas con más altura */
+.tabla-compras{
+    --bs-table-bg: transparent;
+}
+.tabla-compras thead th{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    white-space: nowrap;
+}
+.tabla-compras tbody td{
+    padding-top: 1.15rem;
+    padding-bottom: 1.15rem;
+}
+.tabla-compras tbody tr:hover{
+    background-color: rgba(13, 110, 253, .04);
+}
+
+/* Detalle de compra (modal estilo ticket) */
+#modalDetalle .modal-body{
+    background: #eef2f7;
+}
+.ticket{
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, .06);
+}
+.ticket-top{
+    text-align: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed #cbd5e1;
+}
+.ticket-logo{
+    height: 34px;
+    width: auto;
+    margin-bottom: .5rem;
+}
+.ticket-empresa{
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: #94a3b8;
+}
+.ticket-titulo{
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin: .5rem 0 .4rem;
+    text-transform: capitalize;
+}
+.ticket-seccion{
+    padding: 1rem 0;
+}
+.ticket-seccion h6{
+    font-size: .74rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #64748b;
+    font-weight: 700;
+    margin-bottom: .6rem;
+}
+.ticket-fila{
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .26rem 0;
+    font-size: .92rem;
+}
+.ticket-fila .lbl{
+    color: #64748b;
+}
+.ticket-fila .val{
+    font-weight: 600;
+    text-align: right;
+    word-break: break-word;
+}
+.ticket-corte{
+    position: relative;
+    height: 0;
+    border-top: 1px dashed #cbd5e1;
+    margin: .25rem 0;
+}
+.ticket-corte::before,
+.ticket-corte::after{
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #eef2f7;
+    transform: translateY(-50%);
+}
+.ticket-corte::before{ left: -1.6rem; }
+.ticket-corte::after{ right: -1.6rem; }
+.ticket-total{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+.ticket-total .lbl{
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: #334155;
+}
+.ticket-total .val{
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--gea-primario);
+}
+.ticket-pie{
+    text-align: center;
+    font-size: .78rem;
+    color: #94a3b8;
+    border-top: 1px dashed #cbd5e1;
+    padding-top: .9rem;
+    margin-top: .25rem;
+}
+
+/* Logo de la barra superior */
+.logo-navbar{
+    height: 40px;
+    width: auto;
+}

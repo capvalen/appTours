@@ -1,3 +1,6 @@
 /images/subidas/*
 /sello/.venv
 api/conectkarl.php
+usuario-panel/.env
+.env
+**/.env
