@@ -49,7 +49,7 @@ $simple = ['a', 'e', 'i', 'o', 'u', '-'];
 
 $aBuscar = str_replace( $tildes, $simple, $aBuscar );
 $txtSimple = $aBuscar;
-$indice = array_search( $aBuscar, $departamentosUrl );
+$indice = array_search( $txtSimple, $departamentosUrl );
 if ($indice === false) { $indice = -1; }
 $idDepartamento = $indice;
 

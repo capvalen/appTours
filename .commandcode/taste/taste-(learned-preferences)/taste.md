@@ -5,3 +5,5 @@
 - Provides a `.env.example` template with instructions so config can be reproduced without leaking secrets. Confidence: 0.75
 - Verifies every PHP change with `php -l` linting plus a roundtrip functional test (e.g. encrypt/decrypt cycle). Confidence: 0.75
 - Generates random secrets using PHP-native functions (`random_bytes` / `bin2hex`). Confidence: 0.65
+- Writes requests in Spanish and expects work delivered in Spanish (UI text, validation messages, code comments, and summaries). Confidence: 0.65
+- For form/input validation, expects the checks to run in the same order as the fields appear in the form (e.g. dni → adultos → niños → nombres → celular → email). Confidence: 0.6

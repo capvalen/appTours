@@ -3,7 +3,7 @@
 	<div class="w-100">
 		<select id="pais" placeholder="País o nacionalidad" name="nacionalidad">
 			<option value="1">Peruano</option>
-			<option value="1">Extranjero</option>
+			<option value="2">Extranjero</option>
 		</select>
 	</div>
 	<div class="w-100 d-inline d-none">
@@ -17,9 +17,22 @@
 			<input type="number" min="0" placeholder="Niños" id="niños" name="niños">
 		</div>
 	</div>
+	<div class="w-100">
+		<select id="documento" name="documento">
+			<option value="D.N.I.">D.N.I.</option>
+		</select>
+	</div>
+	<div class="w-100">
+		<input type="text" id="numeroDocumento" name="numeroDocumento" placeholder="Número de D.N.I." autocomplete="off">
+	</div>
 	<div class="w-100"><input type="text" name="nombre" id="nombres" placeholder="Nombres y Apellidos"></div>
 	<div class="w-100"><input type="text" name="celular" id="celular" placeholder="Celular"></div>
 	<div class="w-100"><input type="text" name="email" id="email" placeholder="Email"></div>
+	<div class="w-100"><input type="text" name="ciudad" id="ciudad" placeholder="Ciudad"></div>
+	<div class="w-100"><input type="text" name="direccion" id="direccion" placeholder="Dirección"></div>
+	<div class="w-100 d-inline d-none" id="contenedorErrorDatos">
+		<div class="alert">⚠️ <span id="spanErrorDatos"></span></div>
+	</div>
 	<div class="div w-100 d-inline">
 		<div class="w-50 me-2">
 			<button type="submit" class="btn d-inline" id="reservar"><span class="elementor-button-icon">
@@ -36,12 +49,16 @@
 <script>
 	jQuery(document).ready(function($) {
 		fecha = document.querySelector('#fecha')
-		nacionalidad = document.querySelector('#pais').value == 1 ? 'Peruana': 'Extranjera'
 		adultos = document.querySelector('#adultos').value || 0
 		niños = document.querySelector('#niños').value || 0
 		nombres = document.querySelector('#nombres')
 		celular = document.querySelector('#celular')
 		email = document.querySelector('#email')
+		ciudad = document.querySelector('#ciudad')
+		direccion = document.querySelector('#direccion')
+		documento = document.querySelector('#documento')
+		numeroDocumento = document.querySelector('#numeroDocumento')
+		paisSelect = document.querySelector('#pais')
 		pagina = document.title.replace(' – Tours Huancayo', '');
 		minimo_pasajeros = parseInt(document.querySelector('#minimo-pasajeros').dataset.minimo || 1)
 
@@ -49,18 +66,173 @@
 		document.querySelector('#spanMinimo').innerText=minimo_pasajeros
 		fecha.value = hoy
 
+		// ===== Tipo de documento según la nacionalidad =====
+		// value 1 = Peruano -> solo D.N.I. | value 2 = Extranjero -> Carnet de extranjería o Pasaporte
+		const TIPOS_DOCUMENTO = {
+			'1': ['D.N.I.'],
+			'2': ['Carnet de extranjería', 'Pasaporte']
+		}
+
+		// Placeholder del número según el tipo de documento elegido
+		const PLACEHOLDER_DOC = {
+			'D.N.I.': 'Número de D.N.I.',
+			'Carnet de extranjería': 'Número de carnet de extranjería',
+			'Pasaporte': 'Número de pasaporte'
+		}
+
+		const actualizarDocumento = ()=>{
+			const opciones = TIPOS_DOCUMENTO[paisSelect.value] || TIPOS_DOCUMENTO['1']
+			documento.innerHTML = opciones
+				.map( op => `<option value="${op}">${op}</option>` )
+				.join('')
+
+			// El campo se vacía porque un documento de otro país ya no es válido
+			numeroDocumento.value = ''
+			actualizarPlaceholderDoc()
+		}
+
+		const actualizarPlaceholderDoc = ()=>{
+			numeroDocumento.placeholder = PLACEHOLDER_DOC[documento.value] || 'Número de documento'
+		}
+
+		paisSelect.addEventListener('change', actualizarDocumento)
+		documento.addEventListener('change', actualizarPlaceholderDoc)
+		actualizarDocumento()
+		actualizarPlaceholderDoc()
+
+		// ===== Precio del tour (#precio en la página, ej: "95" a secas) =====
+		const leerPrecio = ()=>{
+			const el = document.querySelector('#precio')
+			if( !el ) return 0
+
+			// Sirve tanto para <input> (value) como para <span>/<div> (textContent)
+			const crudo = (el.value !== undefined && el.value !== null && el.value !== '')
+				? el.value
+				: el.textContent
+
+			// Limpia "S/ 95.00" -> 95.00  |  "1,250.50" -> 1250.50
+			const limpio = String(crudo)
+				.replace(/[^0-9.,]/g, '')
+				.replace(/,(\d{3})(?=\D|$)/g, '$1')
+				.replace(',', '.')
+
+			const num = parseFloat(limpio)
+			return isNaN(num) ? 0 : num
+		}
+
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+		const mostrarErrorDatos = (mensaje)=>{
+			document.querySelector('#spanErrorDatos').innerText = mensaje
+			document.querySelector('#contenedorErrorDatos').classList.remove('d-none')
+		}
+
+		const ocultarErrorDatos = ()=>{
+			document.querySelector('#contenedorErrorDatos').classList.add('d-none')
+		}
+
+		const mostrarErrorMinimo = ()=>{
+			document.querySelector('#errorMinimoPasajeros').parentNode.classList.remove('d-none')
+			document.querySelector('#adultos').classList.add('error')
+			document.querySelector('#niños').classList.add('error')
+		}
+
+		const ocultarErrorMinimo = ()=>{
+			document.querySelector('#errorMinimoPasajeros').parentNode.classList.add('d-none')
+			document.querySelector('#adultos').classList.remove('error')
+			document.querySelector('#niños').classList.remove('error')
+		}
+
+		// Limpia las marcas de la validación anterior
+		// (se recorren todos los campos para no olvidar ninguno al agregar nuevos)
+		const limpiarErrores = ()=>{
+			document.querySelectorAll('#formulario input, #formulario select')
+				.forEach( el => el.classList.remove('error') )
+			ocultarErrorDatos()
+			ocultarErrorMinimo()
+		}
+
+		// Las validaciones siguen el mismo orden en que aparecen los campos:
+		// documento, adultos, niños, nombres, celular, email
+		const validarDatos = ()=>{
+			limpiarErrores()
+
+			// 1. Número de documento
+			if( !numeroDocumento.value.trim() ){
+				numeroDocumento.classList.add('error')
+				mostrarErrorDatos(`Completa el número de ${documento.value}`)
+				return false
+			}
+
+			// 2. Adultos y niños
+			const adultosVal = parseInt(document.querySelector('#adultos').value) || 0
+			const niñosVal   = parseInt(document.querySelector('#niños').value) || 0
+
+			if( adultosVal + niñosVal < minimo_pasajeros ){
+				mostrarErrorMinimo()
+				return false
+			}
+
+			// 3. Nombres, celular, email, ciudad y direccion
+			const obligatorios = [
+				{ campo: nombres,   nombre: 'Nombres' },
+				{ campo: celular,   nombre: 'Celular' },
+				{ campo: email,     nombre: 'Email' },
+				{ campo: ciudad,    nombre: 'Ciudad' },
+				{ campo: direccion, nombre: 'Dirección' }
+			]
+
+			const faltantes = obligatorios
+				.filter( o => !o.campo.value.trim() )
+				.map( o => o.nombre )
+
+			if( faltantes.length > 0 ){
+				obligatorios.forEach( o => o.campo.classList.toggle('error', faltantes.includes(o.nombre)) )
+				mostrarErrorDatos(`Completa los datos obligatorios: ${faltantes.join(', ')}`)
+				return false
+			}
+
+			// 4. Formato del email
+			if( !emailRegex.test(email.value.trim()) ){
+				email.classList.add('error')
+				mostrarErrorDatos('Ingresa un email válido, por ejemplo: algo@correo.com')
+				return false
+			}
+
+			return true
+		}
+
 		window.enviarWhatsapp = ()=>{		
 			event.preventDefault();
+			if( !validarDatos() ) return
 			adultos = document.querySelector('#adultos').value || 0
 			niños = document.querySelector('#niños').value || 0
-			
+
+			// Se lee del select #pais al momento de enviar, porque
+			// la variable "nacionalidad" es un texto, no el <select>
+			const nacionalidadVal = paisSelect.value == 1 ? 'Peruana' : 'Extranjera'
+
+			// Precio leído de #precio al momento de enviar (0 si no existe)
+			const precioWhatsapp = leerPrecio()
+			const pasajerosWhatsapp = (parseInt(adultos) || 0) + (parseInt(niños) || 0)
+
+			// Solo se agregan las líneas que tienen contenido
+			const lineas = [
+				`Con fecha: ${fecha.value}`,
+				`Nacionalidad: ${nacionalidadVal}`,
+				numeroDocumento.value.trim() ? `Documento: ${documento.value} - ${numeroDocumento.value.trim()}` : '',
+				`Pasajes: ${adultos} (adultos) y ${niños} (niños)`,
+				precioWhatsapp > 0 ? `Precio por persona: S/ ${precioWhatsapp.toFixed(2)}` : '',
+				`Nombres: ${nombres.value}`,
+				`Celular: ${celular.value}`,
+				`Email: ${email.value}`,
+				ciudad.value.trim()    ? `Ciudad: ${ciudad.value.trim()}` : '',
+				direccion.value.trim() ? `Dirección: ${direccion.value.trim()}` : '',
+				precioWhatsapp > 0 ? `Total a pagar: S/ ${(precioWhatsapp * pasajerosWhatsapp).toFixed(2)}` : ''
+			].filter( linea => linea !== '' )
+
 			const mensaje = `*Hola Tours Huancayo* Quisiera más hacer una reservación del tour: *${pagina}*\n`+
-			`Con fecha: ${fecha.value}\n`+
-			`Nacionalidad: ${nacionalidad.value}\n`+
-			`Pasajes: ${adultos} (adultos) y ${niños} (niños)\n`+
-			`Nombres: ${nombres.value}\n`+
-			`Celular: ${celular.value}\n`+
-			`Email: ${email.value}`;
+			lineas.join('\n');
 
 			const url = `https://wa.me/51993183661?text=${encodeURIComponent(mensaje)}`;
 			window.open(url, '_blank');
@@ -72,37 +244,49 @@
 			niños = document.querySelector('#niños').value || 0
 
 			let personas = parseInt(adultos) + parseInt(niños)
-			if( personas < minimo_pasajeros ){
-				document.querySelector('#errorMinimoPasajeros').parentNode.classList.remove('d-none')
-				document.querySelector('#adultos').classList.add('error')
-				document.querySelector('#niños').classList.add('error')
-				return
-			}else{
-				document.querySelector('#errorMinimoPasajeros').parentNode.classList.add('d-none')
-				document.querySelector('#adultos').classList.remove('error')
-				document.querySelector('#niños').classList.remove('error')
+
+			if( !validarDatos() ) return
+
+			// Nacionalidad (1 = Peruano, 1 = Extranjero en el select actual)
+			// Se calcula al momento del submit para tomar el valor elegido
+			let nacionalidadVal = document.querySelector('#pais').value == 1 ? 'Peruana' : 'Extranjera';
+
+			// Convertimos la fecha de yyyy-mm-dd (input date) a dd/mm/yyyy
+			let fechaFormato = fecha.value;
+			if (fechaFormato && fechaFormato.includes('-')) {
+				const [yyyy, mm, dd] = fechaFormato.split('-');
+				fechaFormato = `${dd}/${mm}/${yyyy}`;
 			}
 
-			// Creamos los datos a enviar
-			let formData = new FormData(this);
-			formData.append('pagina', document.title.replace('– Tours Huancayo', ''));
-			formData.append('action', 'enviar_correo_contacto'); // Nombre de la función en PHP
+			// Armamos el objeto con todos los datos del formulario + datos de la página
+			const precioUnitario = leerPrecio()
 
-			//Envía a traves de script
-			fetch('/wp-admin/admin-ajax.php', {
-					method: 'POST',
-					body: formData
-			})
-			.then(response => response.text())
-			.then(data => {
-				//alert('Mensaje enviado')
-				console.log(data)
-				document.getElementById('formulario').reset()
-				location.href = 'https://tourshuancayo.com/pago-final/'
-			})
-			.catch(error => {
-					console.error('Error:', error);
-			});
+			const datosTour = {
+				fecha:        fechaFormato,
+				nacionalidad: nacionalidadVal,
+				documento:    documento.value,
+				numeroDocumento: numeroDocumento.value.trim(),
+				precio:       precioUnitario,
+				total:        precioUnitario * personas,
+				adultos:      parseInt(adultos) || 0,
+				niños:        parseInt(niños) || 0,
+				pasajeros:    personas,
+				nombres:      nombres.value,
+				celular:      celular.value,
+				email:        email.value,
+				ciudad:       ciudad.value.trim(),
+				direccion:    direccion.value.trim(),
+				pagina:       pagina,
+				titulo:       document.title,
+				url:          window.location.href,
+				fechaRegistro: new Date().toISOString()
+			};
+
+			// Guardamos en localStorage como JSON
+			localStorage.setItem('tour-infocat', JSON.stringify(datosTour));
+
+			// Redirigimos a la pantalla de pago
+			location.href = '/pago-final/';
 		});
 	});
 </script>

@@ -1,0 +1,657 @@
+<style>
+	#ticketCompra{
+		/* font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; */
+		width: 100%;
+		max-width: 420px;
+		margin: 24px auto;
+		background: #ffffff;
+		color: #2b2b2b;
+		border: 1px solid #e6e6e6;
+		border-radius: 14px;
+		box-shadow: 0 8px 26px rgba(0,0,0,.08);
+		overflow: hidden;
+		text-align: center;
+	}
+	#ticketCompra .tk-head{ padding: 24px 22px 0; }
+	#ticketCompra .tk-pre{
+		font-size: .7rem;
+		color: #9a9a9a;
+		text-transform: uppercase;
+		letter-spacing: .18em;
+		font-weight: 600;
+		margin-bottom: 6px;
+	}
+	#ticketCompra .tk-title{
+		margin: 0 0 16px;
+		font-size: 1.35rem;
+		font-weight: 700;
+		color: #1f1f1f;
+		line-height: 1.25;
+	}
+	#ticketCompra .tk-line{
+		height: 1px;
+		background: #ededed;
+		border: 0;
+		margin: 0;
+	}
+	#ticketCompra .tk-body{ padding: 16px 22px; text-align: left; }
+	#ticketCompra .tk-intro{
+		margin: 0 0 12px;
+		font-size: .88rem;
+		color: #6f6f6f;
+		line-height: 1.5;
+	}
+	#ticketCompra .tk-row{
+		font-size: .88rem;
+		line-height: 1.5;
+		padding: 4px 0;
+		word-break: break-word;
+	}
+	#ticketCompra .tk-row .tk-k{ font-weight: 700!important; color: #2b2b2b; }
+	#ticketCompra .tk-row .tk-v{ color: #5a5a5a; }
+	#ticketCompra .tk-cols{
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 10px;
+		margin-top: 12px;
+	}
+	/* Cuando solo hay adultos (niños en 0 o vacío) ocupa el ancho completo */
+	#ticketCompra .tk-cols.tk-one{ grid-template-columns: 1fr; }
+	#ticketCompra .tk-cell{
+		background: #f8f8f8;
+		border: 1px solid #ededed;
+		border-radius: 10px;
+		padding: 10px 12px;
+		text-align: center;
+	}
+	#ticketCompra .tk-cell .tk-cl{
+		display: block;
+		margin-bottom: 2px;
+		font-size: .68rem;
+		font-weight: 600;
+		color: #9a9a9a;
+		text-transform: uppercase;
+		letter-spacing: .08em;
+	}
+	#ticketCompra .tk-cell .tk-cv{ font-size: 1.3rem; font-weight: 700; color: #ffa300; }
+	#ticketCompra .tk-total{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 14px;
+		padding-top: 12px;
+		border-top: 1px dashed #e0e0e0;
+		font-size: .88rem;
+	}
+	#ticketCompra .tk-total .tk-k{ font-weight: 700; color: #2b2b2b; }
+	#ticketCompra .tk-total .tk-v{ font-weight: 700; color: #ffa300; }
+	#ticketCompra .tk-foot{
+		margin-top: 18px;
+		padding: 14px 22px 18px;
+		background: #fafafa;
+		border-top: 1px solid #ededed;
+		font-size: .7rem;
+		color: #9a9a9a;
+		line-height: 1.6;
+	}
+
+	/* ===== Zona de constancia de pago ===== */
+	#ticketCompra .tk-up{
+		margin-top: 20px;
+		padding-top: 18px;
+		border-top: 1px dashed #e0e0e0;
+	}
+	#ticketCompra .tk-up-label{
+		display: block;
+		margin-bottom: 8px;
+		font-size: .85rem;
+		font-weight: 700!important;
+		color: #2b2b2b;
+	}
+	#ticketCompra .tk-drop{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 4px;
+		padding: 20px 14px;
+		background: #fbfbfb;
+		border: 2px dashed #d8d8d8;
+		border-radius: 12px;
+		color: #ffa300;
+		cursor: pointer;
+		transition: border-color .2s, background .2s;
+	}
+	#ticketCompra .tk-drop:hover,
+	#ticketCompra .tk-drop.tk-over{ border-color: #ffa300; background: #fff8ec; }
+	#ticketCompra .tk-drop svg{ width: 34px; height: 34px; }
+	#ticketCompra .tk-dt{ font-size: .82rem; font-weight: 600; color: #4d4d4d; text-align: center; }
+	#ticketCompra .tk-dh{ font-size: .7rem; color: #9a9a9a; text-align: center; }
+
+	/* Vista previa del archivo */
+	#ticketCompra .tk-prev{ display: none; margin-top: 12px; }
+	#ticketCompra .tk-prev.tk-on{ display: block; }
+	#ticketCompra .tk-prev-box{
+		position: relative;
+		padding: 8px;
+		background: #fafafa;
+		border: 1px solid #ededed;
+		border-radius: 12px;
+	}
+	#ticketCompra .tk-prev-box img{
+		display: block;
+		width: 100%;
+		max-height: 220px;
+		object-fit: contain;
+		border-radius: 8px;
+	}
+	#ticketCompra .tk-prev-x{
+		position: absolute;
+		top: 6px;
+		right: 6px;
+		width: 26px;
+		height: 26px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
+		background: rgba(0,0,0,.6);
+		color: #ffffff;
+		border: 0;
+		border-radius: 50%;
+		font-size: 13px;
+		line-height: 1;
+		cursor: pointer;
+		transition: background .2s;
+	}
+	#ticketCompra .tk-prev-x:hover{ background: #e21212; }
+	#ticketCompra .tk-pdf{
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 12px 10px;
+		color: #e21212;
+	}
+	#ticketCompra .tk-pdf svg{ width: 32px; height: 32px; flex: 0 0 auto; }
+	#ticketCompra .tk-pdf-n{
+		font-size: .8rem;
+		font-weight: 600;
+		color: #4d4d4d;
+		word-break: break-all;
+	}
+	#ticketCompra .tk-pdf-s{ font-size: .7rem; color: #9a9a9a; }
+	#ticketCompra .tk-err{
+		display: none;
+		margin-top: 10px;
+		font-size: .78rem;
+		font-weight: 600;
+		color: #e21212;
+	}
+	#ticketCompra .tk-err.tk-on{ display: block; }
+	#ticketCompra .tk-btn{
+		width: 100%;
+		margin-top: 16px;
+		padding: 14px;
+		background: #ffa300;
+		color: #ffffff;
+		border: 0;
+		border-radius: 12px;
+		font-size: 1rem;
+		font-weight: 700;
+		letter-spacing: .02em;
+		cursor: pointer;
+		transition: filter .2s;
+	}
+	#ticketCompra .tk-btn:hover{ filter: brightness(.94); }
+	#ticketCompra .tk-btn:disabled{ opacity: .6; cursor: not-allowed; }
+
+	/* Evita el scroll de fondo mientras hay overlay o modal */
+	body.tk-lock{ overflow: hidden!important; }
+
+	/* ===== Overlay "Enviando" ===== */
+	#tkOverlay{
+		position: fixed;
+		inset: 0;
+		z-index: 999999;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 20px;
+		background: rgba(20,20,20,.75);
+		color: #ffffff;
+		text-align: center;
+		font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+	}
+	#tkOverlay .tk-spin{
+		width: 52px;
+		height: 52px;
+		margin: 0 auto 18px;
+		border: 5px solid rgba(255,255,255,.25);
+		border-top-color: #ffa300;
+		border-radius: 50%;
+		animation: tkRot .8s linear infinite;
+	}
+	@keyframes tkRot{ to{ transform: rotate(360deg); } }
+	#tkOverlay .tk-ov-t{ font-size: 1.05rem; font-weight: 700; }
+	#tkOverlay .tk-ov-s{ margin-top: 6px; font-size: .85rem; opacity: .8; }
+
+	/* ===== Modal de confirmación ===== */
+	#tkModal{
+		position: fixed;
+		inset: 0;
+		z-index: 999998;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 20px;
+		background: rgba(20,20,20,.6);
+		font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+	}
+	#tkModal .tk-mcard{
+		width: 100%;
+		max-width: 380px;
+		padding: 30px 26px;
+		background: #ffffff;
+		border-radius: 16px;
+		box-shadow: 0 20px 50px rgba(0,0,0,.25);
+		text-align: center;
+		animation: tkPop .25s ease-out;
+	}
+	@keyframes tkPop{ from{ opacity: 0; transform: scale(.92); } to{ opacity: 1; transform: scale(1); } }
+	#tkModal .tk-mico{
+		width: 64px;
+		height: 64px;
+		margin: 0 auto 14px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #eaf9eb;
+		border-radius: 50%;
+		color: #10b916;
+	}
+	#tkModal .tk-mico svg{ width: 32px; height: 32px; }
+	#tkModal h4{ margin: 0 0 8px; font-size: 1.2rem; color: #1f1f1f; }
+	#tkModal p{ margin: 0 0 20px; font-size: .88rem; color: #6f6f6f; line-height: 1.5; }
+	#tkModal .tk-mnote{
+		margin: 0 0 20px;
+		padding: 10px 12px;
+		background: #fbfbfb;
+		border: 1px solid #ededed;
+		border-radius: 10px;
+		font-size: .82rem;
+		color: #6f6f6f;
+		line-height: 1.5;
+	}
+	#tkModal .tk-mbtn{
+		width: 100%;
+		padding: 12px;
+		background: #ffa300;
+		color: #ffffff;
+		border: 0;
+		border-radius: 10px;
+		font-size: .95rem;
+		font-weight: 700;
+		cursor: pointer;
+	}
+	#tkModal .tk-mbtn:hover{ filter: brightness(.94); }
+</style>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		var columna = document.getElementById('columna-compra');
+		var dato = localStorage.getItem('tour-infocat');
+
+		// Si el dato NO existe (es null), ocultamos la columna
+		if (dato === null || dato === undefined) {
+			if (columna) columna.style.display = 'none';
+			return;
+		}
+
+		// Parseamos el JSON guardado por el formulario
+		var c;
+		try {
+			c = JSON.parse(dato);
+		} catch (e) {
+			console.warn('tour-infocat no es un JSON válido:', e);
+			if (columna) columna.style.display = 'none';
+			return;
+		}
+
+		// Escapa texto para inyectarlo de forma segura
+		function esc(txt) {
+			return String(txt == null ? '' : txt)
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#39;');
+		}
+
+		var adultos = parseInt(c.adultos) || 0;
+		var ninos   = parseInt(c.niños != null ? c.niños : c.ninos) || 0;
+		var pasajeros = parseInt(c.pasajeros) || (adultos + ninos);
+
+		// Precio por persona (viene del #precio de la página del tour, ej: 95)
+		// total = precio x (adultos + niños)
+		var precio = parseFloat(c.precio) || 0;
+		var total  = precio > 0 ? precio * pasajeros : (parseFloat(c.total) || 0);
+
+		// Formato de moneda: S/ 285.00
+		function soles(n) {
+			return 'S/ ' + (Number(n) || 0).toFixed(2);
+		}
+
+		// Fecha de registro legible (dd/mm/yyyy hh:mm)
+		var emitido = '';
+		if (c.fechaRegistro) {
+			var d = new Date(c.fechaRegistro);
+			if (!isNaN(d.getTime())) {
+				var p = function (n) { return String(n).padStart(2, '0'); };
+				emitido = p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() +
+				          ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+			}
+		}
+
+		// Bloque de fila reutilizable -> "Label:" valor  (label en negrita)
+		function fila(k, v) {
+			if (v === '' || v === null || v === undefined) return '';
+			return '<div class="tk-row"><span class="tk-k">' + esc(k) + ':</span> ' +
+			       '<span class="tk-v">' + esc(v) + '</span></div>';
+		}
+
+		// Celda de pasajeros (sub columna)
+		function celda(label, valor) {
+			return '<div class="tk-cell">' +
+			       '<span class="tk-cl">' + esc(label) + '</span>' +
+			       '<span class="tk-cv">' + valor + '</span>' +
+			       '</div>';
+		}
+
+		// Niños solo se muestra si es mayor a 0
+		var colsClass = ninos > 0 ? 'tk-cols' : 'tk-cols tk-one';
+
+		// Iconos SVG (el color se hereda con currentColor)
+		var SVG_UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>';
+		var SVG_PDF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>';
+
+		var ticket = '' +
+			'<div id="ticketCompra">' +
+				'<div class="tk-head">' +
+					'<div class="tk-pre">Pre-Reserva</div>' +
+					'<h3 class="tk-title">Finalice su reserva</h3>' +
+				'</div>' +
+				'<hr class="tk-line">' +
+				'<div class="tk-body">' +
+					'<p class="tk-intro">Está por finalizar su reserva con estos datos:</p>' +
+					fila('Tour', c.pagina) +
+					fila('Fecha del tour', c.fecha) +
+					fila('Nacionalidad', c.nacionalidad) +
+					fila('Documento', c.documento) +
+					fila('N° de documento', c.numeroDocumento) +
+					fila('Precio por persona', precio > 0 ? soles(precio) : '') +
+					fila('Nombres', c.nombres) +
+					fila('Celular', c.celular) +
+					fila('Email', c.email) +
+					fila('Ciudad', c.ciudad) +
+					fila('Dirección', c.direccion) +
+					'<div class="' + colsClass + '">' +
+						celda('Adultos', adultos) +
+						(ninos > 0 ? celda('Niños', ninos) : '') +
+					'</div>' +
+					'<div class="tk-total">' +
+						(precio > 0
+							? '<span class="tk-k">Total a pagar:</span>' +
+							  '<span class="tk-v">' + soles(total) + '</span>'
+							: '<span class="tk-k">Total pasajeros:</span>' +
+							  '<span class="tk-v">' + pasajeros + '</span>') +
+					'</div>' +
+					'<div class="tk-up">' +
+						'<label class="tk-up-label" for="tkFile">Adjunte su constancia de pago:</label>' +
+						'<div class="tk-drop" id="tkDrop">' +
+							SVG_UP +
+							'<div class="tk-dt">Haz clic o arrastra tu archivo aquí</div>' +
+							'<div class="tk-dh">Imagen (JPG, PNG, WEBP) o PDF &middot; máx. 8 MB</div>' +
+						'</div>' +
+						'<input type="file" id="tkFile" name="comprobante" accept="image/png,image/jpeg,image/webp,image/gif,application/pdf" hidden>' +
+						'<div class="tk-prev" id="tkPrev"></div>' +
+						'<div class="tk-err" id="tkErr"></div>' +
+						'<button type="button" class="tk-btn" id="tkBtn">Finalizar Reserva</button>' +
+					'</div>' +
+				'</div>' +
+			'</div>';
+
+		if (columna) {
+			columna.innerHTML = ticket;
+		} else {
+			// Si no existe la columna, agregamos el ticket al final del body como respaldo
+			var cont = document.createElement('div');
+			cont.innerHTML = ticket;
+			document.body.appendChild(cont);
+		}
+
+		/* ============================================================
+		 * Zona de constancia de pago
+		 * ============================================================ */
+
+		var drop      = document.getElementById('tkDrop');
+		var fileInput = document.getElementById('tkFile');
+		var prev      = document.getElementById('tkPrev');
+		var errEl     = document.getElementById('tkErr');
+		var btn       = document.getElementById('tkBtn');
+
+		var archivo    = null;   // File seleccionado
+		var previewUrl = null;   // ObjectURL activo (para liberar memoria)
+		var overlayEl  = null;
+		var MAX_BYTES  = 8 * 1024 * 1024; // 8 MB
+
+		function mostrarError(msg) {
+			errEl.textContent = msg;
+			errEl.classList.add('tk-on');
+		}
+		function limpiarError() {
+			errEl.textContent = '';
+			errEl.classList.remove('tk-on');
+		}
+
+		function esImagen(f) {
+			return /^image\//.test(f.type) || /\.(jpe?g|png|webp|gif)$/i.test(f.name);
+		}
+		function esPdf(f) {
+			return f.type === 'application/pdf' || /\.pdf$/i.test(f.name);
+		}
+		function pesoLegible(n) {
+			if (n < 1024) return n + ' B';
+			if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+			return (n / 1048576).toFixed(2) + ' MB';
+		}
+
+		// Pinta la vista previa (imagen) o la ficha del PDF; siempre con botón [x]
+		function renderPreview() {
+			if (previewUrl) { URL.revokeObjectURL(previewUrl); previewUrl = null; }
+
+			if (!archivo) {
+				prev.innerHTML = '';
+				prev.classList.remove('tk-on');
+				return;
+			}
+
+			var cuerpo;
+			if (esImagen(archivo)) {
+				previewUrl = URL.createObjectURL(archivo);
+				cuerpo = '<img src="' + previewUrl + '" alt="Constancia de pago">';
+			} else {
+				cuerpo = '<div class="tk-pdf">' + SVG_PDF +
+					'<div>' +
+						'<div class="tk-pdf-n">' + esc(archivo.name) + '</div>' +
+						'<div class="tk-pdf-s">PDF &middot; ' + pesoLegible(archivo.size) + '</div>' +
+					'</div>' +
+				'</div>';
+			}
+
+			prev.innerHTML = '<div class="tk-prev-box">' + cuerpo +
+				'<button type="button" class="tk-prev-x" title="Quitar archivo">&times;</button>' +
+				'</div>';
+			prev.classList.add('tk-on');
+
+			prev.querySelector('.tk-prev-x').addEventListener('click', function () {
+				archivo = null;
+				fileInput.value = '';
+				limpiarError();
+				renderPreview();
+			});
+		}
+
+		function tomarArchivo(f) {
+			if (!f) return;
+
+			if (!esImagen(f) && !esPdf(f)) {
+				archivo = null;
+				fileInput.value = '';
+				renderPreview();
+				mostrarError('Solo se permiten imágenes (JPG, PNG, WEBP) o PDF.');
+				return;
+			}
+			if (f.size > MAX_BYTES) {
+				archivo = null;
+				fileInput.value = '';
+				renderPreview();
+				mostrarError('El archivo supera el máximo de 8 MB.');
+				return;
+			}
+
+			archivo = f;
+			limpiarError();
+			renderPreview();
+		}
+
+		// Abrir el selector de archivos
+		drop.addEventListener('click', function () { fileInput.click(); });
+		fileInput.addEventListener('change', function () { tomarArchivo(this.files[0]); });
+
+		// Arrastrar y soltar
+		drop.addEventListener('dragover', function (e) {
+			e.preventDefault();
+			drop.classList.add('tk-over');
+		});
+		drop.addEventListener('dragleave', function () {
+			drop.classList.remove('tk-over');
+		});
+		drop.addEventListener('drop', function (e) {
+			e.preventDefault();
+			drop.classList.remove('tk-over');
+			if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+				tomarArchivo(e.dataTransfer.files[0]);
+			}
+		});
+
+		// Overlay a pantalla completa mientras se envía
+		function mostrarOverlay(on) {
+			if (on) {
+				if (overlayEl) return;
+				overlayEl = document.createElement('div');
+				overlayEl.id = 'tkOverlay';
+				overlayEl.innerHTML =
+					'<div>' +
+						'<div class="tk-spin"></div>' +
+						'<div class="tk-ov-t">Enviando tu información</div>' +
+						'<div class="tk-ov-s">No cierres la ventana.</div>' +
+					'</div>';
+				document.body.appendChild(overlayEl);
+				document.body.classList.add('tk-lock');
+			} else {
+				if (overlayEl && overlayEl.parentNode) overlayEl.parentNode.removeChild(overlayEl);
+				overlayEl = null;
+				document.body.classList.remove('tk-lock');
+			}
+		}
+
+		// Modal final
+		function mostrarModal() {
+			var m = document.createElement('div');
+			m.id = 'tkModal';
+			m.innerHTML =
+				'<div class="tk-mcard">' +
+					'<div class="tk-mico">' +
+						'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>' +
+					'</div>' +
+					'<h4>Reserva enviada</h4>' +
+					'<p>Espere su confirmación.</p>' +
+					'<div class="tk-mnote">Se ha enviado su constancia a su correo electrónico</div>' +
+					'<button type="button" class="tk-mbtn">Entendido</button>' +
+				'</div>';
+			document.body.appendChild(m);
+			document.body.classList.add('tk-lock');
+
+			m.querySelector('.tk-mbtn').addEventListener('click', function () {
+				if (m.parentNode) m.parentNode.removeChild(m);
+				document.body.classList.remove('tk-lock');
+			});
+		}
+
+		// Enviar: datos del localStorage + constancia de pago
+		btn.addEventListener('click', function () {
+			if (!archivo) {
+				mostrarError('Adjunte su constancia de pago para finalizar la reserva.');
+				return;
+			}
+			limpiarError();
+			btn.disabled = true;
+
+			var fd = new FormData();
+			fd.append('action', 'enviar_correo_contacto');
+			fd.append('nombre',       c.nombres || '');
+			fd.append('email',        c.email || '');
+			fd.append('ciudad',       c.ciudad || '');
+			fd.append('direccion',    c.direccion || '');
+			fd.append('celular',      c.celular || '');
+			fd.append('fecha',        c.fecha || '');
+			fd.append('nacionalidad', c.nacionalidad || '');
+			fd.append('adultos',      adultos);
+			fd.append('niños',        ninos);
+			fd.append('pagina',       c.pagina || '');
+			fd.append('url',          c.url || '');
+			fd.append('documento',    c.documento || '');
+			fd.append('numeroDocumento', c.numeroDocumento || '');
+			fd.append('precio',       precio);
+			fd.append('total',        total);
+			fd.append('comprobante',  archivo, archivo.name);
+
+			mostrarOverlay(true);
+
+			fetch('/wp-admin/admin-ajax.php', { method: 'POST', body: fd })
+				.then(function (r) { return r.text(); })
+				.then(function (respuesta) {
+					mostrarOverlay(false);
+					btn.disabled = false;
+
+					var codigo = String(respuesta).trim();
+
+					if (codigo === 'exito') {
+						// Reset del formulario de subida
+						archivo = null;
+						fileInput.value = '';
+						renderPreview();
+						mostrarModal();
+						return;
+					}
+
+					// Mensajes según el código de error del servidor
+					var mensajes = {
+						'error_tipo':    'El archivo no es una imagen o PDF válido. Intente con otro.',
+						'error_peso':    'El archivo supera el máximo de 8 MB.',
+						'error_archivo': 'El archivo no se pudo subir. Intente nuevamente.',
+						'error_subida':  'No se pudo guardar el archivo en el servidor. Intente nuevamente.'
+					};
+
+					console.error('Respuesta del servidor:', respuesta);
+					mostrarError(mensajes[codigo] || 'No se pudo enviar la reserva. Intente nuevamente.');
+				})
+				.catch(function (error) {
+					mostrarOverlay(false);
+					btn.disabled = false;
+					console.error('Error:', error);
+					mostrarError('Error de conexión. Intente nuevamente.');
+				});
+		});
+	});
+</script>
