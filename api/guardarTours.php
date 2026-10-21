@@ -1,6 +1,7 @@
 <?php 
 
 include ("conectkarl.php");
+include __DIR__ . '/slug.php';
 $_POST = json_decode(file_get_contents('php://input'),true);
 //var_dump($_POST['tour']); die();
 
@@ -9,28 +10,26 @@ $_POST = json_decode(file_get_contents('php://input'),true);
 if(isset($_POST['idPais'])) $idPais = $_POST['idPais'];
 else $idPais = 140;
 
+// ===== La url se genera desde el nombre, con las mismas reglas que al actualizar =====
+// Si ya existe la misma url (con visible = 1) se le agrega "-N", donde N es la
+// cantidad de registros repetidos que ya hay
+$tour = (isset($_POST['tour']) && is_array($_POST['tour'])) ? $_POST['tour'] : [];
+
+$urlGenerada = generarSlug($tour['nombre'] ?? '');
+if ($urlGenerada !== '') {
+	$urlGenerada    = urlUnica($db, $urlGenerada, 0, true);
+	$tour['url']    = $urlGenerada;
+	$tour['queUrl'] = $urlGenerada;
+	$_POST['tour']  = $tour;
+}
+
 $sql =$db->prepare("INSERT INTO `tours`(`contenido`, `visible`, `url`, `pais`) VALUES (?, 0, ?, ?);");
-$resp = $sql->execute([ json_encode($_POST['tour'], JSON_UNESCAPED_UNICODE), $_POST['tour']['url'], $idPais ]);
+$resp = $sql->execute([ json_encode($tour, JSON_UNESCAPED_UNICODE), $tour['url'] ?? '', $idPais ]);
 
 
 if($resp){
+
 	$idTour = $db->lastInsertId();
-
-	$sqlContar=$db->prepare("SELECT `url` from tours where `url` like concat(?,'%') and activo = 1;");
-	$respContar = $sqlContar->execute([ $_POST['tour']['url'] ]);
-	$resultadosContar = $sqlContar->fetchAll(PDO::FETCH_ASSOC);
-	$repetidos = count($resultadosContar)-1;
-	if($repetidos>0){
-		$nuevaUrl = $_POST['tour']['url'] .'-'.($repetidos);
-		$sqlUrl = $db->prepare("UPDATE `tours` SET url = ? where id = ?;");
-		$respUrl = $sqlUrl->execute([ $nuevaUrl, $idTour ]);
-
-		$sql = $db->prepare("UPDATE tours 
-			SET contenido = JSON_SET(contenido, '$.url', ?)
-			WHERE id = ?");
-		$resp = $sql->execute([$nuevaUrl, $idTour]);
-	}
-
 	/* $sqlContar = $db->prepare("UPDATE configuraciones SET contenido = contenido +1 where nombre = 'total_tours'; ");
 	$sqlContar->execute();
 

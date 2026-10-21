@@ -13,6 +13,7 @@ function procesar_formulario_contacto() {
 	$fecha        = sanitize_text_field($_POST['fecha'] ?? '');
 	$adultos      = intval($_POST['adultos'] ?? 0);
 	$ninos        = intval($_POST['niños'] ?? 0);
+	$pais         = sanitize_text_field($_POST['pais'] ?? '');
 	$nacionalidad = sanitize_text_field($_POST['nacionalidad'] ?? '');
 	$documento       = sanitize_text_field($_POST['documento'] ?? '');
 	$numeroDocumento = sanitize_text_field($_POST['numeroDocumento'] ?? '');
@@ -26,11 +27,21 @@ function procesar_formulario_contacto() {
 		? $precio * ($adultos + $ninos)
 		: floatval($_POST['total'] ?? 0);
 
-	// La nacionalidad puede llegar como "1" (select) o como texto ("Peruana"/"Extranjera")
-	if ($nacionalidad === '1' || stripos($nacionalidad, 'peru') === 0) {
+	// La nacionalidad llega como "Peruana"/"Extranjera" (formulario nuevo)
+	// o como "1" (peruano) / "2" (extranjero) en formularios antiguos
+	$nacionalidadTexto = $nacionalidad;
+
+	if ($nacionalidadTexto === '1' || stripos($nacionalidadTexto, 'peru') === 0) {
 		$nacionalidad = 'Peruano';
-	} elseif ($nacionalidad !== '') {
+	} elseif ($nacionalidadTexto !== '') {
 		$nacionalidad = 'Extranjero';
+	}
+
+	// Respaldo: si el país no llegó en su propio campo (cliente antiguo que
+	// enviaba el país o el número dentro de "nacionalidad"), se usa ese texto
+	if ($pais === '' && $nacionalidadTexto !== '' &&
+		!in_array($nacionalidadTexto, array('Peruana', 'Extranjera', 'Peruano', 'Extranjero', '1', '2'), true)) {
+		$pais = $nacionalidadTexto;
 	}
 
 	// 2. Validar y subir la constancia de pago
@@ -166,6 +177,7 @@ function procesar_formulario_contacto() {
 						'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">' .
 							$fila('Tour', $pagina) .
 							$fila('Fecha', $fecha) .
+							$fila('País', $pais) .
 							$fila('Nacionalidad', $nacionalidad) .
 							$fila('Documento', $documento) .
 							$fila('N° de documento', $numeroDocumento) .

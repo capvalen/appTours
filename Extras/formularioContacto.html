@@ -1,9 +1,9 @@
 <form id="formulario">
 	<div class="w-100"><input type="date" id="fecha" name="fecha"></div>
 	<div class="w-100">
-		<select id="pais" placeholder="País o nacionalidad" name="nacionalidad">
-			<option value="1">Peruano</option>
-			<option value="2">Extranjero</option>
+		<!-- Las opciones se cargan desde js/lista.json (ver script al final) -->
+		<select id="pais" name="nacionalidad" class="form-select">
+			<option value="-1">País o Nacionalidad</option>
 		</select>
 	</div>
 	<div class="w-100 d-inline d-none">
@@ -62,15 +62,79 @@
 		pagina = document.title.replace(' – Tours Huancayo', '');
 		minimo_pasajeros = parseInt(document.querySelector('#minimo-pasajeros').dataset.minimo || 1)
 
+		// Lista de países cargada desde js/lista.json
+		let paisesCargados = []
+
 		const hoy = new Date().toISOString().slice(0, 10);
 		document.querySelector('#spanMinimo').innerText=minimo_pasajeros
 		fecha.value = hoy
 
-		// ===== Tipo de documento según la nacionalidad =====
-		// value 1 = Peruano -> solo D.N.I. | value 2 = Extranjero -> Carnet de extranjería o Pasaporte
+		// ===== Lista de países (js/lista.json) =====
+		// Si la página ya cargó paises.js (PAISES_DATA) se reutiliza esa lista,
+		// si no, se descarga el archivo js/lista.json del MISMO servidor donde
+		// está abierto el formulario (sin rutas de app/render escritas a mano)
+		const ID_PERU = 140
+
+		// [Servidor] donde vive el formulario: https://www.tourshuancayo.com
+		// (location.origin entrega protocolo + dominio + puerto automáticamente)
+		const SERVIDOR = (typeof window !== 'undefined' && window.location)
+			? (window.location.origin || (window.location.protocol + '//' + window.location.host))
+			: ''
+
+		const RUTAS_LISTA = [
+			'js/lista.json',                          // relativo a la página actual
+			SERVIDOR + '/js/lista.json',              // [Servidor]/js/lista.json
+			SERVIDOR.replace('//www.', '//') + '/js/lista.json' // sin "www." por si acaso
+		].filter( (ruta, i, todas) => ruta && todas.indexOf(ruta) === i )
+
+		const pintarPaises = (lista)=>{
+			if( !Array.isArray(lista) || lista.length === 0 ) return
+
+			paisesCargados = lista
+			paisSelect.innerHTML = '<option value="-1">País o Nacionalidad</option>' +
+				lista.map( p => `<option value="${p.id}">${p.pais}</option>` ).join('')
+		}
+
+		const cargarPaises = async ()=>{
+			// 1. La lista que ya sirve el sitio para los demás formularios
+			if( typeof PAISES_DATA !== 'undefined' ) return pintarPaises(PAISES_DATA)
+			if( typeof LISTA_PAISES !== 'undefined' ) return pintarPaises(LISTA_PAISES)
+
+			// 2. El archivo propio de este formulario
+			for( const ruta of RUTAS_LISTA ){
+				try{
+					const res = await fetch(ruta)
+					if( !res.ok ) continue
+					return pintarPaises( await res.json() )
+				}catch(e){ /* se prueba la siguiente ruta */ }
+			}
+
+			console.warn('No se pudo cargar la lista de países desde ' + (SERVIDOR || '') + '/js/lista.json')
+		}
+
+		// Nombre del país elegido: se lee del propio <select> (así funciona
+		// aunque la lista se haya pegado a mano) y, si no, del arreglo cargado
+		const nombrePais = (id)=>{
+			if( isNaN(id) || id < 0 ) return ''
+
+			const opcion = Array.from(paisSelect.options)
+				.find( o => String(o.value) === String(id) )
+
+			if( opcion && opcion.textContent.trim() !== '' ) return opcion.textContent.trim()
+
+			const p = paisesCargados.find( x => String(x.id) === String(id) )
+			return p ? p.pais : ''
+		}
+
+		// Perú (id 140) -> D.N.I. | Cualquier otro país -> Carnet de extranjería o Pasaporte
+		const esPeru = ()=> String(paisSelect.value) === String(ID_PERU)
+
+		cargarPaises()
+
+		// ===== Tipo de documento según el país =====
 		const TIPOS_DOCUMENTO = {
-			'1': ['D.N.I.'],
-			'2': ['Carnet de extranjería', 'Pasaporte']
+			peru: ['D.N.I.'],
+			extranjero: ['Carnet de extranjería', 'Pasaporte']
 		}
 
 		// Placeholder del número según el tipo de documento elegido
@@ -81,7 +145,12 @@
 		}
 
 		const actualizarDocumento = ()=>{
-			const opciones = TIPOS_DOCUMENTO[paisSelect.value] || TIPOS_DOCUMENTO['1']
+			// Sin país elegido se mantiene D.N.I. (como antes); con Perú se pide
+			// D.N.I. y con cualquier otro país, carnet de extranjería o pasaporte
+			const opciones = ( paisSelect.value === '-1' || esPeru() )
+				? TIPOS_DOCUMENTO.peru
+				: TIPOS_DOCUMENTO.extranjero
+
 			documento.innerHTML = opciones
 				.map( op => `<option value="${op}">${op}</option>` )
 				.join('')
@@ -153,18 +222,25 @@
 		}
 
 		// Las validaciones siguen el mismo orden en que aparecen los campos:
-		// documento, adultos, niños, nombres, celular, email
+		// país, documento, adultos, niños, nombres, celular, email
 		const validarDatos = ()=>{
 			limpiarErrores()
 
-			// 1. Número de documento
+			// 1. País o nacionalidad
+			if( paisSelect.value === '-1' || paisSelect.value === '' ){
+				paisSelect.classList.add('error')
+				mostrarErrorDatos('Selecciona tu país o nacionalidad')
+				return false
+			}
+
+			// 2. Número de documento
 			if( !numeroDocumento.value.trim() ){
 				numeroDocumento.classList.add('error')
 				mostrarErrorDatos(`Completa el número de ${documento.value}`)
 				return false
 			}
 
-			// 2. Adultos y niños
+			// 3. Adultos y niños
 			const adultosVal = parseInt(document.querySelector('#adultos').value) || 0
 			const niñosVal   = parseInt(document.querySelector('#niños').value) || 0
 
@@ -173,7 +249,7 @@
 				return false
 			}
 
-			// 3. Nombres, celular, email, ciudad y direccion
+			// 4. Nombres, celular, email, ciudad y direccion
 			const obligatorios = [
 				{ campo: nombres,   nombre: 'Nombres' },
 				{ campo: celular,   nombre: 'Celular' },
@@ -192,7 +268,7 @@
 				return false
 			}
 
-			// 4. Formato del email
+			// 5. Formato del email
 			if( !emailRegex.test(email.value.trim()) ){
 				email.classList.add('error')
 				mostrarErrorDatos('Ingresa un email válido, por ejemplo: algo@correo.com')
@@ -208,9 +284,8 @@
 			adultos = document.querySelector('#adultos').value || 0
 			niños = document.querySelector('#niños').value || 0
 
-			// Se lee del select #pais al momento de enviar, porque
-			// la variable "nacionalidad" es un texto, no el <select>
-			const nacionalidadVal = paisSelect.value == 1 ? 'Peruana' : 'Extranjera'
+			// Se lee del select #pais al momento de enviar
+			const paisWhatsapp = nombrePais( parseInt(paisSelect.value) )
 
 			// Precio leído de #precio al momento de enviar (0 si no existe)
 			const precioWhatsapp = leerPrecio()
@@ -219,7 +294,7 @@
 			// Solo se agregan las líneas que tienen contenido
 			const lineas = [
 				`Con fecha: ${fecha.value}`,
-				`Nacionalidad: ${nacionalidadVal}`,
+				`País: ${paisWhatsapp}`,
 				numeroDocumento.value.trim() ? `Documento: ${documento.value} - ${numeroDocumento.value.trim()}` : '',
 				`Pasajes: ${adultos} (adultos) y ${niños} (niños)`,
 				precioWhatsapp > 0 ? `Precio por persona: S/ ${precioWhatsapp.toFixed(2)}` : '',
@@ -247,9 +322,11 @@
 
 			if( !validarDatos() ) return
 
-			// Nacionalidad (1 = Peruano, 1 = Extranjero en el select actual)
-			// Se calcula al momento del submit para tomar el valor elegido
-			let nacionalidadVal = document.querySelector('#pais').value == 1 ? 'Peruana' : 'Extranjera';
+			// País elegido (140 = Perú). Se guarda el NOMBRE del país para
+			// mostrarlo en la columna de compra y en el correo
+			const paisId = parseInt(paisSelect.value)
+			const paisNombre = nombrePais(paisId)
+			const nacionalidadVal = paisId === ID_PERU ? 'Peruana' : 'Extranjera'
 
 			// Convertimos la fecha de yyyy-mm-dd (input date) a dd/mm/yyyy
 			let fechaFormato = fecha.value;
@@ -263,6 +340,8 @@
 
 			const datosTour = {
 				fecha:        fechaFormato,
+				paisId:       paisId,
+				pais:         paisNombre,
 				nacionalidad: nacionalidadVal,
 				documento:    documento.value,
 				numeroDocumento: numeroDocumento.value.trim(),

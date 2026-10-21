@@ -385,6 +385,7 @@
 					'<p class="tk-intro">Está por finalizar su reserva con estos datos:</p>' +
 					fila('Tour', c.pagina) +
 					fila('Fecha del tour', c.fecha) +
+					fila('País', c.pais) +
 					fila('Nacionalidad', c.nacionalidad) +
 					fila('Documento', c.documento) +
 					fila('N° de documento', c.numeroDocumento) +
@@ -605,6 +606,8 @@
 			fd.append('direccion',    c.direccion || '');
 			fd.append('celular',      c.celular || '');
 			fd.append('fecha',        c.fecha || '');
+			fd.append('pais',         c.pais || '');
+			fd.append('paisId',       c.paisId || '');
 			fd.append('nacionalidad', c.nacionalidad || '');
 			fd.append('adultos',      adultos);
 			fd.append('niños',        ninos);
