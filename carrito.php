@@ -31,7 +31,7 @@ else include '/api'; */
 	<div id="app" class="p-4">
 		<div class="container" v-if="idProducto!=null">
 			<div class="row ">
-				<div class="col-12 col-md-8">
+				<div class="col-12 col-lg-8 my-1">
 					<div class="card">
 						<div class="card-body">
 							<h3>Datos del viajero</h3>
@@ -167,7 +167,7 @@ else include '/api'; */
 					<!-- <p class="mt-2 text-muted"><i class="icofont-ui-close"> </i> Anular ésta compra</p> -->
 
 				</div>
-				<div class="col-12 col-md-4">
+				<div class="col-12 col-lg-4 my-1">
 					<div class="card mb-3 d-none">
 						<div class="card-body">
 							<p class="fs-4 text-capitalize">Cambio de moneda</p>
@@ -193,8 +193,7 @@ else include '/api'; */
 							<p class="mb-0"><strong>Fecha de inicio:</strong> <span>{{empieza}}</span></p>
 							<p class="mb-0"><strong>Hora:</strong> <span>A las {{formatoHora(hora)}}.</span></p>
 							<p class="mb-0"><strong>Nacionalidad:</strong> 
-								<span v-if="nacionalidad == 140">Peruana</span>
-								<span v-else>Extranjera</span>
+								<span>{{nombreNacionalidad}}</span>
 							</p>
 							<p class="mb-0"><strong>Personas</strong> </p>
 							<div class="row row-cols-2">
@@ -340,6 +339,7 @@ else include '/api'; */
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="https://grupoeuroandino.com/app/render/js/moment.min.js"></script>
 <script src="https://grupoeuroandino.com/app/render/configuracion.js?v=1.0"></script>
+<script src="https://grupoeuroandino.com/app/render/js/paises.js"></script>
 
 
 <script>
@@ -583,6 +583,11 @@ else include '/api'; */
 			}
 		},
 		computed:{
+			nombreNacionalidad() {
+				if (typeof PAISES_DATA === 'undefined') return '';
+				const pais = PAISES_DATA.find(item => parseInt(item.id) === parseInt(this.nacionalidad));
+				return pais ? pais.pais : '';
+			},
 			precioFinalSoles() {
 				let totalFinal = parseFloat(this.total);
 				let descuentoAplicado = 0;
