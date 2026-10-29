@@ -82,8 +82,9 @@ else
 
 	<style>
 		#app{margin-top: 20px;}
-		#divIncluye ul{ list-style-type: "✅ "; }
-		#divNoIncluye ul{ list-style-type: "❌ "; }
+		#divIncluye ul, #divNoIncluye ul{ list-style-type: none; padding-left: 0; }
+		#divIncluye li, #divNoIncluye li{ list-style: none; }
+		#divIncluye p, #divNoIncluye p{ margin-bottom: 0.25rem; }
 		.divOferta2{width: 70px; height: 25px; /* rgb(192, 0, 67);  */ margin-top: 1rem; margin-right: 0rem; color:white; font-size: 0.8rem;  }
 		/* .estrellas{color: rgb(58, 91, 255);} */
 		.estrellas{color: #ffd400;}
@@ -298,9 +299,9 @@ else
 					<h5 class="mt-3 text-danger">Itinerario</h5>					
 					<div class="w-100 px-2 text-justify ms-2" v-html="tourActivo.itinerario"></div>
 					<h5 class="mt-3 text-danger">Incluye</h5>
-					<div class="w-100 px-2 text-justify ms-2" id="divIncluye" v-html="formatearLista(tourActivo.incluye)"></div>
+					<div class="w-100 text-justify " id="divIncluye" v-html="formatearLista(tourActivo.incluye, '✅')"></div>
 					<h5 class="mt-3 text-danger">No Incluye</h5>
-					<div class="w-100 px-2 text-justify ms-2" id="divNoIncluye" v-html="formatearLista(tourActivo.noIncluye)"></div>
+					<div class="w-100 text-justify " id="divNoIncluye" v-html="formatearLista(tourActivo.noIncluye, '❌')"></div>
 
 					<!-- <h5 class="mt-3 text-danger">Incluye</h5>
 
@@ -1335,9 +1336,13 @@ else
 					//if( texto !='') texto = texto+'<p><br></p>'
 					return texto
 				},
-				formatearLista(campo){
-					let texto =  campo?.replaceAll('<br>', '')
+				formatearLista(campo, emoji = ''){
+					if( campo == undefined || campo == null ) return ''
+					let texto = campo.replaceAll('<br>', '')
+					// Reemplaza cada <li>...</li> por <p>...</p> e inserta el emoticón (✅ / ❌)
 					return texto
+						.replace(/<li[^>]*>/gi, `<p class="mb-1">${emoji} `)
+						.replace(/<\/li>/gi, '</p>')
 				},
 				fechaFrom(fecha){
 					return moment(fecha).format('DD/MM/YYYY');

@@ -136,11 +136,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="form-floating mb-3">
-								<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @blur="crearURL()">
+								<input type="text" class="form-control" id="floNombre" placeholder=" " autocomplete="off" v-model="tour.nombre" @input="crearURL()" @blur="crearURL()">
 								<label for="floNombre">Nombre del tour</label>
 							</div>
 							<div class="form-floating mb-3">
-								<input type="text" class="form-control" id="floURL" placeholder="" autocomplete="off" v-model="tour.url">
+								<input type="text" class="form-control" id="floURL" placeholder="" autocomplete="off" v-model="tour.url" readonly title="Se genera automáticamente desde el nombre">
 								<label for="floURL">URL del tour</label>
 							</div>
 							<p class="mb-0">Precio normal:</p>
@@ -877,8 +877,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			},
 			actualizarTour(queTour){
 				this.extraerHtml();
-				if(this.tourActivo.url=='') alert('No se puede guardar con la url vacía')
-				else {
+				// La url es de solo lectura y se genera desde el nombre;
+				// el servidor la vuelve a generar al guardar
+				{
 					if(queTour==null){ queTour = this.tourActivo }
 					queTour.url =this.tourActivo.url 
 					queTour.queUrl =this.tourActivo.url
@@ -1061,22 +1062,24 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				window.open(`https://grupoeuroandino.com/tours/${this.variosTours[index].url}`, '_blank');
 			},
 			crearURL(){
-				let url = this.tour.nombre.toLowerCase();
-				url = url.replace(/\s+/g, ' ').trim() //Quita todos los espacios repetidos
-				url = url.replace(/-/g, '');
-				url = url.replace(/\+/g, '');
-				url = url.replace(/,/g, '');
-				url = url.replace(/ /g, '-');
-				url = url.replace(/á/g, 'a');
-				url = url.replace(/é/g, 'e');
-				url = url.replace(/í/g, 'i');
-				url = url.replace(/ó/g, 'o');
-				url = url.replace(/ú/g, 'u');
-				url = url.replace(/ñ/g, 'n');
-				url = url.replace(/:/g, '');
-				url = url.replace(/\//g, '');
-				url = url.replace(/\\/g, '');
-				url = url.replace(/--/g, '-');
+				// Slug igual al que genera el servidor (api/slug.php):
+				// "link de vacaciones"      -> "link-de-vacaciones"
+				// 'link de "vaciones"?'     -> "link-de-vaciones"
+				// "Tour (2 días) - ¡Cusco!" -> "tour-2-dias-cusco"
+				const omitidos = ['?','(',')',"'",'"','¡','!','¿',',','.',':',';','/','\\','*','+','@','#','%','&','=','<','>','[',']','{','}','|','~','^','`','“','”','‘','’','´','¨','·','…'];
+				let url = (this.tour.nombre || '').toLowerCase();
+				omitidos.forEach( simbolo => { url = url.split(simbolo).join('') });
+
+				url = url
+					.replace(/[áàäâãå]/g, 'a')
+					.replace(/[éèëê]/g, 'e')
+					.replace(/[íìïî]/g, 'i')
+					.replace(/[óòöôõ]/g, 'o')
+					.replace(/[úùüû]/g, 'u')
+					.replace(/ñ/g, 'n')
+					.replace(/ç/g, 'c')
+					.replace(/[^a-z0-9]+/g, '-')   // espacios y demás símbolos -> guion
+					.replace(/^-+|-+$/g, '');     // sin guiones en los extremos
 				
 				this.tourActivo.url= url;
 				this.tour.url = this.tourActivo.url;
