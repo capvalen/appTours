@@ -192,8 +192,7 @@ else include '/api'; */
 							<p class="fs-4 text-capitalize" id="pTour"><a :href="'https://grupoeuroandino.com/tours/'+url" class="text-decoration-none">{{nomTour.toLowerCase()}}</a></p>
 							<p class="mb-0"><strong>Fecha de inicio:</strong> <span>{{empieza}}</span></p>
 							<p class="mb-0"><strong>Hora:</strong> <span>A las {{formatoHora(hora)}}.</span></p>
-							<p class="mb-0"><strong>Nacionalidad:</strong> 
-								<span>{{nombreNacionalidad}}</span>
+							<p class="mb-0"><strong>Nacionalidad: </strong> <span>{{nombreNacionalidad}}</span>
 							</p>
 							<p class="mb-0"><strong>Personas</strong> </p>
 							<div class="row row-cols-2">
