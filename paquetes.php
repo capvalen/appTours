@@ -273,7 +273,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							</div>
 							<div class="form-floating mb-3" v-if="tour.transporte!=3">
 								<select class="form-select text-capitalize" id="floatingSelect" aria-label="Floating label select example" v-model="tour.idTransporte">
-									<option class="text-capitalize" v-for="transporte in transportes" v-if="transporte.idTransporte == tour.transporte" :value="transporte.id">{{transporte.transporte}}</option>
+									<template v-for="transporte in transportes" :key="transporte.id">
+										<option class="text-capitalize" v-if="transporte.idTransporte == tour.transporte" :value="transporte.id">{{transporte.transporte}}</option>
+									</template>
 								</select>
 								<label for="floatingSelect">Sub Tipo de transporte</label>
 							</div>
