@@ -387,7 +387,6 @@
 					fila('Nacionalidad', 'Extranjera') +
 					fila('Documento', c.documento) +
 					fila('N° de documento', c.numeroDocumento) +
-					fila('Precio por persona', precio > 0 ? soles(precio) : '') +
 					fila('Nombres', c.nombres) +
 					fila('Celular', c.celular) +
 					fila('Email', c.email) +
@@ -398,6 +397,12 @@
 						(ninos > 0 ? celda('Niños', ninos) : '') +
 					'</div>' +
 					
+					(precio > 0
+						? '<div class="tk-total">' +
+							'<span class="tk-k">Precio por persona:</span>' +
+							'<span class="tk-v">' + soles(precio) + '</span>' +
+						'</div>'
+						: '') +
 					'<div class="tk-total">' +
 						(precio > 0
 							? '<span class="tk-k">Total a pagar:</span>' +

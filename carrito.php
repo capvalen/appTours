@@ -192,8 +192,8 @@ else include '/api'; */
 							<p class="fs-4 text-capitalize" id="pTour"><a :href="'https://grupoeuroandino.com/tours/'+url" class="text-decoration-none">{{nomTour.toLowerCase()}}</a></p>
 							<p class="mb-0"><strong>Fecha de inicio:</strong> <span>{{empieza}}</span></p>
 							<p class="mb-0"><strong>Hora:</strong> <span>A las {{formatoHora(hora)}}.</span></p>
-							<p class="mb-0"><strong>Nacionalidad: </strong> <span>{{nombreNacionalidad}}</span>
-							</p>
+							<p class="mb-0"><strong>País: </strong> <span>{{nombreNacionalidad}}</span></p>
+							<p class="mb-0"><strong>Nacionalidad: </strong> <span>{{tipoNacionalidad}}</span></p>
 							<p class="mb-0"><strong>Personas</strong> </p>
 							<div class="row row-cols-2">
 								<div class="col-7">
@@ -226,7 +226,7 @@ else include '/api'; */
 
 									<p class="mb-0 fs-4"><strong>Total</strong></p>
 								</div>
-								<div class="col-3">
+								<div class="col-4">
 									<p class="mb-0 gris" v-if="descuento!=null">
 										<span v-if="moneda == 'soles'" class="text-decoration-line-through">S/ {{parseFloat(total).toFixed(2)}}</span>
 										<span v-if="moneda == 'dolares'" class="text-decoration-line-through">$ {{parseFloat(totalDolar).toFixed(2)}}</span>
@@ -243,7 +243,7 @@ else include '/api'; */
 						</div>
 					</div>
 					<div class="d-grid gap-1 my-2">
-						<button class="btn btn-outline-danger btn-lg" @click="finalizarCompra"><i class="icofont-check-circled"></i> Finalizar compra</button>
+						<button class="btn btn-outline-danger btn-lg" @click="finalizarCompra"><i class="icofont-check-circled"></i> Finalizar reserva</button>
 					</div>
 					<div>
 						<img src="https://grupoeuroandino.com/wp-content/uploads/2022/06/83589178_2587722714818486_2444153424434954240_n.png" alt="" class="img-fluid">
@@ -586,6 +586,9 @@ else include '/api'; */
 				if (typeof PAISES_DATA === 'undefined') return '';
 				const pais = PAISES_DATA.find(item => parseInt(item.id) === parseInt(this.nacionalidad));
 				return pais ? pais.pais : '';
+			},
+			tipoNacionalidad() {
+				return parseInt(this.nacionalidad) === 140 ? 'Peruano' : 'Extranjero';
 			},
 			precioFinalSoles() {
 				let totalFinal = parseFloat(this.total);
