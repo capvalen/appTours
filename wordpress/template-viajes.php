@@ -400,7 +400,7 @@ else
 
 				<div class="row container" id="divAdultos">
 
-					<div class="col-6 offset-1">
+					<div class="col-6 ">
 
 						<p v-if="tourActivo.tipo=='1'" class="text-muted text-end mb-0">Adultos</p>
 
@@ -408,7 +408,7 @@ else
 
 					</div>
 
-					<div class="col-5 ">
+					<div class="col-6 ">
 
 						<div class="input-group mx-auto">
 
@@ -426,7 +426,7 @@ else
 
 				<div class="row container my-2" id="divKids">
 
-					<div class="col-6 offset-1">
+					<div class="col-6 ">
 
 						<p v-if="tourActivo.tipo==1" class="text-muted text-end mb-0">Niños <br><small>(hasta 10 años)</small></p>
 
@@ -434,7 +434,7 @@ else
 
 					</div>
 
-					<div class="col-5 ">
+					<div class="col-6 ">
 
 						<div class="input-group mx-auto">
 

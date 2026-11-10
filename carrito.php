@@ -207,7 +207,7 @@ else include '/api'; */
 										<p class="gris fs-6" >(max. 10 años)</p>
 									</p>
 								</div>
-								<div class="col-3 d-flex flex-column" >
+								<div class="col-5 d-flex flex-column" >
 									<p class="mb-0" v-if="moneda == 'soles'"><span>S/</span> <span>{{parseFloat(precAdultos).toFixed(2)}}</span></p>
 									<p class="mb-0" v-if="moneda == 'dolares'"><span>$</span> <span>{{parseFloat(adulDolar).toFixed(2)}}</span></p>
 									<p class="mb-0" v-if="moneda == 'soles'"><span>S/</span> <span>{{parseFloat(precMenores).toFixed(2)}}</span></p>
@@ -588,7 +588,7 @@ else include '/api'; */
 				return pais ? pais.pais : '';
 			},
 			tipoNacionalidad() {
-				return parseInt(this.nacionalidad) === 140 ? 'Peruano' : 'Extranjero';
+				return parseInt(this.nacionalidad) === 140 ? 'Peruana' : 'Extranjera';
 			},
 			precioFinalSoles() {
 				let totalFinal = parseFloat(this.total);

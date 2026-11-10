@@ -384,7 +384,7 @@
 					fila('Tour', c.pagina) +
 					fila('Fecha del tour', c.fecha) +
 					fila('País', c.pais) +
-					fila('Nacionalidad', 'Extranjera') +
+					fila('Nacionalidad', String(c.paisId) === '140' ? 'Peruana' : 'Extranjera') +
 					fila('Documento', c.documento) +
 					fila('N° de documento', c.numeroDocumento) +
 					fila('Nombres', c.nombres) +
