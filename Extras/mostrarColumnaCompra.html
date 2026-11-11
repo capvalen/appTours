@@ -48,7 +48,16 @@
 		word-break: break-word;
 	}
 	#ticketCompra .tk-row .tk-k{ font-weight: 700!important; color: #2b2b2b; }
-	#ticketCompra .tk-row .tk-v{ color: #5a5a5a; }
+	#ticketCompra .tk-row .tk-v{ color: #ffa300; }
+	#ticketCompra .tk-row a.tk-v{
+		display: inline-block;
+		font-size: 1rem;
+		font-weight: 700;
+		line-height: 1.4;
+		color: #ffa300;
+		text-decoration: none;
+	}
+	#ticketCompra .tk-row a.tk-v:hover{ filter: brightness(.9); }
 	#ticketCompra .tk-cols{
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -377,12 +386,15 @@
 		var ticket = '' +
 			'<div id="ticketCompra">' +
 				'<div class="tk-head">' +
-					'<div class="tk-pre">Pre-Reserva</div>' +
 					'<h2 class="elementor-heading-title elementor-size-default">RESUMEN DE RESERVA</h2>' +
 				'</div>' +
 				'<div class="tk-body">' +
-					fila('Tour', c.pagina) +
-					fila('Fecha del tour', c.fecha) +
+					'<div class="tk-row">' +
+						(c.url
+							? '<a class="tk-v" href="' + esc(c.url) + '" target="_blank" rel="noopener">' + esc(c.pagina || c.url) + '</a>'
+							: '<span class="tk-v">' + esc(c.pagina || '') + '</span>') +
+					'</div>' +
+					fila('Fecha de inicio', c.fecha) +
 					fila('País', c.pais) +
 					fila('Nacionalidad', String(c.paisId) === '140' ? 'Peruana' : 'Extranjera') +
 					fila('Documento', c.documento) +
