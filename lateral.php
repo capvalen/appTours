@@ -278,9 +278,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									</div>
 
 									<!-- Botón submit -->
-									<div class="d-grid">
-										<button type="submit" class="btn btn-primary">
-											<i class="bi bi-plus-lg me-2"></i>Agregar Descuento
+									<div class="d-grid gap-2">
+										<button type="submit" class="btn btn-primary" id="btnGuardarDescuento">
+											<i class="bi bi-plus-lg me-2"></i><span id="btnGuardarTexto">Agregar Descuento</span>
+										</button>
+										<button type="button" class="btn btn-outline-secondary d-none" id="btnCancelarEdicion" onclick="cancelarEdicion()">
+											<i class="bi bi-x-lg me-2"></i>Cancelar edición
 										</button>
 									</div>
 								</form>
@@ -342,7 +345,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	<script src="js/moment.min.js"></script>
 	<script src="./configuracion.js?v=1.0"></script>
 	<script>
-		var quill, quillBajo, comision, dolar;
+		var quill, quillBajo, comision, dolar, descuentosData = [], editandoId = null;
 		var toolBarOptions = [
 			[{ 'header': [false, 2, 3, 4, 5] }],
 				//[{ 'size': ['small', false, 'large'] }],
@@ -407,26 +410,27 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			valor = parseFloat(valor).toFixed(2)
 		}
 
+		let alcance = document.getElementById('alcanceDescuento').value;
 		let descuento = {
 			promocion: document.getElementById('nombreDescuento').value,
-			tipo: document.getElementById('tipoDescuento').value,
+			tipo: tipo,
 			valor: document.getElementById('valorDescuento').value,
 			inicio: document.getElementById('fechaInicio').value,
 			fin: document.getElementById('fechaFin').value,
-			alcance: document.getElementById('alcanceDescuento').value,
+			alcance: alcance,
 			pais_id: document.getElementById('paisDescuento').value,
-			departamento: document.getElementById('departamentoDescuento').value,
-			ciudad: document.getElementById('ciudadDescuento').value
+			departamento: alcance === 'departamento' ? document.getElementById('departamentoDescuento').value : '',
+			ciudad: alcance === 'ciudad' ? document.getElementById('ciudadDescuento').value.trim() : ''
 		};
 		try {
+			if(editandoId) descuento.id = editandoId;
 			let resp = await axios.post(window.lugarApi + 'Descuentos.php', {
-				pedir: 'crearPromocion',
+				pedir: editandoId ? 'actualizarPromocion' : 'crearPromocion',
 				descuento: descuento
 			});
 			if(resp.data == 'ok'){
-				alert('Descuento agregado correctamente');
-				form.reset();
-				form.classList.remove('was-validated');
+				alert(editandoId ? 'Descuento actualizado correctamente' : 'Descuento agregado correctamente');
+				cancelarEdicion();
 				listarDescuentos();
 			}else{
 				alert('Hubo un error al guardar');
@@ -436,6 +440,43 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		}
 		return false;
 	}
+	function editarDescuento(id){
+		let d = descuentosData.find(x => x.id == id);
+		if(!d) return;
+		editandoId = id;
+
+		document.getElementById('nombreDescuento').value = d.promocion || '';
+		document.getElementById('fechaInicio').value = d.inicio || '';
+		document.getElementById('fechaFin').value = d.fin || '';
+
+		let selTipo = document.getElementById('tipoDescuento');
+		selTipo.value = d.tipo;
+		selTipo.dispatchEvent(new Event('change'));
+		document.getElementById('valorDescuento').value = d.valor || '';
+
+		let selAlcance = document.getElementById('alcanceDescuento');
+		selAlcance.value = d.alcance || 'individual';
+		selAlcance.dispatchEvent(new Event('change'));
+
+		document.getElementById('departamentoDescuento').value = (d.departamento === null || d.departamento === undefined) ? '' : d.departamento;
+		document.getElementById('ciudadDescuento').value = d.ciudad || '';
+
+		document.getElementById('descuentoForm').classList.remove('was-validated');
+		document.getElementById('btnGuardarTexto').textContent = 'Guardar cambios';
+		document.getElementById('btnCancelarEdicion').classList.remove('d-none');
+		document.getElementById('nombreDescuento').focus();
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
+	function cancelarEdicion(){
+		editandoId = null;
+		let form = document.getElementById('descuentoForm');
+		form.reset();
+		form.classList.remove('was-validated');
+		document.getElementById('tipoDescuento').dispatchEvent(new Event('change'));
+		document.getElementById('alcanceDescuento').dispatchEvent(new Event('change'));
+		document.getElementById('btnGuardarTexto').textContent = 'Agregar Descuento';
+		document.getElementById('btnCancelarEdicion').classList.add('d-none');
+	}
 	async function listarDescuentos(){
 		try {
 			let resp = await axios.post(window.lugarApi + 'Descuentos.php', {
@@ -443,6 +484,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			});
 			let tbody = document.getElementById('tbodyDescuentos');
 			let contador = document.getElementById('contadorDescuentos');
+			descuentosData = resp.data;
 			if(resp.data.length > 0){
 				tbody.innerHTML = resp.data.map(p => /*html*/
 					`<tr>
@@ -454,6 +496,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<td>${fechaLatam(p.inicio)}</td>
 						<td>${fechaLatam(p.fin)}</td>
 						<td class="text-center">
+							<button class="btn btn-sm btn-outline-primary" title="Editar descuento" onclick="editarDescuento(${p.id})"><i class="icofont-edit"></i></button>
 							<button class="btn btn-sm btn-outline-success" title="Adjuntar imágen" onclick="adjuntarFoto(${p.id})" ><i class="icofont-cloud-upload"></i></button>
 							<button class="btn btn-sm btn-outline-danger" title="Eliminar descuento" onclick="borrarDescuento(${p.id})"><i class="icofont-ui-delete"></i></button>
 						</td>

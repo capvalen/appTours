@@ -10,6 +10,7 @@ switch($_POST['pedir']){
 	case 'listarPromociones': listarPromociones($db); break;
 	case 'borrarPromocion': borrarPromocion($db); break;
 	case 'adjuntarFoto': adjuntarFoto($db); break;
+	case 'actualizarPromocion': actualizarPromocion($db); break;
 }
 
 function borrar($db){
@@ -94,4 +95,22 @@ function borrarPromocion($db){
 	if($db->query($sql)){
 		echo 'ok';
 	}else{ echo 'error';}
+}
+
+function actualizarPromocion($db){
+	$id = $_POST['descuento']['id'];
+	$nombre_descuento = $_POST['descuento']['promocion'];
+	$tipo_descuento = $_POST['descuento']['tipo'];
+	$valor_descuento = $_POST['descuento']['valor'];
+	$fecha_inicio = $_POST['descuento']['inicio'];
+	$fecha_fin = $_POST['descuento']['fin'];
+	$alcance = $_POST['descuento']['alcance'] ?? 'individual';
+	$pais_id = $_POST['descuento']['pais_id'] ?? 140;
+	$departamento = $_POST['descuento']['departamento'] ?? null;
+	$ciudad = $_POST['descuento']['ciudad'] ?? null;
+
+	$sql = "UPDATE `promociones` SET `promocion` = ?, `tipo` = ?, `valor` = ?, `inicio` = ?, `fin` = ?, `alcance` = ?, `pais_id` = ?, `departamento` = ?, `ciudad` = ? WHERE `id` = ?";
+	$stmt = $db->prepare($sql);
+	$resp = $stmt->execute([$nombre_descuento, $tipo_descuento, $valor_descuento, $fecha_inicio, $fecha_fin, $alcance, $pais_id, $departamento, $ciudad, $id]);
+	echo $resp ? 'ok' : 'error';
 }
