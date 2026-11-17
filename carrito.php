@@ -194,24 +194,32 @@ else include '/api'; */
 							<p class="mb-0"><strong>Hora:</strong> <span>A las {{formatoHora(hora)}}.</span></p>
 							<p class="mb-0"><strong>País: </strong> <span>{{nombreNacionalidad}}</span></p>
 							<p class="mb-0"><strong>Nacionalidad: </strong> <span>{{tipoNacionalidad}}</span></p>
-							<p class="mb-0"><strong>Personas</strong> </p>
-							<div class="row row-cols-2">
+							<p class="mb-0"><strong>{{ tipo == '2' ? 'Habitaciones' : 'Personas' }}</strong> </p>
+							<div class="row">
 								<div class="col-7">
 									<p class="mb-0">
-										<span v-if="adultos==1">1 adulto</span>
+										<span v-if="tipo == '2'">{{adultos}} Hab. matrimonial, doble, familiar o triple</span>
+										<span v-else-if="adultos==1">1 adulto</span>
 										<span v-else>{{adultos}} adultos</span>
 									</p>
-									<p class="mb-0">
-										<span v-if="kids==1">1 niño</span>
-										<span v-else>{{kids}} niños</span>
-										<p class="gris fs-6" >(max. 10 años)</p>
-									</p>
 								</div>
-								<div class="col-5 d-flex flex-column" >
-									<p class="mb-0" v-if="moneda == 'soles'"><span>S/</span> <span>{{parseFloat(precAdultos).toFixed(2)}}</span></p>
-									<p class="mb-0" v-if="moneda == 'dolares'"><span>$</span> <span>{{parseFloat(adulDolar).toFixed(2)}}</span></p>
-									<p class="mb-0" v-if="moneda == 'soles'"><span>S/</span> <span>{{parseFloat(precMenores).toFixed(2)}}</span></p>
-									<p class="mb-0" v-if="moneda == 'dolares'"><span>$</span> <span>{{parseFloat(ninDolar).toFixed(2)}}</span></p>
+								<div class="col-5">
+									<p class="mb-0" v-if="moneda == 'soles'">S/ {{formatearMonto(precAdultos)}}</p>
+									<p class="mb-0" v-if="moneda == 'dolares'">$ {{formatearMonto(adulDolar)}}</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-7">
+									<p class="mb-0">
+										<span v-if="tipo == '2'">{{kids}} Hab. simple (1 persona por habitación)</span>
+										<span v-else-if="kids==1">1 niño</span>
+										<span v-else>{{kids}} niños</span>
+									</p>
+									<p class="gris fs-6 mb-0" v-if="tipo != '2'">(max. 10 años)</p>
+								</div>
+								<div class="col-5">
+									<p class="mb-0" v-if="moneda == 'soles'">S/ {{formatearMonto(precMenores)}}</p>
+									<p class="mb-0" v-if="moneda == 'dolares'">$ {{formatearMonto(ninDolar)}}</p>
 								</div>
 							</div>
 							<div class="row " id="divDscto" v-if="descuento">
@@ -222,21 +230,21 @@ else include '/api'; */
 							</div>
 							<div class="row row-cols-2">
 								<div class="col-7">
-									<p class="mb-0 gris" v-if="descuento!=null">Precio anterior</p>
+									<p class="mb-0 gris" v-if="descuento">Precio anterior</p>
 
 									<p class="mb-0 fs-4"><strong>Total</strong></p>
 								</div>
 								<div class="col-4">
-									<p class="mb-0 gris" v-if="descuento!=null">
-										<span v-if="moneda == 'soles'" class="text-decoration-line-through">S/ {{parseFloat(total).toFixed(2)}}</span>
-										<span v-if="moneda == 'dolares'" class="text-decoration-line-through">$ {{parseFloat(totalDolar).toFixed(2)}}</span>
+									<p class="mb-0 gris" v-if="descuento">
+										<span v-if="moneda == 'soles'" class="text-decoration-line-through">S/ {{formatearMonto(total)}}</span>
+										<span v-if="moneda == 'dolares'" class="text-decoration-line-through">$ {{formatearMonto(totalDolar)}}</span>
 									</p>
 
 									<p class="mb-0 mt-auto" v-if="moneda == 'soles'">
-										<span class="d-flex align-items-end"><span class="gris lh-lg me-2">S/</span> <strong class="fs-4">{{parseFloat(precioFinalSoles).toFixed(2)}}</strong></span>
+										<span class="d-flex align-items-end"><span class="gris lh-lg me-2">S/</span> <strong class="fs-4">{{formatearMonto(precioFinalSoles)}}</strong></span>
 									</p>
 									<p class="mb-0 mt-auto" v-if="moneda == 'dolares'">
-										<span class="d-flex align-items-end"><span class="gris lh-lg me-2">$</span> <strong class="fs-4">{{parseFloat(precioFinalDolares).toFixed(2)}}</strong></span>
+										<span class="d-flex align-items-end"><span class="gris lh-lg me-2">$</span> <strong class="fs-4">{{formatearMonto(precioFinalDolares)}}</strong></span>
 									</p>
 								</div>
 							</div>
@@ -349,7 +357,7 @@ else include '/api'; */
 				//servidor: 'http://localhost/appTours/api/',
 				servidor: window.lugarApi, 
 				carrito:null,
-				idProducto:null,adultos:0, kids:0,
+				idProducto:null, tipo:null, adultos:0, kids:0,
 				nacionalidad:-1, comienza:null,
 				nombres: '', apellidos: '', documento: '', correo: '', celular: '', 
 				ciudad: '', direccion: '',
@@ -369,6 +377,7 @@ else include '/api'; */
 			const queryString = window.location.search;
 			const urlParams = new URLSearchParams(queryString);
 			this.idProducto = urlParams.get('id');
+			this.tipo = urlParams.get('type');
 			this.adultos = urlParams.get('adults');
 			this.kids = urlParams.get('kids');
 			this.nacionalidad = urlParams.get('nationality');
@@ -579,6 +588,10 @@ else include '/api'; */
 			formatoHora(horita){
 				let nuevo = moment(horita, 'HH:mm')
 				return nuevo.format('hh:mm a')
+			},
+			formatearMonto(valor) {
+				const monto = parseFloat(valor);
+				return Number.isFinite(monto) ? monto.toFixed(2) : '0.00';
 			}
 		},
 		computed:{

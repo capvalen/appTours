@@ -161,15 +161,15 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<!-- Columna 1: Formulario -->
 					<div class="col-lg-4 col-md-5">
 						<div class="card h-100">
-							<div class="card-header"><i class="bi bi-plus-circle me-2"></i>Nuevo Descuento</div>
+							<div class="card-header"><i class="bi bi-plus-circle me-2"></i>Descuento</div>
 							<div class="card-body p-4">
 								<form id="descuentoForm" onsubmit="return agregarDescuento(event)" novalidate>
 									<!-- Nombre del descuento -->
 									<div class="mb-3">
 										<label for="nombreDescuento" class="form-label">
-											<i class="bi bi-tag me-1"></i>Nuevo Descuento
+											<i class="bi bi-tag me-1"></i>Descuento
 										</label>
-										<input type="text" class="form-control" id="nombreDescuento" placeholder="Ej: Semana Santa 2007" required>
+										<input type="text" class="form-control" id="nombreDescuento" placeholder="Semana Santa 2026" required>
 										<div class="invalid-feedback">Por favor ingresa un nombre válido.</div>
 									</div>
 
@@ -223,7 +223,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 											<i class="bi bi-geo-alt me-1"></i>Alcance
 										</label>
 										<select class="form-select" id="alcanceDescuento" required>
-											<option value="individual" selected>Paquete turístico</option>
+											<option value="individual" selected>Tours y Paquetes turísticos</option>
 											<option value="pais">País (Perú)</option>
 											<option value="departamento">Departamento</option>
 											<option value="ciudad">Ciudad</option>
@@ -274,7 +274,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<!-- Ciudad (se muestra cuando alcance = 'ciudad') -->
 									<div class="mb-3 d-none" id="grupoCiudad">
 										<label for="ciudadDescuento" class="form-label">Ciudad</label>
-										<input type="text" class="form-control" id="ciudadDescuento" placeholder="Ej: Arequipa">
+										<input type="text" class="form-control" id="ciudadDescuento" placeholder="Huancayo">
 									</div>
 
 									<!-- Botón submit -->
@@ -543,7 +543,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			let simbolo = document.getElementById('simboloTipo');
 			if(this.value == 'combo'){
 				valorInput.type = 'text';
-				valorInput.placeholder = 'Ejm: 2x1';
+				valorInput.placeholder = '2x1';
 				valorInput.removeAttribute('min');
 				valorInput.removeAttribute('step');
 				simbolo.style.display = 'none';

@@ -371,23 +371,29 @@ else
 					</div>
 
 				</div>
-				<div class="row col-7 mx-auto my-3">
-					<label for=""><strong>Horarios</strong>:</label>
-					<select name="" id="sltHorario" class="form-select" v-model="horarioSelect" @change="revisarAnticipacion()">
-						<option value="-1">{{horaLatam(tourActivo.hora).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
-						<option v-if="tourActivo.hora2" value="1">{{horaLatam(tourActivo.hora2).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
-					</select>
-				</div>
-				<div class="row col-8 mx-auto my-1" v-if="mostrarRestriccionHorario" id="mostrarRestriccionHorario">
-					<div class="alert alert-warning text-center mb-0" role="alert">
-						<i class="icofont-warning"></i> No cumple con el tiempo de <br>anticipación de reserva
+				<div class="row">
+					<div class=" col-7 mx-auto my-1">
+						<label class="text-center"><strong>Horarios</strong>:</label>
+						<select name="" id="sltHorario" class="form-select" v-model="horarioSelect" @change="revisarAnticipacion()">
+							<option value="-1">{{horaLatam(tourActivo.hora).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
+							<option v-if="tourActivo.hora2" value="1">{{horaLatam(tourActivo.hora2).replace('pm', 'p.m.').replace('am', 'a.m.')}}</option>
+						</select>
 					</div>
 				</div>
-				<div class="row col-7 mx-auto my-3">
-					<select class="form-select" id="sltPais" @change="comprobarNacionalidad()" v-model="nacionalidad">
-						<option value="-1">País o Nacionalidad</option>
-						<option v-for="pais in listaPaises" :value="pais.id">{{pais.pais}}</option>
-					</select>
+				<div class="row">
+					<div class=" col-8 mx-auto my-1" v-if="mostrarRestriccionHorario" id="mostrarRestriccionHorario">
+						<div class="alert alert-warning text-center mb-0" role="alert">
+							<i class="icofont-warning"></i> No cumple con el tiempo de <br>anticipación de reserva
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-7 mx-auto my-1">
+						<select class="form-select" id="sltPais" @change="comprobarNacionalidad()" v-model="nacionalidad">
+							<option value="-1">País o Nacionalidad</option>
+							<option v-for="pais in listaPaises" :value="pais.id">{{pais.pais}}</option>
+						</select>
+					</div>
 				</div>
 
 				<p class="fs-3 text-center text-muted mt-2">
@@ -398,17 +404,17 @@ else
 
 				</p>
 
-				<div class="row container" id="divAdultos">
+				<div class="row " id="divAdultos">
 
-					<div class="col-6 ">
+					<div class="col-12 col-md-7 text-center text-md-start">
 
 						<p v-if="tourActivo.tipo=='1'" class="text-muted text-end mb-0">Adultos</p>
 
-						<p v-else class="text-muted mb-0">Habitación simple</p>
+						<p v-else class="text-muted mb-0"><small>Hab. matrimonial, doble, familiar o triple</small></p>
 
 					</div>
 
-					<div class="col-6 ">
+					<div class="col-7 mx-auto col-md-5 ">
 
 						<div class="input-group mx-auto">
 
@@ -424,17 +430,17 @@ else
 
 				</div>
 
-				<div class="row container my-2" id="divKids">
+				<div class="row my-2" id="divKids">
 
-					<div class="col-6 ">
+					<div class="col-12 col-md-7 text-center text-md-start">
 
 						<p v-if="tourActivo.tipo==1" class="text-muted text-end mb-0">Niños <br><small>(hasta 10 años)</small></p>
 
-						<p v-else class="text-muted mb-0">Menores <br><small>(hasta 10 años)</small></p>
+						<p v-else class="text-muted mb-0"><small>Hab. simple (1 persona por habitación)</small></p>
 
 					</div>
 
-					<div class="col-6 ">
+					<div class="col-7 mx-auto col-md-5 ">
 
 						<div class="input-group mx-auto">
 
@@ -1275,7 +1281,7 @@ else
 				},
 				prepararCompra(){
 					if (this.comprobarNacionalidad() && this.contarMinimoPersonas()) {
-						window.location.href = "/carrito-compras/?id=" + this.idProducto + "&adults=" + this.cantAdultos + "&kids=" + this.cantKids + "&nationality=" + this.nacionalidad + "&start=" + $('#dtpFecha').bootstrapDP('getFormattedDate')+'&horario='+this.horarioSelect;
+						window.location.href = "/carrito-compras/?id=" + this.idProducto + "&type=" + encodeURIComponent(this.tourActivo.tipo) + "&adults=" + this.cantAdultos + "&kids=" + this.cantKids + "&nationality=" + this.nacionalidad + "&start=" + $('#dtpFecha').bootstrapDP('getFormattedDate')+'&horario='+this.horarioSelect;
 					}
 				},
 
