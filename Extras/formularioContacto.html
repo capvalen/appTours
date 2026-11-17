@@ -189,6 +189,21 @@
 			return isNaN(num) ? 0 : num
 		}
 
+		// ===== Celular de WhatsApp según el dominio del servidor =====
+		// El 51 (Perú) va siempre antes del número
+		const PREFIJO_PAIS = '51'
+		const CELULAR_POR_DOMINIO = {
+			'toursjauja.com': '956323084'
+		}
+		const CELULAR_POR_DEFECTO = '993183661'
+
+		// Dominio sin "www." y en minúsculas (ej: toursjauja.com)
+		const DOMINIO = (typeof window !== 'undefined' && window.location)
+			? window.location.hostname.toLowerCase().replace(/^www\./, '')
+			: ''
+
+		const celular = PREFIJO_PAIS + (CELULAR_POR_DOMINIO[DOMINIO] || CELULAR_POR_DEFECTO)
+
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 		const mostrarErrorDatos = (mensaje)=>{
@@ -309,7 +324,7 @@
 			const mensaje = `*Hola Tours Huancayo* Quisiera más hacer una reservación del tour: *${pagina}*\n`+
 			lineas.join('\n');
 
-			const url = `https://wa.me/51993183661?text=${encodeURIComponent(mensaje)}`;
+			const url = `https://wa.me/${celular}?text=${encodeURIComponent(mensaje)}`;
 			window.open(url, '_blank');
 		}
 
