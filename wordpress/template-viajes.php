@@ -406,9 +406,9 @@ else
 
 				<div class="row " id="divAdultos">
 
-					<div class="col-12 col-md-7 text-center text-md-start">
+					<div class="col-12  text-center ">
 
-						<p v-if="tourActivo.tipo=='1'" class="text-muted text-end mb-0">Adultos</p>
+						<p v-if="tourActivo.tipo=='1'" class="text-muted text-center mb-0">Adultos</p>
 
 						<p v-else class="text-muted mb-0"><small>Hab. matrimonial, doble, familiar o triple</small></p>
 
@@ -432,9 +432,9 @@ else
 
 				<div class="row my-2" id="divKids">
 
-					<div class="col-12 col-md-7 text-center text-md-start">
+					<div class="col-12  text-center ">
 
-						<p v-if="tourActivo.tipo==1" class="text-muted text-end mb-0">Niños <br><small>(hasta 10 años)</small></p>
+						<p v-if="tourActivo.tipo==1" class="text-muted text-center mb-0">Niños <small>(hasta 10 años)</small></p>
 
 						<p v-else class="text-muted mb-0"><small>Hab. simple (1 persona por habitación)</small></p>
 
