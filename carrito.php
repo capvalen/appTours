@@ -408,6 +408,7 @@ else include '/api'; */
 
 			this.carrito.push({
 				idProducto: this.idProducto,
+				tipo: this.tipo,
 				adultos: this.adultos,
 				kids: this.kids,
 				nacionalidad: this.nacionalidad,
