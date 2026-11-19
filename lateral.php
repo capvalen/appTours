@@ -277,7 +277,13 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 										<input type="text" class="form-control" id="ciudadDescuento" placeholder="Huancayo">
 									</div>
 
+									<div class="form-check form-switch mb-3">
+										<input class="form-check-input" type="checkbox" role="switch" id="visibleDescuento">
+										<label class="form-check-label" for="visibleDescuento">Visible</label>
+									</div>
+
 									<!-- Botón submit -->
+
 									<div class="d-grid gap-2">
 										<button type="submit" class="btn btn-primary" id="btnGuardarDescuento">
 											<i class="bi bi-plus-lg me-2"></i><span id="btnGuardarTexto">Agregar Descuento</span>
@@ -304,6 +310,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 										<tr>
 											<th>Imagen</th>
 											<th>Nombre</th>
+											<th>Visible</th>
 												<th>Alcance</th>
 												<th>Tipo</th>
 												<th>Valor</th>
@@ -314,7 +321,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 										</thead>
 										<tbody id="tbodyDescuentos">
 											<tr id="emptyRow">
-												<td colspan="8" class="empty-state">
+												<td colspan="9" class="empty-state">
 												<i class="bi bi-inbox"></i>
 												<p class="mb-0">No hay descuentos registrados</p>
 												<small>Agrega uno desde el formulario</small>
@@ -420,7 +427,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			alcance: alcance,
 			pais_id: document.getElementById('paisDescuento').value,
 			departamento: alcance === 'departamento' ? document.getElementById('departamentoDescuento').value : '',
-			ciudad: alcance === 'ciudad' ? document.getElementById('ciudadDescuento').value.trim() : ''
+			ciudad: alcance === 'ciudad' ? document.getElementById('ciudadDescuento').value.trim() : '',
+			visible: document.getElementById('visibleDescuento').checked ? 1 : 0
 		};
 		try {
 			if(editandoId) descuento.id = editandoId;
@@ -448,6 +456,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		document.getElementById('nombreDescuento').value = d.promocion || '';
 		document.getElementById('fechaInicio').value = d.inicio || '';
 		document.getElementById('fechaFin').value = d.fin || '';
+		document.getElementById('visibleDescuento').checked = Number(d.visible) === 1;
 
 		let selTipo = document.getElementById('tipoDescuento');
 		selTipo.value = d.tipo;
@@ -477,6 +486,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		document.getElementById('btnGuardarTexto').textContent = 'Agregar Descuento';
 		document.getElementById('btnCancelarEdicion').classList.add('d-none');
 	}
+	function nombreDepartamento(id){
+		let opciones = document.getElementById('departamentoDescuento').options;
+		let opcion = Array.from(opciones).find(opcion => opcion.value === String(id));
+		return opcion ? opcion.textContent : id;
+	}
 	async function listarDescuentos(){
 		try {
 			let resp = await axios.post(window.lugarApi + 'Descuentos.php', {
@@ -490,12 +504,17 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					`<tr>
 						<td><img src="${p.imagen || './images/discount.png'}" width="35" height="auto" class="rounded"></td>
 						<td>${p.promocion}</td>
-						<td class="text-capitalize">${p.alcance || 'Paquete turístico'}</td>
+						<td>${Number(p.visible) === 1 ? 'Sí' : 'No'}</td>
+						<td class="text-capitalize">
+							${p.alcance || 'Paquete turístico'}
+							${p.alcance === 'ciudad' && p.ciudad ? `<small class="d-block text-muted">${p.ciudad}</small>` : ''}
+							${p.alcance === 'departamento' && p.departamento !== null && p.departamento !== '' ? `<small class="d-block text-muted">${nombreDepartamento(p.departamento)}</small>` : ''}
+						</td>
 						<td>${p.tipo == 'combo' ? 'Promoción' : p.tipo == 'porcentaje' ? '%' : 'S/'}</td>
 						<td>${p.valor}${p.tipo == 'porcentaje' ? '%' : ''}</td>
 						<td>${fechaLatam(p.inicio)}</td>
 						<td>${fechaLatam(p.fin)}</td>
-						<td class="text-center">
+						<td class="text-center text-nowrap">
 							<button class="btn btn-sm btn-outline-primary" title="Editar descuento" onclick="editarDescuento(${p.id})"><i class="icofont-edit"></i></button>
 							<button class="btn btn-sm btn-outline-success" title="Adjuntar imágen" onclick="adjuntarFoto(${p.id})" ><i class="icofont-cloud-upload"></i></button>
 							<button class="btn btn-sm btn-outline-danger" title="Eliminar descuento" onclick="borrarDescuento(${p.id})"><i class="icofont-ui-delete"></i></button>
@@ -504,7 +523,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				).join('');
 				contador.textContent = resp.data.length + ' registros';
 			}else{
-				tbody.innerHTML = '<tr id="emptyRow"><td colspan="8" class="empty-state"><i class="bi bi-inbox"></i><p class="mb-0">No hay descuentos registrados</p><small>Agrega uno desde el formulario</small></td></tr>';
+				tbody.innerHTML = '<tr id="emptyRow"><td colspan="9" class="empty-state"><i class="bi bi-inbox"></i><p class="mb-0">No hay descuentos registrados</p><small>Agrega uno desde el formulario</small></td></tr>';
 				contador.textContent = '0 registros';
 			}
 		} catch (error) {

@@ -725,7 +725,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				let resPaises = await servPaises
 				this.paises = await resPaises.json();
 				axios.post(this.servidor + 'Descuentos.php', {
-					pedir:'listarPromociones'
+					pedir:'listarPromociones',
+					visible: 1
 				})
 				.then(response=>{
 					this.listaDescuentos = response.data

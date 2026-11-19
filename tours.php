@@ -752,7 +752,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					//$('#sltDias').selectpicker('refresh');
 				})
 				axios.post(this.servidor + 'Descuentos.php', {
-					pedir:'listarPromociones'
+					pedir:'listarPromociones',
+					visible: 1
 				})
 				.then(response=>{
 					this.listaDescuentos = response.data
@@ -1204,20 +1205,27 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				.then( respuesta =>{
 					if(respuesta.data =='ok'){
 						let index = this.todosTours.findIndex( tour => tour.id === this.idGlobal );
-						this.todosTours[index].descuentos.unshift({...this.nuevoDescuento});
+						if(index != -1){
+							if(!this.todosTours[index].descuentos) this.todosTours[index].descuentos = [];
+							this.todosTours[index].descuentos.unshift({...this.nuevoDescuento});
+						}
 						this.nuevoDescuento = { id_tour: this.idGlobal, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' };
 						this.erroresDescuento = '';
 						bootstrap.Modal.getInstance(document.getElementById('modalNuevoDescuento')).hide();
+					}else{
+						this.erroresDescuento = 'No se pudo asignar el descuento';
 					}
 				})
-				.catch( error =>{ console.log( error ) });
+				.catch( error =>{
+					console.log( error );
+					this.erroresDescuento = 'No se pudo asignar el descuento';
+				});
 			}
 		},
 		computed: {
 			todosDescuentos() {
 				let item = this.todosTours.find( tour => tour.id === this.idGlobal );
-				if(item) return item.descuentos;
-				else return [];
+				return item?.descuentos || [];
 			},
 			subTransportes() {
 				return this.transportes.filter(t => t.idTransporte == this.tour.transporte);

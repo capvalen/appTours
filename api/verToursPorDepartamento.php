@@ -4,7 +4,7 @@ include ("conectkarl.php");
 $filas = [];
 
 // Obtener promociones por alcance
-$sqlPromos = $db->query("SELECT * FROM `promociones` WHERE activo = 1 AND CURDATE() BETWEEN inicio AND fin AND alcance != 'individual'");
+$sqlPromos = $db->query("SELECT * FROM `promociones` WHERE activo = 1 AND visible = 1 AND CURDATE() BETWEEN inicio AND fin AND alcance != 'individual'");
 $promosPorAlcance = [];
 if ($sqlPromos) {
 	while ($p = $sqlPromos->fetch(PDO::FETCH_ASSOC)) {
@@ -18,7 +18,7 @@ if( $sql->execute()){
 		// Buscar descuento individual por id_tour
 		$stmt = $db->prepare("SELECT d.*, p.imagen FROM descuentos d
 			inner join promociones p on p.id = d.promocion_id
-			WHERE id_tour = ? AND d.activo = 1 AND CURDATE() BETWEEN fecha_inicio AND fecha_fin LIMIT 1;");
+			WHERE id_tour = ? AND d.activo = 1 AND p.visible = 1 AND CURDATE() BETWEEN fecha_inicio AND fecha_fin LIMIT 1;");
 		$stmt->execute([$row['id']]);
 		$descuento = $stmt->fetch(PDO::FETCH_ASSOC);
 

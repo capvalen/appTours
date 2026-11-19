@@ -22,7 +22,7 @@ function borrar($db){
 
 function listar($db){
 	$id_tour = $_POST['id_tour'];
-	$sql = "SELECT * FROM `descuentos` WHERE `id_tour` = '{$id_tour}' and curdate() between fecha_inicio and fecha_fin AND `activo` = 1;";
+	$sql = "SELECT d.* FROM `descuentos` d INNER JOIN `promociones` p ON p.id = d.promocion_id AND p.visible = 1 WHERE d.`id_tour` = '{$id_tour}' and curdate() between d.fecha_inicio and d.fecha_fin AND d.`activo` = 1;";
 	$result = $db->query($sql);
 
 	if($result){
@@ -46,10 +46,11 @@ function crearPromocion($db){
 	$pais_id = $_POST['descuento']['pais_id'] ?? 140;
 	$departamento = $_POST['descuento']['departamento'] ?? null;
 	$ciudad = $_POST['descuento']['ciudad'] ?? null;
+	$visible = (int)($_POST['descuento']['visible'] ?? 0);
 
-	$sql = "INSERT INTO `promociones` (`promocion`, `tipo`, `valor`, `inicio`, `fin`, `activo`, `alcance`, `pais_id`, `departamento`, `ciudad`) VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?, ?)";
+	$sql = "INSERT INTO `promociones` (`promocion`, `tipo`, `valor`, `inicio`, `fin`, `activo`, `alcance`, `pais_id`, `departamento`, `ciudad`, `visible`) VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?)";
 	$stmt = $db->prepare($sql);
-	$resp = $stmt->execute([$nombre_descuento, $tipo_descuento, $valor_descuento, $fecha_inicio, $fecha_fin, $alcance, $pais_id, $departamento, $ciudad]);
+	$resp = $stmt->execute([$nombre_descuento, $tipo_descuento, $valor_descuento, $fecha_inicio, $fecha_fin, $alcance, $pais_id, $departamento, $ciudad, $visible]);
 	echo $resp ? 'ok' : 'error';
 }
 
@@ -69,7 +70,8 @@ function crear($db){
 }
 
 function listarPromociones($db) {
-    $sql = "SELECT * FROM `promociones` WHERE `activo` = 1 ORDER BY inicio DESC;";
+    $soloVisibles = !empty($_POST['visible']) ? ' AND `visible` = 1' : '';
+    $sql = "SELECT * FROM `promociones` WHERE `activo` = 1{$soloVisibles} ORDER BY inicio DESC;";
     $result = $db->query($sql);
 
     if ($result) {
@@ -108,9 +110,10 @@ function actualizarPromocion($db){
 	$pais_id = $_POST['descuento']['pais_id'] ?? 140;
 	$departamento = $_POST['descuento']['departamento'] ?? null;
 	$ciudad = $_POST['descuento']['ciudad'] ?? null;
+	$visible = (int)($_POST['descuento']['visible'] ?? 0);
 
-	$sql = "UPDATE `promociones` SET `promocion` = ?, `tipo` = ?, `valor` = ?, `inicio` = ?, `fin` = ?, `alcance` = ?, `pais_id` = ?, `departamento` = ?, `ciudad` = ? WHERE `id` = ?";
+	$sql = "UPDATE `promociones` SET `promocion` = ?, `tipo` = ?, `valor` = ?, `inicio` = ?, `fin` = ?, `alcance` = ?, `pais_id` = ?, `departamento` = ?, `ciudad` = ?, `visible` = ? WHERE `id` = ?";
 	$stmt = $db->prepare($sql);
-	$resp = $stmt->execute([$nombre_descuento, $tipo_descuento, $valor_descuento, $fecha_inicio, $fecha_fin, $alcance, $pais_id, $departamento, $ciudad, $id]);
+	$resp = $stmt->execute([$nombre_descuento, $tipo_descuento, $valor_descuento, $fecha_inicio, $fecha_fin, $alcance, $pais_id, $departamento, $ciudad, $visible, $id]);
 	echo $resp ? 'ok' : 'error';
 }

@@ -42,7 +42,7 @@ if( $sql->execute([$_POST['id']])){
 	$url = $contenido['url'];
 
 	// Buscar descuento activo para este tour (individual)
-	$sqlDesc = $db->prepare("SELECT d.id, d.nombre_descuento, d.tipo_descuento, d.valor_descuento FROM `descuentos` d WHERE d.`id_tour` = ? AND curdate() between d.fecha_inicio and d.fecha_fin AND d.`activo` = 1 limit 1;");
+	$sqlDesc = $db->prepare("SELECT d.id, d.nombre_descuento, d.tipo_descuento, d.valor_descuento FROM `descuentos` d INNER JOIN `promociones` p ON p.id = d.promocion_id AND p.visible = 1 WHERE d.`id_tour` = ? AND curdate() between d.fecha_inicio and d.fecha_fin AND d.`activo` = 1 limit 1;");
 	$sqlDesc->execute([$_POST['id']]);
 	$descuento = $sqlDesc->fetch(PDO::FETCH_ASSOC);
 
@@ -51,7 +51,7 @@ if( $sql->execute([$_POST['id']])){
 		$sqlScope = $db->prepare("
 			SELECT id, promocion AS nombre_descuento, tipo AS tipo_descuento, valor AS valor_descuento, alcance
 			FROM `promociones` 
-			WHERE activo = 1 AND CURDATE() BETWEEN inicio AND fin
+			WHERE activo = 1 AND visible = 1 AND CURDATE() BETWEEN inicio AND fin
 			  AND (
 				(alcance = 'pais' AND pais_id = ?) OR
 				(alcance = 'departamento' AND departamento = ?) OR

@@ -1,3 +1,6 @@
+--2.230
+ALTER TABLE `promociones` ADD `visible` TINYINT NULL DEFAULT '0' COMMENT '0=no, 1=si' AFTER `ciudad`;
+
 --2.220
 ALTER TABLE `promociones` 
 ADD COLUMN `alcance` ENUM('individual', 'pais', 'departamento', 'ciudad') 

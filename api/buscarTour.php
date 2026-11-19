@@ -19,7 +19,14 @@ $filtroNuevo.= " and pais = {$idPais}";
 
 $sql= $db->query("SELECT * FROM `tours` where {$filtroNuevo} and activo = 1; ");
 if( $sql->execute()){
+	$sqlDesc = $db->prepare("SELECT d.* FROM `descuentos` d inner join `promociones` p on p.id = d.promocion_id AND p.visible = 1 WHERE d.id_tour = :idTour and d.activo = 1 order by d.fecha_inicio desc; ");
 	while( $row = $sql->fetch(PDO::FETCH_ASSOC) ){
+		$descuentos = [];
+		$sqlDesc->execute([':idTour' => $row['id']]);
+		while( $desc = $sqlDesc->fetch(PDO::FETCH_ASSOC) ){
+			$descuentos[] = $desc;
+		}
+		$row['descuentos'] = $descuentos;
 		$filas[] = $row;
 	}
 }else{

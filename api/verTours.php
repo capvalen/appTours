@@ -9,7 +9,7 @@ if ($sql->execute()) {
 		
 		// Obtener descuentos para este tour
 		$descuentos = [];
-		$sqlDesc = $db->prepare("SELECT * FROM `descuentos` WHERE id_tour = :idTour and activo = 1 AND CURDATE() BETWEEN fecha_inicio AND fecha_fin order by fecha_inicio desc; ");
+		$sqlDesc = $db->prepare("SELECT d.* FROM `descuentos` d inner join `promociones` p on p.id = d.promocion_id AND p.visible = 1 WHERE d.id_tour = :idTour and d.activo = 1 order by d.fecha_inicio desc; "); //curdate() between fecha_inicio and fecha_fin
 		$sqlDesc->bindParam(':idTour', $row['id'], PDO::PARAM_INT);
 		$sqlDesc->execute();
 		

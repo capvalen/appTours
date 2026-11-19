@@ -14,7 +14,7 @@ if( $sql->execute( [ $_POST['id'] ] )){
 		// Obtener 1 descuento para este tour
 		$stmt = $db->prepare("SELECT d.*, p.imagen  FROM descuentos d
 		inner join promociones p on p.id = d.promocion_id
-		WHERE id_tour = ? AND d.activo = 1 AND CURDATE() BETWEEN fecha_inicio AND fecha_fin LIMIT 1;");
+		WHERE id_tour = ? AND d.activo = 1 AND p.visible = 1 AND CURDATE() BETWEEN fecha_inicio AND fecha_fin LIMIT 1;");
 		$stmt->execute([$row['id']]);
 		$descuento = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -23,7 +23,7 @@ if( $sql->execute( [ $_POST['id'] ] )){
 			$contenido = json_decode($row['contenido'], true) ?? [];
 			$sqlScope = $db->prepare("SELECT id, promocion AS nombre_descuento, tipo AS tipo_descuento, valor AS valor_descuento, imagen
 				FROM `promociones` 
-				WHERE activo = 1 AND CURDATE() BETWEEN inicio AND fin
+				WHERE activo = 1 AND visible = 1 AND CURDATE() BETWEEN inicio AND fin
 				  AND (
 					(alcance = 'pais' AND pais_id = ?) OR
 					(alcance = 'departamento' AND departamento = ?) OR
