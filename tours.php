@@ -501,7 +501,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			</div>
 			<div class="offcanvas-body">
 				<p class="text-muted"><small>Tour seleccionado:</small></p>
-				<h5><svg class="icoMaleta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height:20px;width:auto;fill:currentColor;vertical-align:-0.18em;" aria-hidden="true" focusable="false"><path d="M320,153.6H192c-7.074,0-12.8,5.726-12.8,12.8c0,7.074,5.726,12.8,12.8,12.8h128c7.074,0,12.8-5.726,12.8-12.8 C332.8,159.326,327.074,153.6,320,153.6z"/><path d="M358.4,102.4H320V25.6h12.8c7.074,0,12.8-5.726,12.8-12.8c0-7.074-5.726-12.8-12.8-12.8H179.2 c-7.074,0-12.8,5.726-12.8,12.8c0,7.074,5.726,12.8,12.8,12.8H192v76.8h-38.4c-28.279,0-51.2,22.921-51.2,51.2v281.6 c0,28.279,22.921,51.2,51.2,51.2v12.8c0,7.074,5.726,12.8,12.8,12.8c7.074,0,12.8-5.726,12.8-12.8v-12.8h153.6v12.8 c0,7.074,5.726,12.8,12.8,12.8c7.074,0,12.8-5.726,12.8-12.8v-12.8c28.279,0,51.2-22.921,51.2-51.2V153.6 C409.6,125.321,386.68,102.4,358.4,102.4z M217.6,25.6h76.8v76.8h-76.8V25.6z M307.2,460.8H204.8V384 c0-14.114,11.486-25.6,25.6-25.6h51.2c14.114,0,25.6,11.486,25.6,25.6V460.8z M384,435.2c0,14.114-11.486,25.6-25.6,25.6h-25.6 V384c0-28.279-22.921-51.2-51.2-51.2h-51.2c-28.279,0-51.2,22.921-51.2,51.2v76.8h-25.6c-14.114,0-25.6-11.486-25.6-25.6V153.6 c0-14.114,11.486-25.6,25.6-25.6h204.8c14.114,0,25.6,11.486,25.6,25.6V435.2z"/></svg> {{tourActivo.nombre}}</h5>
+				<h5><i class="icofont-bus"></i> {{tourActivo.nombre}}</h5>
 				<div class="w-100 my-4"><button class="btn btn-outline-secondary" id="btnNuevoDescuento">Nuevo descuento</button></div>
 
 				<p class="mb-2">Listado de descuentos </p>
@@ -546,20 +546,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								<p class="mb-1 fw-bold"><i class="icofont-info-circle"></i> Información del descuento</p>
 								<p class="mb-0"><small class="text-muted">Tipo de descuento:</small> <strong class="text-capitalize">{{nuevoDescuento.tipo_descuento}}</strong></p>
 								<p class="mb-0"><small class="text-muted">Valor de descuento:</small> <strong>{{nuevoDescuento.tipo_descuento=='monto' ? 'S/ ' : ''}}{{nuevoDescuento.valor_descuento}}{{nuevoDescuento.tipo_descuento=='porcentaje' ? ' %' : ''}}</strong></p>
-							</div>
-							<div class="row">
-								<div class="col">
-									<div class="form-floating mb-3">
-										<input type="date" class="form-control" id="floFechaInicio" placeholder=" " v-model="nuevoDescuento.fecha_inicio" disabled>
-										<label for="floFechaInicio">Fecha de inicio</label>
-									</div>
-								</div>
-								<div class="col">
-									<div class="form-floating mb-3">
-										<input type="date" class="form-control" id="floFechaFin" placeholder=" " v-model="nuevoDescuento.fecha_fin" disabled>
-										<label for="floFechaFin">Fecha de fin</label>
-									</div>
-								</div>
+								<p class="mb-0"><small class="text-muted">Fecha de inicio:</small> <strong>{{nuevoDescuento.fecha_inicio ? fechaLatam(nuevoDescuento.fecha_inicio) : '—'}}</strong></p>
+								<p class="mb-0"><small class="text-muted">Fecha de fin:</small> <strong>{{nuevoDescuento.fecha_fin ? fechaLatam(nuevoDescuento.fecha_fin) : '—'}}</strong></p>
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -1176,11 +1164,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					descuento: this.nuevoDescuento
 				})
 				.then( respuesta =>{
-					if(respuesta.data =='ok'){
+					if(respuesta.data && respuesta.data.status == 'ok'){
 						let index = this.todosTours.findIndex( tour => tour.id === this.idGlobal );
 						if(index != -1){
 							if(!this.todosTours[index].descuentos) this.todosTours[index].descuentos = [];
-							this.todosTours[index].descuentos.unshift({...this.nuevoDescuento});
+							this.todosTours[index].descuentos.unshift({...this.nuevoDescuento, id: respuesta.data.id});
 						}
 						this.nuevoDescuento = { id_tour: this.idGlobal, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' };
 						this.erroresDescuento = '';

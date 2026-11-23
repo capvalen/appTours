@@ -222,24 +222,27 @@ else include '/api'; */
 									<p class="mb-0" v-if="moneda == 'dolares'">$ {{formatearMonto(ninDolar)}}</p>
 								</div>
 							</div>
+							<div class="row" v-if="descuento">
+								<div class="col-7">
+									<p class="mb-0 gris">Precio anterior</p>
+								</div>
+								<div class="col-4">
+									<p class="mb-0 gris">
+										<span v-if="moneda == 'soles'" class="text-decoration-line-through">S/ {{formatearMonto(total)}}</span>
+										<span v-if="moneda == 'dolares'" class="text-decoration-line-through">$ {{formatearMonto(totalDolar)}}</span>
+									</p>
+								</div>
+							</div>
 							<div class="row " id="divDscto" v-if="descuento">
 								<div class="col">
-									<p class="mb-0 text-success" ><strong><i class="icofont-sale-discount"></i> Descuento:</p>
-									<p class="text-success"><i class="icofont-sale-discount"></i> </strong> <span class="text-capitalize">{{descuento.nombre_descuento}} {{descuento.tipo_descuento=='monto' ? 'S/' : ''}} <span v-if="descuento.tipo_descuento!='combo'">-</span>{{descuento.valor_descuento}}{{descuento.tipo_descuento=='porcentaje' ? '%':''}}</span></p>
+									<p class="mb-0 text-success" ><strong> Descuento:</strong> <span class="text-capitalize">{{descuento.nombre_descuento}} {{descuento.tipo_descuento=='monto' ? 'S/' : ''}} <span v-if="descuento.tipo_descuento!='combo'">-</span>{{descuento.tipo_descuento=='monto' ? formatearMonto(descuento.valor_descuento) : descuento.valor_descuento}}{{descuento.tipo_descuento=='porcentaje' ? '%':''}}</span></p>
 								</div>
 							</div>
 							<div class="row row-cols-2">
 								<div class="col-7">
-									<p class="mb-0 gris" v-if="descuento">Precio anterior</p>
-
 									<p class="mb-0 fs-4"><strong>Total</strong></p>
 								</div>
 								<div class="col-4">
-									<p class="mb-0 gris" v-if="descuento">
-										<span v-if="moneda == 'soles'" class="text-decoration-line-through">S/ {{formatearMonto(total)}}</span>
-										<span v-if="moneda == 'dolares'" class="text-decoration-line-through">$ {{formatearMonto(totalDolar)}}</span>
-									</p>
-
 									<p class="mb-0 mt-auto" v-if="moneda == 'soles'">
 										<span class="d-flex align-items-end"><span class="gris lh-lg me-2">S/</span> <strong class="fs-4">{{formatearMonto(precioFinalSoles)}}</strong></span>
 									</p>

@@ -1427,7 +1427,7 @@ else
 					}
 
 					if (tipo === 'porcentaje') {
-						return `${nombre} ${valorNum.toFixed(2)}% off`;
+						return `${nombre} ${Math.round(valorNum)}% off`;
 					}
 
 					return '';

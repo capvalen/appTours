@@ -161,7 +161,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					<!-- Columna 1: Formulario -->
 					<div class="col-lg-4 col-md-5">
 						<div class="card h-100">
-							<div class="card-header"><i class="bi bi-plus-circle me-2"></i>Descuento</div>
+							<!-- <div class="card-header"><i class="bi bi-plus-circle me-2"></i>Descuento</div> -->
 							<div class="card-body p-4">
 								<form id="descuentoForm" onsubmit="return agregarDescuento(event)" novalidate>
 									<!-- Nombre del descuento -->
@@ -223,7 +223,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 											<i class="bi bi-geo-alt me-1"></i>Alcance
 										</label>
 										<select class="form-select" id="alcanceDescuento" required>
-											<option value="individual" selected>Tours y Paquetes turísticos</option>
+											<option value="individual" selected>Promociones individuales</option>
 											<option value="pais">País (Perú)</option>
 											<option value="departamento">Departamento</option>
 											<option value="ciudad">Ciudad</option>
@@ -275,11 +275,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<div class="mb-3 d-none" id="grupoCiudad">
 										<label for="ciudadDescuento" class="form-label">Ciudad</label>
 										<input type="text" class="form-control" id="ciudadDescuento" placeholder="Huancayo">
-									</div>
-
-									<div class="form-check form-switch mb-3">
-										<input class="form-check-input" type="checkbox" role="switch" id="visibleDescuento">
-										<label class="form-check-label" for="visibleDescuento">Visible</label>
 									</div>
 
 									<!-- Botón submit -->
@@ -428,7 +423,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			pais_id: document.getElementById('paisDescuento').value,
 			departamento: alcance === 'departamento' ? document.getElementById('departamentoDescuento').value : '',
 			ciudad: alcance === 'ciudad' ? document.getElementById('ciudadDescuento').value.trim() : '',
-			visible: document.getElementById('visibleDescuento').checked ? 1 : 0
+			visible: 1
 		};
 		try {
 			if(editandoId) descuento.id = editandoId;
@@ -456,7 +451,6 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		document.getElementById('nombreDescuento').value = d.promocion || '';
 		document.getElementById('fechaInicio').value = d.inicio || '';
 		document.getElementById('fechaFin').value = d.fin || '';
-		document.getElementById('visibleDescuento').checked = Number(d.visible) === 1;
 
 		let selTipo = document.getElementById('tipoDescuento');
 		selTipo.value = d.tipo;
@@ -504,7 +498,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					`<tr>
 						<td><img src="${p.imagen || './images/discount.png'}" width="35" height="auto" class="rounded"></td>
 						<td>${p.promocion}</td>
-						<td>${Number(p.visible) === 1 ? 'Sí' : 'No'}</td>
+						<td>
+							<div class="form-check form-switch d-flex align-items-center gap-2 mb-0">
+								<input class="form-check-input mt-0" type="checkbox" role="switch" id="visible_${p.id}" ${Number(p.visible) === 1 ? 'checked' : ''} onchange="cambiarVisible(${p.id}, this)">
+								<label class="estado-visible mb-0" for="visible_${p.id}">${Number(p.visible) === 1 ? 'Sí' : 'No'}</label>
+							</div>
+						</td>
 						<td class="text-capitalize">
 							${p.alcance || 'Paquete turístico'}
 							${p.alcance === 'ciudad' && p.ciudad ? `<small class="d-block text-muted">${p.ciudad}</small>` : ''}
@@ -528,6 +527,26 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			}
 		} catch (error) {
 			console.error(error);
+		}
+	}
+	async function cambiarVisible(id, el){
+		let visible = el.checked ? 1 : 0;
+		try {
+			let resp = await axios.post(window.lugarApi + 'Descuentos.php', {
+				pedir: 'cambiarVisible', id: id, visible: visible
+			});
+			if(resp.data == 'ok'){
+				let d = descuentosData.find(x => x.id == id);
+				if(d) d.visible = visible;
+				let label = el.parentElement.querySelector('.estado-visible');
+				if(label) label.textContent = visible === 1 ? 'Sí' : 'No';
+			}else{
+				el.checked = !el.checked;
+				alert('Hubo un error al actualizar la visibilidad');
+			}
+		} catch (error) {
+			el.checked = !el.checked;
+			alert('Error de conexión');
 		}
 	}
 	async function adjuntarFoto(id){

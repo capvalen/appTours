@@ -1149,9 +1149,9 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					descuento: this.nuevoDescuento
 				})
 				.then( respuesta =>{
-					if(respuesta.data =='ok'){
+					if(respuesta.data && respuesta.data.status == 'ok'){
 						let index = this.todosTours.findIndex( tour => tour.id === this.idGlobal );
-						this.todosTours[index].descuentos.unshift({...this.nuevoDescuento});
+						this.todosTours[index].descuentos.unshift({...this.nuevoDescuento, id: respuesta.data.id});
 						this.nuevoDescuento = { id_tour: this.idGlobal, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' };
 						this.erroresDescuento = '';
 						bootstrap.Modal.getInstance(document.getElementById('modalNuevoDescuento')).hide();

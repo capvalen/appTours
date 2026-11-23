@@ -530,20 +530,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								<p class="mb-1 fw-bold"><i class="icofont-info-circle"></i> Información del descuento</p>
 								<p class="mb-0"><small class="text-muted">Tipo de descuento:</small> <strong class="text-capitalize">{{nuevoDescuento.tipo_descuento}}</strong></p>
 								<p class="mb-0"><small class="text-muted">Valor de descuento:</small> <strong>{{nuevoDescuento.tipo_descuento=='monto' ? 'S/ ' : ''}}{{nuevoDescuento.valor_descuento}}{{nuevoDescuento.tipo_descuento=='porcentaje' ? ' %' : ''}}</strong></p>
-							</div>
-							<div class="row">
-								<div class="col">
-									<div class="form-floating mb-3">
-										<input type="date" class="form-control" id="floFechaInicio" placeholder=" " v-model="nuevoDescuento.fecha_inicio" disabled>
-										<label for="floFechaInicio">Fecha de inicio</label>
-									</div>
-								</div>
-								<div class="col">
-									<div class="form-floating mb-3">
-										<input type="date" class="form-control" id="floFechaFin" placeholder=" " v-model="nuevoDescuento.fecha_fin" disabled>
-										<label for="floFechaFin">Fecha de fin</label>
-									</div>
-								</div>
+								<p class="mb-0"><small class="text-muted">Fecha de inicio:</small> <strong>{{nuevoDescuento.fecha_inicio ? fechaLatam(nuevoDescuento.fecha_inicio) : '—'}}</strong></p>
+								<p class="mb-0"><small class="text-muted">Fecha de fin:</small> <strong>{{nuevoDescuento.fecha_fin ? fechaLatam(nuevoDescuento.fecha_fin) : '—'}}</strong></p>
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -1157,11 +1145,11 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 					descuento: this.nuevoDescuento
 				})
 				.then( respuesta =>{
-					if(respuesta.data =='ok'){
+					if(respuesta.data && respuesta.data.status == 'ok'){
 						let index = this.todosTours.findIndex( tour => tour.id === this.idGlobal );
 						if(index != -1){
 							if(!this.todosTours[index].descuentos) this.todosTours[index].descuentos = [];
-							this.todosTours[index].descuentos.unshift({...this.nuevoDescuento});
+							this.todosTours[index].descuentos.unshift({...this.nuevoDescuento, id: respuesta.data.id});
 						}
 						this.nuevoDescuento = { id_tour: this.idGlobal, nombre_descuento:'', tipo_descuento:'monto', valor_descuento:0, fecha_inicio:'', fecha_fin:'' };
 						this.erroresDescuento = '';
