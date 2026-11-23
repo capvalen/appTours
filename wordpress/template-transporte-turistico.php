@@ -77,7 +77,6 @@ $tt_servicios = [
 		padding: 8px 12px;
 	}
 	#cotizacionApp .form-select { padding: 8px 12px; }
-	#cotizacionApp .error { border: 1px solid #e21212 !important; }
 
 	/* Panel derecho */
 	#cotizacionApp .cotizacion-titulo {
@@ -145,17 +144,23 @@ $tt_servicios = [
 		display: flex;
 		align-items: center;
 		gap: 10px;
-		padding: 16px 20px;
+		padding: 16px 20px 0;
 		font-weight: 700;
 		font-size: 1.1rem;
-		color: #fff;
+		color: #2b2b2b;
+		background: none;
+		border: 0 !important;
 	}
 	#cotizacionApp .cotizacion-modal .modal-cabecera .alerta-icono {
 		font-size: 1.3rem;
 		line-height: 1;
 	}
-	#cotizacionApp .cotizacion-modal .modal-cabecera.error { background: #dc3545; }
-	#cotizacionApp .cotizacion-modal .modal-cabecera.ok { background: #10b916; }
+	/* La cabecera no lleva color ni borde según el tipo */
+	#cotizacionApp .cotizacion-modal .modal-cabecera.error,
+	#cotizacionApp .cotizacion-modal .modal-cabecera.ok {
+		background: none;
+		border: 0 !important;
+	}
 	#cotizacionApp .cotizacion-modal .modal-cuerpo {
 		padding: 18px 20px;
 		font-size: .95rem;
@@ -171,7 +176,7 @@ $tt_servicios = [
 	#cotizacionApp .cotizacion-modal .modal-pie { padding: 0 20px 20px; }
 	#cotizacionApp .cotizacion-modal .modal-btn {
 		width: 100%;
-		border: 0;
+		border: 0 !important;
 		border-radius: 8px;
 		padding: 12px;
 		color: #fff;
@@ -179,9 +184,9 @@ $tt_servicios = [
 		letter-spacing: .5px;
 		text-transform: uppercase;
 	}
-	#cotizacionApp .cotizacion-modal .modal-btn.error { background: #dc3545; }
+	#cotizacionApp .cotizacion-modal .modal-btn.error { background: #dc3545; border: 0 !important; }
 	#cotizacionApp .cotizacion-modal .modal-btn.error:hover { background: #b02a37; }
-	#cotizacionApp .cotizacion-modal .modal-btn.ok { background: #10b916; }
+	#cotizacionApp .cotizacion-modal .modal-btn.ok { background: #10b916; border: 0 !important; }
 	#cotizacionApp .cotizacion-modal .modal-btn.ok:hover { background: #0d9a12; }
 	body.cotizacion-modal-abierto { overflow: hidden; }
 
@@ -261,7 +266,7 @@ $tt_servicios = [
 					<!-- Celular -->
 					<div class="campo mb-4">
 						<label for="celular">Celular <span class="obligatorio">*</span></label>
-						<input type="tel" id="celular" class="form-control" inputmode="numeric" autocomplete="off" placeholder="Solo números">
+						<input type="tel" id="celular" class="form-control" inputmode="numeric" autocomplete="off" placeholder="">
 					</div>
 
 					<!-- Enviar -->

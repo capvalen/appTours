@@ -154,7 +154,10 @@ function procesar_cotizacion_transporte() {
 		$marca = '';
 	}
 
-	$rojo = '#dc3545';
+	// Paleta en tonos azules
+	$azul       = '#0d6efd';
+	$azulFuerte = '#0a4bb5';
+	$azulClaro  = '#dbe9ff';
 
 	// Fila "Label: valor" para la tabla del correo
 	$fila = function ($label, $valor) {
@@ -174,14 +177,14 @@ function procesar_cotizacion_transporte() {
 		$filaUrl = '<tr>' .
 			'<td style="padding:6px 0;font-size:14px;font-weight:bold;color:#2b2b2b;vertical-align:top;">Url:</td>' .
 			'<td style="padding:6px 0;font-size:13px;text-align:right;vertical-align:top;word-break:break-all;">' .
-				'<a href="' . esc_url($url) . '" style="color:' . $rojo . ';text-decoration:none;">' . esc_html($url) . '</a>' .
+				'<a href="' . esc_url($url) . '" style="color:' . $azul . ';text-decoration:none;">' . esc_html($url) . '</a>' .
 			'</td>' .
 		'</tr>';
 	}
 
 	// 3. Correo
 	$destinatario = 'grupoeuroandino@hotmail.com';
-	$asunto = 'Nueva cotización de ' . ($cotizar !== '' ? $cotizar : 'transporte') . ' - ' . ($cliente !== '' ? $cliente : 'sin nombre');
+	$asunto = 'Nueva cotización de Transporte: ' . ($cotizar !== '' ? $cotizar : 'transporte') . ' - ' . ($cliente !== '' ? $cliente : 'sin nombre');
 
 	$cuerpo = '<!DOCTYPE html>' .
 	'<html lang="es"><head><meta charset="UTF-8"><title>Nueva Cotización</title></head>' .
@@ -193,8 +196,8 @@ function procesar_cotizacion_transporte() {
 					'style="width:100%;max-width:600px;background:#ffffff;border-radius:14px;border:1px solid #e6e6e6;font-family:Arial,Helvetica,sans-serif;overflow:hidden;">' .
 
 					// Cabecera
-					'<tr><td style="background:' . $rojo . ';padding:24px;text-align:center;">' .
-						'<div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#ffd9dd;font-weight:bold;">Transporte Turístico</div>' .
+					'<tr><td style="background:' . $azul . ';padding:24px;text-align:center;">' .
+						'<div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:' . $azulClaro . ';font-weight:bold;">Transporte Turístico</div>' .
 						'<div style="font-size:20px;font-weight:bold;color:#ffffff;padding-top:6px;">Nueva Cotización solicitada</div>' .
 					'</td></tr>' .
 
@@ -224,7 +227,7 @@ function procesar_cotizacion_transporte() {
 								? '<strong style="color:#4d4d4d;font-size:13px;letter-spacing:1px;text-transform:uppercase;">' . esc_html($marca) . '</strong><br>'
 								: '') .
 							'Cotización enviada desde ' .
-							'<a href="' . esc_url($url) . '" style="color:' . $rojo . ';text-decoration:none;">' . esc_html($host !== '' ? $host : $url) . '</a>' .
+							'<a href="' . esc_url($url) . '" style="color:' . $azulFuerte . ';text-decoration:none;">' . esc_html($host !== '' ? $host : $url) . '</a>' .
 						'</div>' .
 					'</td></tr>' .
 
