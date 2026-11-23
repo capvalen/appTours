@@ -1,5 +1,54 @@
+const DSCTO_TOOLTIP_CSS = `
+.dsctoContenedor{ position: relative; display: inline-block; cursor: pointer; }
+.dsctoTooltip{
+	position: absolute;
+	bottom: calc(100% + 8px);
+	left: 50%;
+	width: max-content;
+	max-width: 200px;
+	padding: 4px 9px;
+	border-radius: 6px;
+	background: #212529;
+	color: #fff;
+	font-size: 0.75rem;
+	font-weight: 600;
+	line-height: 1.2;
+	text-align: center;
+	white-space: normal;
+	pointer-events: none;
+	z-index: 20;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, .25);
+	animation: dsctoSaltando 0.6s ease-in-out infinite;
+}
+.dsctoTooltip::after{
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border: 5px solid transparent;
+	border-top-color: #212529;
+}
+@keyframes dsctoSaltando{
+	0%, 100%{ transform: translateX(-50%) translateY(0); }
+	50%{ transform: translateX(-50%) translateY(-6px); }
+}
+`;
+
+function inyectarEstilosDscto() {
+	if (typeof document === 'undefined') return;
+	if (document.getElementById('dsctoTooltipEstilos')) return;
+	const style = document.createElement('style');
+	style.id = 'dsctoTooltipEstilos';
+	style.textContent = DSCTO_TOOLTIP_CSS;
+	document.head.appendChild(style);
+}
+
 export default {
 	data(){ return{
+		dsctoHover: false,
+		dsctoClick: false,
+		docClickHandler: null,
 		departamentos: ['Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Cusco', 'Callao', 'Huancavelica', 'Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno', 'San Martín', 'Tacna', 'Tumbes', 'Ucayali'],
 		hospedajes: ['', 'Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **', 'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****', 'Hotel *****', 'Lodge', 'Resort', 'Otro', 'Casa', 'Casa 2', 'Casa 3', 'Airbnb', 'Rural'],
 		queTransportes: [
@@ -54,12 +103,50 @@ export default {
 			let al = this.hospedajes.find(x => x.id == id)
 			if (al) return al.alojamiento
 		},
+		activarTooltipDescuento() {
+			this.dsctoHover = true;
+		},
+		desactivarTooltipDescuento() {
+			this.dsctoHover = false;
+			this.dsctoClick = false;
+			this.quitarListenerFuera();
+		},
+		anclarTooltipDescuento() {
+			this.dsctoClick = true;
+			if (typeof document !== 'undefined' && !this.docClickHandler) {
+				this.docClickHandler = () => this.cerrarTooltipFuera();
+				document.addEventListener('click', this.docClickHandler);
+			}
+		},
+		cerrarTooltipFuera() {
+			this.dsctoClick = false;
+			this.dsctoHover = false;
+			this.quitarListenerFuera();
+		},
+		quitarListenerFuera() {
+			if (typeof document !== 'undefined' && this.docClickHandler) {
+				document.removeEventListener('click', this.docClickHandler);
+				this.docClickHandler = null;
+			}
+		},
 		
 	},
 	computed: {
 		imagenDescuento() {
 			return this.tour.descuento?.imagen || 'https://grupoeuroandino.com/app/render/images/discount.png';
+		},
+		nombreDescuento() {
+			return this.tour.descuento?.nombre_descuento || '';
+		},
+		mostrarTooltipDescuento() {
+			return this.dsctoHover || this.dsctoClick;
 		}
+	},
+	mounted() {
+		inyectarEstilosDscto();
+	},
+	unmounted() {
+		this.quitarListenerFuera();
 	},
 	template: /*html*/`
 	<div class="card h-100 border-0  ">
@@ -95,8 +182,12 @@ export default {
 							<span v-else class="text-muted subText">{{queDuraDia(tour.duracion.dias)}} / {{queDuraNoche(tour.duracion.noches)}}</span>
 						</div>
 						<div class="col-4 descuentos d-flex align-items-end">
-							<div v-if="tour.descuento?.id">
-							<img class="imagenDscto" :src="imagenDescuento" style="max-height: 60px; width: auto;" />
+							<div v-if="tour.descuento?.id" class="dsctoContenedor"
+								@mouseenter="activarTooltipDescuento"
+								@mouseleave="desactivarTooltipDescuento"
+								@click.stop="anclarTooltipDescuento">
+								<img class="imagenDscto" :src="imagenDescuento" style="max-height: 60px; width: auto;" />
+								<span v-if="mostrarTooltipDescuento" class="dsctoTooltip">Promo: {{nombreDescuento}}</span>
 							</div>
 						</div>
 						<div class="col-3 d-flex flex-column align-items-end justify-content-end" id="pegar">

@@ -348,7 +348,7 @@
 
 
 	<script type="module">
-	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.14';
+	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.15';
 
 	// --- Parámetros recibidos por URL -----------------------------------------
 	const ticParams = new URLSearchParams(window.location.search);

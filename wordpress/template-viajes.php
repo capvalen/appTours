@@ -722,7 +722,7 @@ else
 
 
 	<script type="module">
-		import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.14';
+		import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.15';
 		var datepicker = $.fn.datepicker.noConflict();
 
 		$.fn.bootstrapDP = datepicker;

@@ -140,7 +140,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 								</td>
 								<td >
 									<div class="form-check form-switch">
-										<input class="form-check-input" type="checkbox" role="switch" :id="'chkVisible'+index+1" @click="idGlobal =todosTours[index].id; hacerVisible($event)" :checked="todosTours[index].visible=='1'? 'checked':''">
+										<input class="form-check-input" type="checkbox" role="switch" :id="'chkVisible'+index+1" @click="idGlobal =todosTours[index].id; hacerVisible($event)" :checked="todosTours[index].visible=='1'">
 										<label v-if="todosTours[index].visible=='1'" class="form-check-label text-primary" :for="'chkVisible'+index+1"><i class="icofont-eye-alt"></i> Publicado</label>
 										<label v-else class="form-check-label " :for="'chkVisible'+index+1"><i class="icofont-eye-blocked"></i> No publicado</label>
 									</div>
@@ -397,7 +397,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				<div class="offcanvas-body">
 					<div class="contenido"  v-if="indexGlobal!=-1">
 						<div class="form-check form-switch">
-							<input class="form-check-input" type="checkbox" role="switch" id="chkVisible" @click="hacerVisible($event)" :checked="esVisible(indexGlobal)=='1'? 'checked':''">
+							<input class="form-check-input" type="checkbox" role="switch" id="chkVisible" @click="hacerVisible($event)" :checked="esVisible(indexGlobal)=='1'">
 							<label v-if="esVisible(indexGlobal)=='1'" class="form-check-label text-primary" for="chkVisible"><i class="icofont-eye-alt"></i> Es visible</label>
 							<label v-else class="form-check-label " for="chkVisible"><i class="icofont-eye-blocked"></i> No está publicado</label>
 						</div>
@@ -485,8 +485,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				</div>
 				<div class="offcanvas-body">
 					<p class="text-muted"><small>Paquete seleccionado:</small></p>
-					<h5><i class="icofont-tracking"></i> {{tourActivo.nombre}}</h5>
-					<div class="w-100 my-4"><button class="btn btn-outline-secondary" id="btnNuevoDescuento"><i class="icofont-sale-discount"></i> Nuevo descuento</button></div>
+					<h5><svg class="icoMaleta" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height:20px;width:auto;fill:currentColor;vertical-align:-0.18em;" aria-hidden="true" focusable="false"><path d="M320,153.6H192c-7.074,0-12.8,5.726-12.8,12.8c0,7.074,5.726,12.8,12.8,12.8h128c7.074,0,12.8-5.726,12.8-12.8 C332.8,159.326,327.074,153.6,320,153.6z"/><path d="M358.4,102.4H320V25.6h12.8c7.074,0,12.8-5.726,12.8-12.8c0-7.074-5.726-12.8-12.8-12.8H179.2 c-7.074,0-12.8,5.726-12.8,12.8c0,7.074,5.726,12.8,12.8,12.8H192v76.8h-38.4c-28.279,0-51.2,22.921-51.2,51.2v281.6 c0,28.279,22.921,51.2,51.2,51.2v12.8c0,7.074,5.726,12.8,12.8,12.8c7.074,0,12.8-5.726,12.8-12.8v-12.8h153.6v12.8 c0,7.074,5.726,12.8,12.8,12.8c7.074,0,12.8-5.726,12.8-12.8v-12.8c28.279,0,51.2-22.921,51.2-51.2V153.6 C409.6,125.321,386.68,102.4,358.4,102.4z M217.6,25.6h76.8v76.8h-76.8V25.6z M307.2,460.8H204.8V384 c0-14.114,11.486-25.6,25.6-25.6h51.2c14.114,0,25.6,11.486,25.6,25.6V460.8z M384,435.2c0,14.114-11.486,25.6-25.6,25.6h-25.6 V384c0-28.279-22.921-51.2-51.2-51.2h-51.2c-28.279,0-51.2,22.921-51.2,51.2v76.8h-25.6c-14.114,0-25.6-11.486-25.6-25.6V153.6 c0-14.114,11.486-25.6,25.6-25.6h204.8c14.114,0,25.6,11.486,25.6,25.6V435.2z"/></svg> {{tourActivo.nombre}}</h5>
+					<div class="w-100 my-4"><button class="btn btn-outline-secondary" id="btnNuevoDescuento"> Nuevo descuento</button></div>
 
 					<p class="mb-2">Listado de descuentos </p>
 					<div class="list-group">
@@ -514,49 +514,22 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<div v-if="erroresDescuento" class="alert alert-danger alert-dismissible fade show" role="alert">
-							<i class="icofont-close-circled"></i> {{erroresDescuento}}
-							<button type="button" class="btn-close" @click="erroresDescuento = ''"></button>
-						</div>
-							<div class="form-floating mb-3 d-none">
-								<input type="text" class="form-control" id="floNombreDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.nombre_descuento">
-								<label for="floNombreDescuento">Nombre del descuento</label>
+							<div v-if="erroresDescuento" class="alert alert-danger alert-dismissible fade show" role="alert">
+								<i class="icofont-close-circled"></i> {{erroresDescuento}}
+								<button type="button" class="btn-close" @click="erroresDescuento = ''"></button>
 							</div>
-							<div class="row">
-								<div class="col-12">
-									<div class="mb-3">
-										<label for="">Descuentos disponibles</label>
-										<select class="form-select" id="sltDescuentoPadre" v-model="nuevoDescuento.id" @change="asignarDescuento(nuevoDescuento.id)">
-											<option v-for="descuento in listaDescuentos" :value="descuento.id">{{descuento.promocion}} — {{descuento.alcance || 'individual'}}</option>
-											<option v-if="listaDescuentos.length==0" value="-1">No hay descuentos registrados</option>
-										</select>
-									</div>
-								</div>
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label">Tipo Descuento</label>
-										<input type="number" class="d-none" v-model="nuevoDescuento.promocion_id">
-										<div class="form-check" >
-											<input class="form-check-input" type="radio" id="tipoCombo" value="combo" v-model="nuevoDescuento.tipo_descuento" disabled>
-											<label class="form-check-label" for="tipoCombo">Combo</label>
-										</div>
-										<div class="form-check" >
-											<input class="form-check-input" type="radio" id="tipoMonto" value="monto" v-model="nuevoDescuento.tipo_descuento" disabled>
-											<label class="form-check-label" for="tipoMonto">Monto (S/)</label>
-										</div>
-										<div class="form-check" >
-											<input class="form-check-input" type="radio" id="tipoPorcentaje" value="porcentaje" v-model="nuevoDescuento.tipo_descuento" disabled>
-											<label class="form-check-label" for="tipoPorcentaje">Porcentaje (%)</label>
-										</div>
-									</div>
-								</div>
-								<div class="col">
-									<label class="form-label">Valor de descuento</label>
-									<div class="form-floating mb-3">
-										<input type="text" class="form-control" id="floValorDescuento" placeholder=" " autocomplete="off" v-model="nuevoDescuento.valor_descuento" disabled>
-										<label for="floValorDescuento">Valor</label>
-									</div>
-								</div>
+							<div class="mb-3">
+								<label class="form-label" for="sltDescuentoPadre">Seleccione descuento disponible:</label>
+								<select class="form-select" id="sltDescuentoPadre" v-model="nuevoDescuento.id" @change="asignarDescuento(nuevoDescuento.id)">
+									<option v-for="descuento in listaDescuentos" :value="descuento.id">{{descuento.promocion}} — {{descuento.alcance || 'individual'}}</option>
+									<option v-if="listaDescuentos.length==0" value="-1">No hay descuentos registrados</option>
+								</select>
+							</div>
+							<hr>
+							<div class="mb-3">
+								<p class="mb-1 fw-bold"><i class="icofont-info-circle"></i> Información del descuento</p>
+								<p class="mb-0"><small class="text-muted">Tipo de descuento:</small> <strong class="text-capitalize">{{nuevoDescuento.tipo_descuento}}</strong></p>
+								<p class="mb-0"><small class="text-muted">Valor de descuento:</small> <strong>{{nuevoDescuento.tipo_descuento=='monto' ? 'S/ ' : ''}}{{nuevoDescuento.valor_descuento}}{{nuevoDescuento.tipo_descuento=='porcentaje' ? ' %' : ''}}</strong></p>
 							</div>
 							<div class="row">
 								<div class="col">
