@@ -1,0 +1,251 @@
+const DSCTO_TOOLTIP_CSS = `
+.dsctoContenedor{ position: relative; display: inline-block; cursor: pointer; }
+.dsctoTooltip{
+	position: absolute;
+	bottom: calc(100% + 8px);
+	left: 50%;
+	width: max-content;
+	max-width: 200px;
+	padding: 4px 9px;
+	border-radius: 6px;
+	background: #212529;
+	color: #fff;
+	font-size: 0.75rem;
+	font-weight: 600;
+	line-height: 1.2;
+	text-align: center;
+	white-space: normal;
+	pointer-events: none;
+	z-index: 20;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, .25);
+	animation: dsctoSaltando 0.6s ease-in-out infinite;
+}
+.dsctoTooltip::after{
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border: 5px solid transparent;
+	border-top-color: #212529;
+}
+@keyframes dsctoSaltando{
+	0%, 100%{ transform: translateX(-50%) translateY(0); }
+	50%{ transform: translateX(-50%) translateY(-6px); }
+}
+`;
+
+function inyectarEstilosDscto() {
+	if (typeof document === 'undefined') return;
+	if (document.getElementById('dsctoTooltipEstilos')) return;
+	const style = document.createElement('style');
+	style.id = 'dsctoTooltipEstilos';
+	style.textContent = DSCTO_TOOLTIP_CSS;
+	document.head.appendChild(style);
+}
+
+export default {
+	data() {
+		return {
+			dsctoHover: false,
+			dsctoClick: false,
+			docClickHandler: null,
+			departamentos: [
+				'Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho', 'Cajamarca',
+				'Cusco', 'Callao', 'Huancavelica', 'Huánuco', 'Ica', 'Junín',
+				'La Libertad', 'Lambayeque', 'Lima', 'Loreto', 'Madre de Dios',
+				'Moquegua', 'Pasco', 'Piura', 'Puno', 'San Martín', 'Tacna',
+				'Tumbes', 'Ucayali'
+			],
+			hospedajes: [
+				'', 'Albergue', 'Apartment', 'Bungalow', 'Hostal *', 'Hostal **',
+				'Hostal ***', 'Hotel *', 'Hotel **', 'Hotel ***', 'Hotel ****',
+				'Hotel *****', 'Lodge', 'Resort', 'Otro', 'Casa', 'Casa 2',
+				'Casa 3', 'Airbnb', 'Rural'
+			],
+			queTransportes: [
+				{ id: 0, transporte: 'ninguno', idTransporte: 3 },
+				// Terrestre (1)
+				{ id: 1, transporte: 'tren', idTransporte: 1 },
+				{ id: 2, transporte: 'bus', idTransporte: 1 },
+				// Aéreo (2)
+				{ id: 3, transporte: 'avión', idTransporte: 2 },
+				{ id: 4, transporte: 'avioneta', idTransporte: 2 },
+				// Acuático (4)
+				{ id: 5, transporte: 'barco', idTransporte: 4 },
+				{ id: 6, transporte: 'lancha', idTransporte: 4 }
+			]
+		};
+	},
+	props: ['duracion', 'dias', 'noches', 'tour'],
+	methods: {
+		queTransporte(tourActivo) {
+			if (!tourActivo) return '';
+
+			if (tourActivo.idTransporte !== undefined && tourActivo.idTransporte !== null && tourActivo.idTransporte !== '') {
+				if (String(tourActivo.idTransporte) === '3' || String(tourActivo.transporte) === '3') {
+					return '';
+				}
+				const encontrado = this.queTransportes.find(
+					tra => String(tra.id) === String(tourActivo.idTransporte)
+				);
+				if (encontrado) {
+					return encontrado.id === 0 ? '' : encontrado.transporte;
+				}
+			}
+
+			switch (String(tourActivo.transporte)) {
+				case '1':
+					return 'bus';
+				case '2':
+					return 'avión';
+				case '3':
+					return '';
+				case '4':
+					return 'barco';
+				default:
+					return '';
+			}
+		},
+		queDepa(valor) {
+			const idx = parseInt(valor, 10);
+			return Number.isInteger(idx) && this.departamentos[idx] ? this.departamentos[idx] : '';
+		},
+		queDura(duracion) {
+			const idx = parseInt(duracion, 10) - 1;
+			return Array.isArray(this.duracion) && this.duracion[idx] ? this.duracion[idx].valor : '';
+		},
+		queDuraDia(duracion) {
+			if (!Array.isArray(this.dias)) return '';
+			return this.dias.find(x => x.clave === duracion)?.valor ?? '';
+		},
+		queDuraNoche(duracion) {
+			if (!Array.isArray(this.noches) || duracion < 1) return '';
+			return this.noches.find(x => x.clave === duracion)?.valor ?? '';
+		},
+		formatoMoneda(valor) {
+			const num = parseFloat(valor);
+			return Number.isNaN(num) ? '0' : num.toFixed(0);
+		},
+		retornarHospedaje(id) {
+			const idx = parseInt(id, 10);
+			return Number.isInteger(idx) && this.hospedajes[idx] ? this.hospedajes[idx] : '';
+		},
+		activarTooltipDescuento() {
+			this.dsctoHover = true;
+		},
+		desactivarTooltipDescuento() {
+			this.dsctoHover = false;
+			this.dsctoClick = false;
+			this.quitarListenerFuera();
+		},
+		anclarTooltipDescuento() {
+			this.dsctoClick = true;
+			if (typeof document !== 'undefined' && !this.docClickHandler) {
+				this.docClickHandler = () => this.cerrarTooltipFuera();
+				document.addEventListener('click', this.docClickHandler);
+			}
+		},
+		cerrarTooltipFuera() {
+			this.dsctoClick = false;
+			this.dsctoHover = false;
+			this.quitarListenerFuera();
+		},
+		quitarListenerFuera() {
+			if (typeof document !== 'undefined' && this.docClickHandler) {
+				document.removeEventListener('click', this.docClickHandler);
+				this.docClickHandler = null;
+			}
+		}
+	},
+	computed: {
+		imagenDescuento() {
+			return this.tour?.descuento?.imagen || 'https://grupoeuroandino.com/app/render/images/discount.png';
+		},
+		nombreDescuento() {
+			const descuento = this.tour?.descuento;
+			if (!descuento) return '';
+
+			const nombre = descuento.nombre_descuento || '';
+			const tipoPromocion = descuento.tipo_promocion;
+
+			if (tipoPromocion === 'Solo Tours') {
+				return `Promoción solo en tours: ${nombre}`;
+			}
+			if (tipoPromocion === 'Solo Paquetes') {
+				return `Promoción Solo en paquetes: ${nombre}`;
+			}
+
+			return nombre;
+		},
+		mostrarTooltipDescuento() {
+			return this.dsctoHover || this.dsctoClick;
+		}
+	},
+	mounted() {
+		inyectarEstilosDscto();
+	},
+	unmounted() {
+		this.quitarListenerFuera();
+	},
+	template: /*html*/`
+	<div class="card h-100 border-0">
+		<div v-if="tour.fotos && tour.fotos.length > 0" class="divImagen position-relative" style="height: 345px;">
+			<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
+				<span class="text-capitalize mx-1 px-1 rounded spanTransporte" v-if="queTransporte(tour)">{{ queTransporte(tour) }}</span>
+				<span v-if="retornarHospedaje(tour.alojamiento)" class="mx-1 px-1 rounded spanOferta">{{ retornarHospedaje(tour.alojamiento) }}</span>
+				<span v-if="tour.alimentacion" class="mx-1 px-1 rounded spanAlimentacion">Alimentación</span>
+				<span class="mx-1 px-1 rounded spanTour">Tour</span>
+				<span v-if="tour.guia" class="mx-1 px-1 rounded spanGuia">Guía</span>
+				<span v-if="tour.tickets" class="mx-1 px-1 rounded spanTickets">Tickets</span>
+			</div>
+			<a class="aImgs" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent">
+				<img class="img-fluid rounded-top" :src="'https://grupoeuroandino.com/app/render/images/subidas/' + tour.fotos[0].nombreRuta" :alt="tour.nombre || 'Imagen del tour'">
+			</a>
+		</div>
+		<div class="card-body">
+			<div class="divProducto">
+				<div>
+					<p class="mb-0 titulo ps-1">
+						<a class="text-decoration-none text-dark fw-bold" :href="'https://grupoeuroandino.com/tours/' + tour.url" target="_parent">{{ tour.nombre }}</a>
+					</p>
+					<div class="row">
+						<div class="col-5">
+							<span class="text-muted subText">
+								<img class="bandera" src="https://grupoeuroandino.com/images/banderas/peru.jpeg" alt="Perú"> {{ tour.destino }},
+							</span>
+							<br>
+							<img src="https://grupoeuroandino.com/images/punto.svg" alt="Ubicación" style="width: 16px; height: 16px; margin-top: -2px; display: inline-block;">
+							<span class="text-capitalize text-muted subText">{{ queDepa(tour.departamento) }}</span>
+							<div class="estrellas">
+								<template v-for="star in (parseInt(tour.calificacion, 10) || 0)" :key="star">
+									<i class="icofont-star"></i>
+								</template>
+							</div>
+							<span v-if="tour.tipo == 1" class="text-muted subText">{{ queDura(tour.duracion) }}</span>
+							<span v-else class="text-muted subText">{{ queDuraDia(tour.duracion?.dias) }} / {{ queDuraNoche(tour.duracion?.noches) }}</span>
+						</div>
+						<div class="col-4 descuentos d-flex align-items-end">
+							<div v-if="tour.descuento?.id" class="dsctoContenedor"
+								@mouseenter="activarTooltipDescuento"
+								@mouseleave="desactivarTooltipDescuento"
+								@click.stop="anclarTooltipDescuento">
+								<img class="imagenDscto" :src="imagenDescuento" :alt="nombreDescuento || 'Descuento'" style="max-height: 60px; width: auto;" />
+								<span v-if="mostrarTooltipDescuento" class="dsctoTooltip">Promo: {{ nombreDescuento }}</span>
+							</div>
+						</div>
+						<div class="col-3 d-flex flex-column align-items-end justify-content-end" id="pegar">
+							<p class="mb-0" style="font-size: 12px;">Desde</p>
+							<p class="mb-0">
+								<span class="precio2"><span class="moneda-peque">S/.</span> {{ formatoMoneda(tour.peruanos?.adultos) }}</span>
+							</p>
+							<p v-if="tour.oferta != '0' && tour.oferta != ''" class="precioAnt2 mb-0" style="font-size: 14px">
+								<span class="moneda">S/.</span> <span>{{ formatoMoneda(tour.oferta) }}</span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>`
+};

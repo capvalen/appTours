@@ -32,6 +32,8 @@ if( $sql->execute()){
 				if ($p['alcance'] == 'pais' && $p['pais_id'] == ($row['pais'] ?? 140)) $match = true;
 				elseif ($p['alcance'] == 'departamento' && $p['departamento'] == ($contenido['departamento'] ?? '')) $match = true;
 				elseif ($p['alcance'] == 'ciudad' && !empty($p['ciudad']) && stripos($contenido['destino'] ?? '', $p['ciudad']) !== false) $match = true;
+				elseif ($p['alcance'] == 'tours' && ($row['tipo'] ?? 0) == 1) $match = true;
+				elseif ($p['alcance'] == 'paquetes' && ($row['tipo'] ?? 0) == 2) $match = true;
 
 				if ($match) {
 					$descuento = [

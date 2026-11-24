@@ -1,3 +1,13 @@
+--2.240
+-- Agrega alcances "Solo Tours" y "Solo Paquetes" al ENUM de promociones.
+-- NOTA: las promociones creadas antes de este cambio con esos alcances quedaron
+-- guardadas con alcance vacio (''); hay que editarlas y volver a guardarlas
+-- despues de ejecutar este ALTER.
+ALTER TABLE `promociones`
+MODIFY COLUMN `alcance` ENUM('individual', 'pais', 'departamento', 'ciudad', 'tours', 'paquetes')
+  NOT NULL DEFAULT 'individual'
+  COMMENT 'Alcance del descuento';
+
 --2.230
 ALTER TABLE `promociones` ADD `visible` TINYINT NULL DEFAULT '0' COMMENT '0=no, 1=si' AFTER `ciudad`;
 

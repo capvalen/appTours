@@ -4,6 +4,7 @@ const DSCTO_TOOLTIP_CSS = `
 	position: absolute;
 	bottom: calc(100% + 8px);
 	left: 50%;
+	transform: translateX(-50%);
 	width: max-content;
 	max-width: 200px;
 	padding: 4px 9px;
@@ -18,7 +19,6 @@ const DSCTO_TOOLTIP_CSS = `
 	pointer-events: none;
 	z-index: 20;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, .25);
-	animation: dsctoSaltando 0.6s ease-in-out infinite;
 }
 .dsctoTooltip::after{
 	content: "";
@@ -62,7 +62,7 @@ export default {
 			// Acuático (4)
 			{ id: 5, transporte: "barco", idTransporte: 4 },
 			{ id: 6, transporte: "lancha", idTransporte: 4 }
-		],		
+		],
 	}},
 	props: ['duracion', 'dias', 'noches', 'tour'],
 	methods:{
@@ -129,18 +129,31 @@ export default {
 				this.docClickHandler = null;
 			}
 		},
-		
+
 	},
 	computed: {
 		imagenDescuento() {
 			return this.tour.descuento?.imagen || 'https://grupoeuroandino.com/app/render/images/discount.png';
 		},
 		nombreDescuento() {
-			return this.tour.descuento?.nombre_descuento || '';
+			const descuento = this.tour.descuento;
+			if (!descuento) return '';
+
+			let nombre = descuento.nombre_descuento || '';
+			const tipoPromocion = descuento.tipo_promocion;
+
+			if (tipoPromocion === 'Solo Tours') {
+				return `Promoción solo en tours: ${nombre}`;
+			}
+			if (tipoPromocion === 'Solo Paquetes') {
+				return `Promoción Solo en paquetes: ${nombre}`;
+			}
+
+			return nombre;
 		},
 		mostrarTooltipDescuento() {
 			return this.dsctoHover || this.dsctoClick;
-		}
+		},
 	},
 	mounted() {
 		inyectarEstilosDscto();
@@ -148,7 +161,7 @@ export default {
 	unmounted() {
 		this.quitarListenerFuera();
 	},
-	template: /*html*/`
+	template: `
 	<div class="card h-100 border-0  ">
 		<div v-if="tour.fotos.length>0" class="divImagen position-relative" style="height: 345px;">
 			<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">
@@ -191,14 +204,14 @@ export default {
 							</div>
 						</div>
 						<div class="col-3 d-flex flex-column align-items-end justify-content-end" id="pegar">
-								<p class="mb-0" style="font-size: 12px;">Desde</p>
-								<p class="mb-0"><span class="precio2"><span class="moneda-peque">S/.</span> {{formatoMoneda(tour.peruanos.adultos)}}</span></p>
-								<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0" style="font-size: 14px"><span class="moneda">S/.</span> <span>{{formatoMoneda(tour.oferta)}}</span></p>
+							<p class="mb-0" style="font-size: 12px;">Desde</p>
+							<p class="mb-0"><span class="precio2"><span class="moneda-peque">S/.</span> {{formatoMoneda(tour.peruanos.adultos)}}</span></p>
+							<p v-if="tour.oferta!='0' && tour.oferta!=''" class="precioAnt2 mb-0" style="font-size: 14px"><span class="moneda">S/.</span> <span>{{formatoMoneda(tour.oferta)}}</span></p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>`
-	
+	</div>
+	`
 }

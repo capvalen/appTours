@@ -42,7 +42,7 @@ if( $sql->execute([$_POST['id']])){
 	$url = $contenido['url'];
 
 	// Buscar descuento activo para este tour (individual)
-	$sqlDesc = $db->prepare("SELECT d.id, d.nombre_descuento, d.tipo_descuento, d.valor_descuento, d.fecha_inicio, d.fecha_fin FROM `descuentos` d INNER JOIN `promociones` p ON p.id = d.promocion_id AND p.visible = 1 WHERE d.`id_tour` = ? AND curdate() between d.fecha_inicio and d.fecha_fin AND d.`activo` = 1 limit 1;");
+	$sqlDesc = $db->prepare("SELECT d.id, d.nombre_descuento, d.tipo_descuento, d.valor_descuento, d.fecha_inicio, d.fecha_fin FROM `descuentos` d INNER JOIN `promociones` p ON p.id = d.promocion_id AND p.visible = 1 WHERE d.`id_tour` = ? AND curdate() between d.fecha_inicio and d.fecha_fin AND d.`activo` = 1 AND d.tipo_descuento != 'combo' limit 1;");
 	$sqlDesc->execute([$_POST['id']]);
 	$descuento = $sqlDesc->fetch(PDO::FETCH_ASSOC);
 
@@ -56,7 +56,9 @@ if( $sql->execute([$_POST['id']])){
 			  AND (
 				(alcance = 'pais' AND pais_id = ?) OR
 				(alcance = 'departamento' AND departamento = ?) OR
-				(alcance = 'ciudad' AND ciudad = ?)
+				(alcance = 'ciudad' AND ciudad = ?) OR
+				(alcance = 'tours' AND tipo = 1) OR
+				(alcance = 'paquetes' AND tipo = 2)
 			  )
 			ORDER BY FIELD(alcance, 'ciudad', 'departamento', 'pais')
 			LIMIT 1
@@ -68,6 +70,17 @@ if( $sql->execute([$_POST['id']])){
 	// Solo si hay descuento se adjunta el texto de configuraciones (con las fechas reemplazadas)
 	if ($descuento) {
 		$descuento['texto'] = textoDescuento($db, $descuento['fecha_inicio'] ?? '', $descuento['fecha_fin'] ?? '');
+		// Agregar información del tipo de promoción al descuento
+		if ($descuento['alcance'] === 'tours') {
+			$descuento['tipo_promocion'] = 'Solo Tours';
+			$descuento['tipo'] = $descuento['tipo_descuento'] !== 'combo' ? $descuento['tipo_descuento'] : 'combo';
+		} elseif ($descuento['alcance'] === 'paquetes') {
+			$descuento['tipo_promocion'] = 'Solo Paquetes';
+			$descuento['tipo'] = $descuento['tipo_descuento'] !== 'combo' ? $descuento['tipo_descuento'] : 'combo';
+		} else {
+			$descuento['tipo_promocion'] = '';
+			$descuento['tipo'] = $descuento['tipo_descuento'] ?? '';
+		}
 	}
 }else{
 	//echo $sql->debugDumpParams();

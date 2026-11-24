@@ -722,7 +722,7 @@ else
 
 
 	<script type="module">
-		import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.15';
+		import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.16';
 		var datepicker = $.fn.datepicker.noConflict();
 
 		$.fn.bootstrapDP = datepicker;
@@ -1413,11 +1413,20 @@ else
 					const descuento = this.tourActivo.descuento
 
 					const nombre = (descuento.nombre_descuento ?? '').toString().trim();
+					const tipoPromocion = (descuento.tipo_promocion ?? '').toString().trim();
 					const tipo = (descuento.tipo_descuento ?? '').toString().trim().toLowerCase();
 					const valorStr = descuento.valor_descuento;
 					const valorNum = parseFloat(valorStr);
 
 					if (!nombre || isNaN(valorNum)) return '';
+
+					// Mostrar tipo de promoción especial (Solo Tours / Solo Paquetes)
+					if (tipoPromocion === 'Solo Tours') {
+						return `Solo Tours: ${nombre}`;
+					}
+					if (tipoPromocion === 'Solo Paquetes') {
+						return `Solo Paquetes: ${nombre}`;
+					}
 
 					if (tipo === 'combo') {
 						return `${valorStr} por ${nombre}`;
