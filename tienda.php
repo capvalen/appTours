@@ -59,7 +59,7 @@
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==0 }" @click="idTour=-1; idDia = 0; idCategoria=-1" >Half Day (Medio Día)</a></p>
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idDia==1 }" @click="idTour=-1; idDia = 1; idCategoria=-1" >Full Day (1 Día)</a></p>
 									<p class="my-1"><a href="#!" class="text-decoration-none text-secondary" :class="{activo: idCategoria==38 }" @click="idTour=-1; idDia=-1; idCategoria=38" >Viajes de Promoción Escolar</a></p>
-									<p class="my-1"><a href="https://grupoeuroandino.com/transporte-turistico-desde-peru/" class="text-decoration-none text-secondary">Transporte turístico</a></p>
+									<p class="my-1"><a href="/transporte-turistico-desde-peru" class="text-decoration-none text-secondary" target="_top" aria-current="page">Transporte turístico</a></p>
 
 								</div>
 

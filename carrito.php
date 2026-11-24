@@ -234,8 +234,16 @@ else include '/api'; */
 								</div>
 							</div>
 							<div class="row " id="divDscto" v-if="descuento">
-								<div class="col">
-									<p class="mb-0 text-success" ><strong> Descuento:</strong> <span class="text-capitalize">{{descuento.nombre_descuento}} {{descuento.tipo_descuento=='monto' ? 'S/' : ''}} <span v-if="descuento.tipo_descuento!='combo'">-</span>{{descuento.tipo_descuento=='monto' ? formatearMonto(descuento.valor_descuento) : descuento.valor_descuento}}{{descuento.tipo_descuento=='porcentaje' ? '%':''}}</span></p>
+								<div class="col-7">
+									<p class="mb-0 text-success" ><strong> Descuento:</strong> <span class="text-capitalize">{{descuento.nombre_descuento}}</span></p>
+								</div>
+								<div class="col-5">
+									<p class="mb-0 text-success" >{{descuento.tipo_descuento=='monto' ? 'S/ ' : ''}}<span class="d-none" v-if="descuento.tipo_descuento!='combo'">-</span>{{descuento.tipo_descuento=='monto' ? formatearMonto(descuento.valor_descuento) : descuento.valor_descuento}}{{descuento.tipo_descuento=='porcentaje' ? '%':''}}</p>
+								</div>
+							</div>
+							<div class="row" v-if="descuento && descuento.texto">
+								<div class="col-12">
+									<small class="d-block text-success" style="font-size:.7rem">{{descuento.texto}}</small>
 								</div>
 							</div>
 							<div class="row row-cols-2">

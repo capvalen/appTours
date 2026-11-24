@@ -130,10 +130,12 @@ function procesar_cotizacion_transporte() {
 
 	// 1. Recoger y limpiar datos
 	$cotizar   = sanitize_text_field($_POST['cotizar'] ?? '');
+	$vehiculos = sanitize_text_field($_POST['vehiculos'] ?? '');
 	$pasajeros = intval($_POST['pasajeros'] ?? 0);
 	$dias      = intval($_POST['dias'] ?? 0);
 	$fecha     = sanitize_text_field($_POST['fecha'] ?? '');
 	$ruta      = sanitize_textarea_field($_POST['ruta'] ?? '');
+	$observaciones = sanitize_textarea_field($_POST['observaciones'] ?? '');
 	$cliente   = sanitize_text_field($_POST['cliente'] ?? '');
 	$salida    = sanitize_text_field($_POST['salida'] ?? '');
 	$retorno   = sanitize_text_field($_POST['retorno'] ?? '');
@@ -207,10 +209,12 @@ function procesar_cotizacion_transporte() {
 
 						'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">' .
 							$fila('Servicio', $cotizar) .
+							$fila('Vehículos', $vehiculos) .
 							$fila('N° de pasajeros', $pasajeros) .
 							$fila('Días', $dias) .
 							$fila('Fecha', $fecha) .
 							$fila('Ruta / Itinerario', $ruta) .
+							$fila('Observaciones', $observaciones) .
 							$fila('Cliente', $cliente) .
 							$fila('Salida', $salida) .
 							$fila('Retorno', $retorno) .

@@ -42,14 +42,15 @@ if( $sql->execute([$_POST['id']])){
 	$url = $contenido['url'];
 
 	// Buscar descuento activo para este tour (individual)
-	$sqlDesc = $db->prepare("SELECT d.id, d.nombre_descuento, d.tipo_descuento, d.valor_descuento FROM `descuentos` d INNER JOIN `promociones` p ON p.id = d.promocion_id AND p.visible = 1 WHERE d.`id_tour` = ? AND curdate() between d.fecha_inicio and d.fecha_fin AND d.`activo` = 1 limit 1;");
+	$sqlDesc = $db->prepare("SELECT d.id, d.nombre_descuento, d.tipo_descuento, d.valor_descuento, d.fecha_inicio, d.fecha_fin FROM `descuentos` d INNER JOIN `promociones` p ON p.id = d.promocion_id AND p.visible = 1 WHERE d.`id_tour` = ? AND curdate() between d.fecha_inicio and d.fecha_fin AND d.`activo` = 1 limit 1;");
 	$sqlDesc->execute([$_POST['id']]);
 	$descuento = $sqlDesc->fetch(PDO::FETCH_ASSOC);
 
 	// Si no hay descuento individual, buscar por alcance (país, departamento, ciudad)
 	if (!$descuento) {
 		$sqlScope = $db->prepare("
-			SELECT id, promocion AS nombre_descuento, tipo AS tipo_descuento, valor AS valor_descuento, alcance
+			SELECT id, promocion AS nombre_descuento, tipo AS tipo_descuento, valor AS valor_descuento, alcance,
+				inicio AS fecha_inicio, fin AS fecha_fin
 			FROM `promociones` 
 			WHERE activo = 1 AND visible = 1 AND CURDATE() BETWEEN inicio AND fin
 			  AND (
@@ -62,6 +63,11 @@ if( $sql->execute([$_POST['id']])){
 		");
 		$sqlScope->execute([$tempo['pais'], $contenido['departamento'], $contenido['destino']]);
 		$descuento = $sqlScope->fetch(PDO::FETCH_ASSOC);
+	}
+
+	// Solo si hay descuento se adjunta el texto de configuraciones (con las fechas reemplazadas)
+	if ($descuento) {
+		$descuento['texto'] = textoDescuento($db, $descuento['fecha_inicio'] ?? '', $descuento['fecha_fin'] ?? '');
 	}
 }else{
 	//echo $sql->debugDumpParams();
@@ -83,3 +89,25 @@ echo json_encode( array(
 	'url'=>$url,
 	'descuento' => $descuento
 ));
+
+/* Texto configurable del descuento: reemplaza {fecha_inicio} y {fecha_fin}/{fecha_final}
+   por las fechas del descuento en formato DD/MM/YYYY. */
+function textoDescuento($db, $fechaInicio, $fechaFin){
+	$sql = $db->prepare("SELECT `contenido` FROM `configuraciones` WHERE `nombre` = ? LIMIT 1");
+	$sql->execute(['texto_descuento']);
+	$texto = $sql->fetchColumn();
+	if($texto === false || $texto === null || $texto === '') return '';
+
+	$reemplazos = array(
+		'{fecha_inicio}' => fechaDdMmAaaa($fechaInicio),
+		'{fecha_fin}'    => fechaDdMmAaaa($fechaFin),
+		'{fecha_final}'  => fechaDdMmAaaa($fechaFin)
+	);
+	return str_replace(array_keys($reemplazos), array_values($reemplazos), $texto);
+}
+
+function fechaDdMmAaaa($fecha){
+	if(empty($fecha)) return '';
+	$f = date_create($fecha);
+	return $f ? $f->format('d/m/Y') : '';
+}

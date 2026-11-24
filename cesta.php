@@ -11,7 +11,7 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>Cesta</title>
+	<title>Carrito de compras</title>
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
@@ -91,9 +91,9 @@
 
 		<h2 class="fs-2">Carrito de compras</h2>
 
-		<div v-if="carritos.length==0">
-
-			<p>No tiene productos en su carrito</p>
+		<div v-if="carritos.length==0" class="text-center py-5">
+			<i class="icofont-shopping-cart" style="font-size:3rem; color:#adb5bd;"></i>
+			<p class="mt-2 mb-0">No tiene productos en su carrito</p>
 
 		</div>
 
@@ -102,11 +102,15 @@
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>
-						<th>N°</th>
-						<th>Tour o Paquete</th>
-						<th>Precios</th>
-						<th>Total</th>
-						<th>Pasarela</th>
+						<tr>
+							<th>N°</th>
+							<th>Tour o Paquete</th>
+							<th>Fecha</th>
+							<th>Viajeros</th>
+							<th>Total</th>
+							<th>Agregar</th>
+							<th>Borrar</th>
+						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="(carrito, index) in resultados" :key="index">
@@ -116,11 +120,25 @@
 								<span>{{carrito.nombre}}</span>
 							</td>
 							<td>
-								<p>{{carrito.cantAdultos}} Adultos: S/ {{monedaNacional(carrito.adultos)}}</p>
-								<p>{{carrito.cantKids}} Niños: S/ {{monedaNacional(carrito.menores)}}</p>
+								{{carrito.empieza}}
+								<br>
+								<small v-if="carrito.hora">{{formatoHora(carrito.hora)}}</small>
 							</td>
-							<td>S/ {{monedaNacional(carrito.total)}}</td>
-							<td><a :href="retornarLink(carrito.idProducto)" class="text-decoration-none"><i class="icofont-shopping-cart"></i> Ir a la pasarela</a></td>
+							<td>
+								<p>{{carrito.cantAdultos}} adultos</p>
+								<p v-if="Number(carrito.cantKids) > 0">{{carrito.cantKids}} niños</p>
+							</td>
+							<td>
+								<p>S/ {{monedaNacional(carrito.adultos)}}</p>
+								<p v-if="Number(carrito.cantKids) > 0">S/ {{monedaNacional(carrito.menores)}}</p>
+								<br>
+								<p><strong>Total: S/ {{monedaNacional(carrito.total)}}</strong></p>
+							</td>
+							<td>
+								<button type="button" class="btn btn-primary btn-sm" @click="irAReservar(carrito.idProducto)">
+									<i class="icofont-shopping-cart"></i> Reservar
+								</button>
+							</td>
 							<td class="text-end">
 								<button type="button" class="btn-borrar" @click="borrarItem(index)" title="Borrar del carrito" aria-label="Borrar del carrito">
 									<i class="icofont-bin"></i>
@@ -177,7 +195,7 @@
 
 				// Descarta registros incompletos (sin idProducto) guardados por error
 
-				this.carritos = this.carritos.filter( item => item && item.idProducto != null && item.idProducto != 'null' );
+				this.carritos = this.carritos.filter( item => item && item.idProducto != null && item.idProducto != 'null' ).reverse();
 
 			}
 
@@ -270,6 +288,18 @@
 			},
 
 			monedaNacional(valor){ return parseFloat(valor).toFixed(2)},
+			formatoHora(horita){
+				if(!horita) return '';
+				const m = String(horita).match(/^(\d{1,2}):(\d{2})$/);
+				if(!m) return horita;
+				let h = parseInt(m[1], 10);
+				const ampm = h >= 12 ? 'pm' : 'am';
+				h = h % 12 || 12;
+				return String(h).padStart(2, '0') + ':' + m[2] + ' ' + ampm;
+			},
+			irAReservar(idProducto){
+				window.location.href = this.retornarLink(idProducto);
+			},
 			borrarItem(index){
 				const idProducto = this.resultados[index] ? this.resultados[index].idProducto : null;
 				this.resultados.splice(index,1);

@@ -3,6 +3,8 @@
  * Template: /transporte-turistico-desde-peru (vista=transporte-turistico)
  *
  * Formulario de COTIZACIÓN (2 columnas 3:1) para transporte / servicios turísticos.
+ * Arriba del formulario se muestran el título y la descripción de la página
+ * (los mismos textos se usan como meta título / meta descripción).
  * Al pulsar ENVIAR se manda todo a la vez:
  *   - WhatsApp (número según el dominio, igual que Extras/formularioContacto.html)
  *   - Correo a grupoeuroandino@hotmail.com usando wp_mail de WordPress
@@ -12,22 +14,24 @@
  * (el plugin lo carga con get_theme_file_path('template-transporte-turistico.php')).
  */
 
-// Host sin "www" (igual que template-viajes.php / template-paquetes.php)
-$host = preg_replace('#^www\.#i', '', parse_url('http://' . $_SERVER['HTTP_HOST'], PHP_URL_HOST));
+// Metas de la página (patrón wpseo de template-paquetes.php)
+$tt_titulo = 'Transporte Turístico en Perú';
+$tt_descripcion = 'En Grupo Euro Andino, transformamos tu manera de viajar. Ofrecemos el más exclusivo, puntual y seguro servicio de transporte turístico en Perú, diseñado para agencias de viajes, delegaciones corporativas, grupos de amigos y familias que exigen los más altos estándares de calidad.';
 
-// Metas básicas (patrón wpseo de los demás templates)
-$tt_titulo = 'Cotización de Transporte Turístico - Grupo Euro Andino';
 add_filter('wpseo_title', function ($title) use ($tt_titulo) {
-	return $tt_titulo;
+	return $tt_titulo . ' - Grupo Euro Andino';
+});
+add_filter('wpseo_metadesc', function ($desc) use ($tt_descripcion) {
+	return $tt_descripcion;
+});
+add_filter('wpseo_opengraph_title', function ($title) use ($tt_titulo) {
+	return $tt_titulo . ' - Grupo Euro Andino';
+});
+add_filter('wpseo_opengraph_desc', function ($desc) use ($tt_descripcion) {
+	return $tt_descripcion;
 });
 
 get_header();
-
-// CSS de la app (igual que el resto de templates)
-if ($host === 'grupoeuroandino.com')
-	include('/home/fhuczgkg/public_html/app/render/headers.php');
-else
-	include('headers.php');
 
 // Opciones del select "Cotizar:"
 $tt_servicios = [
@@ -50,16 +54,76 @@ $tt_servicios = [
 	'Viajes de Excursión',
 	'Viajes de Promoción Escolar',
 ];
+
+// Opciones del select "Vehículo" (se pueden marcar hasta 3, en este orden)
+$tt_vehiculos = [
+	'Auto (4 pasajeros)',
+	'4X4 (4 pasajeros)',
+	'Microvan (4 pasajeros)',
+	'4X4 (6 pasajeros)',
+	'Microvan (7 pasajeros)',
+	'Minivan (10 pasajeros)',
+	'Minivan (11 pasajeros)',
+	'Van (15 pasajeros)',
+	'Van (17 pasajeros)',
+	'Van (18 pasajeros)',
+	'Sprinter (18 pasajeros)',
+	'Sprinter (19 pasajeros)',
+	'Sprinter (20 pasajeros)',
+	'Eurise (20 pasajeros)',
+	'Eurise (22 pasajeros)',
+	'Eurise (23 pasajeros)',
+	'Clave 7 (23 pasajeros)',
+	'Clave 7 (24 pasajeros)',
+	'Coaster (24 pasajeros)',
+	'Coaster (25 pasajeros)',
+	'Coaster (26 pasajeros)',
+	'Minibus (28 pasajeros)',
+	'Minibus (29 pasajeros)',
+	'Minibus (30 pasajeros)',
+	'Minibus (31 pasajeros)',
+	'Minibus (32 pasajeros)',
+	'Minibus (33 pasajeros)',
+	'Bus (34 de pasajeros a más)',
+];
 ?>
 
+<!-- CSS: solo Bootstrap (ya no se carga headers.php con los estilos de toda la app) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<!-- Flatpickr: selector de hora en formato 12 h (a.m. / p.m.) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+
 <style>
+	/* Título y descripción de la página */
+	.tt-cabecera { padding-bottom: 16px; }
+	.tt-titulo {
+		font-size: 1.75rem;
+		font-weight: 700;
+		color: #2b2b2b;
+		margin: 24px 0 .75rem;
+	}
+	.tt-descripcion {
+		font-size: .98rem;
+		color: #4a4a4a;
+		line-height: 1.7;
+		margin: 0 0 .9rem;
+	}
+	.tt-descripcion:last-child { margin-bottom: 0; }
+	@media (max-width: 575px) {
+		.tt-titulo { font-size: 1.4rem; }
+	}
+
 	#cotizacionApp { margin-top: 20px; margin-bottom: 40px; }
 
 	/* Campos */
-	#cotizacionApp .campo label {
+	#cotizacionApp .campo label,
+	#cotizacionApp .campo .campo-etiqueta {
 		display: block;
 		font-weight: 600;
 		font-size: .9rem;
+		/* El tema pone label{line-height:1}: se fija igual en los dos para que
+		   las etiquetas midan lo mismo y los controles queden a la misma altura */
+		line-height: 1;
 		margin-bottom: 6px;
 		color: #2b2b2b;
 	}
@@ -77,18 +141,53 @@ $tt_servicios = [
 		padding: 8px 12px;
 	}
 	#cotizacionApp .form-select { padding: 8px 12px; }
+	/* El disparador del multiselect es un <button> y el tema pinta los botones de otro
+	   color (incluido el :hover): se fuerza el mismo aspecto que los <select> */
+	#cotizacionApp .form-select,
+	#cotizacionApp .form-select:hover,
+	#cotizacionApp .form-select:focus {
+		background-color: #fff;
+		color: #212529;
+	}
+
+	/* Select múltiple de vehículos */
+	#cotizacionApp .vehiculo-toggle {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	#cotizacionApp .vehiculo-menu {
+		width: 100%;
+		max-height: 260px;
+		overflow-y: auto;
+	}
+	#cotizacionApp .campo .vehiculo-item {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin: 0;
+		padding: 6px 12px;
+		font-size: .875rem;
+		font-weight: 400;
+		cursor: pointer;
+	}
+	#cotizacionApp .campo .vehiculo-item:hover { background: #f4f4f4; }
+	#cotizacionApp .campo .vehiculo-item.bloqueado { opacity: .4; cursor: not-allowed; }
+	#cotizacionApp .vehiculo-nota {
+		padding: 6px 12px;
+		border-top: 1px solid #ededed;
+		font-size: .72rem;
+		color: #8a8a8a;
+	}
+	#cotizacionApp .vehiculo-badges {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px;
+	}
+	/* La "x" de cada badge, a la mitad de tamaño */
+	#cotizacionApp .vehiculo-badges .btn-close { font-size: .8em; }
 
 	/* Panel derecho */
-	#cotizacionApp .cotizacion-titulo {
-		background: #000;
-		color: #fff;
-		width: 100%;
-		padding: 10px 12px;
-		font-weight: 700;
-		font-size: 1.15rem;
-		text-align: center;
-		letter-spacing: .5px;
-	}
 	#cotizacionApp .cotizacion-caja {
 		border: 1px solid #e6e6e6;
 		border-radius: 8px;
@@ -97,9 +196,9 @@ $tt_servicios = [
 	}
 	#cotizacionApp .cotizacion-caja .cotizacion-body { padding: 20px 18px; }
 
-	/* Botón enviar */
+	/* Botón enviar (color naranja de la marca) */
 	#cotizacionApp .btn-enviar {
-		background: #dc3545;
+		background: #ffa300;
 		color: #fff;
 		border: 0;
 		border-radius: 6px;
@@ -108,7 +207,7 @@ $tt_servicios = [
 		letter-spacing: .5px;
 		text-transform: uppercase;
 	}
-	#cotizacionApp .btn-enviar:hover { background: #b02a37; color: #fff; }
+	#cotizacionApp .btn-enviar:hover { background: #e69500; color: #fff; }
 	#cotizacionApp .btn-enviar:disabled { opacity: .6; }
 
 	#cotizacionApp .msg-estado { font-size: .85rem; min-height: 18px; margin-top: 8px; text-align: center; }
@@ -196,6 +295,13 @@ $tt_servicios = [
 	}
 </style>
 
+<!-- Título y descripción de la página -->
+<div class="container tt-cabecera">
+	<h1 class="tt-titulo">Transporte Turístico en Perú</h1>
+	<p class="tt-descripcion">En <strong>Grupo Euro Andino</strong>, transformamos tu manera de viajar. Ofrecemos el más exclusivo, puntual y seguro servicio de <strong>transporte turístico en Perú</strong>, diseñado para agencias de viajes, delegaciones corporativas, grupos de amigos y familias que exigen los más altos estándares de calidad.</p>
+	<p class="tt-descripcion">Ya sea que necesites traslados desde el aeropuerto, recorridos por la ciudad o excursiones a los destinos más emblemáticos del país, nuestra flota moderna garantiza que cada kilómetro de tu ruta sea una experiencia inolvidable.</p>
+</div>
+
 <div class="container" id="cotizacionApp">
 	<div class="row g-3 g-xl-4">
 
@@ -203,8 +309,8 @@ $tt_servicios = [
 		<div class="col-12 col-lg-9">
 			<div class="row g-3">
 
-				<!-- Cotizar -->
-				<div class="col-12 campo">
+				<!-- Cotizar | Vehículo | Seleccionados -->
+				<div class="col-12 col-sm-4 campo">
 					<label for="cotizar">Cotizar: <span class="obligatorio">*</span></label>
 					<select id="cotizar" class="form-select">
 						<option value="">Selecciona el servicio</option>
@@ -212,6 +318,25 @@ $tt_servicios = [
 							<option value="<?= esc_attr($tt_servicio); ?>"><?= esc_html($tt_servicio); ?></option>
 						<?php endforeach; ?>
 					</select>
+				</div>
+				<div class="col-12 col-sm-4 campo">
+					<span class="campo-etiqueta">Vehículo</span>
+					<div class="dropdown">
+						<button type="button" id="vehiculoBoton" class="form-select vehiculo-toggle text-start" aria-haspopup="true" aria-expanded="false">Selecciona vehículo</button>
+						<div class="dropdown-menu vehiculo-menu" id="vehiculoMenu">
+							<?php foreach ($tt_vehiculos as $tt_vehiculo): ?>
+								<label class="vehiculo-item">
+									<input class="form-check-input mt-0" type="checkbox" value="<?= esc_attr($tt_vehiculo); ?>">
+									<span><?= esc_html($tt_vehiculo); ?></span>
+								</label>
+							<?php endforeach; ?>
+							<div class="vehiculo-nota">Máximo 3 vehículos</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-sm-4 campo">
+					<span class="campo-etiqueta d-none" id="vehiculoEtiqueta">Seleccionados</span>
+					<div class="vehiculo-badges" id="vehiculoBadges"></div>
 				</div>
 
 				<!-- N° de pasajeros | días | fecha -->
@@ -228,10 +353,14 @@ $tt_servicios = [
 					<input type="date" id="fecha" class="form-control" value="<?= esc_attr(date('Y-m-d')); ?>">
 				</div>
 
-				<!-- Ruta -->
-				<div class="col-12 campo">
+				<!-- Ruta | Observaciones -->
+				<div class="col-12 col-sm-8 campo">
 					<label for="ruta">Ruta: <span class="obligatorio">*</span></label>
 					<textarea id="ruta" class="form-control" rows="2" placeholder="Itinerario"></textarea>
+				</div>
+				<div class="col-12 col-sm-4 campo">
+					<label for="observaciones">Observaciones</label>
+					<textarea id="observaciones" class="form-control" rows="2" placeholder="Solicito..."></textarea>
 				</div>
 
 				<!-- Cliente -->
@@ -245,22 +374,24 @@ $tt_servicios = [
 
 		<!-- ===== Columna derecha (1 de 4) ===== -->
 		<div class="col-12 col-lg-3 col-derecha">
-			<div class="cotizacion-caja">
+			<!-- Etiqueta del panel, fuera de la tarjeta (similar al label "Cotizar:") -->
+			<div class="campo">
+				<p class="campo-etiqueta mb-0">Programe su cotización:</p>
+			</div>
 
-				<!-- Título -->
-				<div class="cotizacion-titulo">Cotización</div>
+			<div class="cotizacion-caja">
 
 				<div class="cotizacion-body">
 					<!-- Salida -->
 					<div class="campo mb-4">
 						<label for="salida">Salida <span class="obligatorio">*</span></label>
-						<input type="time" id="salida" class="form-control">
+						<input type="text" id="salida" class="form-control" placeholder="h:mm a.m./p.m." autocomplete="off">
 					</div>
 
 					<!-- Retorno -->
 					<div class="campo mb-4">
 						<label for="retorno">Retorno <span class="obligatorio">*</span></label>
-						<input type="time" id="retorno" class="form-control">
+						<input type="text" id="retorno" class="form-control" placeholder="h:mm a.m./p.m." autocomplete="off">
 					</div>
 
 					<!-- Celular -->
@@ -297,6 +428,8 @@ $tt_servicios = [
 
 <?php get_footer(); ?>
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+
 <script>
 (function () {
 	// ===== Celular de WhatsApp según el dominio del servidor =====
@@ -323,6 +456,7 @@ $tt_servicios = [
 	const dias      = $('dias');
 	const fecha     = $('fecha');
 	const ruta      = $('ruta');
+	const observaciones = $('observaciones');
 	const cliente   = $('cliente');
 	const salida    = $('salida');
 	const retorno   = $('retorno');
@@ -452,18 +586,118 @@ $tt_servicios = [
 		campo.addEventListener('change', limpiar);
 	});
 
+	// ===== Vehículos: selección múltiple (máximo 3) con check y badges =====
+	const MAX_VEHICULOS = 3;
+	const vehiculoBoton  = $('vehiculoBoton');
+	const vehiculoMenu   = $('vehiculoMenu');
+	const vehiculoBadges = $('vehiculoBadges');
+	const vehiculoEtiqueta = $('vehiculoEtiqueta');
+	const vehiculoNota   = vehiculoMenu.querySelector('.vehiculo-nota');
+	const vehiculoChecks = Array.prototype.slice.call(vehiculoMenu.querySelectorAll('input[type="checkbox"]'));
+
+	const vehiculosElegidos = () => vehiculoChecks.filter((c) => c.checked).map((c) => c.value);
+
+	const pintarVehiculos = () => {
+		const elegidos = vehiculosElegidos();
+
+		// Texto del botón: cuántos vehículos van marcados
+		vehiculoBoton.textContent = elegidos.length === 0
+			? 'Selecciona vehículo'
+			: elegidos.length + (elegidos.length === 1 ? ' vehículo' : ' vehículos');
+
+		// La etiqueta "Seleccionados" aparece recién con la primera selección
+		vehiculoEtiqueta.classList.toggle('d-none', elegidos.length === 0);
+
+		// Un badge por vehículo, con su botón para quitarlo
+		vehiculoBadges.innerHTML = '';
+		elegidos.forEach((nombre) => {
+			const badge = document.createElement('span');
+			badge.className = 'badge text-bg-primary d-inline-flex align-items-center gap-1';
+
+			const texto = document.createElement('span');
+			texto.textContent = nombre;
+			badge.appendChild(texto);
+
+			const quitar = document.createElement('button');
+			quitar.type = 'button';
+			quitar.className = 'btn-close btn-close-white';
+			quitar.setAttribute('aria-label', 'Quitar ' + nombre);
+			quitar.addEventListener('click', () => {
+				vehiculoChecks.find((c) => c.value === nombre).checked = false;
+				pintarVehiculos();
+			});
+			badge.appendChild(quitar);
+
+			vehiculoBadges.appendChild(badge);
+		});
+
+		// Con el máximo alcanzado solo quedan activos los ya marcados
+		const lleno = elegidos.length >= MAX_VEHICULOS;
+		vehiculoChecks.forEach((check) => {
+			const bloqueado = lleno && !check.checked;
+			check.disabled = bloqueado;
+			check.parentElement.classList.toggle('bloqueado', bloqueado);
+		});
+
+		vehiculoNota.textContent = lleno
+			? 'Máximo ' + MAX_VEHICULOS + ' vehículos (quita uno para cambiar)'
+			: 'Máximo ' + MAX_VEHICULOS + ' vehículos';
+	};
+
+	const mostrarMenuVehiculos = (si) => {
+		vehiculoMenu.classList.toggle('show', si);
+		vehiculoBoton.setAttribute('aria-expanded', si ? 'true' : 'false');
+	};
+
+	vehiculoChecks.forEach((check) => check.addEventListener('change', pintarVehiculos));
+	vehiculoBoton.addEventListener('click', () => mostrarMenuVehiculos(!vehiculoMenu.classList.contains('show')));
+	document.addEventListener('click', (e) => {
+		if (!vehiculoMenu.contains(e.target) && !vehiculoBoton.contains(e.target)) mostrarMenuVehiculos(false);
+	});
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') mostrarMenuVehiculos(false);
+	});
+	pintarVehiculos();
+
+	// ===== Horas en formato 12 h con a.m. / p.m. (flatpickr) =====
+	if (window.flatpickr) {
+		flatpickr.localize({ amPM: ['a.m.', 'p.m.'] });
+
+		const opcionesHora = {
+			enableTime: true,
+			noCalendar: true,
+			time_24hr: false,
+			dateFormat: 'h:i K',
+			minuteIncrement: 5,
+			disableMobile: true,
+			defaultHour: 8
+		};
+
+		// Horas por defecto: salida 8:00 a.m. y retorno 3:00 p.m.
+		const horaDeHoy = (horas, minutos) => {
+			const cuando = new Date();
+			cuando.setHours(horas, minutos, 0, 0);
+			return cuando;
+		};
+
+		flatpickr(salida, Object.assign({}, opcionesHora, { defaultDate: horaDeHoy(8, 0) }));
+		flatpickr(retorno, Object.assign({}, opcionesHora, { defaultDate: horaDeHoy(15, 0) }));
+	}
+
 	// Reúne todos los datos del formulario
 	const datos = () => ({
 		cotizar:   cotizar.value,
+		vehiculos: vehiculosElegidos().join(', '),
 		pasajeros: parseInt(pasajeros.value) || 0,
 		dias:      parseInt(dias.value) || 0,
 		fecha:     fechaVisible(),
 		ruta:      ruta.value.trim(),
+		observaciones: observaciones.value.trim(),
 		cliente:   cliente.value.trim(),
 		salida:    salida.value,
 		retorno:   retorno.value,
 		celular:   celular.value,
-		pagina:    document.title.replace(' – Grupo Euro Andino', '').trim(),
+		pagina:    document.title.replace(/\s*[-–]\s*Grupo Euro Andino\s*$/, '').trim(),
 		url:       window.location.href
 	});
 
@@ -475,10 +709,12 @@ $tt_servicios = [
 		// ===== 1. WhatsApp =====
 		const lineas = [
 			`Servicio: ${d.cotizar}`,
+			d.vehiculos ? `Vehículos: ${d.vehiculos}` : '',
 			`N° de pasajeros: ${d.pasajeros}`,
 			`Días: ${d.dias}`,
 			d.fecha   ? `Fecha: ${d.fecha}`   : '',
 			d.ruta    ? `Ruta: ${d.ruta}`     : '',
+			d.observaciones ? `Observaciones: ${d.observaciones}` : '',
 			`Cliente: ${d.cliente}`,
 			d.salida  ? `Salida: ${d.salida}` : '',
 			d.retorno ? `Retorno: ${d.retorno}` : '',

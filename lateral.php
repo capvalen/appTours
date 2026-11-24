@@ -157,6 +157,31 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			</div>
 			<div class="tab-pane fade" id="promos" role="tabpanel" aria-labelledby="promos-tab">
 				<div class="container-fluid py-4 px-4">
+				<!-- Fila: texto general de descuentos -->
+				<div class="row g-4 mb-1">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-body p-4">
+								<label for="textoDescuento" class="form-label">
+									<i class="icofont-file-text me-1"></i>Texto de descuento
+								</label>
+								<div class="alert alert-info py-2 px-3 mb-2">
+									<small><i class="icofont-info-circle me-1"></i>Use las variables <code>{fecha_inicio}</code> y <code>{fecha_fin}</code> para asignar las fechas automáticamente.</small>
+								</div>
+								<textarea class="form-control" id="textoDescuento" rows="2" placeholder="Texto que se mostrará en los descuentos..."></textarea>
+								<div class="d-flex align-items-center gap-2 mt-2 d-none" id="accionesTextoDescuento">
+									<button class="btn btn-success" type="button" id="btnGuardarTextoDescuento" title="Guardar cambios" onclick="guardarTextoDescuento()">
+										<i class="icofont-check-circled"></i>
+									</button>
+									<button class="btn btn-danger" type="button" id="btnDescartarTextoDescuento" title="Descartar cambios" onclick="cancelarTextoDescuento()">
+										<i class="icofont-close-circled"></i>
+									</button>
+								</div>
+								<small id="msgTextoDescuento" class="d-block mt-1"></small>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="row g-4">
 					<!-- Columna 1: Formulario -->
 					<div class="col-lg-4 col-md-5">
@@ -480,6 +505,52 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		document.getElementById('btnGuardarTexto').textContent = 'Agregar Descuento';
 		document.getElementById('btnCancelarEdicion').classList.add('d-none');
 	}
+	var textoDescuentoOriginal = '';
+	function hayCambiosTextoDescuento(){
+		let area = document.getElementById('textoDescuento');
+		return area ? area.value !== textoDescuentoOriginal : false;
+	}
+	function actualizarBotonTextoDescuento(){
+		let cont = document.getElementById('accionesTextoDescuento');
+		if(cont) cont.classList.toggle('d-none', !hayCambiosTextoDescuento());
+	}
+	function estadoTextoDescuento(msg, clase){
+		let span = document.getElementById('msgTextoDescuento');
+		if(!span) return;
+		span.textContent = msg;
+		span.className = 'd-block mt-1 ' + (clase || '');
+	}
+	async function cargarTextoDescuento(){
+		try {
+			let resp = await axios.post(window.lugarApi + 'TextoDescuento.php', { pedir: 'obtener' });
+			textoDescuentoOriginal = resp.data || '';
+			document.getElementById('textoDescuento').value = textoDescuentoOriginal;
+			actualizarBotonTextoDescuento();
+		} catch (error) {
+			estadoTextoDescuento('No se pudo cargar el texto', 'text-danger');
+		}
+	}
+	async function guardarTextoDescuento(){
+		if(!hayCambiosTextoDescuento()) return;
+		let valor = document.getElementById('textoDescuento').value;
+		try {
+			let resp = await axios.post(window.lugarApi + 'TextoDescuento.php', { pedir: 'actualizar', contenido: valor });
+			if(resp.data == 'ok'){
+				textoDescuentoOriginal = valor;
+				actualizarBotonTextoDescuento();
+				estadoTextoDescuento('Cambios guardados', 'text-success');
+			}else{
+				estadoTextoDescuento('Hubo un error al guardar', 'text-danger');
+			}
+		} catch (error) {
+			estadoTextoDescuento('Error de conexión', 'text-danger');
+		}
+	}
+	function cancelarTextoDescuento(){
+		document.getElementById('textoDescuento').value = textoDescuentoOriginal;
+		actualizarBotonTextoDescuento();
+		estadoTextoDescuento('', '');
+	}
 	function nombreDepartamento(id){
 		let opciones = document.getElementById('departamentoDescuento').options;
 		let opcion = Array.from(opciones).find(opcion => opcion.value === String(id));
@@ -602,7 +673,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 			else if(this.value === 'departamento') document.getElementById('grupoDepartamento').classList.remove('d-none');
 			else if(this.value === 'ciudad') document.getElementById('grupoCiudad').classList.remove('d-none');
 		});
+		document.getElementById('textoDescuento').addEventListener('input', function(){
+			actualizarBotonTextoDescuento();
+			estadoTextoDescuento('', '');
+		});
 		listarDescuentos();
+		cargarTextoDescuento();
 	});
 	function fechaLatam(fecha){
 		return( moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY') )
