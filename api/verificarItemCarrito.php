@@ -46,7 +46,7 @@ if( $sql->execute([$_POST['id']])){
 	$sqlDesc->execute([$_POST['id']]);
 	$descuento = $sqlDesc->fetch(PDO::FETCH_ASSOC);
 
-	// Si no hay descuento individual, buscar por alcance (país, departamento, ciudad)
+	// Si no hay descuento individual, buscar por alcance (país, departamento, ciudad) o por umbral de compra
 	if (!$descuento) {
 		$sqlScope = $db->prepare("
 			SELECT id, promocion AS nombre_descuento, tipo AS tipo_descuento, valor AS valor_descuento, alcance,
@@ -58,9 +58,17 @@ if( $sql->execute([$_POST['id']])){
 				(alcance = 'departamento' AND departamento = ?) OR
 				(alcance = 'ciudad' AND ciudad = ?) OR
 				(alcance = 'tours' AND tipo = 1) OR
-				(alcance = 'paquetes' AND tipo = 2)
+				(alcance = 'paquetes' AND tipo = 2) OR
+				(tipo IN ('umbral_monto', 'umbral_porcentaje'))
 			  )
-			ORDER BY FIELD(alcance, 'ciudad', 'departamento', 'pais')
+			ORDER BY
+				CASE
+					WHEN alcance IN ('ciudad', 'departamento', 'pais') THEN 0
+					WHEN tipo IN ('umbral_monto', 'umbral_porcentaje') THEN 2
+					ELSE 1
+				END,
+				FIELD(alcance, 'ciudad', 'departamento', 'pais'),
+				inicio DESC
 			LIMIT 1
 		");
 		$sqlScope->execute([$tempo['pais'], $contenido['departamento'], $contenido['destino']]);

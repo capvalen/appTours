@@ -1,3 +1,17 @@
+--2.250
+-- Agrega los tipos de descuento por umbral de compra (promociones.tipo).
+-- En `valor` se guarda el arreglo [monto_minimo, valor_descuento]; ej: [1000,100]
+-- significa "compra minima S/ 1000 y se aplica S/ 100 de descuento".
+ALTER TABLE `promociones`
+MODIFY COLUMN `tipo` ENUM('porcentaje', 'monto', 'combo', 'umbral_monto', 'umbral_porcentaje') NOT NULL;
+
+ALTER TABLE `promociones` MODIFY COLUMN `valor` VARCHAR(30) NOT NULL;
+
+ALTER TABLE `descuentos` MODIFY COLUMN `valor_descuento` VARCHAR(30) NOT NULL;
+
+ALTER TABLE `descuentos`
+MODIFY COLUMN `tipo_descuento` ENUM('porcentaje', 'monto', 'combo', 'umbral_monto', 'umbral_porcentaje') NOT NULL;
+
 --2.240
 -- Agrega alcances "Solo Tours" y "Solo Paquetes" al ENUM de promociones.
 -- NOTA: las promociones creadas antes de este cambio con esos alcances quedaron

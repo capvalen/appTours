@@ -222,7 +222,7 @@ else include '/api'; */
 									<p class="mb-0" v-if="moneda == 'dolares'">$ {{formatearMonto(ninDolar)}}</p>
 								</div>
 							</div>
-							<div class="row" v-if="descuento">
+							<div class="row" v-if="descuento && descuentoVigente">
 								<div class="col-7">
 									<p class="mb-0 gris">Precio anterior</p>
 								</div>
@@ -233,12 +233,18 @@ else include '/api'; */
 									</p>
 								</div>
 							</div>
-							<div class="row " id="divDscto" v-if="descuento">
+							<div class="row " id="divDscto" v-if="descuento && descuentoVigente">
 								<div class="col-7">
 									<p class="mb-0 text-success" ><strong> Descuento:</strong> <span class="text-capitalize">{{descuento.nombre_descuento}}</span></p>
 								</div>
 								<div class="col-5">
-									<p class="mb-0 text-success" >{{descuento.tipo_descuento=='monto' ? 'S/ ' : ''}}<span class="d-none" v-if="descuento.tipo_descuento!='combo'">-</span>{{descuento.tipo_descuento=='monto' ? formatearMonto(descuento.valor_descuento) : descuento.valor_descuento}}{{descuento.tipo_descuento=='porcentaje' ? '%':''}}</p>
+									<p class="mb-0 text-success" v-if="descuentoUmbral">{{descuentoUmbral.tipo=='umbral_porcentaje' ? Math.round(descuentoUmbral.valor)+'%' : 'S/ '+formatearMonto(descuentoUmbral.valor)}}</p>
+									<p class="mb-0 text-success" v-else>{{descuento.tipo_descuento=='monto' ? 'S/ ' : ''}}<span class="d-none" v-if="descuento.tipo_descuento!='combo'">-</span>{{descuento.tipo_descuento=='monto' ? formatearMonto(descuento.valor_descuento) : descuento.valor_descuento}}{{descuento.tipo_descuento=='porcentaje' ? '%':''}}</p>
+								</div>
+							</div>
+							<div class="row" v-if="descuentoUmbral">
+								<div class="col-12">
+									<small class="d-block text-success" style="font-size:.7rem">{{descuentoTexto}}</small>
 								</div>
 							</div>
 							<div class="row" v-if="descuento && descuento.texto">
@@ -514,8 +520,19 @@ else include '/api'; */
 					datos.append('nacionalidad', this.nacionalidad)
 					datos.append('adultoNormal', this.adultoNormal)
 					datos.append('menorNormal', this.menorNormal)
-					datos.append('descuento', this.descuento.valor_descuento ?? 0)
-					datos.append('tipo_descuento', this.descuento.tipo_descuento ?? 'monto')
+					let descuentoPedido = 0;
+					let tipoDescuentoPedido = 'monto';
+					if (this.descuento && this.descuentoVigente) {
+						if (this.descuentoUmbral) {
+							descuentoPedido = this.descuentoUmbral.valor;
+							tipoDescuentoPedido = this.descuentoUmbral.tipo === 'umbral_porcentaje' ? 'porcentaje' : 'monto';
+						} else {
+							descuentoPedido = this.descuento.valor_descuento ?? 0;
+							tipoDescuentoPedido = this.descuento.tipo_descuento ?? 'monto';
+						}
+					}
+					datos.append('descuento', descuentoPedido)
+					datos.append('tipo_descuento', tipoDescuentoPedido)
 					datos.append('total', this.precioFinalSoles )
 					datos.append('moneda', 1)//falta habilitar izipay
 					datos.append('titulo', this.nomTour)
@@ -615,17 +632,45 @@ else include '/api'; */
 			tipoNacionalidad() {
 				return parseInt(this.nacionalidad) === 140 ? 'Peruana' : 'Extranjera';
 			},
+			descuentoUmbral() {
+				if (!this.descuento) return null
+				const tipo = (this.descuento.tipo_descuento ?? '').toString().trim().toLowerCase()
+				if (tipo !== 'umbral_monto' && tipo !== 'umbral_porcentaje') return null
+				let partes = []
+				try { partes = JSON.parse(this.descuento.valor_descuento) } catch (error) { partes = [] }
+				if (!Array.isArray(partes) || partes.length < 2) return null
+				return { tipo: tipo, minimo: parseFloat(partes[0]) || 0, valor: parseFloat(partes[1]) || 0 }
+			},
+			descuentoVigente() {
+				if (!this.descuento) return false
+				if (this.descuentoUmbral) return parseFloat(this.total) >= this.descuentoUmbral.minimo
+				return true
+			},
+			descuentoTexto() {
+				if (!this.descuentoUmbral) return ''
+				const beneficio = this.descuentoUmbral.tipo === 'umbral_porcentaje'
+					? `${Math.round(this.descuentoUmbral.valor)}%`
+					: `S/ ${this.descuentoUmbral.valor.toFixed(2)}`
+				return `Por compras mínimas a ${this.descuentoUmbral.minimo}, obtén ${beneficio}`
+			},
 			precioFinalSoles() {
 				let totalFinal = parseFloat(this.total);
 				let descuentoAplicado = 0;
-				if (this.descuento != null) {
-					if (this.descuento.tipo_descuento == 'monto') {
+				if (this.descuento != null && this.descuentoVigente) {
+					const tipo = (this.descuento.tipo_descuento ?? '').toString().toLowerCase();
+					if (tipo == 'monto') {
 						totalFinal -= parseFloat(this.descuento.valor_descuento);
 						descuentoAplicado = parseFloat(this.descuento.valor_descuento);
-					} else if (this.descuento.tipo_descuento == 'porcentaje') {
+					} else if (tipo == 'porcentaje') {
 						descuentoAplicado = (totalFinal * parseFloat(this.descuento.valor_descuento)) / 100;
 						totalFinal -= descuentoAplicado;
-					} else if (this.descuento.tipo_descuento == 'combo') {
+					} else if (tipo == 'umbral_monto') {
+						totalFinal -= this.descuentoUmbral.valor;
+						descuentoAplicado = this.descuentoUmbral.valor;
+					} else if (tipo == 'umbral_porcentaje') {
+						descuentoAplicado = (totalFinal * this.descuentoUmbral.valor) / 100;
+						totalFinal -= descuentoAplicado;
+					} else if (tipo == 'combo') {
 						let numero_personas = parseInt(this.adultos) + parseInt(this.kids)
 						let totalOriginal = totalFinal
 
@@ -653,12 +698,17 @@ else include '/api'; */
 			},
 			precioFinalDolares(){
 				let totalFinalDolar = parseFloat(this.totalDolar);
-				if (this.descuento != null) {
-					if (this.descuento.tipo_descuento == 'monto') {
+				if (this.descuento != null && this.descuentoVigente) {
+					const tipo = (this.descuento.tipo_descuento ?? '').toString().toLowerCase();
+					if (tipo == 'monto') {
 						totalFinalDolar -= parseFloat(this.descuento.valor_descuento) / this.dolar;
-					} else if (this.descuento.tipo_descuento == 'porcentaje') {
+					} else if (tipo == 'porcentaje') {
 						totalFinalDolar -= (totalFinalDolar * parseFloat(this.descuento.valor_descuento)) / 100;
-					} else if (this.descuento.tipo_descuento == 'combo') {
+					} else if (tipo == 'umbral_monto') {
+						totalFinalDolar -= this.descuentoUmbral.valor / this.dolar;
+					} else if (tipo == 'umbral_porcentaje') {
+						totalFinalDolar -= (totalFinalDolar * this.descuentoUmbral.valor) / 100;
+					} else if (tipo == 'combo') {
 						let numero_personas = parseInt(this.adultos) + parseInt(this.kids)
 						let totalOriginal = totalFinalDolar
 

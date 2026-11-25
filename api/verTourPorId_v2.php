@@ -27,9 +27,17 @@ if( $sql->execute( [ $_POST['id'] ] )){
 				  AND (
 					(alcance = 'pais' AND pais_id = ?) OR
 					(alcance = 'departamento' AND departamento = ?) OR
-					(alcance = 'ciudad' AND ciudad = ?)
+					(alcance = 'ciudad' AND ciudad = ?) OR
+					(tipo IN ('umbral_monto', 'umbral_porcentaje'))
 				  )
-				ORDER BY FIELD(alcance, 'ciudad', 'departamento', 'pais')
+				ORDER BY
+					CASE
+						WHEN alcance IN ('ciudad', 'departamento', 'pais') THEN 0
+						WHEN tipo IN ('umbral_monto', 'umbral_porcentaje') THEN 2
+						ELSE 1
+					END,
+					FIELD(alcance, 'ciudad', 'departamento', 'pais'),
+					inicio DESC
 				LIMIT 1
 			");
 			$sqlScope->execute([$row['pais'], $contenido['departamento'] ?? '', $contenido['destino'] ?? '']);

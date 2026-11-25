@@ -518,7 +518,7 @@ else
 						<div class="alerta-descuento text-center my-2">
 							<img :src="imagenDescuento" alt="img descuento" style="max-height: 60px; width: auto;" >
 							<p class="mb-0"><strong>¡Descuento disponible!</strong></p>
-							<span class="text-capitalize">{{descuentoActivoTexto}}</span>
+							<span :class="{ 'text-capitalize': !esDescuentoUmbral }">{{descuentoActivoTexto}}</span>
 						</div>
 					</div>
 				</div>
@@ -1418,6 +1418,18 @@ else
 					const valorStr = descuento.valor_descuento;
 					const valorNum = parseFloat(valorStr);
 
+					// Descuento por umbral de compra: valor = [mínimo de compra, valor del descuento]
+					if (tipo === 'umbral_monto' || tipo === 'umbral_porcentaje') {
+						let partes = [];
+						try { partes = JSON.parse(valorStr); } catch (error) { partes = []; }
+						if (!Array.isArray(partes) || partes.length < 2) return '';
+						const minimo = partes[0];
+						const beneficio = tipo === 'umbral_porcentaje'
+							? `${Math.round(parseFloat(partes[1]))}%`
+							: `S/ ${parseFloat(partes[1]).toFixed(2)}`;
+						return `Por compras mínimas a ${minimo}, obtén ${beneficio}`;
+					}
+
 					if (!nombre || isNaN(valorNum)) return '';
 
 					// Mostrar tipo de promoción especial (Solo Tours / Solo Paquetes)
@@ -1461,6 +1473,10 @@ else
 				},
 				imagenDescuento() {
 					return this.tourActivo.descuento?.imagen || 'https://grupoeuroandino.com/app/render/images/discount.png';
+				},
+				esDescuentoUmbral() {
+					const tipo = (this.tourActivo.descuento?.tipo_descuento ?? '').toString().trim().toLowerCase();
+					return tipo === 'umbral_monto' || tipo === 'umbral_porcentaje';
 				}
 				
 

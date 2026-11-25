@@ -208,12 +208,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 											<option value="combo">Promoción</option>
 											<option value="porcentaje">Porcentaje (%)</option>
 											<option value="monto">Monto Fijo (S/)</option>
+											<option value="umbral_monto">Umbral de compra - Monto (S/)</option>
+											<option value="umbral_porcentaje">Umbral de compra - Porcentaje (%)</option>
 										</select>
 										<div class="invalid-feedback">Por favor selecciona un tipo.</div>
 									</div>
 
 									<!-- Valor del descuento -->
-									<div class="mb-3">
+									<div class="mb-3" id="grupoValor">
 										<label for="valorDescuento" class="form-label">
 											<i class="bi bi-cash-coin me-1"></i>Valor del Descuento
 										</label>
@@ -222,6 +224,30 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 												<span class="input-group-text" id="simboloTipo">%</span>
 										</div>
 										<div class="invalid-feedback">Por favor ingresa un valor válido mayor a 0.</div>
+									</div>
+
+									<!-- Umbral de compra (monto mínimo + valor del descuento) -->
+									<div class="d-none" id="grupoUmbral">
+										<div class="mb-3">
+											<label for="umbralMinimo" class="form-label">
+												<i class="bi bi-cart-check me-1"></i>Monto mínimo de compra
+											</label>
+											<div class="input-group">
+												<span class="input-group-text">S/</span>
+												<input type="number" class="form-control" id="umbralMinimo" placeholder="1000" min="0" step="0.01">
+											</div>
+											<div class="invalid-feedback">Por favor ingresa el monto mínimo de compra.</div>
+										</div>
+										<div class="mb-3">
+											<label for="umbralDescuento" class="form-label">
+												<i class="bi bi-tags me-1"></i>Descuento aplicado
+											</label>
+											<div class="input-group">
+												<input type="number" class="form-control" id="umbralDescuento" placeholder="100" min="0" step="0.01">
+												<span class="input-group-text" id="simboloUmbral">S/</span>
+											</div>
+											<div class="invalid-feedback">Por favor ingresa el valor del descuento.</div>
+										</div>
 									</div>
 
 									<!-- Fecha de inicio -->
@@ -430,19 +456,25 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		if(!form.checkValidity()){ form.classList.add('was-validated'); return false; }
 
 		let tipo = document.getElementById('tipoDescuento').value;
-		let valor = document.getElementById('valorDescuento').value;
-		if(tipo == 'combo' && !/^\d+x\d+$/i.test(valor)){
-			alert('El valor del descuento combo debe tener el formato: (2x1, 3x2)');
-			return false;
-		}else{
-			valor = parseFloat(valor).toFixed(2)
+		let valor;
+		if(tipo == 'umbral_monto' || tipo == 'umbral_porcentaje'){
+			// El primer elemento es el mínimo de compra y el segundo el descuento
+			let minimo = parseFloat(document.getElementById('umbralMinimo').value) || 0;
+			let dscto = parseFloat(document.getElementById('umbralDescuento').value) || 0;
+			valor = JSON.stringify([minimo, dscto]);
+		} else {
+			valor = document.getElementById('valorDescuento').value;
+			if(tipo == 'combo' && !/^\d+x\d+$/i.test(valor)){
+				alert('El valor del descuento combo debe tener el formato: (2x1, 3x2)');
+				return false;
+			}
 		}
 
 		let alcance = document.getElementById('alcanceDescuento').value;
 		let descuento = {
 			promocion: document.getElementById('nombreDescuento').value,
 			tipo: tipo,
-			valor: document.getElementById('valorDescuento').value,
+			valor: valor,
 			inicio: document.getElementById('fechaInicio').value,
 			fin: document.getElementById('fechaFin').value,
 			alcance: alcance,
@@ -481,7 +513,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		let selTipo = document.getElementById('tipoDescuento');
 		selTipo.value = d.tipo;
 		selTipo.dispatchEvent(new Event('change'));
-		document.getElementById('valorDescuento').value = d.valor || '';
+
+		if(d.tipo == 'umbral_monto' || d.tipo == 'umbral_porcentaje'){
+			let partes = parsearUmbral(d.valor);
+			document.getElementById('umbralMinimo').value = partes[0] ?? '';
+			document.getElementById('umbralDescuento').value = partes[1] ?? '';
+		} else {
+			document.getElementById('valorDescuento').value = d.valor || '';
+		}
 
 		let selAlcance = document.getElementById('alcanceDescuento');
 		selAlcance.value = d.alcance || 'individual';
@@ -557,6 +596,27 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		let opcion = Array.from(opciones).find(opcion => opcion.value === String(id));
 		return opcion ? opcion.textContent : id;
 	}
+	function parsearUmbral(valor){
+		try {
+			let partes = JSON.parse(valor);
+			return Array.isArray(partes) ? partes : [];
+		} catch (error) {
+			return [];
+		}
+	}
+	function tipoDescuentoEtiqueta(p){
+		if(p.tipo == 'combo') return 'Promoción';
+		if(p.tipo == 'porcentaje' || p.tipo == 'umbral_porcentaje') return '%';
+		return 'S/';
+	}
+	function valorDescuentoEtiqueta(p){
+		if(p.tipo == 'umbral_monto' || p.tipo == 'umbral_porcentaje'){
+			let partes = parsearUmbral(p.valor);
+			let sufijo = p.tipo == 'umbral_porcentaje' ? '%' : '';
+			return `Mín. S/ ${partes[0] ?? ''} <i class="icofont-arrow-right"></i> ${partes[1] ?? ''}${sufijo}`;
+		}
+		return `${p.valor}${p.tipo == 'porcentaje' ? '%' : ''}`;
+	}
 	async function listarDescuentos(){
 		try {
 			let resp = await axios.post(window.lugarApi + 'Descuentos.php', {
@@ -581,8 +641,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 							${p.alcance === 'ciudad' && p.ciudad ? `<small class="d-block text-muted">${p.ciudad}</small>` : ''}
 							${p.alcance === 'departamento' && p.departamento !== null && p.departamento !== '' ? `<small class="d-block text-muted">${nombreDepartamento(p.departamento)}</small>` : ''}
 						</td>
-						<td>${p.tipo == 'combo' ? 'Promoción' : p.tipo == 'porcentaje' ? '%' : 'S/'}</td>
-						<td>${p.valor}${p.tipo == 'porcentaje' ? '%' : ''}</td>
+						<td>${tipoDescuentoEtiqueta(p)}</td>
+						<td>${valorDescuentoEtiqueta(p)}</td>
 						<td>${fechaLatam(p.inicio)}</td>
 						<td>${fechaLatam(p.fin)}</td>
 						<td class="text-center text-nowrap">
@@ -649,9 +709,20 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 	
 	document.addEventListener('DOMContentLoaded', function(){
 		document.getElementById('tipoDescuento').addEventListener('change', function(){
+			let tipo = this.value;
 			let valorInput = document.getElementById('valorDescuento');
 			let simbolo = document.getElementById('simboloTipo');
-			if(this.value == 'combo'){
+			let esUmbral = tipo == 'umbral_monto' || tipo == 'umbral_porcentaje';
+
+			document.getElementById('grupoValor').classList.toggle('d-none', esUmbral);
+			document.getElementById('grupoUmbral').classList.toggle('d-none', !esUmbral);
+			valorInput.disabled = esUmbral;
+			document.getElementById('umbralMinimo').required = esUmbral;
+			document.getElementById('umbralDescuento').required = esUmbral;
+
+			if(esUmbral){
+				document.getElementById('simboloUmbral').textContent = tipo == 'umbral_porcentaje' ? '%' : 'S/';
+			}else if(tipo == 'combo'){
 				valorInput.type = 'text';
 				valorInput.placeholder = '2x1';
 				valorInput.removeAttribute('min');
@@ -663,7 +734,7 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 				valorInput.min = 0;
 				valorInput.step = '0.01';
 				simbolo.style.display = '';
-				simbolo.textContent = this.value == 'porcentaje' ? '%' : 'S/';
+				simbolo.textContent = tipo == 'porcentaje' ? '%' : 'S/';
 			}
 		});
 		document.getElementById('alcanceDescuento').addEventListener('change', function(){
