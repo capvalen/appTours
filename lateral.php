@@ -273,12 +273,12 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 										<label for="alcanceDescuento" class="form-label">
 											<i class="bi bi-geo-alt me-1"></i>Alcance
 										</label><select class="form-select" id="alcanceDescuento" required>
-												<option value="individual" selected>Promociones individuales</option>
+												<option value="individual" selected>Promociones individuales por producto específico</option>
 												<option value="pais">País (Perú)</option>
 												<option value="departamento">Departamento</option>
 												<option value="ciudad">Ciudad</option>
-												<option value="tours">Solo Tours</option>
-												<option value="paquetes">Solo Paquetes</option>
+												<option value="tours">Solo Tours por Tours</option>
+												<option value="paquetes">Solo Paquetes por Paquetes Turísticos</option>
 											</select>
 										<div class="invalid-feedback">Selecciona un alcance.</div>
 									</div>

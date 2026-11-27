@@ -2,7 +2,8 @@
 /**
  * Template: /transporte-turistico-desde-peru (vista=transporte-turistico)
  *
- * Formulario de COTIZACIÓN (2 columnas 3:1) para transporte / servicios turísticos.
+ * Formulario de COTIZACIÓN (una sola columna de filas 3 / 2 campos) para
+ * transporte / servicios turísticos.
  * Arriba del formulario se muestran el título y la descripción de la página
  * (los mismos textos se usan como meta título / meta descripción).
  * Al pulsar ENVIAR se manda todo a la vez:
@@ -187,14 +188,16 @@ $tt_vehiculos = [
 	/* La "x" de cada badge, a la mitad de tamaño */
 	#cotizacionApp .vehiculo-badges .btn-close { font-size: .8em; }
 
-	/* Panel derecho */
-	#cotizacionApp .cotizacion-caja {
-		border: 1px solid #e6e6e6;
-		border-radius: 8px;
-		overflow: hidden;
-		background: #fff;
+	/* Botón a todo el ancho (equivalente BS5 de .btn-block) */
+	#cotizacionApp .btn-block { display: block; width: 100%; }
+
+	/* Aviso de uso de datos, encima del botón enviar */
+	#cotizacionApp .aviso-datos {
+		font-size: .78rem;
+		line-height: 1.5;
+		color: #7a7a7a;
+		margin: 0 0 10px;
 	}
-	#cotizacionApp .cotizacion-caja .cotizacion-body { padding: 20px 18px; }
 
 	/* Botón enviar (color naranja de la marca) */
 	#cotizacionApp .btn-enviar {
@@ -289,10 +292,6 @@ $tt_vehiculos = [
 	#cotizacionApp .cotizacion-modal .modal-btn.ok:hover { background: #0d9a12; }
 	body.cotizacion-modal-abierto { overflow: hidden; }
 
-	@media (max-width: 991px) {
-		/* En móvil el panel derecho pasa debajo, con un margen extra */
-		#cotizacionApp .col-derecha { margin-top: 16px; }
-	}
 </style>
 
 <!-- Título y descripción de la página -->
@@ -305,8 +304,7 @@ $tt_vehiculos = [
 <div class="container" id="cotizacionApp">
 	<div class="row g-3 g-xl-4">
 
-		<!-- ===== Columna izquierda (3 de 4) ===== -->
-		<div class="col-12 col-lg-9">
+		<div class="col-12">
 			<div class="row g-3">
 
 				<!-- Cotizar | Vehículo | Seleccionados -->
@@ -353,14 +351,26 @@ $tt_vehiculos = [
 					<input type="date" id="fecha" class="form-control" value="<?= esc_attr(date('Y-m-d')); ?>">
 				</div>
 
-				<!-- Ruta | Observaciones -->
+				<!-- Ruta / Itinerario | Salida + Retorno -->
 				<div class="col-12 col-sm-8 campo">
-					<label for="ruta">Ruta: <span class="obligatorio">*</span></label>
-					<textarea id="ruta" class="form-control" rows="2" placeholder="Itinerario"></textarea>
+					<label for="ruta">Ruta / Itinerario: <span class="obligatorio">*</span></label>
+					<textarea id="ruta" class="form-control" rows="5" placeholder="Itinerario"></textarea>
 				</div>
-				<div class="col-12 col-sm-4 campo">
+				<div class="col-12 col-sm-4">
+					<div class="campo">
+						<label for="salida">Salida <span class="obligatorio">*</span></label>
+						<input type="text" id="salida" class="form-control" placeholder="h:mm a.m./p.m." autocomplete="off">
+					</div>
+					<div class="campo">
+						<label for="retorno">Retorno <span class="obligatorio">*</span></label>
+						<input type="text" id="retorno" class="form-control" placeholder="h:mm a.m./p.m." autocomplete="off">
+					</div>
+				</div>
+
+				<!-- Observaciones -->
+				<div class="col-12 campo">
 					<label for="observaciones">Observaciones</label>
-					<textarea id="observaciones" class="form-control" rows="2" placeholder="Solicito..."></textarea>
+					<textarea id="observaciones" class="form-control" rows="3" placeholder="Indica detalles adicionales o requerimientos especiales (ej. equipaje, paradas, preferencias, asiento para bebé, idioma del guía / conductor o factura / boleta)."></textarea>
 				</div>
 
 				<!-- Cliente -->
@@ -369,40 +379,21 @@ $tt_vehiculos = [
 					<input type="text" id="cliente" class="form-control" placeholder="Nombre o empresa" autocomplete="off">
 				</div>
 
-			</div>
-		</div>
+				<!-- Celular | Correo electrónico -->
+				<div class="col-12 col-sm-6 campo">
+					<label for="celular">Celular / WhatsApp <span class="obligatorio">*</span></label>
+					<input type="text" id="celular" class="form-control" inputmode="tel" autocomplete="off" placeholder="(+51) 987 654 321">
+				</div>
+				<div class="col-12 col-sm-6 campo">
+					<label for="correo">Correo Electrónico</label>
+					<input type="email" id="correo" class="form-control" autocomplete="off" placeholder="tunombre@correo.com">
+				</div>
 
-		<!-- ===== Columna derecha (1 de 4) ===== -->
-		<div class="col-12 col-lg-3 col-derecha">
-			<!-- Etiqueta del panel, fuera de la tarjeta (similar al label "Cotizar:") -->
-			<div class="campo">
-				<p class="campo-etiqueta mb-0">Programe su cotización:</p>
-			</div>
-
-			<div class="cotizacion-caja">
-
-				<div class="cotizacion-body">
-					<!-- Salida -->
-					<div class="campo mb-4">
-						<label for="salida">Salida <span class="obligatorio">*</span></label>
-						<input type="text" id="salida" class="form-control" placeholder="h:mm a.m./p.m." autocomplete="off">
-					</div>
-
-					<!-- Retorno -->
-					<div class="campo mb-4">
-						<label for="retorno">Retorno <span class="obligatorio">*</span></label>
-						<input type="text" id="retorno" class="form-control" placeholder="h:mm a.m./p.m." autocomplete="off">
-					</div>
-
-					<!-- Celular -->
-					<div class="campo mb-4">
-						<label for="celular">Celular <span class="obligatorio">*</span></label>
-						<input type="tel" id="celular" class="form-control" inputmode="numeric" autocomplete="off" placeholder="">
-					</div>
-
-					<!-- Enviar -->
-					<button type="button" id="btnEnviar" class="btn-enviar w-100 d-block">Enviar</button>
-
+				<!-- Aviso de datos + Enviar (alineados a la tercera columna) -->
+				<div class="col-12 col-sm-8 d-none d-sm-block"></div>
+				<div class="col-12 col-sm-4 campo">
+					<p class="aviso-datos">Al enviar aceptas el uso de tus datos únicamente para enviarte la cotización.</p>
+					<button type="button" id="btnEnviar" class="btn-enviar btn-block">Enviar</button>
 					<div class="msg-estado" id="msgEstado"></div>
 				</div>
 
@@ -438,7 +429,8 @@ $tt_vehiculos = [
 	// saltos de línea al concatenar los <script> (sin ";" el JS se rompe).
 	const PREFIJO_PAIS = '51';
 	const CELULAR_POR_DOMINIO = {
-		'toursjauja.com': '956323084'
+		'grupoeuroandino.com': '947614293',
+		'toursjauja.com': '956323084',
 	};
 	const CELULAR_POR_DEFECTO = '993183661';
 
@@ -461,6 +453,7 @@ $tt_vehiculos = [
 	const salida    = $('salida');
 	const retorno   = $('retorno');
 	const celular   = $('celular');
+	const correo    = $('correo');
 	const btn       = $('btnEnviar');
 	const estado    = $('msgEstado');
 
@@ -524,8 +517,8 @@ $tt_vehiculos = [
 	const hoy = new Date();
 	fecha.value = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`;
 
-	// El celular acepta solo números
-	celular.addEventListener('input', () => { celular.value = celular.value.replace(/\D/g, ''); });
+	// El celular acepta solo números, espacios y los símbolos + ( )
+	celular.addEventListener('input', () => { celular.value = celular.value.replace(/[^0-9+()\s]/g, ''); });
 
 	const marcarError = (campo, si) => campo.classList.toggle('error', !!si);
 	const mensaje = (txt, ok) => {
@@ -553,7 +546,7 @@ $tt_vehiculos = [
 			{ campo: cliente,   nombre: 'Cliente',          ok: cliente.value.trim() !== '' },
 			{ campo: salida,    nombre: 'Salida',           ok: salida.value !== '' },
 			{ campo: retorno,   nombre: 'Retorno',          ok: retorno.value !== '' },
-			{ campo: celular,   nombre: 'Celular',          ok: celular.value.trim() !== '' }
+			{ campo: celular,   nombre: 'Celular / WhatsApp', ok: celular.value.trim() !== '' }
 		];
 
 		revisados.forEach((r) => marcarError(r.campo, !r.ok));
@@ -576,7 +569,7 @@ $tt_vehiculos = [
 	};
 
 	// Al corregir un campo se le quita la marca roja
-	const campos = [cotizar, pasajeros, dias, fecha, ruta, cliente, salida, retorno, celular];
+	const campos = [cotizar, pasajeros, dias, fecha, ruta, cliente, salida, retorno, celular, correo];
 	campos.forEach((campo) => {
 		const limpiar = () => {
 			campo.classList.remove('error');
@@ -673,15 +666,15 @@ $tt_vehiculos = [
 			defaultHour: 8
 		};
 
-		// Horas por defecto: salida 8:00 a.m. y retorno 3:00 p.m.
+		// Horas por defecto: salida 7:00 a.m. y retorno 7:00 p.m.
 		const horaDeHoy = (horas, minutos) => {
 			const cuando = new Date();
 			cuando.setHours(horas, minutos, 0, 0);
 			return cuando;
 		};
 
-		flatpickr(salida, Object.assign({}, opcionesHora, { defaultDate: horaDeHoy(8, 0) }));
-		flatpickr(retorno, Object.assign({}, opcionesHora, { defaultDate: horaDeHoy(15, 0) }));
+		flatpickr(salida, Object.assign({}, opcionesHora, { defaultDate: horaDeHoy(7, 0) }));
+		flatpickr(retorno, Object.assign({}, opcionesHora, { defaultDate: horaDeHoy(19, 0) }));
 	}
 
 	// Reúne todos los datos del formulario
@@ -696,7 +689,8 @@ $tt_vehiculos = [
 		cliente:   cliente.value.trim(),
 		salida:    salida.value,
 		retorno:   retorno.value,
-		celular:   celular.value,
+		celular:   celular.value.trim(),
+		correo:    correo.value.trim(),
 		pagina:    document.title.replace(/\s*[-–]\s*Grupo Euro Andino\s*$/, '').trim(),
 		url:       window.location.href
 	});
@@ -713,12 +707,13 @@ $tt_vehiculos = [
 			`N° de pasajeros: ${d.pasajeros}`,
 			`Días: ${d.dias}`,
 			d.fecha   ? `Fecha: ${d.fecha}`   : '',
-			d.ruta    ? `Ruta: ${d.ruta}`     : '',
+			d.ruta    ? `Ruta / Itinerario: ${d.ruta}`     : '',
 			d.observaciones ? `Observaciones: ${d.observaciones}` : '',
 			`Cliente: ${d.cliente}`,
 			d.salida  ? `Salida: ${d.salida}` : '',
 			d.retorno ? `Retorno: ${d.retorno}` : '',
-			d.celular ? `Celular: ${d.celular}` : ''
+			d.celular ? `Celular / WhatsApp: ${d.celular}` : '',
+			d.correo  ? `Correo Electrónico: ${d.correo}` : ''
 		].filter((linea) => linea !== '');
 
 		const texto = `*Hola Grupo Euro Andino* Quisiera una cotización de *${d.cotizar}*\n` + lineas.join('\n');
@@ -739,9 +734,12 @@ $tt_vehiculos = [
 					mensaje('Cotización enviada a ' + DESTINO_CORREO, true);
 					abrirModal(
 						'ok',
-						'¡Solicitud enviada!',
+						'¡Solicitud recibida con éxito!',
 						'✅',
-						'<p style="margin:0;font-size:1.05rem;">Gracias por cotizar. Te daremos una respuesta pronto.</p>',
+						'<p style="margin:0 0 12px;font-size:1.05rem;">Gracias por contactarnos. Hemos recibido los detalles de tu ruta y nuestro equipo de Grupo Euro Andino está preparando tu cotización. En breve nos comunicaremos contigo vía WhatsApp o correo electrónico.</p>' +
+						'<p style="margin:0;">¿Necesitas atención urgente? Escríbenos directo al WhatsApp: ' +
+							'<a href="https://wa.me/51947614293" target="_blank" rel="noopener" style="color:#10b916;font-weight:700;text-decoration:none;">(+51) 947614293</a>' +
+						'</p>',
 						'Cerrar'
 					);
 				} else {

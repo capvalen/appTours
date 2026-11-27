@@ -139,7 +139,8 @@ function procesar_cotizacion_transporte() {
 	$cliente   = sanitize_text_field($_POST['cliente'] ?? '');
 	$salida    = sanitize_text_field($_POST['salida'] ?? '');
 	$retorno   = sanitize_text_field($_POST['retorno'] ?? '');
-	$celular   = preg_replace('/\D/', '', (string) ($_POST['celular'] ?? ''));
+	$celular   = sanitize_text_field($_POST['celular'] ?? '');
+	$correo    = sanitize_email($_POST['correo'] ?? '');
 	$pagina    = sanitize_text_field($_POST['pagina'] ?? '');
 	$url       = esc_url_raw($_POST['url'] ?? '');
 
@@ -218,7 +219,8 @@ function procesar_cotizacion_transporte() {
 							$fila('Cliente', $cliente) .
 							$fila('Salida', $salida) .
 							$fila('Retorno', $retorno) .
-							$fila('Celular', $celular) .
+							$fila('Celular / WhatsApp', $celular) .
+							$fila('Correo Electrónico', $correo) .
 							$fila('Página', $pagina) .
 							$filaUrl .
 						'</table>' .
