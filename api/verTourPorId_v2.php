@@ -28,6 +28,8 @@ if( $sql->execute( [ $_POST['id'] ] )){
 					(alcance = 'pais' AND pais_id = ?) OR
 					(alcance = 'departamento' AND departamento = ?) OR
 					(alcance = 'ciudad' AND ciudad = ?) OR
+					(alcance = 'tours' AND ? = 1) OR
+					(alcance = 'paquetes' AND ? = 2) OR
 					(tipo IN ('umbral_monto', 'umbral_porcentaje'))
 				  )
 				ORDER BY
@@ -40,7 +42,7 @@ if( $sql->execute( [ $_POST['id'] ] )){
 					inicio DESC
 				LIMIT 1
 			");
-			$sqlScope->execute([$row['pais'], $contenido['departamento'] ?? '', $contenido['destino'] ?? '']);
+			$sqlScope->execute([$row['pais'], $contenido['departamento'] ?? '', $contenido['destino'] ?? '', $row['tipo'], $row['tipo']]);
 			$rowDescuento = $sqlScope->fetch(PDO::FETCH_ASSOC);
 			if ($rowDescuento) {
 				$descuento = $rowDescuento;
