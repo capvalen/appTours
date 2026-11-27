@@ -1353,7 +1353,7 @@ else
 
 
 	<script type="module">
-	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.16';
+	import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.17';
 		const {createApp} = Vue
 
 		var modalNuevo, modalNuevoPack, qDescripcion, qPartida, qItinerario, qNotas, offPanel,

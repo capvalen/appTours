@@ -161,7 +161,7 @@ export default {
 	unmounted() {
 		this.quitarListenerFuera();
 	},
-	template: `
+	template: /*html*/`
 	<div class="card h-100 border-0  ">
 		<div v-if="tour.fotos.length>0" class="divImagen position-relative" style="height: 345px;">
 			<div class="divOferta2 w-100 position-absolute bottom-0 end-0 d-flex justify-content-end mb-2 me-1">

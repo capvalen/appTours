@@ -15,9 +15,13 @@ if ($sqlPromos) {
 	}
 }
 
+// Límite opcional: si no se envía (o no es un número positivo) no se aplica
+$limite = $_POST['limite'] ?? $_GET['limite'] ?? '';
+$limiteSql = (is_numeric($limite) && (int)$limite > 0) ? ' LIMIT ' . (int)$limite : '';
+
 $sql= $db->query("SELECT * FROM `tours` where visible=1 and activo=1 
 and JSON_EXTRACT(contenido, '$.departamento') = {$_POST['departamento']}-1
-order by RAND() DESC;");
+order by RAND() DESC{$limiteSql};");
 if( $sql->execute()){
 	while( $row = $sql->fetch(PDO::FETCH_ASSOC) ){
 		// Buscar descuento individual por id_tour

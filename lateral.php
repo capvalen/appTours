@@ -356,14 +356,14 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 									<thead>
 										<tr>
 											<th>Imagen</th>
-											<th>Nombre</th>
+											<th style="min-width: 190px;">Nombre</th>
 											<th>Visible</th>
-												<th>Alcance</th>
-												<th>Tipo</th>
-												<th>Valor</th>
-												<th>Inicio</th>
-												<th>Fin</th>
-												<th class="text-center">Acciones</th>
+											<th>Alcance</th>
+											<th>Tipo</th>
+											<th style="min-width: 120px;">Valor</th>
+											<th>Inicio</th>
+											<th>Fin</th>
+											<th class="text-center">Acciones</th>
 											</tr>
 										</thead>
 										<tbody id="tbodyDescuentos">
@@ -613,7 +613,8 @@ if(!isset($_COOKIE['ckUsuario'])){ header("Location: index.html");die(); }
 		if(p.tipo == 'umbral_monto' || p.tipo == 'umbral_porcentaje'){
 			let partes = parsearUmbral(p.valor);
 			let sufijo = p.tipo == 'umbral_porcentaje' ? '%' : '';
-			return `Mín. S/ ${partes[0] ?? ''} <i class="icofont-arrow-right"></i> ${partes[1] ?? ''}${sufijo}`;
+			let prefijo = p.tipo == 'umbral_porcentaje' ? '' : 'S/ ';
+			return `Mín. S/ ${partes[0] ?? ''} <i class="icofont-arrow-right"></i> ${prefijo}${partes[1] ?? ''}${sufijo}`;
 		}
 		return `${p.valor}${p.tipo == 'porcentaje' ? '%' : ''}`;
 	}

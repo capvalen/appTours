@@ -137,6 +137,11 @@ else
 		}
 		#smallSoles{ vertical-align: top; position: relative; top: 3px;}
 		.img75{width: 85%!important;}
+		.alerta-stock{ animation: mostrarAlertaStock .35s ease-out; }
+		@keyframes mostrarAlertaStock{
+			from{ opacity: 0; transform: translateY(-10px); }
+			to{ opacity: 1; transform: translateY(0); }
+		}
 		@media (max-width: 576px) {
 			.loader-overlay { padding: 20px; text-align: center; }
 			#smallSoles{ font-size: 1rem !important;}
@@ -414,7 +419,7 @@ else
 
 					</div>
 
-					<div class="col-7 mx-auto col-md-5 ">
+					<div class="col-7 mx-auto col-md-6 col-xl-5">
 
 						<div class="input-group mx-auto">
 
@@ -440,7 +445,7 @@ else
 
 					</div>
 
-					<div class="col-7 mx-auto col-md-5 ">
+					<div class="col-7 mx-auto col-md-6 col-xl-5">
 
 						<div class="input-group mx-auto">
 
@@ -464,6 +469,11 @@ else
 				<div class="row col mx-auto my-3 " v-if="!faltaAdulto">
 					<div class="alert alert-warning " role="alert">
 						Mínimo debe haber un <strong>adulto</strong>
+					</div>
+				</div>
+				<div class="row col mx-auto my-3" v-if="cuposExcedidos">
+					<div class="alert alert-warning alerta-stock show mb-0" role="alert">
+						<i class="icofont-warning"></i> Sólo disponemos de <strong>{{stockDia}}</strong> cupos para el día seleccionado
 					</div>
 				</div>
 
@@ -633,7 +643,7 @@ else
 						</ul>
 					</div>
 				</div>
-				<p>Comentaron {{parseInt(variosTours.votantes) - comentarios.length }} viajeros más...</p>
+				<p class="mb-4">Comentaron {{parseInt(variosTours.votantes) - comentarios.length }} viajeros más...</p>
 			</div>
 		</div>
 
@@ -722,7 +732,7 @@ else
 
 
 	<script type="module">
-		import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.16';
+		import Card from 'https://grupoeuroandino.com/app/render/js/card.js?v=1.0.17';
 		var datepicker = $.fn.datepicker.noConflict();
 
 		$.fn.bootstrapDP = datepicker;
@@ -831,6 +841,7 @@ else
 					incluidos: [],
 					noIncluidos: [],
 					faltaMinimo: true, faltaAdulto:true, faltaHabitacion:true,
+					stockDia: null,
 					recomendados: [],
 					categorias2: [], actividades2: [], contenidos:[], comentarios:[],
 					transportes: ['Terrestre', 'Aéreo', 'Ninguno'],
@@ -884,15 +895,21 @@ else
 			async cargarTours(){
 				let datos = new FormData()
 				datos.append('departamento', this.tourActivo.departamento+1)
+				datos.append('limite', 10)
 				const respuesta = await fetch(this.servidor+'mostrarTours_scriptDepartamentos.php',{
 					method:'POST', body:datos
 				})
 				let temp = await respuesta.json()
-				//console.log('temp',temp);
+				console.log('temp',temp);
 				this.tours = temp;
 				this.contenidos=[];
 				this.tours.forEach(dato=>{
-					this.contenidos.push( {...JSON.parse(dato.contenido),
+					let contenido = JSON.parse(dato.contenido);
+					// El carrusel de similares solo necesita la primera foto: no se descarga la galería
+					if (Array.isArray(contenido.fotos) && contenido.fotos.length > 0) {
+						contenido.fotos = [contenido.fotos[0]];
+					}
+					this.contenidos.push( {...contenido,
 						calificacion: dato.calificacion,
 						url: dato.url,
 						descuento: dato.descuento ?? []
@@ -1211,7 +1228,10 @@ else
 				})
 				.on('changeDate', function(e) {
 					app.revisarAnticipacion()
+					app.consultarStock()
 				});
+
+				app.consultarStock()
 
 				$(".prev").each(function(i) {
 					$(".prev")[i].innerHTML = `<i class="icofont-rounded-left"></i>`
@@ -1221,6 +1241,20 @@ else
 					$(".next")[i].innerHTML = `<i class="icofont-rounded-right"></i>`
 				})
 
+			},
+			async consultarStock(){
+				let fecha = $('#dtpFecha').bootstrapDP('getFormattedDate')
+				if(!fecha){ this.stockDia = null; return false }
+				try {
+					const respuesta = await axios.post(this.servidor + 'stockTourPorDia.php', {
+						id: this.idProducto,
+						fecha: moment(fecha, 'DD/MM/YYYY').format('YYYY-MM-DD')
+					})
+					this.stockDia = (respuesta.data && respuesta.data.stock !== undefined) ? parseInt(respuesta.data.stock) : null
+				} catch (error) {
+					this.stockDia = null
+				}
+				return this.stockDia
 			},
 			revisarAnticipacion(){
 				this.mostrarRestriccionHorario = false
@@ -1408,6 +1442,11 @@ else
 			},
 
 			computed: {
+				cuposExcedidos() {
+					if(this.tourActivo.tipo != 1) return false
+					if(this.stockDia === null) return false
+					return (parseInt(this.cantAdultos) + parseInt(this.cantKids)) > this.stockDia
+				},
 				descuentoActivoTexto() {
 					if(!this.tourActivo.descuento) return ''
 					const descuento = this.tourActivo.descuento
